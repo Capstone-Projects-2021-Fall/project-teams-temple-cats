@@ -1,3 +1,9 @@
+### Temple Cats
+Team:
+Karl Schaller, Rebecca Robb, Jordan Billie, Christine Gregotski, Christian Davis
+
+
+
 ## Project Abstract
 The Temple Cats mobile app is for people in the Temple University area who want to help local stray cats. The Temple Cats organization tracks its own feral cat colony, but the Temple University area also has an extremely high population of stray cats who were abandoned by their owners and are in need of care or a home. The mobile app aims mainly to address this problem by providing a lost & found type of service for reporting cats, as well as by connecting users with extensive resources and information specific to the Temple University area for all different types of cat related situations users might encounter.
 
