@@ -23,7 +23,7 @@ export function useThemeColor(
   }
 }
 
-type ThemeProps = {
+export type ThemeProps = {
   lightColor?: string;
   darkColor?: string;
 };
