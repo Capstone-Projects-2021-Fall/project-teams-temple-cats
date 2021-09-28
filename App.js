@@ -1,38 +1,33 @@
-
-
-import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
-
-import { MainStackNavigator } from "./navigation/StackNavigator";
-
-const App = () => {
-  return (
-    <NavigationContainer>
-      <MainStackNavigator />
-    </NavigationContainer>
-  );
-};
-export default App;
-
-/*
-  
-*/
- //
-      
-
-
-
-/*import { StatusBar } from 'expo-status-bar';
+import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { createStackNavigator, createAppContainer } from "react-navigation";
+//import { createStackNavigator, createAppContainer } from "react-navigation";
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
+import Home from './screens/Home';
+import {StyleSheet, Text, View } from "react-native";
 //import Login from './components/Login'
 
 export default function App() {
-  const isLoadingComplete = useCachedResources();
+  return(
+    <Home></Home>
+  );
+}
+
+const styles = StyleSheet.create({
+  center: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
+  },
+});
+
+//export default App;
+
+
+/*const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
 
   if (!isLoadingComplete) {
@@ -45,7 +40,4 @@ export default function App() {
       
       </SafeAreaProvider>
     );
-  }
-}*/
-
-//export default App;
+  }*/
