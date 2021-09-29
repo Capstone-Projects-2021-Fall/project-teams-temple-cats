@@ -12,10 +12,12 @@ import { ColorSchemeName, Pressable } from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import ModalScreen from '../screens/ModalScreen';
+import Notifications from '../screens/NotificationModal';
 import NotFoundScreen from '../screens/NotFoundScreen';
-import TabOneScreen from '../screens/TabOneScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
+import Leaderboard from '../screens/Leaderboard';
+import Home from '../screens/Home';
+import Account from '../screens/Account';
+import Resources from '../screens/Resources';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
@@ -41,7 +43,7 @@ function RootNavigator() {
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="Modal" component={ModalScreen} />
+        <Stack.Screen name="Modal" component={Notifications} />
       </Stack.Group>
     </Stack.Navigator>
   );
@@ -58,15 +60,15 @@ function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="Home"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
       }}>
       <BottomTab.Screen
-        name="TabOne"
-        component={TabOneScreen}
-        options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
-          title: 'Tab One',
+        name="Home"
+        component={Home}
+        options={({ navigation }: RootTabScreenProps<'Home'>) => ({
+          title: 'Home',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
             <Pressable
@@ -85,10 +87,26 @@ function BottomTabNavigator() {
         })}
       />
       <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoScreen}
+        name="Resources"
+        component={Resources}
         options={{
-          title: 'Tab Two',
+          title: 'Resources',
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="Leaderboard"
+        component={Leaderboard}
+        options={{
+          title: 'Leaderboard',
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="Account"
+        component={Account}
+        options={{
+          title: 'Account',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />
