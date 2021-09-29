@@ -1,17 +1,13 @@
 import React from 'react';
 import {Button, SafeAreaView, View, ImageBackground, Text, StyleSheet, Alert } from "react-native";
-import Login from './screens/Login'
+
 const image={uri:
   'https://media.istockphoto.com/photos/small-kittens-picture-id516230467?k=6&m=516230467&s=612x612&w=0&h=Exd6B-5vXxg-4t_t_USCDGqKO6d-1KCmQkS_smprKnI='
  };
 
-const App = () => {
+const Login = () => {
   return (
-      <Login></Login>
-    );
-  }
-  export default App
-    /*<SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.container}>
         <ImageBackground source={image} resizeMode="cover" style={styles.image}>
           <Text style={styles.text}>Temple Cats</Text>
@@ -80,7 +76,4 @@ const styles = StyleSheet.create({
     },
    });
    
-export default App;*/
-/* <Text style={styles.title}>
-Sign in
-</Text>*/
+export default Login;
