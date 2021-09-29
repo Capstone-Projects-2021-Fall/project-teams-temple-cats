@@ -12,7 +12,7 @@ import { ColorSchemeName, Pressable } from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import Home from '../screens/Home'
+import Login from '../screens/Login'
 //import Login from '../screens/Login';
 
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
@@ -20,7 +20,7 @@ import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../typ
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
-    <Home></Home>
+    <Login></Login>
   );
 }
 
@@ -32,7 +32,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
   return (
-    <Home></Home>  
+    <Login></Login>  
     );
   }
     
