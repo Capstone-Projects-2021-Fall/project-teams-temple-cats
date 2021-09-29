@@ -13,19 +13,10 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^12.0.0",
-<<<<<<< HEAD
-    "@material-ui/core": "^4.12.3",
-    "@react-native-community/masked-view": "^0.1.11",
-    "@react-navigation/bottom-tabs": "^6.0.7",
-    "@react-navigation/drawer": "^6.1.6",
-    "@react-navigation/native": "^6.0.4",
-=======
     "@react-native-firebase/app": "^12.8.0",
     "@react-navigation/bottom-tabs": "^6.0.5",
     "@react-navigation/native": "^6.0.2",
->>>>>>> 88dc6ce34c9ba9a18c585dd9f3bf4574d39241d2
     "@react-navigation/native-stack": "^6.1.0",
-    "@react-navigation/stack": "^6.0.9",
     "expo": "~42.0.1",
     "expo-asset": "~8.3.2",
     "expo-auth-session": "^3.3.1",
@@ -40,27 +31,19 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",
-<<<<<<< HEAD
-    "react-native-gesture-handler": "^1.10.3",
-    "react-native-reanimated": "^2.2.2",
-    "react-native-safe-area-context": "^3.2.0",
-    "react-native-screens": "^3.4.0",
-    "react-native-web": "~0.13.12"
-=======
     "react-native-gesture-handler": "~1.10.2",
     "react-native-reanimated": "~2.2.0",
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "~3.4.0",
     "react-native-web": "^0.17.1",
     "expo-facebook": "~11.3.1"
->>>>>>> 88dc6ce34c9ba9a18c585dd9f3bf4574d39241d2
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
-    "@types/react": "^16.9.56",
+    "@types/react": "~16.9.35",
     "@types/react-native": "~0.63.2",
     "jest-expo": "~41.0.0-beta.0",
-    "typescript": "^4.0.8"
+    "typescript": "~4.0.0"
   },
   "private": true
 }
