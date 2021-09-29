@@ -12,9 +12,18 @@ import { ColorSchemeName, Pressable } from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
+<<<<<<< HEAD
 import Login from '../screens/Login'
 //import Login from '../screens/Login';
 
+=======
+import Notifications from '../screens/NotificationModal';
+import NotFoundScreen from '../screens/NotFoundScreen';
+import Leaderboard from '../screens/Leaderboard';
+import Home from '../screens/Home';
+import Account from '../screens/Account';
+import Resources from '../screens/Resources';
+>>>>>>> 88dc6ce34c9ba9a18c585dd9f3bf4574d39241d2
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 //import LinkingConfiguration from './LinkingConfiguration';
 
@@ -38,8 +47,16 @@ function RootNavigator() {
     
     /*
     <Stack.Navigator>
+<<<<<<< HEAD
       <Stack.Screen name="Home" component={BottomTabNavigator} options={{ headerShown: false }} />
       
+=======
+      <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
+      <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+      <Stack.Group screenOptions={{ presentation: 'modal' }}>
+        <Stack.Screen name="Modal" component={Notifications} />
+      </Stack.Group>
+>>>>>>> 88dc6ce34c9ba9a18c585dd9f3bf4574d39241d2
     </Stack.Navigator>
   );
 }
@@ -60,17 +77,23 @@ function RootNavigator() {
 //function BottomTabNavigator() {
  // const colorScheme = useColorScheme();
 
+<<<<<<< HEAD
  // return (
    /* <BottomTab.Navigator
       initialRouteName="TabOne"
+=======
+  return (
+    <BottomTab.Navigator
+      initialRouteName="Home"
+>>>>>>> 88dc6ce34c9ba9a18c585dd9f3bf4574d39241d2
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
       }}>
       <BottomTab.Screen
-        name="TabOne"
-        component={TabOneScreen}
-        options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
-          title: 'Tab One',
+        name="Home"
+        component={Home}
+        options={({ navigation }: RootTabScreenProps<'Home'>) => ({
+          title: 'Home',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
             <Pressable
@@ -89,10 +112,26 @@ function RootNavigator() {
         })}
       />
       <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoScreen}
+        name="Resources"
+        component={Resources}
         options={{
-          title: 'Tab Two',
+          title: 'Resources',
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="Leaderboard"
+        component={Leaderboard}
+        options={{
+          title: 'Leaderboard',
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="Account"
+        component={Account}
+        options={{
+          title: 'Account',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />

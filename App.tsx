@@ -5,9 +5,29 @@ const image={uri:
   'https://media.istockphoto.com/photos/small-kittens-picture-id516230467?k=6&m=516230467&s=612x612&w=0&h=Exd6B-5vXxg-4t_t_USCDGqKO6d-1KCmQkS_smprKnI='
  };
 
+<<<<<<< HEAD
 const App = () => {
   return (
       <Login></Login>
+=======
+import useCachedResources from './hooks/useCachedResources';
+import useColorScheme from './hooks/useColorScheme';
+import Navigation from './navigation';
+import LoginAuthentication from './components/LoginAuthentication';
+
+export default function App() {
+  const isLoadingComplete = useCachedResources();
+  const colorScheme = useColorScheme();
+
+  if (!isLoadingComplete) {
+    return null;
+  } else {
+    return (
+      <SafeAreaProvider>
+        <LoginAuthentication/>
+        <StatusBar />
+      </SafeAreaProvider>
+>>>>>>> 88dc6ce34c9ba9a18c585dd9f3bf4574d39241d2
     );
   }
   export default App
