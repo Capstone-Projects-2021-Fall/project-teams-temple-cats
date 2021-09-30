@@ -6,6 +6,8 @@ import { Button, View, StyleSheet } from 'react-native';
 import React, { useState } from 'react';
 
 
+
+
 // Initialize Firebase
 if (!firebase.apps.length) {
   firebase.initializeApp({
@@ -20,16 +22,17 @@ if (!firebase.apps.length) {
   });
 }
 
+var user = firebase.auth().currentUser;
+
 //Dismisses web pop up
 
 WebBrowser.maybeCompleteAuthSession();
 
-
 //Request response token from user
 
-
 export default function LoginAuthentication() {
- 
+
+
   const [request, response, promptAsync] = Facebook.useAuthRequest({
     responseType: ResponseType.Token,
     clientId: '562935831789483',
@@ -38,10 +41,10 @@ export default function LoginAuthentication() {
 
   React.useEffect(() => {
 
-    firebase.auth().onAuthStateChanged(function(user) {
+    firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
         alert("already logged in");
-        
+
       } else {
 
         if (response?.type === 'success') {
@@ -52,27 +55,43 @@ export default function LoginAuthentication() {
         }
 
       }
-      }); 
-    } , [response]);
+    });
+  }, [response]);
+
+
+  if (user) {
+    return (
+      <View style={styles.container}>
+        <Button
+          disabled={!request}
+          title="Logoff"
+          onPress={() => {
+            promptAsync();
+          }}
+        />
+      </View>
+    );
+  }
+
+  else {
+    return (
+      <View style={styles.container}>
+        <Button
+          disabled={!request}
+          title="Login"
+          onPress={() => {
+            promptAsync();
+          }}
+        />
+      </View>
+
+    );
 
 
 
+  }
 
-  return (
-    
-    <View style={styles.container}>
-      <Button
-        disabled={!request}
-        title="Login"
-        onPress={() => {
-          promptAsync();
-        }}
-      />
-    </View>
-  );
-
- }
-
+}
 
 const styles = StyleSheet.create({
   container: {
