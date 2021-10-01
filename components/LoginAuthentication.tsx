@@ -1,10 +1,9 @@
-import * as WebBrowser from 'expo-web-browser';
-import * as Facebook from 'expo-auth-session/providers/facebook';
-import { ResponseType } from 'expo-auth-session';
-import firebase from 'firebase';
-import { Button, View, StyleSheet } from 'react-native';
-import React, { useState } from 'react';
-
+import * as WebBrowser from "expo-web-browser";
+import * as Facebook from "expo-auth-session/providers/facebook";
+import { ResponseType } from "expo-auth-session";
+import firebase from "firebase";
+import { Button, StyleSheet } from "react-native";
+import React from "react";
 
 // Initialize Firebase
 if (!firebase.apps.length) {
@@ -16,7 +15,7 @@ if (!firebase.apps.length) {
     storageBucket: "temple-cats.appspot.com",
     messagingSenderId: "645364453008",
     appId: "1:645364453008:web:e2b6afd21de03516ccd215",
-    measurementId: "G-PTQHR7RT4M"
+    measurementId: "G-PTQHR7RT4M",
   });
 }
 
@@ -24,62 +23,51 @@ if (!firebase.apps.length) {
 
 WebBrowser.maybeCompleteAuthSession();
 
-
 //Request response token from user
 
-
 export default function LoginAuthentication() {
- 
   const [request, response, promptAsync] = Facebook.useAuthRequest({
     responseType: ResponseType.Token,
-    clientId: '562935831789483',
+    clientId: "562935831789483",
   });
 
-
   React.useEffect(() => {
-
-    firebase.auth().onAuthStateChanged(function(user) {
+    firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
         alert("already logged in");
-        
       } else {
-
-        if (response?.type === 'success') {
+        if (response?.type === "success") {
           const { access_token } = response.params;
-          const credential = firebase.auth.FacebookAuthProvider.credential(access_token);
+          const credential =
+            firebase.auth.FacebookAuthProvider.credential(access_token);
           // Sign in with the credential from the Facebook user.
           firebase.auth().signInWithCredential(credential);
         }
-
       }
-      }); 
-    } , [response]);
-
-
-
+    });
+  }, [response]);
 
   return (
-    
-    <View style={styles.container}>
-      <Button
-        disabled={!request}
-        title="Login"
-        onPress={() => {
-          promptAsync();
-        }}
-      />
-    </View>
+    <Button
+      disabled={!request}
+      color="#8b0000"
+      title="Login"
+      onPress={() => {
+        promptAsync();
+      }}
+    />
   );
-
- }
-
+}
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center"
-  }
+    display: "flex",
+    alignContent: "center",
+    justifyContent: "center",
+    // flex: 1,
+    // alignItems: "center",
+    // justifyContent: "center",
+  },
 });
 
 
