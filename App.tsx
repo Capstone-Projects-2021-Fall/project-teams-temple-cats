@@ -6,7 +6,6 @@ import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 import LoginAuthentication from './components/LoginAuthentication';
-import CatMap from './components/CatMap';
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
