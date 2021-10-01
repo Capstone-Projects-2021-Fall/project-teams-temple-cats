@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { StyleSheet } from 'react-native';
-import MapView from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import { View } from './Themed';
 
 export default function CatMap() {
@@ -10,12 +10,22 @@ export default function CatMap() {
       <MapView
         style={styles.map}
         region={{
-          latitude: 37.78825,
-          longitude: -122.4324,
+          latitude: 39.9812,
+          longitude: -75.1497,
           latitudeDelta: 0.015,
           longitudeDelta: 0.0121,
         }}
-      />
+      >
+        <Marker
+          key='testkey'
+          coordinate={{
+            latitude: 39.9812,
+            longitude: -75.1497
+          }}
+          title='testtitle'
+          description='testdescription'
+        />
+      </MapView>
     </View>
   );
 }
@@ -23,8 +33,8 @@ export default function CatMap() {
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
-    height: 400,
-    width: 400,
+    height: '100%',
+    width: '100%',
     justifyContent: 'flex-end',
     alignItems: 'center',
   },

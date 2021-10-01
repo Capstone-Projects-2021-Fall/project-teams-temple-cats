@@ -17,7 +17,6 @@ export default function App() {
   } else {
     return (
       <SafeAreaProvider>
-        <CatMap/>
         <LoginAuthentication/>
         <StatusBar />
       </SafeAreaProvider>
