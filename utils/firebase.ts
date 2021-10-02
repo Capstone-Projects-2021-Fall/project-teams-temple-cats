@@ -1,9 +1,5 @@
-import React, { createContext } from "react";
 import firebase from "firebase/app";
 import "firebase/auth";
-
-const FirebaseContext = createContext();
-export { FirebaseContext };
 
 const firebaseConfig = {
   apiKey: "AIzaSyDhKqRV1ALg80TdK0GsSFEq0BR6BK8UiPs",
@@ -16,13 +12,8 @@ const firebaseConfig = {
   measurementId: "G-PTQHR7RT4M",
 };
 
-export default ({ children }) => {
-  if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-  }
-  return (
-    <FirebaseContext.Provider value={firebase}>
-      {children}
-    </FirebaseContext.Provider>
-  );
-};
+firebase.initializeApp(firebaseConfig);
+
+export const auth = firebase.auth();
+
+export default firebase;
