@@ -4,7 +4,6 @@ import * as Facebook from "expo-auth-session/providers/facebook";
 import { ResponseType } from "expo-auth-session";
 import firebase from "../utils/firebase";
 import { Button } from "react-native";
-import { AuthContext } from "../context/FirebaseAuthContext";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -13,8 +12,6 @@ export default function App() {
     responseType: ResponseType.Token,
     clientId: "562935831789483",
   });
-
-  const user = React.useContext(AuthContext);
 
   React.useEffect(() => {
     if (response?.type === "success") {
