@@ -7,7 +7,7 @@ import { Button } from "react-native";
 
 WebBrowser.maybeCompleteAuthSession();
 
-export default function App() {
+export default function LoginAuthentication() {
   const [request, response, promptAsync] = Facebook.useAuthRequest({
     responseType: ResponseType.Token,
     clientId: "562935831789483",
@@ -18,8 +18,8 @@ export default function App() {
       const { access_token } = response.params;
       const credential =
         firebase.auth.FacebookAuthProvider.credential(access_token);
-      // Sign in with the credential from the Facebook user.
       firebase.auth().signInWithCredential(credential);
+      console.log("User added");
     }
   }, [response]);
 
