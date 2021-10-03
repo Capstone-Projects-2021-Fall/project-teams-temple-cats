@@ -25,27 +25,40 @@ WebBrowser.maybeCompleteAuthSession();
 
 //Request response token from user
 
+/**
+ * Function that renders the Login Authentication component with a button to log in.
+ * @component LoginAuthentication
+ * @returns {JSX.Element} JSX element of the login
+ */
 export default function LoginAuthentication() {
+  /**
+   * const
+   */
   const [request, response, promptAsync] = Facebook.useAuthRequest({
     responseType: ResponseType.Token,
     clientId: "562935831789483",
   });
 
-  React.useEffect(() => {
-    firebase.auth().onAuthStateChanged(function (user) {
-      if (user) {
-        alert("already logged in");
-      } else {
-        if (response?.type === "success") {
-          const { access_token } = response.params;
-          const credential =
-            firebase.auth.FacebookAuthProvider.credential(access_token);
-          // Sign in with the credential from the Facebook user.
-          firebase.auth().signInWithCredential(credential);
+  React.useEffect(
+    /**
+     * function
+     */    
+    () => {
+      firebase.auth().onAuthStateChanged(function (user) {
+        if (user) {
+          alert("already logged in");
+        } else {
+          if (response?.type === "success") {
+            const { access_token } = response.params;
+            const credential =
+              firebase.auth.FacebookAuthProvider.credential(access_token);
+            // Sign in with the credential from the Facebook user.
+            firebase.auth().signInWithCredential(credential);
+          }
         }
-      }
-    });
-  }, [response]);
+      });
+    }, [response]
+  );
 
   return (
     <Button

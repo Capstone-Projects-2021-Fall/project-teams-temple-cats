@@ -4,6 +4,12 @@ import { StyleSheet } from 'react-native';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 
+/**
+ * accountscreen
+ * @component AccountScreen
+ * @param param0 asd
+ * @returns {JSX.Element} asd
+ */
 export default function AccountScreen({ navigation }: RootTabScreenProps<'Account'>) {
   return (
     <View style={styles.container}>
@@ -13,6 +19,9 @@ export default function AccountScreen({ navigation }: RootTabScreenProps<'Accoun
   );
 }
 
+/**
+ * @constant
+ */
 const styles = StyleSheet.create({
   container: {
     flex: 1,
