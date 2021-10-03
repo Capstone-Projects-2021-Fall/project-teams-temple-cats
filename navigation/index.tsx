@@ -17,7 +17,6 @@ import { ColorSchemeName, Pressable } from "react-native";
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import Announcements from "../screens/AnnouncementsModal";
-import NotFoundScreen from "../screens/NotFoundScreen";
 import Leaderboard from "../screens/Leaderboard";
 import Home from "../screens/Home";
 import Account from "../screens/Account";
@@ -28,7 +27,6 @@ import {
   RootTabParamList,
   RootTabScreenProps,
 } from "../types";
-import LinkingConfiguration from "./LinkingConfiguration";
 import { AuthContext } from "../context/FirebaseAuthContext";
 
 export default function Navigation({
@@ -37,9 +35,9 @@ export default function Navigation({
   colorScheme: ColorSchemeName;
 }) {
   const user = React.useContext(AuthContext);
+
   return (
     <NavigationContainer
-      linking={LinkingConfiguration}
       theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
     >
       {!user ? <Login /> : <RootNavigator />}
@@ -54,17 +52,13 @@ export default function Navigation({
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
+  const user = React.useContext(AuthContext);
   return (
     <Stack.Navigator>
       <Stack.Screen
         name="Root"
         component={BottomTabNavigator}
         options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="NotFound"
-        component={NotFoundScreen}
-        options={{ title: "Oops!" }}
       />
       <Stack.Group screenOptions={{ presentation: "transparentModal" }}>
         <Stack.Screen name="Announcements" component={Announcements} />
