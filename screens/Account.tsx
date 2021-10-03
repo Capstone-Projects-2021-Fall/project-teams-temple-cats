@@ -5,10 +5,10 @@ import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 
 /**
- * accountscreen
- * @component AccountScreen
- * @param param0 asd
- * @returns {JSX.Element} asd
+ * Function that renders the account screen.
+ * @component
+ * @param {RootTabScreenProps} props navigation properties from the root of the account button in navigation
+ * @returns {JSX.Element} JSX element of the account screen
  */
 export default function AccountScreen({ navigation }: RootTabScreenProps<'Account'>) {
   return (
@@ -19,9 +19,6 @@ export default function AccountScreen({ navigation }: RootTabScreenProps<'Accoun
   );
 }
 
-/**
- * @constant
- */
 const styles = StyleSheet.create({
   container: {
     flex: 1,

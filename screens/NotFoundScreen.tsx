@@ -3,6 +3,12 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { RootStackScreenProps } from '../types';
 
+/**
+ * Function that renders an error screen screen that is used when navigating to a page that doesn't exist.
+ * @component
+ * @param {RootTabScreenProps} navigation navigation properties from the root of the notfoundscreen button in navigation
+ * @returns {JSX.Element} JSX element of the not found screen
+ */
 export default function NotFoundScreen({ navigation }: RootStackScreenProps<'NotFound'>) {
   return (
     <View style={styles.container}>

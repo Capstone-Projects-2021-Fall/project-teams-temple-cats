@@ -4,6 +4,11 @@ import { Platform, StyleSheet } from 'react-native';
 
 import { Text, View } from '../components/Themed';
 
+/**
+ * Function that renders a modal to be used for displaying notifications.
+ * @component
+ * @returns {JSX.Element} JSX element of the modal
+ */
 export default function ModalScreen() {
   return (
     <View style={styles.container}>

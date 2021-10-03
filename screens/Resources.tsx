@@ -2,8 +2,15 @@ import * as React from 'react';
 import { StyleSheet } from 'react-native';
 
 import { Text, View } from '../components/Themed';
+import { RootTabScreenProps } from '../types';
 
-export default function ResourcesScreen() {
+/**
+ * Function that renders the resources screen.
+ * @component
+ * @param {RootTabScreenProps} props navigation properties from the root of the resources button in navigation
+ * @returns {JSX.Element} JSX element of the resources screen
+ */
+export default function ResourcesScreen({ navigation }: RootTabScreenProps<'Resources'>) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Resources</Text>

@@ -4,6 +4,12 @@ import { StyleSheet } from 'react-native';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 
+/**
+ * Function that renders the leaderboard screen.
+ * @component
+ * @param {RootTabScreenProps} props navigation properties from the root of the leaderboard button in navigation
+ * @returns {JSX.Element} JSX element of the leaderboard screen
+ */
 export default function LeaderboardScreen({ navigation }: RootTabScreenProps<'Leaderboard'>) {
   return (
     <View style={styles.container}>

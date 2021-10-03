@@ -21,6 +21,13 @@ import Resources from '../screens/Resources';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
+/**
+ * Function that renders the navigation bar component.
+ * @component
+ * @param {{colorScheme: ColorSchemeName}} props
+ * @param {ColorSchemeName} props.colorScheme ColorSchemeName to decide the color scheme of the component
+ * @returns {JSX.Element} JSX element of the navigation component
+ */
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
     <NavigationContainer
@@ -32,11 +39,18 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
 }
 
 /**
- * A root stack navigator is often used for displaying modals on top of all other content.
+ * A root stack navigator used for displaying a navigation modal on top of all other content.
  * https://reactnavigation.org/docs/modal
+ * @constant {TypedNavigator}
+ * @memberof Navigation
  */
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+/**
+ * Function that renders a root navigator as an inner component for the navigation bar.
+ * @returns {JSX.Element} JSX element of the root navigator
+ * @memberof Navigation
+ */
 function RootNavigator() {
   return (
     <Stack.Navigator>
@@ -50,12 +64,23 @@ function RootNavigator() {
 }
 
 /**
- * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
+ * A bottom tab navigator using for displaying tab buttons on the bottom of the display to switch screens.
  * https://reactnavigation.org/docs/bottom-tab-navigator
+ * @constant {TypedNavigator}
+ * @memberof Navigation
  */
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
+/**
+ * Function that renders a bottom tab navigator for the root of the root navigator.
+ * @returns {JSX.Element} JSX element of the bottom tab navigator.
+ * @memberof Navigation
+ */
 function BottomTabNavigator() {
+  /**
+   * Color scheme for the navigator
+   * @constant {"light" | "dark"}
+   */
   const colorScheme = useColorScheme();
 
   return (
@@ -115,7 +140,12 @@ function BottomTabNavigator() {
 }
 
 /**
- * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
+ * Function that renders the component to be used as icons for the tab bar.
+ * @param props
+ * @param {string} props.name Name of the icon
+ * @param {string} props.color Color of the icon
+ * @returns {JSX.Element} JSX element of the icon
+ * @memberof Navigation
  */
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>['name'];
