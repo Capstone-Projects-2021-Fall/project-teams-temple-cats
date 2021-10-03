@@ -5,7 +5,7 @@ import React from "react";
 const user = React.useContext(AuthContext);
 const accountsRef = firebase.database().ref("Accounts/");
 
-export const useAddUser = async () => {
+export function addUser() {
   firebase
     .database()
     .ref("Accounts/" + user?.uid)
@@ -14,4 +14,4 @@ export const useAddUser = async () => {
     });
 
   console.log("User added");
-};
+}
