@@ -3,9 +3,9 @@ import { AuthContext } from "./FirebaseAuthContext";
 import firebase from "../utils/firebase";
 
 export const AuthProvider: React.FC = ({ children }) => {
-  const [user, setUser] = useState<firebase.User | null>(null);
+  const [user, setUser] = React.useState<firebase.User | null>(null);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged((firebaseUser) => {
       setUser(firebaseUser);
       console.log(firebaseUser);

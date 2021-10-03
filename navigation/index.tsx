@@ -16,7 +16,7 @@ import { ColorSchemeName, Pressable } from "react-native";
 
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
-import Notifications from "../screens/NotificationModal";
+import Announcements from "../screens/AnnouncementsModal";
 import NotFoundScreen from "../screens/NotFoundScreen";
 import Leaderboard from "../screens/Leaderboard";
 import Home from "../screens/Home";
@@ -66,8 +66,8 @@ function RootNavigator() {
         component={NotFoundScreen}
         options={{ title: "Oops!" }}
       />
-      <Stack.Group screenOptions={{ presentation: "modal" }}>
-        <Stack.Screen name="Modal" component={Notifications} />
+      <Stack.Group screenOptions={{ presentation: "transparentModal" }}>
+        <Stack.Screen name="Announcements" component={Announcements} />
       </Stack.Group>
     </Stack.Navigator>
   );
@@ -97,7 +97,7 @@ function BottomTabNavigator() {
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
             <Pressable
-              onPress={() => navigation.navigate("Modal")}
+              onPress={() => navigation.navigate("Announcements")}
               style={({ pressed }) => ({
                 opacity: pressed ? 0.5 : 1,
               })}
