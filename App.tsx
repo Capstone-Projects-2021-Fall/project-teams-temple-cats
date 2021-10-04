@@ -1,6 +1,8 @@
 import React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import Navigation from "./navigation/index";
+import CatMap from "./components/CatMap"
+import LoginScreen from "./screens/Login"
 
 import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
@@ -17,7 +19,7 @@ export default function App() {
     return (
       <SafeAreaProvider>
         <AuthProvider>
-          <Navigation colorScheme={colorScheme} />
+          <CatMap />
         </AuthProvider>
       </SafeAreaProvider>
     );
