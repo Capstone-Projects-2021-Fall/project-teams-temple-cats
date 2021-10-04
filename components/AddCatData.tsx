@@ -1,7 +1,7 @@
 import React from "react";
 import { Component, ChangeEvent } from "react";
-import CatFormService from "../Services/CatFormService";
-import CatType from '../Types/CatType';
+import CatFormService from "../services/CatFormService";
+import CatType from '../types/CatType';
 
 type Props = {};
 
