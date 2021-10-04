@@ -1,20 +1,14 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { Component } from 'react';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import React from "react";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import Navigation from "./navigation/index";
 
-import "bootstrap/dist/css/bootstrap.min.css";
-import { Switch, Route, Link } from "react-router-dom";
-import './App.css';
-import AddTutorial from "./components/add-Cat-Data";
-import TutorialsList from "./components/Form-List";
-
-import useCachedResources from './hooks/useCachedResources';
-import useColorScheme from './hooks/useColorScheme';
-import Navigation from './navigation';
-import Login from './screens/Login';
+import useCachedResources from "./hooks/useCachedResources";
+import useColorScheme from "./hooks/useColorScheme";
+import { AuthContext } from "./context/FirebaseAuthContext";
+import { AuthProvider } from "./context/FirebaseAuthProvider";
 
 
-/*export default function App() {
+export default function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
   if (!isLoadingComplete) {
@@ -22,15 +16,16 @@ import Login from './screens/Login';
   } else {
     return (
       <SafeAreaProvider>
-        <Login/>
-        <StatusBar />
+        <AuthProvider>
+          <Navigation colorScheme={colorScheme} />
+        </AuthProvider>
       </SafeAreaProvider>
     );
   }
-}*/
+}
 
 
-
+/*
 class App extends Component {
   render() {
     return (
@@ -65,7 +60,7 @@ class App extends Component {
   }
 }
 
-export default App;
+export default App;*/
 
 
 

@@ -1,0 +1,25 @@
+{
+  "tags": {
+    "allowUnknownTags": ["optional", "component"]
+  },
+  "plugins": [
+      "node_modules/better-docs/typescript",
+      "node_modules/better-docs/component",
+      "node_modules/@ckeditor/jsdoc-plugins/lib/export-fixer/export-fixer"
+      
+  ],
+  "source": {
+      "include": ["./components", "./navigation", "./screens", "./hooks"],
+      "includePattern": "\\.(jsx|js|ts|tsx)$"
+  },
+  "opts": {
+    "destination": "docs/"
+  },
+  "templates": {
+    "cleverLinks": false,
+    "monospaceLinks": false,
+    "default": {
+        "outputSourceFiles": false
+    }
+  }
+}

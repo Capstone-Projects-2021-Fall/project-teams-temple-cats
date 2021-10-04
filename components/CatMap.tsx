@@ -4,6 +4,11 @@ import { StyleSheet } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { View } from './Themed';
 
+/**
+ * Function that renders the Cat Map component, including the map and all it's children (e.g. pins/markers).
+ * @component
+ * @returns {JSX.Element} JSX element of the map
+ */
 export default function CatMap() {
   return (
     <View style={styles.container}>
