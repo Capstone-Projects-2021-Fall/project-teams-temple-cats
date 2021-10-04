@@ -1,15 +1,15 @@
 import React from "react";
 import { Component, ChangeEvent } from "react";
-import TutorialDataService from "../Services/Cat-Form.service";
-import ITutorialData from '../types/Cat-type';
+import CatFormService from "../Services/CatFormService";
+import CatType from '../Types/CatType';
 
 type Props = {};
 
-type State = ITutorialData & {
+type State = CatType & {
   submitted: boolean
 };
 
-export default class AddTutorial extends Component<Props, State> {
+export default class AddCatData extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.onChangeTitle = this.onChangeTitle.bind(this);
@@ -45,7 +45,7 @@ export default class AddTutorial extends Component<Props, State> {
       published: false
     };
 
-    TutorialDataService.create(data)
+    CatFormService.create(data)
       .then(() => {
         console.log("Created new item successfully!");
         this.setState({

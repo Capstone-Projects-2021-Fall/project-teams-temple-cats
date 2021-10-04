@@ -29,6 +29,13 @@ import {
 } from "../types";
 import { AuthContext } from "../context/FirebaseAuthContext";
 
+//import ReactDOM from 'react-dom';
+//import { BrowserRouter } from "react-router-dom";
+
+//import './index.css';
+//import App from './App';
+//import reportWebVitals from './reportWebVitals';
+
 /**
  * Function that renders the navigation bar component.
  * @component
@@ -36,6 +43,10 @@ import { AuthContext } from "../context/FirebaseAuthContext";
  * @param {ColorSchemeName} props.colorScheme ColorSchemeName to decide the color scheme of the component
  * @returns {JSX.Element} JSX element of the navigation component
  */
+
+
+
+
 export default function Navigation({
   colorScheme,
 }: {

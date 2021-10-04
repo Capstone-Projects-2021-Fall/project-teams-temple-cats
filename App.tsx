@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import Navigation from "./navigation/index";
 
@@ -7,7 +7,13 @@ import useColorScheme from "./hooks/useColorScheme";
 import { AuthContext } from "./context/FirebaseAuthContext";
 import { AuthProvider } from "./context/FirebaseAuthProvider";
 
+import { Switch } from "react-native";
+import { Route } from "react-router";
+import { Link } from "react-router-dom";
+import AddCatData from "./components/AddCatData";
+import CatList from "./components/CatList";
 
+/*
 export default function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
@@ -23,9 +29,9 @@ export default function App() {
     );
   }
 }
+*/
 
 
-/*
 class App extends Component {
   render() {
     return (
@@ -51,8 +57,8 @@ class App extends Component {
         <div className="container mt-3">
           <h2>React Typescript Firebase example</h2>
           <Switch>
-            <Route exact path={["/", "/tutorials"]} component={TutorialsList} />
-            <Route exact path="/add" component={AddTutorial} />
+            <Route exact path={["/", "/Posts"]} component={CatList} />
+            <Route exact path="/add" component={AddCatData} />
           </Switch>
         </div>
       </div>
@@ -60,7 +66,7 @@ class App extends Component {
   }
 }
 
-export default App;*/
+export default App;
 
 
 

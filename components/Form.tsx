@@ -1,20 +1,20 @@
 import React from "react";
 import { Component, ChangeEvent } from "react";
 
-import TutorialDataService from "../services/Cat-Form.service";
-import ITutorialData from "../types/Cat-type";
+import CatFormService from "../services/CatFormService";
+import CatType from "../types/CatType"
 
 type Props = {
-  tutorial: ITutorialData,
+  tutorial: CatType,
   refreshList: Function
 };
 
 type State = {
-  currentTutorial: ITutorialData;
+  currentTutorial: CatType;
   message: string;
 }
 
-export default class Tutorial extends Component<Props, State> {
+export default class Form extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.onChangeTitle = this.onChangeTitle.bind(this);
@@ -78,7 +78,7 @@ export default class Tutorial extends Component<Props, State> {
 
   updatePublished(status: boolean) {
     if (this.state.currentTutorial.key) {
-      TutorialDataService.update(this.state.currentTutorial.key, {
+      CatFormService.update(this.state.currentTutorial.key, {
         published: status,
       })
         .then(() => {
@@ -103,7 +103,7 @@ export default class Tutorial extends Component<Props, State> {
         description: this.state.currentTutorial.description,
       };
 
-      TutorialDataService.update(this.state.currentTutorial.key, data)
+      CatFormService.update(this.state.currentTutorial.key, data)
         .then(() => {
           this.setState({
             message: "The tutorial was updated successfully!",
@@ -117,7 +117,7 @@ export default class Tutorial extends Component<Props, State> {
 
   deleteTutorial() {
     if (this.state.currentTutorial.key) {
-      TutorialDataService.delete(this.state.currentTutorial.key)
+      CatFormService.delete(this.state.currentTutorial.key)
         .then(() => {
           this.props.refreshList();
         })

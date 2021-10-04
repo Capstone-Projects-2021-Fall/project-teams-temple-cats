@@ -1,18 +1,18 @@
 import { Component } from "react";
-import TutorialDataService from "../services/Cat-Form.service";
+import CatDataService from "../services/CatFormService";
 import Tutorial from "./Form";
-import ITutorialData from '../types/Cat-type';
+import CatType from '../types/CatType';
 import React from "react";
 
 type Props = {};
 
 type State = {
-  tutorials: Array<ITutorialData>,
-  currentTutorial: ITutorialData | null,
+  tutorials: Array<CatType>,
+  currentTutorial: CatType | null,
   currentIndex: number
 };
 
-export default class TutorialsList extends Component<Props, State> {
+export default class CatList extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.refreshList = this.refreshList.bind(this);
@@ -28,15 +28,15 @@ export default class TutorialsList extends Component<Props, State> {
   }
 
   componentDidMount() {
-    TutorialDataService.getAll().on("value", this.onDataChange);
+    CatDataService.getAll().on("value", this.onDataChange);
   }
 
   componentWillUnmount() {
-    TutorialDataService.getAll().off("value", this.onDataChange);
+    CatDataService.getAll().off("value", this.onDataChange);
   }
 
   onDataChange(items: any) {
-    let tutorials = new Array<ITutorialData>();
+    let tutorials = new Array<CatType>();
 
     items.forEach((item: any) => {
       let key = item.key;
@@ -61,7 +61,7 @@ export default class TutorialsList extends Component<Props, State> {
     });
   }
 
-  setActiveTutorial(tutorial: ITutorialData, index: number) {
+  setActiveTutorial(tutorial: CatType, index: number) {
     this.setState({
       currentTutorial: tutorial,
       currentIndex: index,
@@ -69,7 +69,7 @@ export default class TutorialsList extends Component<Props, State> {
   }
 
   removeAllTutorials() {
-    TutorialDataService.deleteAll()
+    CatDataService.deleteAll()
       .then(() => {
         this.refreshList();
       })
