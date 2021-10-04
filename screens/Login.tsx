@@ -1,6 +1,12 @@
-import React from 'react';
-import { SafeAreaView, View, ImageBackground, Text, StyleSheet} from "react-native";
-import LoginAuthentication from '../components/LoginAuthentication';
+import React from "react";
+import {
+  SafeAreaView,
+  View,
+  ImageBackground,
+  Text,
+  StyleSheet,
+} from "react-native";
+import LoginAuthentication from "../components/LoginAuthentication";
 
 /**
  * Function that renders the login screen.
@@ -19,30 +25,30 @@ import LoginAuthentication from '../components/LoginAuthentication';
     <SafeAreaView style={styles.container}>
       <View style={styles.container}>
         <ImageBackground source={image} resizeMode="cover" style={styles.image}>
-            <Text style={styles.text}>Temple Cats</Text>
-                  <LoginAuthentication />
-        </ImageBackground>      
+          <Text style={styles.text}>Temple Cats</Text>
+          <LoginAuthentication />
+        </ImageBackground>
       </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "center",
-    },
-    image: {
-        flex: 1,
-        justifyContent: "center"
-    },
-    text: {
-        color: "white",
-        fontSize: 42,
-        lineHeight: 84,
-        fontWeight: "bold",
-        textAlign: "center",
-        backgroundColor: "#8b0000",
-        marginBottom: 50
-    }
-    });
+  container: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  image: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  text: {
+    color: "white",
+    fontSize: 42,
+    lineHeight: 84,
+    fontWeight: "bold",
+    textAlign: "center",
+    backgroundColor: "#8b0000",
+    marginBottom: 50,
+  },
+});
