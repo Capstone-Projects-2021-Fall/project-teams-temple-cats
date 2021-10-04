@@ -8,11 +8,19 @@ import {
 } from "react-native";
 import LoginAuthentication from "../components/LoginAuthentication";
 
-const image = {
-  uri: "https://media.istockphoto.com/photos/small-kittens-picture-id516230467?k=6&m=516230467&s=612x612&w=0&h=Exd6B-5vXxg-4t_t_USCDGqKO6d-1KCmQkS_smprKnI=",
-};
-
-export default function HomeScreen() {
+/**
+ * Function that renders the login screen.
+ * @component
+ * @returns {JSX.Element} JSX element of the login screen
+ */
+ export default function LoginScreen() {
+  /**
+   * The uri of an image to be used in the background of the login screen.
+   * @constant {{uri: string}}
+   */
+  const image={uri:
+    'https://media.istockphoto.com/photos/small-kittens-picture-id516230467?k=6&m=516230467&s=612x612&w=0&h=Exd6B-5vXxg-4t_t_USCDGqKO6d-1KCmQkS_smprKnI='
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.container}>

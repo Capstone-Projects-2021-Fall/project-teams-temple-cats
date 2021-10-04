@@ -9,6 +9,10 @@ import * as Linking from 'expo-linking';
 
 import { RootStackParamList } from '../types';
 
+/**
+ * Linking options for the navigation function of the app
+ * @constant {LinkingOptions<RootStackParamList>}
+ */
 const linking: LinkingOptions<RootStackParamList> = {
   prefixes: [Linking.makeUrl('/')],
   config: {
@@ -37,7 +41,6 @@ const linking: LinkingOptions<RootStackParamList> = {
           },
         },
       },
-      Modal: 'modal',
       NotFound: '*',
     },
   },
