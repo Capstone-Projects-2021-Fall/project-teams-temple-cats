@@ -1,102 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, Button } from "react-native";
-import MapView, { Marker, Region } from "react-native-maps";
+import React from "react";
+
+import { StyleSheet } from "react-native";
+import MapView, { Marker } from "react-native-maps";
 import { View } from "./Themed";
-import firebase from "../utils/firebase";
 
-
+/**
+ * Function that renders the Cat Map component, including the map and all it's children (e.g. pins/markers).
+ * @component
+ * @returns {JSX.Element} JSX element of the map
+ */
 export default function CatMap() {
-
-  interface Markers {
-    id: number
-    latitude: number
-    longitude: number
-  }
-  
-  //Stores cat pins into array
-  
-   var catObject = {};
-  
-    firebase.database().ref('Pins').on('value', (snap) => {
-      catObject = snap.exportVal();
-    });
-  
-    const cat_names = Object.keys(catObject);
-  
-  function getLatitude(x: String) {
-  
-    var catLatitude = 0; //initializes cat lattidue
-  
-    //Builds queryString
-  
-    let queryString = 'Pins/';
-    queryString += x;
-    queryString += '/Location/lat';
-  
-    console.log(queryString);
-  
-    firebase.database().ref(queryString).on('value', (snap) => {
-      catLatitude = snap.exportVal();
-    });
-  
-    console.log(catLatitude);
-    return catLatitude;
-    
-  }
-
-  function getLongitude(x: string) {
-    var catLongitude = 0;
-  
-    let queryString = 'Pins/';
-    queryString += x;
-    queryString += '/Location/lng';
-  
-    console.log(queryString);
-  
-    firebase.database().ref(queryString).on('value', (snap) => {
-      catLongitude = snap.exportVal();
-    });
-  
-    console.log(catLongitude);
-    return catLongitude;
-  
-  }
-
-
-  const [markers, setMarkers] = useState<Markers[]>([
-    { id: 0, latitude: 53.91326738786109, longitude: 27.523712915343737 },
-  ]);
-
-  const region: Region = {
-    latitude: 39.9812,
-    longitude: -75.1497,
-    latitudeDelta: 0.015,
-    longitudeDelta: 0.0121,
-  };
-
-  //Avoids uneccasary rerenders of code
-
-  var generateMarkers = React.useCallback((latitude: number, longitude: number) => {
-
-    const markersArray = []
-
-    //Passes cat pins to retrieve longitude and lattiude and pushes to MarkersArray
-
-    for (let i = 0; i < cat_names.length; i++) {
-      markersArray.push({
-        id: i,
-        latitude: getLatitude(cat_names[i]),
-        longitude: getLongitude(cat_names[i]),
-      });
-    }
-
-    setMarkers(markersArray);
-  }, []);
-
-  useEffect(() => {
-    generateMarkers(region.latitude, region.longitude);
-  }, []);
-
   return (
     <View style={styles.container}>
       <MapView
@@ -108,22 +21,19 @@ export default function CatMap() {
           longitudeDelta: 0.0121,
         }}
       >
-        {markers.map((item) => (
-          <Marker
-            key={item.id}
-            coordinate={{
-              latitude: item.latitude,
-              longitude: item.longitude,
-            }}
-          ></Marker>
-        ))}
-        
+        <Marker
+          key="testkey"
+          coordinate={{
+            latitude: 39.9812,
+            longitude: -75.1497,
+          }}
+          title="testtitle"
+          description="testdescription"
+        />
       </MapView>
-
     </View>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {
