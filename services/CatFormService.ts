@@ -1,7 +1,9 @@
-import firebase from "firebase";
-//import React from "react";
-//import { AuthContext } from "../context/FirebaseAuthContext";
+//import firebase from "firebase";
+import firebase from "../utils/firebase";
+import React from "react";
+import { AuthContext } from "../context/FirebaseAuthContext";
 import CatType from "../types/CatType";
+import "firebase/database";
 
 
 //const user = React.useContext(AuthContext);

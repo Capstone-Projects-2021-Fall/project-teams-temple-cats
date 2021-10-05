@@ -13,8 +13,12 @@ import { Link } from "react-router-dom";
 import AddCatData from "./components/AddCatData";
 import CatList from "./components/CatList";
 
+import Firebase from "./utils/firebase";
+
+
+
 /*
-export default function App() {
+const function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
   if (!isLoadingComplete) {
@@ -29,8 +33,8 @@ export default function App() {
     );
   }
 }
+export default App
 */
-
 
 class App extends Component {
   render() {
