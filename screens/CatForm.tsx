@@ -11,7 +11,6 @@ const Information = () => {
   const [text6, ageEstimate] = React.useState("");
   const [text7, condition] = React.useState("");
   const [text8, friendliness] = React.useState("");
-  const [value, onChangeText] = React.useState('Useless Multiline Placeholder');
   const [text9, additionalComments] = React.useState("");
   const [text10, pinID] = React.useState("");
   //const [number, onChangeNumber] = React.useState(null);
@@ -69,7 +68,7 @@ const Information = () => {
         onChangeText={friendliness}
         value={text8}
       />
-      <Text style={{ fontSize: 20, fontWeight:"bold" }}>    Pin ID</Text>
+      <Text style={{ fontSize: 20, fontWeight:"bold" }}>    Additional Comments</Text>
       <TextInput
         style={styles.input}
         onChangeText={additionalComments}
@@ -81,10 +80,18 @@ const Information = () => {
         onChangeText={pinID}
         value={text10}
       />
+
        <Button
         title="Submit"
         color="#8b0000"
-        onPress={() => Alert.alert('Submitted Successfully')}
+        onPress={() => 
+          {
+            if (!text1.trim() ||  !text2.trim() || !text3.trim() || !text4.trim() || !text5.trim() || !text6.trim()
+            || !text7.trim() || !text8.trim() || !text9.trim() || !text10.trim()) {
+            alert('Please fill out all fields');
+            return;
+          }
+          Alert.alert('Submitted Successfully')}}
       />
 
       
