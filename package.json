@@ -18,6 +18,7 @@
     "@react-navigation/bottom-tabs": "^6.0.5",
     "@react-navigation/native": "^6.0.4",
     "@react-navigation/native-stack": "^6.1.0",
+    "@types/firebase": "^3.2.1",
     "@types/react-router-dom": "^5.3.0",
     "expo": "~42.0.1",
     "expo-asset": "~8.3.3",
@@ -47,7 +48,7 @@
   "devDependencies": {
     "@babel/core": "~7.9.0",
     "@ckeditor/jsdoc-plugins": "^25.4.4",
-    "@types/react": "~16.9.35",
+    "@types/react": "^16.9.56",
     "@types/react-native": "~0.63.2",
     "better-docs": "^2.3.2",
     "jest-expo": "^42.0.0",

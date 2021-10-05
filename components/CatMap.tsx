@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
-import MapView, { Marker, Region } from 'react-native-maps';
-import { View } from './Themed';
-import firebase from '../utils/firebase';
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Button } from "react-native";
+import MapView, { Marker, Region } from "react-native-maps";
+import { View } from "./Themed";
+import firebase from "../utils/firebase";
 
 
 export default function CatMap() {
@@ -65,14 +65,14 @@ export default function CatMap() {
 
   const [markers, setMarkers] = useState<Markers[]>([
     { id: 0, latitude: 53.91326738786109, longitude: 27.523712915343737 },
-  ])
+  ]);
 
   const region: Region = {
     latitude: 39.9812,
     longitude: -75.1497,
     latitudeDelta: 0.015,
     longitudeDelta: 0.0121,
-  }
+  };
 
   //Avoids uneccasary rerenders of code
 
@@ -83,27 +83,23 @@ export default function CatMap() {
     //Passes cat pins to retrieve longitude and lattiude and pushes to MarkersArray
 
     for (let i = 0; i < cat_names.length; i++) {
-
       markersArray.push({
         id: i,
         latitude: getLatitude(cat_names[i]),
         longitude: getLongitude(cat_names[i]),
-      })
+      });
     }
-   
-    setMarkers(markersArray)
-  }, [])
+
+    setMarkers(markersArray);
+  }, []);
 
   useEffect(() => {
-    generateMarkers(region.latitude, region.longitude)
-  }, [])
-
+    generateMarkers(region.latitude, region.longitude);
+  }, []);
 
   return (
-
     <View style={styles.container}>
       <MapView
-
         style={styles.map}
         region={{
           latitude: 39.9812,
@@ -111,7 +107,6 @@ export default function CatMap() {
           latitudeDelta: 0.015,
           longitudeDelta: 0.0121,
         }}
-
       >
         {markers.map((item) => (
           <Marker
@@ -119,10 +114,12 @@ export default function CatMap() {
             coordinate={{
               latitude: item.latitude,
               longitude: item.longitude,
-            }}></Marker>
+            }}
+          ></Marker>
         ))}
         
       </MapView>
+
     </View>
   );
 }
@@ -131,10 +128,10 @@ export default function CatMap() {
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
-    height: '100%',
-    width: '100%',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
+    height: "100%",
+    width: "100%",
+    justifyContent: "flex-end",
+    alignItems: "center",
   },
   map: {
     ...StyleSheet.absoluteFillObject,
