@@ -2,6 +2,7 @@ import "@firebase/database";
 import "@firebase/auth";
 import firebase from "firebase";
 
+
 const firebaseConfig = {
   apiKey: "AIzaSyDhKqRV1ALg80TdK0GsSFEq0BR6BK8UiPs",
   authDomain: "temple-cats.firebaseapp.com",

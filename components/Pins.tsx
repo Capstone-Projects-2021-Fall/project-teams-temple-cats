@@ -5,7 +5,7 @@ import { View } from './Themed';
 import firebase from '../utils/firebase';
 
 
-export default function CatMap() {
+export default function Pins() {
 
   interface Markers {
     id: number
