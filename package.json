@@ -47,10 +47,12 @@
   "devDependencies": {
     "@babel/core": "~7.9.0",
     "@ckeditor/jsdoc-plugins": "^25.4.4",
+    "@testing-library/jest-native": "^4.0.2",
+    "@testing-library/react-native": "^7.2.0",
     "@types/react": "~16.9.35",
     "@types/react-native": "~0.63.2",
     "better-docs": "^2.3.2",
-    "jest-expo": "^42.0.0",
+    "jest-expo": "^42.1.0",
     "jsdoc": "^3.6.7",
     "typescript": "~4.0.0"
   },
