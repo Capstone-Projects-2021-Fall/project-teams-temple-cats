@@ -1,8 +1,8 @@
 import React from "react";
 import { SafeAreaView, StyleSheet, TextInput ,Text, ScrollView, StatusBar, View, Button, Alert} from "react-native";
 
+const CatForm = () => {
 
-const Information = () => {
   const [text1, media] = React.useState("");
   const [text2, uniqueFeatures] = React.useState("");
   const [text3, possibleName] = React.useState("");
@@ -98,7 +98,7 @@ const Information = () => {
       </ScrollView>
     </SafeAreaView>
   );
-};
+};        
 
 const styles = StyleSheet.create({
   input: {
@@ -125,4 +125,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Information;
+export default CatForm;

@@ -4,7 +4,7 @@ import Navigation from "./navigation/index";
 import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
 import { AuthProvider } from "./context/FirebaseAuthProvider";
-import UselessTextInput from "./screens/CatForm";
+import CatInformation from "./screens/CatForm";
 
 
 
@@ -18,32 +18,14 @@ export default function App() {
     return (
       <SafeAreaProvider>
         <AuthProvider>
+        <Navigation colorScheme={colorScheme} />
           
-          <UselessTextInput/>
         </AuthProvider>
       </SafeAreaProvider>
     );
   }
 }
 
-/*
-export default function App() {
-  const isLoadingComplete = useCachedResources();
-  const colorScheme = useColorScheme();
-  if (!isLoadingComplete) {
-    return null;
-  } else {
-    return (
-      <SafeAreaProvider>
-        <AuthProvider>
-          <Navigation colorScheme={colorScheme} />
-          <UselessTextInput/>
-        </AuthProvider>
-      </SafeAreaProvider>
-    );
-  }
-}
-*/
 
 
 
