@@ -31,9 +31,6 @@ export default function CatMap() {
           longitudeDelta: 0.0121,
         }}
       >
-        
-
-
 
         <Marker
           key='testkey'

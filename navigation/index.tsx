@@ -82,15 +82,13 @@ function RootNavigator() {
         <Stack.Screen name="Announcements" component={Announcements} />
       </Stack.Group>
       
-      <Stack.Group screenOptions={{ presentation: "transparentModal" }}>
+      <Stack.Group screenOptions={{ presentation: "modal" }}>
         <Stack.Screen name="CatForm" component={CatForm} />
       </Stack.Group>
     </Stack.Navigator>
     
   );
 }
-
-
 
 
 /**
@@ -126,7 +124,7 @@ function BottomTabNavigator() {
         options={({ navigation }: RootTabScreenProps<"Home">) => ({
           title: "Home",
          
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+         // tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerLeft: () => (
             <Pressable
               onPress={() => navigation.navigate("CatForm")}
@@ -135,14 +133,14 @@ function BottomTabNavigator() {
               })}
             >
               <FontAwesome
-                name="info-circle"
+                name="plus"
                 size={25}
                 color={Colors[colorScheme].text}
                 style={{ marginLeft: 15 }}
               />
             </Pressable>
           ),
-         /* 
+         
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
             <Pressable
@@ -158,7 +156,7 @@ function BottomTabNavigator() {
                 style={{ marginRight: 15 }}
               />
             </Pressable>
-          ),*/
+          ),
         })}
       />
 

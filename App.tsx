@@ -4,9 +4,6 @@ import Navigation from "./navigation/index";
 import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
 import { AuthProvider } from "./context/FirebaseAuthProvider";
-import CatInformation from "./screens/CatForm";
-
-
 
 
 export default function App() {
@@ -19,7 +16,6 @@ export default function App() {
       <SafeAreaProvider>
         <AuthProvider>
         <Navigation colorScheme={colorScheme} />
-          
         </AuthProvider>
       </SafeAreaProvider>
     );
