@@ -1,18 +1,8 @@
 import React from 'react';
 
-import { Alert, Button, Pressable, StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { View } from './Themed';
-import CatForm from '../screens/CatForm'
-import navigation from '../navigation';
-import {
-  NavigationContainer,
-  DefaultTheme,
-  DarkTheme,
-} from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
-
 
 /**
  * Function that renders the Cat Map component, including the map and all it's children (e.g. pins/markers).
@@ -31,7 +21,6 @@ export default function CatMap() {
           longitudeDelta: 0.0121,
         }}
       >
-
         <Marker
           key='testkey'
           coordinate={{
@@ -58,25 +47,3 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
   },
 });
-
-/*
-
-<Pressable
-              onPress={() => navigation.navigate(<CatInformation/>)}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}
-       />
-
-<Button
-        title="Submit"
-        color="#8b0000"
-        onPress={() => 
-          {
-            
-          }
-        }
-      />
-
-
-*/

@@ -124,7 +124,6 @@ function BottomTabNavigator() {
         options={({ navigation }: RootTabScreenProps<"Home">) => ({
           title: "Home",
          
-         // tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerLeft: () => (
             <Pressable
               onPress={() => navigation.navigate("CatForm")}

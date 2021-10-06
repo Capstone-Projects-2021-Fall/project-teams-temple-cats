@@ -1,8 +1,8 @@
 import React from "react";
 import { SafeAreaView, StyleSheet, TextInput ,Text, ScrollView, StatusBar, View, Button, Alert} from "react-native";
 
-const CatForm = () => {
 
+const CatForm = () => {
   const [text1, media] = React.useState("");
   const [text2, uniqueFeatures] = React.useState("");
   const [text3, possibleName] = React.useState("");
@@ -13,7 +13,6 @@ const CatForm = () => {
   const [text8, friendliness] = React.useState("");
   const [text9, additionalComments] = React.useState("");
   const [text10, pinID] = React.useState("");
-  //const [number, onChangeNumber] = React.useState(null);
 
   return (
     <SafeAreaView>
@@ -98,7 +97,7 @@ const CatForm = () => {
       </ScrollView>
     </SafeAreaView>
   );
-};        
+};
 
 const styles = StyleSheet.create({
   input: {
