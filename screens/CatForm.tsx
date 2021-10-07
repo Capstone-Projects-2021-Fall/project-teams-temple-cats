@@ -11,9 +11,10 @@ const CatForm = () => {
   const [text5, color] = React.useState("");
   const [text6, ageEstimate] = React.useState("");
   const [text7, condition] = React.useState("");
-  const [text8, friendliness] = React.useState("");
-  const [text9, additionalComments] = React.useState("");
-  const [text10, pinID] = React.useState("");
+  const [text8, eyeColor] = React.useState("");
+  const [text9, friendliness] = React.useState("");
+  const [text10, additionalComments] = React.useState("");
+  const [text11, pinID] = React.useState("");
 
   return (
     <SafeAreaView>
@@ -62,23 +63,29 @@ const CatForm = () => {
         onChangeText={condition}
         value={text7}
       />
+       <Text style={{ fontSize: 20, fontWeight:"bold" }}>    Eye Color</Text>
+      <TextInput
+        style={styles.input}
+        onChangeText={eyeColor}
+        value={text8}
+      />
       <Text style={{ fontSize: 20, fontWeight:"bold" }}>    Friendliness</Text>
       <TextInput
         style={styles.input}
         onChangeText={friendliness}
-        value={text8}
+        value={text9}
       />
       <Text style={{ fontSize: 20, fontWeight:"bold" }}>    Additional Comments</Text>
       <TextInput
         style={styles.input}
         onChangeText={additionalComments}
-        value={text9}
+        value={text10}
       />
       <Text style={{ fontSize: 20, fontWeight:"bold" }}>    Pin ID</Text>
       <TextInput
         style={styles.input}
         onChangeText={pinID}
-        value={text10}
+        value={text11}
       />
 
        <Button
@@ -87,11 +94,11 @@ const CatForm = () => {
         onPress={() => 
         {
             if (!text1.trim() ||  !text2.trim() || !text3.trim() || !text4.trim() || !text5.trim() || !text6.trim()
-            || !text7.trim() || !text8.trim() || !text9.trim() || !text10.trim()) {
+            || !text7.trim() || !text8.trim() || !text9.trim() || !text10.trim() || !text11.trim()) {
             alert('Please fill out all fields');
             return;
             }
-            firebase.database().ref('Post/'+ text10).set({
+            firebase.database().ref('Cats/'+ "110192021-2").set({
               media: text1,
               uniqueFeatures: text2,
               possibleName: text3,
@@ -99,8 +106,10 @@ const CatForm = () => {
               color: text5,
               ageEstimate: text6,
               condition: text7,
-              friendliness: text8,
-              additionalComments: text9
+              eyeColor: text8,
+              friendliness: text9,
+              additionalComments: text10,
+              pinID: text11
             });
             console.log(text1,
               text2,
@@ -110,7 +119,9 @@ const CatForm = () => {
               text6,
               text7,
               text8,
-              text9)
+              text9,
+              text10,
+              text11)
             alert('Submitted Successfully')
             return;
           }
