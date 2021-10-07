@@ -1,10 +1,12 @@
 import firebase from "./firebase";
 import { AuthContext } from "../context/FirebaseAuthContext";
+//import { PostContext } from "../context/FirebasePostContext";
 import React from "react";
 
 const user = React.useContext(AuthContext);
+//const post = React.useContext(PostContext);
 //const accountsRef = firebase.database().ref("Accounts/");
-//const posts = firebase.database().ref("Posts/")
+//const post = firebase.database().ref("Posts/")
 
 export const useAddUser = async () => {
   firebase
@@ -17,13 +19,15 @@ export const useAddUser = async () => {
   console.log("User added");
 };
 
+
+/*
 export const useAddPost = async () => {
   firebase
   .database()
-  .ref("Posts/" + user?.uid)
+  .ref("Posts/" + post?.uid)
   .set({
-    Post: user?.uid,
+    Post: post?.uid,
   });
   console.log("Post added");
-};
+};*/
 

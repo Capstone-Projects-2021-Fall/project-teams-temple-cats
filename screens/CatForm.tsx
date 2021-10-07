@@ -1,3 +1,4 @@
+import firebase from "firebase";
 import React from "react";
 import { SafeAreaView, StyleSheet, TextInput ,Text, ScrollView, StatusBar, View, Button, Alert} from "react-native";
 
@@ -84,20 +85,45 @@ const CatForm = () => {
         title="Submit"
         color="#8b0000"
         onPress={() => 
-          {
+        {
             if (!text1.trim() ||  !text2.trim() || !text3.trim() || !text4.trim() || !text5.trim() || !text6.trim()
             || !text7.trim() || !text8.trim() || !text9.trim() || !text10.trim()) {
             alert('Please fill out all fields');
             return;
+            }
+            firebase.database().ref('Post/'+ text10).set({
+              media: text1,
+              uniqueFeatures: text2,
+              possibleName: text3,
+              behavior: text4,
+              color: text5,
+              ageEstimate: text6,
+              condition: text7,
+              friendliness: text8,
+              additionalComments: text9
+            });
+            console.log(text1,
+              text2,
+              text3,
+              text4,
+              text5,
+              text6,
+              text7,
+              text8,
+              text9)
+            alert('Submitted Successfully')
+            return;
           }
-          Alert.alert('Submitted Successfully')}}
-      />
+        }
+        />
 
       
       </ScrollView>
     </SafeAreaView>
   );
 };
+
+
 
 const styles = StyleSheet.create({
   input: {
@@ -125,3 +151,4 @@ const styles = StyleSheet.create({
 });
 
 export default CatForm;
+

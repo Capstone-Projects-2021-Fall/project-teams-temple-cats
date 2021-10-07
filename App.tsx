@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import Navigation from "./navigation/index";
 import useCachedResources from "./hooks/useCachedResources";
