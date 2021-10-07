@@ -4,6 +4,7 @@ import Navigation from "./navigation/index";
 import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
 import { AuthProvider } from "./context/FirebaseAuthProvider";
+import CatMap from "./components/CatMap";
 
 
 export default function App() {
