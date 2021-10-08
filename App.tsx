@@ -1,24 +1,28 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import React from "react";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import Navigation from "./navigation/index";
+import useCachedResources from "./hooks/useCachedResources";
+import useColorScheme from "./hooks/useColorScheme";
+import { AuthProvider } from "./context/FirebaseAuthProvider";
+import CatMap from "./components/CatMap";
 
-import useCachedResources from './hooks/useCachedResources';
-import useColorScheme from './hooks/useColorScheme';
-import Navigation from './navigation';
-import Login from './screens/Login';
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
-
   if (!isLoadingComplete) {
     return null;
   } else {
     return (
       <SafeAreaProvider>
-        <Login/>
-        <StatusBar />
+        <AuthProvider>
+        <Navigation colorScheme={colorScheme} />
+        </AuthProvider>
       </SafeAreaProvider>
     );
   }
 }
+
+
+
+
