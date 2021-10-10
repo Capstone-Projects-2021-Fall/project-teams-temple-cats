@@ -22,12 +22,14 @@ import Home from "../screens/Home";
 import Account from "../screens/Account";
 import Resources from "../screens/Resources";
 import Login from "../screens/Login";
+import CatForm from "../screens/CatForm"
 import {
   RootStackParamList,
   RootTabParamList,
   RootTabScreenProps,
 } from "../types";
 import { AuthContext } from "../context/FirebaseAuthContext";
+
 
 /**
  * Function that renders the navigation bar component.
@@ -36,6 +38,10 @@ import { AuthContext } from "../context/FirebaseAuthContext";
  * @param {ColorSchemeName} props.colorScheme ColorSchemeName to decide the color scheme of the component
  * @returns {JSX.Element} JSX element of the navigation component
  */
+
+
+
+
 export default function Navigation({
   colorScheme,
 }: {
@@ -75,9 +81,15 @@ function RootNavigator() {
       <Stack.Group screenOptions={{ presentation: "transparentModal" }}>
         <Stack.Screen name="Announcements" component={Announcements} />
       </Stack.Group>
+      
+      <Stack.Group screenOptions={{ presentation: "modal" }}>
+        <Stack.Screen name="CatForm" component={CatForm} />
+      </Stack.Group>
     </Stack.Navigator>
+    
   );
 }
+
 
 /**
  * A bottom tab navigator using for displaying tab buttons on the bottom of the display to switch screens.
@@ -111,6 +123,23 @@ function BottomTabNavigator() {
         component={Home}
         options={({ navigation }: RootTabScreenProps<"Home">) => ({
           title: "Home",
+         
+          headerLeft: () => (
+            <Pressable
+              onPress={() => navigation.navigate("CatForm")}
+              style={({ pressed }) => ({
+                opacity: pressed ? 0.5 : 1,
+              })}
+            >
+              <FontAwesome
+                name="plus"
+                size={25}
+                color={Colors[colorScheme].text}
+                style={{ marginLeft: 15 }}
+              />
+            </Pressable>
+          ),
+         
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
             <Pressable
@@ -129,6 +158,7 @@ function BottomTabNavigator() {
           ),
         })}
       />
+
       <BottomTab.Screen
         name="Resources"
         component={Resources}

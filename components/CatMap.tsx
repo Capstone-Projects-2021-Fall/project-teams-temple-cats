@@ -1,6 +1,9 @@
 import React, { useEffect } from "react";
 import { StyleSheet, Text } from "react-native";
 import MapView, { Marker, Callout } from "react-native-maps";
+
+import { StyleSheet } from "react-native";
+import MapView, { Marker } from "react-native-maps";
 import { View } from "./Themed";
 import firebase from "../utils/firebase";
 
@@ -67,6 +70,22 @@ export default function CatMap() {
 
     });
 
+
+  React.useEffect(() => {
+    var reference = firebase.database().ref("Pins/");
+    let pin;
+    reference.on("value", (snapshot) => {
+      let items = snapshot.val();
+      let newState = [];
+      for (let item in items) {
+        newState.push({
+          id: item,
+          lat: items[item].Location.lat,
+          lng: items[item].Location.lng,
+        });
+      }
+      setMarkers(newState);
+    });
   }, []);
 
   return (
