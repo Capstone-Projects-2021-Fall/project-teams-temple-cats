@@ -1,103 +1,76 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, Button } from "react-native";
-import MapView, { Marker, Region } from "react-native-maps";
+import React, { useEffect } from "react";
+import { StyleSheet, Text } from "react-native";
+import MapView, { Marker, Callout } from "react-native-maps";
 import { View } from "./Themed";
 import firebase from "../utils/firebase";
 
-
+/**
+ * Function that renders the Cat Map component, including the map and all it's children (e.g. pins/markers).
+ * @component
+ * @returns {JSX.Element} JSX element of the map
+ */
 export default function CatMap() {
+  const [markers, setMarkers] = React.useState<any>([]);
+  let markersArray = [];
+  let newState = [];
+  let result = [];
+  var result_counter = 0
 
-  interface Markers {
-    id: number
-    latitude: number
-    longitude: number
-  }
-  
-  //Stores cat pins into array
-  
-   var catObject = {};
-  
-    firebase.database().ref('Pins').on('value', (snap) => {
-      catObject = snap.exportVal();
+  React.useEffect(() => {
+
+    var reference = firebase.database().ref("Pins/");
+    let pin;
+    reference.on("value", (snapshot) => {
+
+      let items = snapshot.val();
+      console.log(items)
+
+      firebase.database().ref("Cats/").on("value", (snap) => {
+
+        //Stores cat objects results into array
+
+          let catObject = snap.val();
+          for (var i in catObject) {
+            result.push(i, catObject[i])
+          }
+
+          //If results length is odd, make it even
+
+          var resultLength = result.length
+          if(resultLength % 2 == 0){
+            resultLength += 1;
+          }
+
+          //Remove Account ID from array
+
+          for( var l = 0; l <= resultLength; l++){
+            result.splice(l,1)
+          }
+
+          //Store each array element as an item property
+
+          for (let item in items) {
+           var descrip = JSON.stringify(result[result_counter])
+           var description = descrip.split(",").join("\n")
+           items[item].description = description
+            newState.push({
+              id: item,
+              lat: items[item].Location.lat,
+              lng: items[item].Location.lng,
+              description: items[item].description,
+            });
+
+            result_counter++;
+          }
+          setMarkers(newState);
+      })
+
     });
-  
-    const cat_names = Object.keys(catObject);
-  
-  function getLatitude(x: String) {
-  
-    var catLatitude = 0; //initializes cat lattidue
-  
-    //Builds queryString
-  
-    let queryString = 'Pins/';
-    queryString += x;
-    queryString += '/Location/lat';
-  
-    console.log(queryString);
-  
-    firebase.database().ref(queryString).on('value', (snap) => {
-      catLatitude = snap.exportVal();
-    });
-  
-    console.log(catLatitude);
-    return catLatitude;
-    
-  }
 
-  function getLongitude(x: string) {
-    var catLongitude = 0;
-  
-    let queryString = 'Pins/';
-    queryString += x;
-    queryString += '/Location/lng';
-  
-    console.log(queryString);
-  
-    firebase.database().ref(queryString).on('value', (snap) => {
-      catLongitude = snap.exportVal();
-    });
-  
-    console.log(catLongitude);
-    return catLongitude;
-  
-  }
-
-
-  const [markers, setMarkers] = useState<Markers[]>([
-    { id: 0, latitude: 53.91326738786109, longitude: 27.523712915343737 },
-  ]);
-
-  const region: Region = {
-    latitude: 39.9812,
-    longitude: -75.1497,
-    latitudeDelta: 0.015,
-    longitudeDelta: 0.0121,
-  };
-
-  //Avoids uneccasary rerenders of code
-
-  var generateMarkers = React.useCallback((latitude: number, longitude: number) => {
-
-    const markersArray = []
-
-    //Passes cat pins to retrieve longitude and lattiude and pushes to MarkersArray
-
-    for (let i = 0; i < cat_names.length; i++) {
-      markersArray.push({
-        id: i,
-        latitude: getLatitude(cat_names[i]),
-        longitude: getLongitude(cat_names[i]),
-      });
-    }
-
-    setMarkers(markersArray);
-  }, []);
-
-  useEffect(() => {
-    generateMarkers(region.latitude, region.longitude);
   }, []);
 
   return (
+
     <View style={styles.container}>
       <MapView
         style={styles.map}
@@ -107,23 +80,26 @@ export default function CatMap() {
           latitudeDelta: 0.015,
           longitudeDelta: 0.0121,
         }}
+        provider={"google"}
       >
-        {markers.map((item) => (
+        {markers?.map((item, index) => (
           <Marker
-            key={item.id}
+            key={index}
+            title={item.id}
             coordinate={{
-              latitude: item.latitude,
-              longitude: item.longitude,
+              latitude: item.lat,
+              longitude: item.lng,
             }}
-          ></Marker>
+          >
+            <Callout>
+              <Text>{item.description}</Text>
+            </Callout>
+          </Marker>
         ))}
-        
       </MapView>
-
     </View>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {
