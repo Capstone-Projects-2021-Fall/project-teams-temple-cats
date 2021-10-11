@@ -1,11 +1,10 @@
 import React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import Navigation from "./navigation/index";
 import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
 import { AuthProvider } from "./context/FirebaseAuthProvider";
+import Navigation from "./navigation/index";
 import CatMap from "./components/CatMap";
-
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -16,13 +15,9 @@ export default function App() {
     return (
       <SafeAreaProvider>
         <AuthProvider>
-        <Navigation colorScheme={colorScheme} />
+          <Navigation colorScheme={colorScheme} />
         </AuthProvider>
       </SafeAreaProvider>
     );
   }
 }
-
-
-
-
