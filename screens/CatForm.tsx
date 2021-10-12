@@ -1,65 +1,82 @@
 import firebase from "firebase";
 import React from "react";
 import SelectDropdown from 'react-native-select-dropdown'
-import { SafeAreaView, StyleSheet, TextInput ,Text, ScrollView, StatusBar, Button} from "react-native";
-
+import { SafeAreaView, StyleSheet, TextInput ,Text, ScrollView, StatusBar, Button, View} from "react-native";
 
 const CatForm = () => {
 
-  const [text1, media] = React.useState("");
-  const [text2, uniqueFeatures] = React.useState("");
-  const [text3, possibleName] = React.useState("");
-  const [text4, behavior] = React.useState("");
-  const [text6, ageEstimate] = React.useState("");
-  const [text10, additionalComments] = React.useState("");
-  const [text11, pinID] = React.useState("");
+  const [content, media] = React.useState("");
+  const [catLocation, location] = React.useState("");
+  const [features, uniqueFeatures] = React.useState("");
+  const [name, possibleName] = React.useState("");
+  const [catBehavior, behavior] = React.useState("");
+  const [age, ageEstimate] = React.useState("");
+  const [comments, additionalComments] = React.useState("");
+  const [id, catID] = React.useState("");
   const colors = ["Orange", "Brown", "Black", "White"];
   const scale = ["1", "2", "3", "4", "5"];
   const types = ["Stray", "Feral"];
   const conditions = ["Healthy", "Needs medical attention"];
   const eyeColors = ["Brown","Green","Blue","Black","Yellow","Orange","Hazel","Mixed"];
-  let colorSelection = "";
-  let eyeColorSelection = "";
-  let conditionSelected = "";
-  let friendlinessSelected = "";
-  let typeSelected = "";
+  
+  let colorSelection= 0;
+  let eyeColorSelection = 0;
+  let conditionSelected = 0;
+  let friendlinessSelected = 0;
+  let typeSelected = 0;
   
   
   return (
+    
     <SafeAreaView>
         <ScrollView>
-
-          <Text style={styles.text}>Cat Form</Text>
+        <Text style={styles.text}>Cat Form</Text>
+        <View style={{ flexDirection: 'row' }}>
+        <Text style={{ fontSize: 20, color: "red", fontWeight: "normal"}}> *</Text>
+        <Text style={{ fontSize: 15, fontStyle: "italic"}}> fields are required</Text>
+        </View>
+        
+        <View style={{ flexDirection: 'row' }}>
           <Text style={{ fontSize: 20, fontWeight: "bold" }}>    Media</Text>
-
+          <Text style={{ fontSize: 20, color: "red", fontWeight: "normal"}}> *</Text>
+        </View>
           <TextInput
             style={styles.input}
             onChangeText={media}
-            value={text1} />
+            value={content} />
+          
+          <View style={{ flexDirection: 'row' }}>
+          <Text style={{ fontSize: 20, fontWeight: "bold" }}>    Location</Text>
+          <Text style={{ fontSize: 20, color: "red", fontWeight: "normal"}}> *</Text>
+        </View>
+          <TextInput
+            style={styles.input}
+            onChangeText={location}
+            value={catLocation} />
+
           <Text style={{ fontSize: 20, fontWeight: "bold" }}>    Unique Features</Text>
           <TextInput
             style={styles.input}
             onChangeText={uniqueFeatures}
-            value={text2} />
+            value={features} />
           <Text style={{ fontSize: 20, fontWeight: "bold" }}>    Possible Name</Text>
           <TextInput
             style={styles.input}
             onChangeText={possibleName}
-            value={text3} />
+            value={name} />
           <Text style={{ fontSize: 20, fontWeight: "bold" }}>    Behavior</Text>
           <TextInput
             style={styles.input}
             onChangeText={behavior}
-            value={text4} />
-          <Text style={{ fontSize: 20, fontWeight: "bold" }}>    Color</Text>
-          <Text style={{ fontSize: 20, fontWeight: "bold" }}>    Color</Text>
+            value={catBehavior} />
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={{ fontSize: 20, fontWeight: "bold" }}>    Color</Text>
+            <Text style={{ fontSize: 20, color: "red", fontWeight: "normal"}}> *</Text>
+          </View>
             <SelectDropdown
               data={colors}
-              onSelect={(selectedItem: string, index: any) => {
-                console.log(selectedItem, index);
-                colorSelection = selectedItem
-                console.log(colorSelection)
-               
+              onSelect={(selectedItem: any, index: any) =>{
+               colorSelection = index;
               } }
               buttonTextAfterSelection={(selectedItem: any, index: any) => {
                 return selectedItem;
@@ -68,20 +85,21 @@ const CatForm = () => {
         
                 return item;
               } } 
+              
             />
 
           <Text style={{ fontSize: 20, fontWeight: "bold" }}>    Age Estimate</Text>
           <TextInput
             style={styles.input}
             onChangeText={ageEstimate}
-            value={text6} />
+            value={age} />
 
           <Text style={{ fontSize: 20, fontWeight: "bold" }}>    Type</Text>
           <SelectDropdown
               data={types}
               onSelect={(selectedItem: string, index: any) => {
                 console.log(selectedItem, index);
-                typeSelected = selectedItem
+                typeSelected = index;
                 console.log(typeSelected)
               } }
               buttonTextAfterSelection={(selectedItem: any, index: any) => {
@@ -92,13 +110,15 @@ const CatForm = () => {
                 return item;
               } } 
             />        
+          <View style={{ flexDirection: 'row' }}>
           <Text style={{ fontSize: 20, fontWeight: "bold" }}>    Condition</Text>
-
+          <Text style={{ fontSize: 20, color: "red", fontWeight: "normal"}}> *</Text>
+          </View>
           <SelectDropdown
               data={conditions}
               onSelect={(selectedItem: string, index: any) => {
                 console.log(selectedItem, index);
-                conditionSelected = selectedItem
+                conditionSelected = index;
                 console.log(conditionSelected)
               } }
               buttonTextAfterSelection={(selectedItem: any, index: any) => {
@@ -115,7 +135,7 @@ const CatForm = () => {
               data={eyeColors}
               onSelect={(selectedItem: string, index: any) => {
                 console.log(selectedItem, index);
-                eyeColorSelection = selectedItem
+                eyeColorSelection = index;
                 console.log(eyeColorSelection)
                
               } }
@@ -129,12 +149,12 @@ const CatForm = () => {
             />
          
           <Text style={{ fontSize: 20, fontWeight: "bold" }}>    Friendliness</Text>
-         
           <SelectDropdown
+          
               data={scale}
               onSelect={(selectedItem: string, index: any) => {
                 console.log(selectedItem, index);
-                friendlinessSelected = selectedItem
+                friendlinessSelected = index;
                 console.log(friendlinessSelected)
                
               } }
@@ -150,51 +170,56 @@ const CatForm = () => {
           <TextInput
             style={styles.input}
             onChangeText={additionalComments}
-            value={text10} />
-          <Text style={{ fontSize: 20, fontWeight: "bold" }}>    Pin ID</Text>
+            value={comments} />
+          <View style={{ flexDirection: 'row' }}>
+          <Text style={{ fontSize: 20, fontWeight: "bold" }}>    Cat ID</Text>
+          <Text style={{ fontSize: 20, color: "red", fontWeight: "normal"}}> *</Text>
+          </View>
           <TextInput
             style={styles.input}
-            onChangeText={pinID}
-            value={text11} />
+            onChangeText={catID}
+            value={id} />
 
           <Button
             title="Submit"
             color="#8b0000"
             onPress={() => {
-              if (!text1.trim() || !text2.trim() || !text3.trim() || !text4.trim()  || !text6.trim()
+             /* if (!text1.trim() || !text2.trim() || !text3.trim() || !text4.trim()  || !text6.trim()
                 || !text10.trim() || !text11.trim()) {
-                alert('Please fill out all fields');
+                alert('Please fill out all required fields');
                 return;
-              }
-              firebase.database().ref('Cats/' + "110192021-2").set({
-                media: text1,
-                uniqueFeatures: text2,
-                strayOrFeral: typeSelected,
-                possibleName: text3,
-                behavior: text4,
-                color: colorSelection,
-                ageEstimate: text6,
-                condition: conditionSelected,
-                eyeColor: eyeColorSelection,
-                friendliness: friendlinessSelected,
-                additionalComments: text10,
-                pinID: text11
+              }*/
+              //colorSelected = colorSelection;
+              firebase.database().ref('Cats/' + "110192021-333").set({
+                
+               
+                media: content,
+                location: catLocation,
+                uniqueFeatures: features,
+            
+                possibleName: name,
+                behavior: catBehavior,
+               
+                ageEstimate: age,
+                strayOrFeral: types[typeSelected],
+                color: colors[colorSelection],
+                condition: conditions[conditionSelected],
+                eyeColor: eyeColors[eyeColorSelection],
+                friendliness: scale[friendlinessSelected],
+                additionalComments: comments,
+                catID: id
+              
               });
-              console.log(text1,
-                text2,
-                typeSelected,
-                text3,
-                text4,
-                colorSelection,
-                text6,
-                conditionSelected,
-                eyeColorSelection,
-                friendlinessSelected,
-                text10,
-                text11);
+              console.log(
+                SelectDropdown
+              );
+              
+             
               alert('Submitted Successfully');
               return;
-            } } 
+            } 
+          } 
+            
             />
         </ScrollView>
       </SafeAreaView>
