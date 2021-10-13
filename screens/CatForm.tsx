@@ -13,13 +13,12 @@ const CatForm = () => {
   const [age, ageEstimate] = React.useState("");
   const [comments, additionalComments] = React.useState("");
   const [id, catID] = React.useState("");
-  const colors = ["Orange", "Brown", "Black", "White"];
-  const scale = ["1", "2", "3", "4", "5"];
-  const types = ["Stray", "Feral"];
-  const conditions = ["Healthy", "Needs medical attention"];
-  const eyeColors = ["Brown","Green","Blue","Black","Yellow","Orange","Hazel","Mixed"];
-  const times = [" months", " years"];
-  
+  const colors = ["", "Orange", "Brown", "Black", "White"];
+  const scale = ["", "1", "2", "3", "4", "5"];
+  const types = ["", "Stray", "Feral"];
+  const conditions = ["", "Healthy", "Needs medical attention"];
+  const eyeColors = ["", "Brown","Green","Blue","Black","Yellow","Orange","Hazel","Mixed"];
+  const times = ["", " months", " years"];
   let colorSelection = 0;
   let eyeColorSelection = 0;
   let conditionSelected = 0;
@@ -28,19 +27,6 @@ const CatForm = () => {
   let timeSelected= 0;
   
   const [currentDate, setCurrentDate] = useState('');
-
-
-
-  const MultiLineTextInput = (props: JSX.IntrinsicAttributes & JSX.IntrinsicClassAttributes<TextInput> & Readonly<TextInputProps> & Readonly<{ children?: React.ReactNode; }>) => {
-    return (
-      <TextInput
-        {...props} // Inherit any props passed to it; e.g., multiline, numberOfLines below
-        editable
-        maxLength={40}
-      />
-    );
-  }
-
 
   useEffect(() => {
     var date = new Date().getDate(); //Current Date
@@ -98,7 +84,7 @@ const CatForm = () => {
             <SelectDropdown
               data={colors}
               onSelect={(selectedItem: any, index: any) =>{
-               colorSelection += index;
+               colorSelection += selectedItem;
               } }
               buttonTextAfterSelection={(selectedItem: any, index: any) => {
                 return selectedItem;
@@ -156,6 +142,7 @@ const CatForm = () => {
             style={styles.input}
             onChangeText={ageEstimate}
             value={age} 
+            
             />
           <SelectDropdown
               data={times}
@@ -227,23 +214,14 @@ const CatForm = () => {
             />
          
           <Text style={{ fontSize: 20, fontWeight: "bold" }}>    Additional Comments</Text>
-          
-          
-          <View
-            style={{
-            backgroundColor: "white",
-            borderBottomColor: '#000000',
-            borderBottomWidth: 1,
-          }}>
-          <MultiLineTextInput
-            multiline
-            numberOfLines={4}
+          <TextInput
+            style={styles.multiLine}
             onChangeText={additionalComments}
-            value={comments}
-            style={{padding: 10}}
-          />
-          </View>
-
+            value={comments} 
+            
+            />
+          
+        
           <Button
             title="Submit"
             color="#8b0000"
@@ -263,7 +241,7 @@ const CatForm = () => {
                 possibleName: name,
                 behavior: catBehavior,
                
-                ageEstimate: age + times[timeSelected],
+                ageEstimate: age + timeSelected,
                 strayOrFeral: types[typeSelected],
                 color: colors[colorSelection],
                 condition: conditions[conditionSelected],
@@ -291,6 +269,13 @@ const CatForm = () => {
 const styles = StyleSheet.create({
   input: {
     height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+  },
+  multiLine:
+  {
+    height: 60,
     margin: 12,
     borderWidth: 1,
     padding: 10,
