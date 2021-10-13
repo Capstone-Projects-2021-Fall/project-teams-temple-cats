@@ -2,6 +2,7 @@ import firebase from "firebase";
 import React, { useEffect, useState } from "react";
 import SelectDropdown from 'react-native-select-dropdown'
 import { SafeAreaView, StyleSheet, TextInput ,Text, ScrollView, StatusBar, Button, View, TextInputProps} from "react-native";
+import { color } from "react-native-reanimated";
 
 const CatForm = () => {
 
@@ -19,12 +20,14 @@ const CatForm = () => {
   const conditions = ["", "Healthy", "Needs medical attention"];
   const eyeColors = ["", "Brown","Green","Blue","Black","Yellow","Orange","Hazel","Mixed"];
   const times = ["", " months", " years"];
-  let colorSelection = 0;
-  let eyeColorSelection = 0;
-  let conditionSelected = 0;
-  let friendlinessSelected = 0;
-  let typeSelected= 0;
-  let timeSelected= 0;
+
+  const [colorSelected, colorSelection] = useState("");
+  const [eyeColorSelected, eyeColorSelection] = useState("");
+  const [conditionSelected, conditionSelection] = useState("");
+  const [typeSelected, typeSelection] = useState("");
+  const [friendlinessSelected, friendlinessSelection] = useState("");
+  const [timeSelected, timeSelection] = useState("");
+
   
   const [currentDate, setCurrentDate] = useState('');
 
@@ -84,7 +87,7 @@ const CatForm = () => {
             <SelectDropdown
               data={colors}
               onSelect={(selectedItem: any, index: any) =>{
-               colorSelection += selectedItem;
+               colorSelection(selectedItem);
               } }
               buttonTextAfterSelection={(selectedItem: any, index: any) => {
                 return selectedItem;
@@ -105,7 +108,7 @@ const CatForm = () => {
               data={conditions}
               onSelect={(selectedItem: string, index: any) => {
                 console.log(selectedItem, index);
-                conditionSelected += index;
+                conditionSelection(selectedItem);
                 console.log(conditionSelected)
               } }
               buttonTextAfterSelection={(selectedItem: any, index: any) => {
@@ -148,7 +151,7 @@ const CatForm = () => {
               data={times}
               onSelect={(selectedItem: string, index: any) => {
                 console.log(selectedItem, index);
-                timeSelected += index;
+                timeSelection(selectedItem)
               
               } }
               buttonTextAfterSelection={(selectedItem: any, index: any) => {
@@ -165,7 +168,7 @@ const CatForm = () => {
               data={types}
               onSelect={(selectedItem: string, index: any) => {
                 console.log(selectedItem, index);
-                typeSelected += index;
+                typeSelection(selectedItem);
                 console.log(typeSelected)
               } }
               buttonTextAfterSelection={(selectedItem: any, index: any) => {
@@ -182,7 +185,7 @@ const CatForm = () => {
               data={eyeColors}
               onSelect={(selectedItem: string, index: any) => {
                 console.log(selectedItem, index);
-                eyeColorSelection = index;
+                eyeColorSelection(selectedItem);
                 console.log(eyeColorSelection)
                
               } }
@@ -201,7 +204,7 @@ const CatForm = () => {
               data={scale}
               onSelect={(selectedItem: string, index: any) => {
                 console.log(selectedItem, index);
-                friendlinessSelected = index;
+                friendlinessSelection(selectedItem);
                 console.log(friendlinessSelected)
                
               } }
@@ -226,7 +229,7 @@ const CatForm = () => {
             title="Submit"
             color="#8b0000"
             onPress={() => {
-              if (!id.trim() || !content.trim() || !catLocation.trim() || colorSelection != 0  || conditionSelected != 0) {
+              if (!id.trim() || !content.trim() || !catLocation.trim() || !colorSelected.trim()  || !conditionSelected.trim()) {
                 alert('Please fill out all required fields');
                 return;
               }
@@ -242,11 +245,11 @@ const CatForm = () => {
                 behavior: catBehavior,
                
                 ageEstimate: age + timeSelected,
-                strayOrFeral: types[typeSelected],
-                color: colors[colorSelection],
-                condition: conditions[conditionSelected],
-                eyeColor: eyeColors[eyeColorSelection],
-                friendliness: scale[friendlinessSelected],
+                strayOrFeral: typeSelected,
+                color: colorSelected,
+                condition: conditionSelected,
+                eyeColor: eyeColorSelected,
+                friendliness: friendlinessSelected,
                 additionalComments: comments,
                 catID: id
               
