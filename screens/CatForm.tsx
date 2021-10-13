@@ -1,7 +1,7 @@
 import firebase from "firebase";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SelectDropdown from 'react-native-select-dropdown'
-import { SafeAreaView, StyleSheet, TextInput ,Text, ScrollView, StatusBar, Button, View} from "react-native";
+import { SafeAreaView, StyleSheet, TextInput ,Text, ScrollView, StatusBar, Button, View, TextInputProps} from "react-native";
 
 const CatForm = () => {
 
@@ -18,13 +18,41 @@ const CatForm = () => {
   const types = ["Stray", "Feral"];
   const conditions = ["Healthy", "Needs medical attention"];
   const eyeColors = ["Brown","Green","Blue","Black","Yellow","Orange","Hazel","Mixed"];
+  const times = [" months", " years"];
   
-  let colorSelection= 0;
+  let colorSelection = 0;
   let eyeColorSelection = 0;
   let conditionSelected = 0;
   let friendlinessSelected = 0;
-  let typeSelected = 0;
+  let typeSelected= 0;
+  let timeSelected= 0;
   
+  const [currentDate, setCurrentDate] = useState('');
+
+
+
+  const MultiLineTextInput = (props: JSX.IntrinsicAttributes & JSX.IntrinsicClassAttributes<TextInput> & Readonly<TextInputProps> & Readonly<{ children?: React.ReactNode; }>) => {
+    return (
+      <TextInput
+        {...props} // Inherit any props passed to it; e.g., multiline, numberOfLines below
+        editable
+        maxLength={40}
+      />
+    );
+  }
+
+
+  useEffect(() => {
+    var date = new Date().getDate(); //Current Date
+    var month = new Date().getMonth() + 1; //Current Month
+    var year = new Date().getFullYear(); //Current Year
+    var hours = new Date().getHours(); //Current Hours
+    var min = new Date().getMinutes(); //Current Minutes
+    var sec = new Date().getSeconds(); //Current Seconds
+    setCurrentDate(
+      year + '/' + month + '/' + date + '/' + hours + ':' + min + ':' + sec
+    );
+  }, []);
   
   return (
     
@@ -36,6 +64,15 @@ const CatForm = () => {
         <Text style={{ fontSize: 15, fontStyle: "italic"}}> fields are required</Text>
         </View>
         
+        <View style={{ flexDirection: 'row' }}>
+          <Text style={{ fontSize: 20, fontWeight: "bold" }}>    Cat ID</Text>
+          <Text style={{ fontSize: 20, color: "red", fontWeight: "normal"}}> *</Text>
+          </View>
+          <TextInput
+            style={styles.input}
+            onChangeText={catID}
+            value={id} />
+
         <View style={{ flexDirection: 'row' }}>
           <Text style={{ fontSize: 20, fontWeight: "bold" }}>    Media</Text>
           <Text style={{ fontSize: 20, color: "red", fontWeight: "normal"}}> *</Text>
@@ -54,6 +91,48 @@ const CatForm = () => {
             onChangeText={location}
             value={catLocation} />
 
+        <View style={{ flexDirection: 'row' }}>
+            <Text style={{ fontSize: 20, fontWeight: "bold" }}>    Color</Text>
+            <Text style={{ fontSize: 20, color: "red", fontWeight: "normal"}}> *</Text>
+          </View>
+            <SelectDropdown
+              data={colors}
+              onSelect={(selectedItem: any, index: any) =>{
+               colorSelection += index;
+              } }
+              buttonTextAfterSelection={(selectedItem: any, index: any) => {
+                return selectedItem;
+              } }
+              rowTextForSelection={(item: any, index: any) => {
+        
+                return item;
+              } } 
+              
+            />
+
+
+          <View style={{ flexDirection: 'row' }}>
+          <Text style={{ fontSize: 20, fontWeight: "bold" }}>    Condition</Text>
+          <Text style={{ fontSize: 20, color: "red", fontWeight: "normal"}}> *</Text>
+          </View>
+          <SelectDropdown
+              data={conditions}
+              onSelect={(selectedItem: string, index: any) => {
+                console.log(selectedItem, index);
+                conditionSelected += index;
+                console.log(conditionSelected)
+              } }
+              buttonTextAfterSelection={(selectedItem: any, index: any) => {
+                return selectedItem;
+              } }
+              rowTextForSelection={(item: any, index: any) => {
+        
+                return item;
+              } } 
+            />
+
+
+
           <Text style={{ fontSize: 20, fontWeight: "bold" }}>    Unique Features</Text>
           <TextInput
             style={styles.input}
@@ -69,14 +148,21 @@ const CatForm = () => {
             style={styles.input}
             onChangeText={behavior}
             value={catBehavior} />
+          
+
+          <Text style={{ fontSize: 20, fontWeight: "bold" }}>    Age Estimate</Text>
           <View style={{ flexDirection: 'row' }}>
-            <Text style={{ fontSize: 20, fontWeight: "bold" }}>    Color</Text>
-            <Text style={{ fontSize: 20, color: "red", fontWeight: "normal"}}> *</Text>
-          </View>
-            <SelectDropdown
-              data={colors}
-              onSelect={(selectedItem: any, index: any) =>{
-               colorSelection = index;
+          <TextInput
+            style={styles.input}
+            onChangeText={ageEstimate}
+            value={age} 
+            />
+          <SelectDropdown
+              data={times}
+              onSelect={(selectedItem: string, index: any) => {
+                console.log(selectedItem, index);
+                timeSelected += index;
+              
               } }
               buttonTextAfterSelection={(selectedItem: any, index: any) => {
                 return selectedItem;
@@ -85,21 +171,14 @@ const CatForm = () => {
         
                 return item;
               } } 
-              
-            />
-
-          <Text style={{ fontSize: 20, fontWeight: "bold" }}>    Age Estimate</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={ageEstimate}
-            value={age} />
-
+            />  
+            </View>
           <Text style={{ fontSize: 20, fontWeight: "bold" }}>    Type</Text>
           <SelectDropdown
               data={types}
               onSelect={(selectedItem: string, index: any) => {
                 console.log(selectedItem, index);
-                typeSelected = index;
+                typeSelected += index;
                 console.log(typeSelected)
               } }
               buttonTextAfterSelection={(selectedItem: any, index: any) => {
@@ -110,25 +189,6 @@ const CatForm = () => {
                 return item;
               } } 
             />        
-          <View style={{ flexDirection: 'row' }}>
-          <Text style={{ fontSize: 20, fontWeight: "bold" }}>    Condition</Text>
-          <Text style={{ fontSize: 20, color: "red", fontWeight: "normal"}}> *</Text>
-          </View>
-          <SelectDropdown
-              data={conditions}
-              onSelect={(selectedItem: string, index: any) => {
-                console.log(selectedItem, index);
-                conditionSelected = index;
-                console.log(conditionSelected)
-              } }
-              buttonTextAfterSelection={(selectedItem: any, index: any) => {
-                return selectedItem;
-              } }
-              rowTextForSelection={(item: any, index: any) => {
-        
-                return item;
-              } } 
-            />
          
           <Text style={{ fontSize: 20, fontWeight: "bold" }}>    Eye Color</Text>
             <SelectDropdown
@@ -167,30 +227,33 @@ const CatForm = () => {
             />
          
           <Text style={{ fontSize: 20, fontWeight: "bold" }}>    Additional Comments</Text>
-          <TextInput
-            style={styles.input}
+          
+          
+          <View
+            style={{
+            backgroundColor: "white",
+            borderBottomColor: '#000000',
+            borderBottomWidth: 1,
+          }}>
+          <MultiLineTextInput
+            multiline
+            numberOfLines={4}
             onChangeText={additionalComments}
-            value={comments} />
-          <View style={{ flexDirection: 'row' }}>
-          <Text style={{ fontSize: 20, fontWeight: "bold" }}>    Cat ID</Text>
-          <Text style={{ fontSize: 20, color: "red", fontWeight: "normal"}}> *</Text>
+            value={comments}
+            style={{padding: 10}}
+          />
           </View>
-          <TextInput
-            style={styles.input}
-            onChangeText={catID}
-            value={id} />
 
           <Button
             title="Submit"
             color="#8b0000"
             onPress={() => {
-             /* if (!text1.trim() || !text2.trim() || !text3.trim() || !text4.trim()  || !text6.trim()
-                || !text10.trim() || !text11.trim()) {
+              if (!id.trim() || !content.trim() || !catLocation.trim() || colorSelection != 0  || conditionSelected != 0) {
                 alert('Please fill out all required fields');
                 return;
-              }*/
-              //colorSelected = colorSelection;
-              firebase.database().ref('Cats/' + "110192021-333").set({
+              }
+              
+              firebase.database().ref('Cats/' + currentDate).set({
                 
                
                 media: content,
@@ -200,7 +263,7 @@ const CatForm = () => {
                 possibleName: name,
                 behavior: catBehavior,
                
-                ageEstimate: age,
+                ageEstimate: age + times[timeSelected],
                 strayOrFeral: types[typeSelected],
                 color: colors[colorSelection],
                 condition: conditions[conditionSelected],
@@ -210,9 +273,7 @@ const CatForm = () => {
                 catID: id
               
               });
-              console.log(
-                SelectDropdown
-              );
+             
               
              
               alert('Submitted Successfully');
@@ -248,7 +309,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     backgroundColor: "#8b0000",
-    marginBottom: 50,
+    marginBottom: 30,
   }
 });
 
