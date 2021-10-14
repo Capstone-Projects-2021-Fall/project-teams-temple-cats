@@ -14,7 +14,7 @@ const CatForm = () => {
   const [age, ageEstimate] = React.useState("");
   const [comments, additionalComments] = React.useState("");
   const [id, catID] = React.useState("");
-  const colors = ["Orange", "Brown", "Black", "White"];
+  const colors = ["Orange", "Brown", "Black", "White", "Gray", "Tri-Colored"];
   const scale = ["1", "2", "3", "4", "5"];
   const types = ["Stray", "Feral"];
   const conditions = ["Healthy", "Needs medical attention"];
