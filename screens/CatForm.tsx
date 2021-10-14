@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import SelectDropdown from 'react-native-select-dropdown'
 import { SafeAreaView, StyleSheet, TextInput ,Text, ScrollView, StatusBar, Button, View, useColorScheme } from "react-native";
 import CatImagePicker from "../components/ImagePicker"
+import Camera from "../components/Camera"
 
 const CatForm = () => {
 
@@ -68,12 +69,14 @@ const CatForm = () => {
           style={styles.input}
           onChangeText={catID}
           value={id} 
-        />
+          />
 
         <Text style={[styles.text4, themeTextStyle]}>    Media
           <Text style={styles.text2}> *</Text>
         </Text>
         <CatImagePicker/>
+          <Camera/>
+        
           
         <Text style={[styles.text4, themeTextStyle]}>    Location
           <Text style={styles.text2}> *</Text>
