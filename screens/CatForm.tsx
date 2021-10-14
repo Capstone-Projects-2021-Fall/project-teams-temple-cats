@@ -2,7 +2,7 @@ import firebase from "firebase";
 import React, { useEffect, useState } from "react";
 import SelectDropdown from 'react-native-select-dropdown'
 import { SafeAreaView, StyleSheet, TextInput ,Text, ScrollView, StatusBar, Button, View, useColorScheme } from "react-native";
-
+import CatImagePicker from "../components/ImagePicker"
 
 const CatForm = () => {
 
@@ -73,13 +73,7 @@ const CatForm = () => {
         <Text style={[styles.text4, themeTextStyle]}>    Media
           <Text style={styles.text2}> *</Text>
         </Text>
-        
-        <TextInput
-          style={styles.input}
-          onChangeText={media}
-          value={content} 
-        />
-          
+        <CatImagePicker/>
           
         <Text style={[styles.text4, themeTextStyle]}>    Location
           <Text style={styles.text2}> *</Text>
