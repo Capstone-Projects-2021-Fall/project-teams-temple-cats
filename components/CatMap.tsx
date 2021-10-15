@@ -71,13 +71,14 @@ export default function CatMap() {
     <View style={styles.container}>
       <MapView
         style={styles.map}
-        region={{
+        initialRegion={{
           latitude: 39.9812,
           longitude: -75.1497,
           latitudeDelta: 0.015,
           longitudeDelta: 0.0121,
         }}
         provider={"google"}
+        showsUserLocation={true}
       >
         {markers?.map((item, index) => (
           <Marker

@@ -4,6 +4,7 @@ import SelectDropdown from 'react-native-select-dropdown'
 import { SafeAreaView, StyleSheet, TextInput ,Text, ScrollView, StatusBar, Button, View, useColorScheme, Modal } from "react-native";
 import LocationPicker from "./LocationPicker";
 import { LatLng } from "react-native-maps";
+import * as Location from 'expo-location';
 
 
 const CatForm = () => {
@@ -51,7 +52,7 @@ const CatForm = () => {
   const themeTextStyle =
     colorScheme === 'light' ? styles.lightInput : styles.darkInput;
 
-  const [modalVisible, setModalVisible] = useState(false);
+  const [locationModalVisible, setLocationModalVisible] = useState(false);
 
   function onRequestClose() {
     return;
@@ -59,7 +60,17 @@ const CatForm = () => {
 
   function onLocationPick(coordinate: LatLng) {
     location(coordinate.latitude + ", " + coordinate.longitude);
-    setModalVisible(false);
+    setLocationModalVisible(false);
+  }
+
+  function onUseCurrentLocation() {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status == "granted") {
+        let loc = await Location.getCurrentPositionAsync({});
+        location(loc.coords.latitude + ", " + loc.coords.longitude);
+      }
+    })();
   }
 
   return (
@@ -98,21 +109,21 @@ const CatForm = () => {
 
         <Button
           title="Select Location"
-          onPress={() => setModalVisible(true)}
+          onPress={() => setLocationModalVisible(true)}
         />
 
         <Modal
           animationType="slide"
           onRequestClose={onRequestClose}
           transparent={true}
-          visible={modalVisible}
+          visible={locationModalVisible}
         >
           <LocationPicker onConfirm={onLocationPick}/>
         </Modal>
 
         <Button
           title="Use Current Location"
-          onPress={() => setModalVisible(true)}
+          onPress={onUseCurrentLocation}
         />
         
         <Text style={[styles.text3, themeTextStyle]}> {catLocation} </Text>
