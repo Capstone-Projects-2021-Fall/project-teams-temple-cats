@@ -7,7 +7,7 @@ import Camera from "../components/Camera"
 
 const CatForm = () => {
 
-  const [content, media] = React.useState("");
+  const [content, media] = React.useState();
   const [catLocation, location] = React.useState("");
   const [features, uniqueFeatures] = React.useState("");
   const [name, possibleName] = React.useState("");
