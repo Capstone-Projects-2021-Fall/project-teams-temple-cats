@@ -1,7 +1,7 @@
 import firebase from "firebase";
 import React, { useEffect, useState } from "react";
 import SelectDropdown from 'react-native-select-dropdown'
-import { SafeAreaView, StyleSheet, TextInput ,Text, ScrollView, StatusBar, Button, View, useColorScheme } from "react-native";
+import { SafeAreaView, StyleSheet, TextInput ,Text, ScrollView, StatusBar, Button, View, useColorScheme, Modal } from "react-native";
 import CatImagePicker from "../components/ImagePicker"
 import Camera from "../components/Camera"
 
@@ -31,6 +31,8 @@ const CatForm = () => {
 
   
   const [currentDate, setCurrentDate] = useState('');
+
+  const [camModalVisible, setCamModalVisible] = useState(false);
 
   useEffect(() => {
     var date = new Date().getDate(); //Current Date
@@ -75,7 +77,21 @@ const CatForm = () => {
           <Text style={styles.text2}> *</Text>
         </Text>
         <CatImagePicker/>
+
+        <Button
+          title="Open Camera"
+          onPress={()=> setCamModalVisible(true)}
+        />
+
+        <Modal
+          animationType="slide"
+          onRequestClose={() =>
+            setCamModalVisible(!camModalVisible)}
+          transparent= {true}
+          visible={camModalVisible}
+        >
           <Camera/>
+        </Modal>
         
           
         <Text style={[styles.text4, themeTextStyle]}>    Location
