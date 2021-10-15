@@ -1,7 +1,8 @@
 import firebase from "firebase";
 import React, { useEffect, useState } from "react";
 import SelectDropdown from 'react-native-select-dropdown'
-import { SafeAreaView, StyleSheet, TextInput ,Text, ScrollView, StatusBar, Button, View, useColorScheme } from "react-native";
+import { SafeAreaView, StyleSheet, TextInput ,Text, ScrollView, StatusBar, Button, View, useColorScheme, Modal } from "react-native";
+import LocationPicker from "./LocationPicker";
 
 
 const CatForm = () => {
@@ -49,6 +50,16 @@ const CatForm = () => {
   const themeTextStyle =
     colorScheme === 'light' ? styles.lightInput : styles.darkInput;
 
+  const [modalVisible, setModalVisible] = useState(false);
+
+  function onRequestClose() {
+    return;
+  }
+
+  function onLocationPick(latitude: number, longitude: number) {
+    location(latitude + ", " + longitude);
+    setModalVisible(false);
+  }
 
   return (
     
@@ -73,23 +84,40 @@ const CatForm = () => {
         <Text style={[styles.text4, themeTextStyle]}>    Media
           <Text style={styles.text2}> *</Text>
         </Text>
-        
+
         <TextInput
           style={styles.input}
           onChangeText={media}
           value={content} 
-        />
-          
+        />  
           
         <Text style={[styles.text4, themeTextStyle]}>    Location
           <Text style={styles.text2}> *</Text>
         </Text>
-          
-      <TextInput
-          style={styles.input}
-          onChangeText={location}
-          value={catLocation} 
-      />
+
+        <Button
+          title="Select Location"
+          onPress={() => setModalVisible(true)}
+        />
+
+        <Modal
+          animationType="slide"
+          onRequestClose={onRequestClose}
+          transparent={true}
+          visible={modalVisible}
+        >
+          <LocationPicker onConfirm={onLocationPick}/>
+        </Modal>
+        
+        <Text style={[styles.text4, themeTextStyle]}> {catLocation}
+          <Text style={styles.text2}> *</Text>
+        </Text>
+
+        <TextInput
+            style={styles.input}
+            onChangeText={location}
+            value={catLocation} 
+        />
 
         <Text style={[styles.text4, themeTextStyle]}>    Color
           <Text style={styles.text2}> *</Text>
@@ -211,7 +239,6 @@ const CatForm = () => {
          
           <Text style={[styles.text4, themeTextStyle]}>    Friendliness</Text>
           <SelectDropdown
-          
               data={scale}
               onSelect={(selectedItem: string, index: any) => {
                 console.log(selectedItem, index);
@@ -232,8 +259,7 @@ const CatForm = () => {
             style={styles.multiLine}
             onChangeText={additionalComments}
             value={comments} 
-            
-            />
+          />
           
         
           <Button
@@ -247,8 +273,6 @@ const CatForm = () => {
               }
               
               firebase.database().ref('Cats/' + currentDate).set({
-                
-               
                 media: content,
                 location: catLocation,
                 uniqueFeatures: features,
@@ -264,10 +288,7 @@ const CatForm = () => {
                 friendliness: friendlinessSelected,
                 additionalComments: comments,
                 catID: id
-              
               });
-             
-              
              
               alert('Submitted Successfully');
               return;
@@ -279,7 +300,6 @@ const CatForm = () => {
       </SafeAreaView>
   );
 };
-
 
 const styles = StyleSheet.create({
   input: {
