@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import SelectDropdown from 'react-native-select-dropdown'
 import { SafeAreaView, StyleSheet, TextInput ,Text, ScrollView, StatusBar, Button, View, useColorScheme, Modal } from "react-native";
 import LocationPicker from "./LocationPicker";
+import { LatLng } from "react-native-maps";
 
 
 const CatForm = () => {
@@ -56,15 +57,15 @@ const CatForm = () => {
     return;
   }
 
-  function onLocationPick(latitude: number, longitude: number) {
-    location(latitude + ", " + longitude);
+  function onLocationPick(coordinate: LatLng) {
+    location(coordinate.latitude + ", " + coordinate.longitude);
     setModalVisible(false);
   }
 
   return (
     
     <SafeAreaView>
-        <ScrollView>
+      <ScrollView>
         <Text style={styles.text}>Cat Form</Text>
         
         <Text style={styles.text2}> *
@@ -74,7 +75,7 @@ const CatForm = () => {
         <Text style={[styles.text4, themeTextStyle]}>    Cat ID
           <Text style={styles.text2}> *</Text>
         </Text>
-         
+
         <TextInput
           style={styles.input}
           onChangeText={catID}
@@ -108,196 +109,187 @@ const CatForm = () => {
         >
           <LocationPicker onConfirm={onLocationPick}/>
         </Modal>
-        
-        <Text style={[styles.text4, themeTextStyle]}> {catLocation}
-          <Text style={styles.text2}> *</Text>
-        </Text>
 
-        <TextInput
-            style={styles.input}
-            onChangeText={location}
-            value={catLocation} 
+        <Button
+          title="Use Current Location"
+          onPress={() => setModalVisible(true)}
         />
+        
+        <Text style={[styles.text3, themeTextStyle]}> {catLocation} </Text>
 
         <Text style={[styles.text4, themeTextStyle]}>    Color
           <Text style={styles.text2}> *</Text>
         </Text>
             
-          <SelectDropdown
-              data={colors}
-              onSelect={(selectedItem: any, index: any) =>{
-               colorSelection(selectedItem);
-              } }
-              buttonTextAfterSelection={(selectedItem: any, index: any) => {
-                return selectedItem;
-              } }
-              rowTextForSelection={(item: any, index: any) => {
+        <SelectDropdown
+            data={colors}
+            onSelect={(selectedItem: any, index: any) =>{
+              colorSelection(selectedItem);
+            } }
+            buttonTextAfterSelection={(selectedItem: any, index: any) => {
+              return selectedItem;
+            } }
+            rowTextForSelection={(item: any, index: any) => {
+      
+              return item;
+            } } 
+            
+        />
+
+        <Text style={[styles.text4, themeTextStyle]}>    Condition
+          <Text style={styles.text2}> *</Text>
+        </Text>
         
-                return item;
-              } } 
-              
+        <SelectDropdown
+            data={conditions}
+            onSelect={(selectedItem: string, index: any) => {
+              console.log(selectedItem, index);
+              conditionSelection(selectedItem);
+              console.log(conditionSelected)
+            } }
+            buttonTextAfterSelection={(selectedItem: any, index: any) => {
+              return selectedItem;
+            } }
+            rowTextForSelection={(item: any, index: any) => {
+      
+              return item;
+            } } 
           />
 
-          <Text style={[styles.text4, themeTextStyle]}>    Condition
-            <Text style={styles.text2}> *</Text>
-          </Text>
+        <Text style={[styles.text4, themeTextStyle]}>    Unique Features</Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={uniqueFeatures}
+          value={features} />
+        <Text style={[styles.text4, themeTextStyle]}>    Possible Name</Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={possibleName}
+          value={name} />
+        <Text style={[styles.text4, themeTextStyle]}>    Behavior</Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={behavior}
+          value={catBehavior} />
+        
+
+        <Text style={[styles.text4, themeTextStyle]}>    Age Estimate</Text>
+        <View style={{ flexDirection: 'row' }}>
+        <TextInput
+          style={styles.input}
+          onChangeText={ageEstimate}
+          value={age} 
           
-          
-          <SelectDropdown
-              data={conditions}
-              onSelect={(selectedItem: string, index: any) => {
-                console.log(selectedItem, index);
-                conditionSelection(selectedItem);
-                console.log(conditionSelected)
-              } }
-              buttonTextAfterSelection={(selectedItem: any, index: any) => {
-                return selectedItem;
-              } }
-              rowTextForSelection={(item: any, index: any) => {
-        
-                return item;
-              } } 
-            />
-
-
-
-          <Text style={[styles.text4, themeTextStyle]}>    Unique Features</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={uniqueFeatures}
-            value={features} />
-          <Text style={[styles.text4, themeTextStyle]}>    Possible Name</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={possibleName}
-            value={name} />
-          <Text style={[styles.text4, themeTextStyle]}>    Behavior</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={behavior}
-            value={catBehavior} />
-          
-
-          <Text style={[styles.text4, themeTextStyle]}>    Age Estimate</Text>
-          <View style={{ flexDirection: 'row' }}>
-          <TextInput
-            style={styles.input}
-            onChangeText={ageEstimate}
-            value={age} 
-            
-            />
-          <SelectDropdown
-              data={times}
-              onSelect={(selectedItem: string, index: any) => {
-                console.log(selectedItem, index);
-                timeSelection(selectedItem)
-              
-              } }
-              buttonTextAfterSelection={(selectedItem: any, index: any) => {
-                return selectedItem;
-              } }
-              rowTextForSelection={(item: any, index: any) => {
-        
-                return item;
-              } } 
-            />  
-            </View>
-          <Text style={[styles.text4, themeTextStyle]}>    Type</Text>
-          <SelectDropdown
-              data={types}
-              onSelect={(selectedItem: string, index: any) => {
-                console.log(selectedItem, index);
-                typeSelection(selectedItem);
-                console.log(typeSelected)
-              } }
-              buttonTextAfterSelection={(selectedItem: any, index: any) => {
-                return selectedItem;
-              } }
-              rowTextForSelection={(item: any, index: any) => {
-        
-                return item;
-              } } 
-            />        
-         
-          <Text style={[styles.text4, themeTextStyle]}>    Eye Color</Text>
-            <SelectDropdown
-              data={eyeColors}
-              onSelect={(selectedItem: string, index: any) => {
-                console.log(selectedItem, index);
-                eyeColorSelection(selectedItem);
-                console.log(eyeColorSelection)
-               
-              } }
-              buttonTextAfterSelection={(selectedItem: any, index: any) => {
-                return selectedItem;
-              } }
-              rowTextForSelection={(item: any, index: any) => {
-        
-                return item;
-              } } 
-            />
-         
-          <Text style={[styles.text4, themeTextStyle]}>    Friendliness</Text>
-          <SelectDropdown
-              data={scale}
-              onSelect={(selectedItem: string, index: any) => {
-                console.log(selectedItem, index);
-                friendlinessSelection(selectedItem);
-                console.log(friendlinessSelected)
-               
-              } }
-              buttonTextAfterSelection={(selectedItem: any, index: any) => {
-                return selectedItem;
-              } }
-              rowTextForSelection={(item: any, index: any) => {
-                return item;
-              } } 
-            />
-         
-          <Text style={[styles.text4, themeTextStyle]}>    Additional Comments</Text>
-          <TextInput
-            style={styles.multiLine}
-            onChangeText={additionalComments}
-            value={comments} 
           />
-          
+        <SelectDropdown
+            data={times}
+            onSelect={(selectedItem: string, index: any) => {
+              console.log(selectedItem, index);
+              timeSelection(selectedItem)
+            
+            } }
+            buttonTextAfterSelection={(selectedItem: any, index: any) => {
+              return selectedItem;
+            } }
+            rowTextForSelection={(item: any, index: any) => {
+      
+              return item;
+            } } 
+          />  
+          </View>
+        <Text style={[styles.text4, themeTextStyle]}>    Type</Text>
+        <SelectDropdown
+            data={types}
+            onSelect={(selectedItem: string, index: any) => {
+              console.log(selectedItem, index);
+              typeSelection(selectedItem);
+              console.log(typeSelected)
+            } }
+            buttonTextAfterSelection={(selectedItem: any, index: any) => {
+              return selectedItem;
+            } }
+            rowTextForSelection={(item: any, index: any) => {
+      
+              return item;
+            } } 
+          />        
         
-          <Button
-            title="Submit"
-            color="#8b0000"
-            
-            onPress={() => {
-              if (!id.trim() || !content.trim() || !catLocation.trim() || !colorSelected.trim()  || !conditionSelected.trim()) {
-                alert('Please fill out all required fields');
-                return;
-              }
+        <Text style={[styles.text4, themeTextStyle]}>    Eye Color</Text>
+          <SelectDropdown
+            data={eyeColors}
+            onSelect={(selectedItem: string, index: any) => {
+              console.log(selectedItem, index);
+              eyeColorSelection(selectedItem);
+              console.log(eyeColorSelection)
               
-              firebase.database().ref('Cats/' + currentDate).set({
-                media: content,
-                location: catLocation,
-                uniqueFeatures: features,
-            
-                possibleName: name,
-                behavior: catBehavior,
-               
-                ageEstimate: age + timeSelected,
-                strayOrFeral: typeSelected,
-                color: colorSelected,
-                condition: conditionSelected,
-                eyeColor: eyeColorSelected,
-                friendliness: friendlinessSelected,
-                additionalComments: comments,
-                catID: id
-              });
-             
-              alert('Submitted Successfully');
+            } }
+            buttonTextAfterSelection={(selectedItem: any, index: any) => {
+              return selectedItem;
+            } }
+            rowTextForSelection={(item: any, index: any) => {
+      
+              return item;
+            } } 
+          />
+        
+        <Text style={[styles.text4, themeTextStyle]}>    Friendliness</Text>
+        <SelectDropdown
+            data={scale}
+            onSelect={(selectedItem: string, index: any) => {
+              console.log(selectedItem, index);
+              friendlinessSelection(selectedItem);
+              console.log(friendlinessSelected)
+              
+            } }
+            buttonTextAfterSelection={(selectedItem: any, index: any) => {
+              return selectedItem;
+            } }
+            rowTextForSelection={(item: any, index: any) => {
+              return item;
+            } } 
+          />
+        
+        <Text style={[styles.text4, themeTextStyle]}>    Additional Comments</Text>
+        <TextInput
+          style={styles.multiLine}
+          onChangeText={additionalComments}
+          value={comments} 
+        />
+
+        <Button
+          title="Submit"
+          color="#8b0000"
+          
+          onPress={() => {
+            if (!id.trim() || !content.trim() || !catLocation.trim() || !colorSelected.trim()  || !conditionSelected.trim()) {
+              alert('Please fill out all required fields');
               return;
-            } 
-          } 
+            }
             
-            />
-        </ScrollView>
-      </SafeAreaView>
+            firebase.database().ref('Cats/' + currentDate).set({
+              media: content,
+              location: catLocation,
+              uniqueFeatures: features,
+          
+              possibleName: name,
+              behavior: catBehavior,
+              
+              ageEstimate: age + timeSelected,
+              strayOrFeral: typeSelected,
+              color: colorSelected,
+              condition: conditionSelected,
+              eyeColor: eyeColorSelected,
+              friendliness: friendlinessSelected,
+              additionalComments: comments,
+              catID: id
+            });
+            
+            alert('Submitted Successfully');
+            return;
+          }} 
+        />
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

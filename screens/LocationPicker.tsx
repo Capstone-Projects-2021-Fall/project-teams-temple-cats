@@ -1,43 +1,42 @@
 import React, { useState } from "react";
 import { StyleSheet, Button, View, NativeSyntheticEvent, NativeTouchEvent, Dimensions } from "react-native";
-import MapView, { Marker, MapEvent } from "react-native-maps";
+import MapView, { Marker, MapEvent, LatLng } from "react-native-maps";
 
 
-const LocationPicker = (props: { onConfirm: (latitude: number, longitude: number) => void; }) => {
+const LocationPicker = (props: { onConfirm: (coordinate: LatLng) => void; }) => {
 
-  const [latitude, setLatitude] = useState(0);
-  const [longitude, setLongitude] = useState(0);
-  const [marked, setMarked] = useState(0);
+  const [markerCoordinate, setMarkerCoordinate] = useState({
+    latitude: 0,
+    longitude: 0,
+  });
+  const [markerOpacity, setMarkerOpacity] = useState(0);
 
   function onMapPress(e: MapEvent) {
-    setLatitude(e.nativeEvent.coordinate.latitude);
-    setLongitude(e.nativeEvent.coordinate.longitude);    
-    setMarked(1);
+    setMarkerCoordinate(e.nativeEvent.coordinate)
+    setMarkerOpacity(1);
   }
 
   function onConfirmPress(e: NativeSyntheticEvent<NativeTouchEvent>) {
-    props.onConfirm(latitude, longitude);
+    props.onConfirm(markerCoordinate);
   }
 
   return (
     <View style={styles.container}>
       <MapView
         style={styles.map}
-        region={{
+        provider={"google"}
+        initialRegion={{
           latitude: 39.9812,
           longitude: -75.1497,
           latitudeDelta: 0.015,
           longitudeDelta: 0.0121,
         }}
-        provider={"google"}
+        showsUserLocation={true}
         onPress={onMapPress}
       >
         <Marker
-          coordinate={{
-            latitude: latitude,
-            longitude: longitude,
-          }}
-          opacity={marked}
+          coordinate={markerCoordinate}
+          opacity={markerOpacity}
         />
       </MapView>
       <Button
