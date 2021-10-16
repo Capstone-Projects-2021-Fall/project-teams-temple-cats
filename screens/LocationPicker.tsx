@@ -1,19 +1,25 @@
 import React, { useState } from "react";
 import { StyleSheet, Button, View, NativeSyntheticEvent, NativeTouchEvent, Dimensions } from "react-native";
 import MapView, { Marker, MapEvent, LatLng } from "react-native-maps";
+import Gps from "../utils/gps";
 
 
-const LocationPicker = (props: { onConfirm: (coordinate: LatLng) => void; }) => {
+const LocationPicker = (props: { onCancel: () => void; onConfirm: (coordinate: { latitude: number; longitude: number; }) => void; }) => {
 
   const [markerCoordinate, setMarkerCoordinate] = useState({
     latitude: 0,
     longitude: 0,
   });
   const [markerOpacity, setMarkerOpacity] = useState(0);
+  let region = Gps();
 
   function onMapPress(e: MapEvent) {
     setMarkerCoordinate(e.nativeEvent.coordinate)
     setMarkerOpacity(1);
+  }
+
+  function onCancelPress(e: NativeSyntheticEvent<NativeTouchEvent>) {
+    props.onCancel();
   }
 
   function onConfirmPress(e: NativeSyntheticEvent<NativeTouchEvent>) {
@@ -25,12 +31,7 @@ const LocationPicker = (props: { onConfirm: (coordinate: LatLng) => void; }) => 
       <MapView
         style={styles.map}
         provider={"google"}
-        initialRegion={{
-          latitude: 39.9812,
-          longitude: -75.1497,
-          latitudeDelta: 0.015,
-          longitudeDelta: 0.0121,
-        }}
+        initialRegion={region}
         showsUserLocation={true}
         onPress={onMapPress}
       >
@@ -39,6 +40,11 @@ const LocationPicker = (props: { onConfirm: (coordinate: LatLng) => void; }) => 
           opacity={markerOpacity}
         />
       </MapView>
+      <Button
+        // style={styles.confirm}
+        title="Cancel"
+        onPress={onCancelPress}
+      ></Button>
       <Button
         // style={styles.confirm}
         title="Confirm"
@@ -59,8 +65,6 @@ const styles = StyleSheet.create({
   },
   map: {
     ...StyleSheet.absoluteFillObject,
-    // height: Dimensions.get("window").height,
-    // width: Dimensions.get("window").width,
   },
   confirm: {
     ...StyleSheet.absoluteFillObject,

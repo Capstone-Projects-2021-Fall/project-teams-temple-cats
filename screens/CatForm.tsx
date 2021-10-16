@@ -5,6 +5,7 @@ import { SafeAreaView, StyleSheet, TextInput ,Text, ScrollView, StatusBar, Butto
 import LocationPicker from "./LocationPicker";
 import { LatLng } from "react-native-maps";
 import * as Location from 'expo-location';
+import Gps from "../utils/gps";
 
 
 const CatForm = () => {
@@ -54,10 +55,6 @@ const CatForm = () => {
 
   const [locationModalVisible, setLocationModalVisible] = useState(false);
 
-  function onRequestClose() {
-    return;
-  }
-
   function onLocationPick(coordinate: LatLng) {
     location(coordinate.latitude + ", " + coordinate.longitude);
     setLocationModalVisible(false);
@@ -66,9 +63,13 @@ const CatForm = () => {
   function onUseCurrentLocation() {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status == "granted") {
-        let loc = await Location.getCurrentPositionAsync({});
-        location(loc.coords.latitude + ", " + loc.coords.longitude);
+      if (status !== "granted") {
+        return;
+      } else {
+        const gps = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.Balanced,
+        });
+        location(gps.coords.latitude + ", " + gps.coords.longitude) // TODO: revisit this when we are submitting location to create pins in db
       }
     })();
   }
@@ -114,11 +115,12 @@ const CatForm = () => {
 
         <Modal
           animationType="slide"
-          onRequestClose={onRequestClose}
-          transparent={true}
+          // transparent={true}
           visible={locationModalVisible}
         >
-          <LocationPicker onConfirm={onLocationPick}/>
+          <LocationPicker
+            onCancel={() => {setLocationModalVisible(false)}}
+            onConfirm={onLocationPick}/>
         </Modal>
 
         <Button
