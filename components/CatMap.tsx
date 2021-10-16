@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text } from "react-native";
 import MapView, { Marker, Callout, Region } from "react-native-maps";
 import { View } from "./Themed";
@@ -12,15 +12,14 @@ import Gps from "../utils/gps";
  */
 
 export default function CatMap() {
-  const [markers, setMarkers] = React.useState<any>([]);
+  const [markers, setMarkers] = useState<any>([]);
   let markersArray = [];
-  let newState = [];
-  let result = [];
+  let newState: { id: string; lat: any; lng: any; description: any; }[] = [];
+  let result: any[] = [];
   var result_counter = 0;
   let region = Gps();
-  console.log(region);
 
-  React.useEffect(() => {
+  useEffect(() => {
     var reference = firebase.database().ref("Pins/");
     let pin;
     reference.on("value", (snapshot) => {
@@ -75,27 +74,25 @@ export default function CatMap() {
       <MapView
         style={styles.map}
         provider={"google"}
-        region={{
-          latitude: region.latitude,
-          longitude: region.longitude,
-          latitudeDelta: region.latitudeDelta,
-          longitudeDelta: region.longitudeDelta,
-        }}
+        region={region}
+        showsUserLocation={true}
       >
-        {markers?.map((item, index) => (
-          <Marker
-            key={index}
-            title={item.id}
-            coordinate={{
-              latitude: item.lat,
-              longitude: item.lng,
-            }}
-          >
-            <Callout>
-              <Text>{item.description}</Text>
-            </Callout>
-          </Marker>
-        ))}
+        {markers?.map((
+          item: { id: string | undefined; lat: any; lng: any; description: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined; },
+          index: React.Key | null | undefined) => (
+            <Marker
+              key={index}
+              title={item.id}
+              coordinate={{
+                latitude: item.lat,
+                longitude: item.lng,
+              }}
+            >
+              <Callout>
+                <Text>{item.description}</Text>
+              </Callout>
+            </Marker>
+          ))}
       </MapView>
     </View>
   );

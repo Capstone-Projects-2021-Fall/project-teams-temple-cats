@@ -1,7 +1,10 @@
 import firebase from "firebase";
 import React, { useEffect, useState } from "react";
 import SelectDropdown from 'react-native-select-dropdown'
-import { SafeAreaView, StyleSheet, TextInput ,Text, ScrollView, StatusBar, Button, View, Alert, useColorScheme } from "react-native";
+import { SafeAreaView, StyleSheet, TextInput ,Text, ScrollView, StatusBar, Button, View, useColorScheme, Modal, Alert } from "react-native";
+import LocationPicker from "./LocationPicker";
+import { LatLng } from "react-native-maps";
+import * as Location from 'expo-location';
 
 
 const CatForm = () => {
@@ -49,11 +52,31 @@ const CatForm = () => {
   const themeTextStyle =
     colorScheme === 'light' ? styles.lightInput : styles.darkInput;
 
+  const [locationModalVisible, setLocationModalVisible] = useState(false);
+
+  function onLocationPick(coordinate: LatLng) {
+    location(coordinate.latitude + ", " + coordinate.longitude);
+    setLocationModalVisible(false);
+  }
+
+  function onUseCurrentLocation() {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        return;
+      } else {
+        const gps = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.Balanced,
+        });
+        location(gps.coords.latitude + ", " + gps.coords.longitude) // TODO: revisit this when we are submitting location to create pins in db
+      }
+    })();
+  }
 
   return (
     
     <SafeAreaView>
-        <ScrollView>
+      <ScrollView>
         <Text style={styles.text}>Cat Form</Text>
         
         <Text style={styles.text2}> *
@@ -63,7 +86,7 @@ const CatForm = () => {
         <Text style={[styles.text4, themeTextStyle]}>    Cat ID
           <Text style={styles.text2}> *</Text>
         </Text>
-         
+
         <TextInput
           style={styles.input}
           onChangeText={catID}
@@ -74,7 +97,7 @@ const CatForm = () => {
         <Text style={[styles.text4, themeTextStyle]}>    Media
           <Text style={styles.text2}> *</Text>
         </Text>
-        
+
         <TextInput
           style={styles.input}
           onChangeText={media}
@@ -86,87 +109,97 @@ const CatForm = () => {
         <Text style={[styles.text4, themeTextStyle]}>    Location
           <Text style={styles.text2}> *</Text>
         </Text>
-          
-      <TextInput
-          style={styles.input}
-          onChangeText={location}
-          value={catLocation} 
-          testID="location"
-      />
+
+        <Button
+          title="Select Location"
+          onPress={() => setLocationModalVisible(true)}
+        />
+
+        <Modal
+          animationType="slide"
+          visible={locationModalVisible}
+        >
+          <LocationPicker
+            onCancel={() => {setLocationModalVisible(false)}}
+            onConfirm={onLocationPick}/>
+        </Modal>
+
+        <Button
+          title="Use Current Location"
+          onPress={onUseCurrentLocation}
+        />
+        
+        <Text style={[styles.text3, themeTextStyle]} testID="location"> {catLocation} </Text>
 
         <Text style={[styles.text4, themeTextStyle]}>    Color
           <Text style={styles.text2}> *</Text>
         </Text>
             
-          <SelectDropdown
-              data={colors}
-              onSelect={(selectedItem: any, index: any) =>{
-               colorSelection(selectedItem);
-              } }
-              buttonTextAfterSelection={(selectedItem: any, index: any) => {
-                return selectedItem;
-              } }
-              rowTextForSelection={(item: any, index: any) => {
-                return item;
-              } } 
-              
+        <SelectDropdown
+            data={colors}
+            onSelect={(selectedItem: any, index: any) =>{
+              colorSelection(selectedItem);
+            } }
+            buttonTextAfterSelection={(selectedItem: any, index: any) => {
+              return selectedItem;
+            } }
+            rowTextForSelection={(item: any, index: any) => {
+              return item;
+            } } 
+            
+        />
+
+        <Text style={[styles.text4, themeTextStyle]}>    Condition
+          <Text style={styles.text2}> *</Text>
+        </Text>
+        
+        <SelectDropdown
+            data={conditions}
+            onSelect={(selectedItem: string, index: any) => {
+              console.log(selectedItem, index);
+              conditionSelection(selectedItem);
+              console.log(conditionSelected)
+            } }
+            buttonTextAfterSelection={(selectedItem: any, index: any) => {
+              return selectedItem;
+            } }
+            rowTextForSelection={(item: any, index: any) => {
+      
+              return item;
+            } } 
           />
 
-          <Text style={[styles.text4, themeTextStyle]}>    Condition
-            <Text style={styles.text2}> *</Text>
-          </Text>
-          
-          
-          <SelectDropdown
-              data={conditions}
-              onSelect={(selectedItem: string, index: any) => {
-                console.log(selectedItem, index);
-                conditionSelection(selectedItem);
-                console.log(conditionSelected)
-              } }
-              buttonTextAfterSelection={(selectedItem: any, index: any) => {
-                return selectedItem;
-              } }
-              rowTextForSelection={(item: any, index: any) => {
+        <Text style={[styles.text4, themeTextStyle]}>    Unique Features</Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={uniqueFeatures}
+          value={features}
+          testID="features"
+        />
+        <Text style={[styles.text4, themeTextStyle]}>    Possible Name</Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={possibleName}
+          value={name}
+          testID="possibleName" 
+        />
+        <Text style={[styles.text4, themeTextStyle]}>    Behavior</Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={behavior}
+          value={catBehavior}
+          testID="catBehavior"
+        />
         
-                return item;
-              } } 
-            />
 
-
-
-          <Text style={[styles.text4, themeTextStyle]}>    Unique Features</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={uniqueFeatures}
-            value={features} 
-            testID="features"
-            />
-            
-          <Text style={[styles.text4, themeTextStyle]}>    Possible Name</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={possibleName}
-            value={name}
-            testID="possibleName" 
-            />
-          <Text style={[styles.text4, themeTextStyle]}>    Behavior</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={behavior}
-            value={catBehavior} 
-            testID="catBehavior"
-            />
-            
-
-          <Text style={[styles.text4, themeTextStyle]}>    Age Estimate</Text>
-          <View style={{ flexDirection: 'row' }}>
+        <Text style={[styles.text4, themeTextStyle]}>    Age Estimate</Text>
+        <View style={{ flexDirection: 'row' }}>
           <TextInput
             style={styles.input}
             onChangeText={ageEstimate}
             value={age} 
             testID="ageEstimate"
-            />
+          />
           <SelectDropdown
               data={times}
               onSelect={(selectedItem: string, index: any) => {
@@ -181,115 +214,105 @@ const CatForm = () => {
         
                 return item;
               } } 
-            />  
-            </View>
-          <Text style={[styles.text4, themeTextStyle]}>    Type</Text>
+          />
+        </View>
+        <Text style={[styles.text4, themeTextStyle]}>    Type</Text>
+        <SelectDropdown
+            data={types}
+            onSelect={(selectedItem: string, index: any) => {
+              console.log(selectedItem, index);
+              typeSelection(selectedItem);
+              console.log(typeSelected)
+            } }
+            buttonTextAfterSelection={(selectedItem: any, index: any) => {
+              return selectedItem;
+            } }
+            rowTextForSelection={(item: any, index: any) => {
+      
+              return item;
+            } } 
+          />        
+        
+        <Text style={[styles.text4, themeTextStyle]}>    Eye Color</Text>
           <SelectDropdown
-              data={types}
-              onSelect={(selectedItem: string, index: any) => {
-                console.log(selectedItem, index);
-                typeSelection(selectedItem);
-                console.log(typeSelected)
-              } }
-              buttonTextAfterSelection={(selectedItem: any, index: any) => {
-                return selectedItem;
-              } }
-              rowTextForSelection={(item: any, index: any) => {
+            data={eyeColors}
+            onSelect={(selectedItem: string, index: any) => {
+              console.log(selectedItem, index);
+              eyeColorSelection(selectedItem);
+              console.log(eyeColorSelection)
+              
+            } }
+            buttonTextAfterSelection={(selectedItem: any, index: any) => {
+              return selectedItem;
+            } }
+            rowTextForSelection={(item: any, index: any) => {
+      
+              return item;
+            } } 
+          />
         
-                return item;
-              } } 
-            />        
-         
-          <Text style={[styles.text4, themeTextStyle]}>    Eye Color</Text>
-            <SelectDropdown
-              data={eyeColors}
-              onSelect={(selectedItem: string, index: any) => {
-                console.log(selectedItem, index);
-                eyeColorSelection(selectedItem);
-                console.log(eyeColorSelection)
-               
-              } }
-              buttonTextAfterSelection={(selectedItem: any, index: any) => {
-                return selectedItem;
-              } }
-              rowTextForSelection={(item: any, index: any) => {
+        <Text style={[styles.text4, themeTextStyle]}>    Friendliness</Text>
+        <SelectDropdown
+            data={scale}
+            onSelect={(selectedItem: string, index: any) => {
+              console.log(selectedItem, index);
+              friendlinessSelection(selectedItem);
+              console.log(friendlinessSelected)
+              
+            } }
+            buttonTextAfterSelection={(selectedItem: any, index: any) => {
+              return selectedItem;
+            } }
+            rowTextForSelection={(item: any, index: any) => {
+              return item;
+            } } 
+        />
         
-                return item;
-              } } 
-            />
-         
-          <Text style={[styles.text4, themeTextStyle]}>    Friendliness</Text>
-          <SelectDropdown
+        <Text style={[styles.text4, themeTextStyle]}>    Additional Comments</Text>
+        <TextInput
+          style={styles.multiLine}
+          onChangeText={additionalComments}
+          value={comments} 
+          testID="comments"
+        />
+
+        <Button
+          testID={'Submit.Button'}
+          title="Submit"
+          color="#8b0000"
           
-              data={scale}
-              onSelect={(selectedItem: string, index: any) => {
-                console.log(selectedItem, index);
-                friendlinessSelection(selectedItem);
-                console.log(friendlinessSelected)
-               
-              } }
-              buttonTextAfterSelection={(selectedItem: any, index: any) => {
-                return selectedItem;
-              } }
-              rowTextForSelection={(item: any, index: any) => {
-                return item;
-              } } 
-            />
-         
-          <Text style={[styles.text4, themeTextStyle]}>    Additional Comments</Text>
-          <TextInput
-            style={styles.multiLine}
-            onChangeText={additionalComments}
-            value={comments} 
-            testID="comments"
-            />
-          
-        
-          <Button
-            testID={'Submit.Button'}
-            title="Submit"
-            color="#8b0000"
-            
-            onPress={() => {
-              if (!id.trim() || !content.trim() || !catLocation.trim() || !colorSelected.trim()  || !conditionSelected.trim()) {
-                Alert.alert('Please fill out all required fields');
-                return;
-              }
-              
-              firebase.database().ref('Cats/' + currentDate).set({
-                
-               
-                media: content,
-                location: catLocation,
-                uniqueFeatures: features,
-            
-                possibleName: name,
-                behavior: catBehavior,
-               
-                ageEstimate: age + timeSelected,
-                strayOrFeral: typeSelected,
-                color: colorSelected,
-                condition: conditionSelected,
-                eyeColor: eyeColorSelected,
-                friendliness: friendlinessSelected,
-                additionalComments: comments,
-                catID: id
-              
-              });
-             
-              
-             
-              alert('Submitted Successfully');
+          onPress={() => {
+            if (!id.trim() || !content.trim() || !catLocation.trim() || !colorSelected.trim()  || !conditionSelected.trim()) {
+              alert('Please fill out all required fields');
               return;
-            } 
-          } 
+            }
             
-            />
-        </ScrollView>
-      </SafeAreaView>
+            firebase.database().ref('Cats/' + currentDate).set({
+              media: content,
+              location: catLocation,
+              uniqueFeatures: features,
+          
+              possibleName: name,
+              behavior: catBehavior,
+              
+              ageEstimate: age + timeSelected,
+              strayOrFeral: typeSelected,
+              color: colorSelected,
+              condition: conditionSelected,
+              eyeColor: eyeColorSelected,
+              friendliness: friendlinessSelected,
+              additionalComments: comments,
+              catID: id
+            });
+            
+            alert('Submitted Successfully');
+            return;
+          }} 
+        />
+      </ScrollView>
+    </SafeAreaView>
   );
 };
-
 
 const styles = StyleSheet.create({
   input: {
