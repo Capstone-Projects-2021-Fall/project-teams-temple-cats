@@ -21,19 +21,19 @@ export default function Gps() {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
         return;
+      } else {
+        const location = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.Balanced,
+        });
+        setLocation({
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+          latitudeDelta: 0.015,
+          longitudeDelta: 0.0121,
+        });
       }
-
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-        latitudeDelta: 0.015,
-        longitudeDelta: 0.0121,
-      });
     })();
   }, []);
 
   return location;
 }
-
-export async function getLocation() {}

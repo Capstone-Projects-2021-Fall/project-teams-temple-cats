@@ -10,20 +10,21 @@ import Gps from "../utils/gps";
  * @component
  * @returns {JSX.Element} JSX element of the map
  */
+
 export default function CatMap() {
   const [markers, setMarkers] = React.useState<any>([]);
   let markersArray = [];
   let newState = [];
   let result = [];
   var result_counter = 0;
-  const region = Gps();
+  let region = Gps();
+  console.log(region);
 
   React.useEffect(() => {
     var reference = firebase.database().ref("Pins/");
     let pin;
     reference.on("value", (snapshot) => {
       let items = snapshot.val();
-      console.log(items);
 
       firebase
         .database()
@@ -74,7 +75,7 @@ export default function CatMap() {
       <MapView
         style={styles.map}
         provider={"google"}
-        initialRegion={{
+        region={{
           latitude: region.latitude,
           longitude: region.longitude,
           latitudeDelta: region.latitudeDelta,

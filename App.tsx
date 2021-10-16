@@ -15,7 +15,7 @@ export default function App() {
     return (
       <SafeAreaProvider>
         <AuthProvider>
-          <CatMap />
+          <Navigation colorScheme={colorScheme} />
         </AuthProvider>
       </SafeAreaProvider>
     );
