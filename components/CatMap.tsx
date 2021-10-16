@@ -1,27 +1,30 @@
 import React, { useEffect } from "react";
 import { StyleSheet, Text } from "react-native";
-import MapView, { Marker, Callout } from "react-native-maps";
+import MapView, { Marker, Callout, Region } from "react-native-maps";
 import { View } from "./Themed";
 import firebase from "../utils/firebase";
+import Gps from "../utils/gps";
 
 /**
  * Function that renders the Cat Map component, including the map and all it's children (e.g. pins/markers).
  * @component
  * @returns {JSX.Element} JSX element of the map
  */
+
 export default function CatMap() {
   const [markers, setMarkers] = React.useState<any>([]);
   let markersArray = [];
   let newState = [];
   let result = [];
   var result_counter = 0;
+  let region = Gps();
+  console.log(region);
 
   React.useEffect(() => {
     var reference = firebase.database().ref("Pins/");
     let pin;
     reference.on("value", (snapshot) => {
       let items = snapshot.val();
-      console.log(items);
 
       firebase
         .database()
@@ -71,13 +74,13 @@ export default function CatMap() {
     <View style={styles.container}>
       <MapView
         style={styles.map}
-        region={{
-          latitude: 39.9812,
-          longitude: -75.1497,
-          latitudeDelta: 0.015,
-          longitudeDelta: 0.0121,
-        }}
         provider={"google"}
+        region={{
+          latitude: region.latitude,
+          longitude: region.longitude,
+          latitudeDelta: region.latitudeDelta,
+          longitudeDelta: region.longitudeDelta,
+        }}
       >
         {markers?.map((item, index) => (
           <Marker
