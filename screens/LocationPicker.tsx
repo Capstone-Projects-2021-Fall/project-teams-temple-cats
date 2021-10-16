@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { StyleSheet, Button, View, NativeSyntheticEvent, NativeTouchEvent, Dimensions } from "react-native";
-import MapView, { Marker, MapEvent, LatLng } from "react-native-maps";
+import { StyleSheet, Button, View, NativeSyntheticEvent, NativeTouchEvent } from "react-native";
+import MapView, { Marker, MapEvent } from "react-native-maps";
 import Gps from "../utils/gps";
 
 

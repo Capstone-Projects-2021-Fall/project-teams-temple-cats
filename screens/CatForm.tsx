@@ -5,7 +5,6 @@ import { SafeAreaView, StyleSheet, TextInput ,Text, ScrollView, StatusBar, Butto
 import LocationPicker from "./LocationPicker";
 import { LatLng } from "react-native-maps";
 import * as Location from 'expo-location';
-import Gps from "../utils/gps";
 
 
 const CatForm = () => {
@@ -115,7 +114,6 @@ const CatForm = () => {
 
         <Modal
           animationType="slide"
-          // transparent={true}
           visible={locationModalVisible}
         >
           <LocationPicker

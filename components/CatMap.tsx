@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text } from "react-native";
 import MapView, { Marker, Callout, Region } from "react-native-maps";
 import { View } from "./Themed";
@@ -12,14 +12,14 @@ import Gps from "../utils/gps";
  */
 
 export default function CatMap() {
-  const [markers, setMarkers] = React.useState<any>([]);
+  const [markers, setMarkers] = useState<any>([]);
   let markersArray = [];
   let newState: { id: string; lat: any; lng: any; description: any; }[] = [];
   let result: any[] = [];
   var result_counter = 0;
   let region = Gps();
 
-  React.useEffect(() => {
+  useEffect(() => {
     var reference = firebase.database().ref("Pins/");
     let pin;
     reference.on("value", (snapshot) => {
