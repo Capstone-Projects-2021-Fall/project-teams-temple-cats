@@ -1,7 +1,7 @@
 import firebase from "firebase";
 import React, { useEffect, useState } from "react";
 import SelectDropdown from 'react-native-select-dropdown'
-import { SafeAreaView, StyleSheet, TextInput ,Text, ScrollView, StatusBar, Button, View, useColorScheme } from "react-native";
+import { SafeAreaView, StyleSheet, TextInput ,Text, ScrollView, StatusBar, Button, View, Alert, useColorScheme } from "react-native";
 
 
 const CatForm = () => {
@@ -68,6 +68,7 @@ const CatForm = () => {
           style={styles.input}
           onChangeText={catID}
           value={id} 
+          testID="catID"
         />
 
         <Text style={[styles.text4, themeTextStyle]}>    Media
@@ -78,6 +79,7 @@ const CatForm = () => {
           style={styles.input}
           onChangeText={media}
           value={content} 
+          testID="media"
         />
           
           
@@ -89,6 +91,7 @@ const CatForm = () => {
           style={styles.input}
           onChangeText={location}
           value={catLocation} 
+          testID="location"
       />
 
         <Text style={[styles.text4, themeTextStyle]}>    Color
@@ -104,7 +107,6 @@ const CatForm = () => {
                 return selectedItem;
               } }
               rowTextForSelection={(item: any, index: any) => {
-        
                 return item;
               } } 
               
@@ -137,18 +139,25 @@ const CatForm = () => {
           <TextInput
             style={styles.input}
             onChangeText={uniqueFeatures}
-            value={features} />
+            value={features} 
+            testID="features"
+            />
+            
           <Text style={[styles.text4, themeTextStyle]}>    Possible Name</Text>
           <TextInput
             style={styles.input}
             onChangeText={possibleName}
-            value={name} />
+            value={name}
+            testID="possibleName" 
+            />
           <Text style={[styles.text4, themeTextStyle]}>    Behavior</Text>
           <TextInput
             style={styles.input}
             onChangeText={behavior}
-            value={catBehavior} />
-          
+            value={catBehavior} 
+            testID="catBehavior"
+            />
+            
 
           <Text style={[styles.text4, themeTextStyle]}>    Age Estimate</Text>
           <View style={{ flexDirection: 'row' }}>
@@ -156,7 +165,7 @@ const CatForm = () => {
             style={styles.input}
             onChangeText={ageEstimate}
             value={age} 
-            
+            testID="ageEstimate"
             />
           <SelectDropdown
               data={times}
@@ -232,17 +241,18 @@ const CatForm = () => {
             style={styles.multiLine}
             onChangeText={additionalComments}
             value={comments} 
-            
+            testID="comments"
             />
           
         
           <Button
+            testID={'Submit.Button'}
             title="Submit"
             color="#8b0000"
             
             onPress={() => {
               if (!id.trim() || !content.trim() || !catLocation.trim() || !colorSelected.trim()  || !conditionSelected.trim()) {
-                alert('Please fill out all required fields');
+                Alert.alert('Please fill out all required fields');
                 return;
               }
               
