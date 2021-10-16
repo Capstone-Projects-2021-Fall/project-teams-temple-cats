@@ -1,7 +1,7 @@
 import firebase from "firebase";
 import React, { useEffect, useState } from "react";
 import SelectDropdown from 'react-native-select-dropdown'
-import { SafeAreaView, StyleSheet, TextInput ,Text, ScrollView, StatusBar, Button, View, useColorScheme, Modal } from "react-native";
+import { SafeAreaView, StyleSheet, TextInput ,Text, ScrollView, StatusBar, Button, View, useColorScheme, Modal, Alert } from "react-native";
 import LocationPicker from "./LocationPicker";
 import { LatLng } from "react-native-maps";
 import * as Location from 'expo-location';
@@ -91,6 +91,7 @@ const CatForm = () => {
           style={styles.input}
           onChangeText={catID}
           value={id} 
+          testID="catID"
         />
 
         <Text style={[styles.text4, themeTextStyle]}>    Media
@@ -101,7 +102,9 @@ const CatForm = () => {
           style={styles.input}
           onChangeText={media}
           value={content} 
-        />  
+          testID="media"
+        />
+          
           
         <Text style={[styles.text4, themeTextStyle]}>    Location
           <Text style={styles.text2}> *</Text>
@@ -126,7 +129,7 @@ const CatForm = () => {
           onPress={onUseCurrentLocation}
         />
         
-        <Text style={[styles.text3, themeTextStyle]}> {catLocation} </Text>
+        <Text style={[styles.text3, themeTextStyle]} testID="location"> {catLocation} </Text>
 
         <Text style={[styles.text4, themeTextStyle]}>    Color
           <Text style={styles.text2}> *</Text>
@@ -141,7 +144,6 @@ const CatForm = () => {
               return selectedItem;
             } }
             rowTextForSelection={(item: any, index: any) => {
-      
               return item;
             } } 
             
@@ -171,43 +173,49 @@ const CatForm = () => {
         <TextInput
           style={styles.input}
           onChangeText={uniqueFeatures}
-          value={features} />
+          value={features}
+          testID="features"
+        />
         <Text style={[styles.text4, themeTextStyle]}>    Possible Name</Text>
         <TextInput
           style={styles.input}
           onChangeText={possibleName}
-          value={name} />
+          value={name}
+          testID="possibleName" 
+        />
         <Text style={[styles.text4, themeTextStyle]}>    Behavior</Text>
         <TextInput
           style={styles.input}
           onChangeText={behavior}
-          value={catBehavior} />
+          value={catBehavior}
+          testID="catBehavior"
+        />
         
 
         <Text style={[styles.text4, themeTextStyle]}>    Age Estimate</Text>
         <View style={{ flexDirection: 'row' }}>
-        <TextInput
-          style={styles.input}
-          onChangeText={ageEstimate}
-          value={age} 
-          
+          <TextInput
+            style={styles.input}
+            onChangeText={ageEstimate}
+            value={age} 
+            testID="ageEstimate"
           />
-        <SelectDropdown
-            data={times}
-            onSelect={(selectedItem: string, index: any) => {
-              console.log(selectedItem, index);
-              timeSelection(selectedItem)
-            
-            } }
-            buttonTextAfterSelection={(selectedItem: any, index: any) => {
-              return selectedItem;
-            } }
-            rowTextForSelection={(item: any, index: any) => {
-      
-              return item;
-            } } 
-          />  
-          </View>
+          <SelectDropdown
+              data={times}
+              onSelect={(selectedItem: string, index: any) => {
+                console.log(selectedItem, index);
+                timeSelection(selectedItem)
+              
+              } }
+              buttonTextAfterSelection={(selectedItem: any, index: any) => {
+                return selectedItem;
+              } }
+              rowTextForSelection={(item: any, index: any) => {
+        
+                return item;
+              } } 
+          />
+        </View>
         <Text style={[styles.text4, themeTextStyle]}>    Type</Text>
         <SelectDropdown
             data={types}
@@ -258,16 +266,18 @@ const CatForm = () => {
             rowTextForSelection={(item: any, index: any) => {
               return item;
             } } 
-          />
+        />
         
         <Text style={[styles.text4, themeTextStyle]}>    Additional Comments</Text>
         <TextInput
           style={styles.multiLine}
           onChangeText={additionalComments}
           value={comments} 
+          testID="comments"
         />
 
         <Button
+          testID={'Submit.Button'}
           title="Submit"
           color="#8b0000"
           
