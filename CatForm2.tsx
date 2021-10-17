@@ -8,12 +8,19 @@ import { Cat, Pin } from "./types";
 import { addCat, addPin } from "./utils/dbInterface";
 import { LatLng } from "react-native-maps";
 import LocationPicker from "./screens/LocationPicker";
-import { Modal, TextInput, SafeAreaView } from "react-native";
+import {
+  Modal,
+  TextInput,
+  SafeAreaView,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
+import CatImagePicker from "./components/ImagePicker";
+import Camera from "./components/Camera";
 
 export const CatForm2 = () => {
-  const colors = ["Cat Color", "Orange", "Brown", "Black", "White"];
+  const colors = ["Orange", "Brown", "Black", "White"];
   const eyeColors = [
-    "Eye Color",
     "Brown",
     "Green",
     "Blue",
@@ -30,6 +37,7 @@ export const CatForm2 = () => {
   const [healthy, setHealthy] = useState(false);
   const [kitten, setKitten] = useState(false);
   const [locationModalVisible, setLocationModalVisible] = useState(false);
+  const [camModalVisible, setCamModalVisible] = useState(false);
 
   const [cat, setCat]: Cat = useState({
     catID: uuidv4(),
@@ -63,20 +71,24 @@ export const CatForm2 = () => {
 
   return (
     <SafeAreaView>
-      <View>
+      <ScrollView>
         <TextInput
           value={cat.name}
-          placeholder={"enter possible name here"}
+          placeholder="Enter possible name here"
+          placeholderTextColor="black"
           onChangeText={(text) =>
             setCat((currentState) => ({
               ...currentState,
               name: text,
             }))
           }
+          style={styles.input}
         />
         <TextInput
+          style={styles.input}
+          placeholder="Enter additional information here"
+          placeholderTextColor="black"
           value={cat.comments}
-          placeholder={"enter additional information"}
           onChangeText={(text) =>
             setCat((currentState) => ({
               ...currentState,
@@ -110,6 +122,8 @@ export const CatForm2 = () => {
         />
         <Picker
           selectedValue={color}
+          mode={"dropdown"}
+          numberOfLines={2}
           onValueChange={(item) => {
             setColor(item);
             cat.color = colors[item];
@@ -121,6 +135,7 @@ export const CatForm2 = () => {
         </Picker>
         <Picker
           selectedValue={eyeColor}
+          prompt={"hello"}
           onValueChange={(item) => {
             setEyeColor(item);
             cat.eyeColor = eyeColors[item];
@@ -137,6 +152,18 @@ export const CatForm2 = () => {
             console.log(pin);
           }}
         />
+        <CatImagePicker />
+
+        {/* <Button title="Open Camera" onPress={() => setCamModalVisible(true)} />
+
+        <Modal
+          animationType="slide"
+          onRequestClose={() => setCamModalVisible(!camModalVisible)}
+          transparent={true}
+          visible={camModalVisible}
+        >
+          <Camera />
+        </Modal> */}
         <Button
           title="add location"
           color="#2126F3"
@@ -159,7 +186,58 @@ export const CatForm2 = () => {
             onConfirm={onLocationPick}
           />
         </Modal>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+    color: "black",
+    backgroundColor: "white",
+  },
+  lightInput: {
+    color: "black",
+  },
+  darkInput: {
+    color: "white",
+  },
+  multiLine: {
+    height: 60,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+    backgroundColor: "white",
+  },
+  scrollView: {
+    marginHorizontal: 20,
+  },
+  text: {
+    color: "white",
+    fontSize: 42,
+    lineHeight: 84,
+    fontWeight: "bold",
+    textAlign: "center",
+    backgroundColor: "#8b0000",
+    marginBottom: 30,
+  },
+
+  text2: {
+    fontSize: 20,
+    color: "red",
+    fontWeight: "normal",
+  },
+
+  text3: {
+    fontSize: 15,
+    fontStyle: "italic",
+  },
+  text4: {
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+});
