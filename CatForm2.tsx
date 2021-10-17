@@ -47,7 +47,7 @@ export const CatForm2 = () => {
   const [pin, setPin]: Pin = useState({
     pinID: cat.pinID,
     location: "",
-    time: null,
+    time: new Date(),
     votes: 0,
     accountID: "",
     type: cat.catID,
@@ -131,10 +131,10 @@ export const CatForm2 = () => {
           })}
         </Picker>
         <Button
-          title="submit cat"
+          title="print objects"
           onPress={() => {
-            addCat(cat);
-            addPin(pin);
+            console.log(cat);
+            console.log(pin);
           }}
         />
         <Button
@@ -142,11 +142,12 @@ export const CatForm2 = () => {
           color="#2126F3"
           onPress={() => setLocationModalVisible(true)}
         />
+
         <Button
-          title="print objects"
+          title="submit cat"
           onPress={() => {
-            console.log(cat);
-            console.log(pin);
+            addCat(cat);
+            addPin(pin);
           }}
         />
 
