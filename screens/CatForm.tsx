@@ -6,10 +6,12 @@ import LocationPicker from "./LocationPicker";
 import { LatLng } from "react-native-maps";
 import * as Location from 'expo-location';
 
+import CatImagePicker from "../components/ImagePicker"
+import Camera from "../components/Camera"
 
 const CatForm = () => {
 
-  const [content, media] = React.useState("");
+  const [content, media] = React.useState();
   const [catLocation, location] = React.useState("");
   const [features, uniqueFeatures] = React.useState("");
   const [name, possibleName] = React.useState("");
@@ -17,7 +19,7 @@ const CatForm = () => {
   const [age, ageEstimate] = React.useState("");
   const [comments, additionalComments] = React.useState("");
   const [id, catID] = React.useState("");
-  const colors = ["Orange", "Brown", "Black", "White"];
+  const colors = ["Orange", "Brown", "Black", "White", "Gray", "Tri-Colored"];
   const scale = ["1", "2", "3", "4", "5"];
   const types = ["Stray", "Feral"];
   const conditions = ["Healthy", "Needs medical attention"];
@@ -33,6 +35,8 @@ const CatForm = () => {
 
   
   const [currentDate, setCurrentDate] = useState('');
+
+  const [camModalVisible, setCamModalVisible] = useState(false);
 
   useEffect(() => {
     var date = new Date().getDate(); //Current Date
@@ -92,7 +96,7 @@ const CatForm = () => {
           onChangeText={catID}
           value={id} 
           testID="catID"
-        />
+          />
 
         <Text style={[styles.text4, themeTextStyle]}>    Media
           <Text style={styles.text2}> *</Text>
@@ -103,8 +107,23 @@ const CatForm = () => {
           onChangeText={media}
           value={content} 
           testID="media"
+        <CatImagePicker/>
+
+        <Button
+          title="Open Camera"
+          onPress={()=> setCamModalVisible(true)}
         />
-          
+
+        <Modal
+          animationType="slide"
+          onRequestClose={() =>
+            setCamModalVisible(!camModalVisible)}
+          transparent= {true}
+          visible={camModalVisible}
+        >
+          <Camera/>
+        </Modal>
+        
           
         <Text style={[styles.text4, themeTextStyle]}>    Location
           <Text style={styles.text2}> *</Text>
