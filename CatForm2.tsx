@@ -175,6 +175,7 @@ export const CatForm2 = () => {
           onPress={() => {
             addCat(cat);
             addPin(pin);
+            return;
           }}
         />
 
