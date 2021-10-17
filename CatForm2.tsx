@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { Button, CheckBox } from "react-native-elements";
 import { View } from "./components/Themed";
 import { Picker } from "@react-native-picker/picker";
-import { useForm } from "./hooks/useForm";
+import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 import { Cat, Pin } from "./types";
 import { addCat, addPin } from "./utils/dbInterface";
 import { LatLng } from "react-native-maps";
+import LocationPicker from "./screens/LocationPicker";
+import { Modal, TextInput, SafeAreaView } from "react-native";
 
 export const CatForm2 = () => {
   const colors = ["Cat Color", "Orange", "Brown", "Black", "White"];
@@ -27,15 +29,9 @@ export const CatForm2 = () => {
   const [friendly, setFriendly] = useState(false);
   const [healthy, setHealthy] = useState(false);
   const [kitten, setKitten] = useState(false);
-
   const [locationModalVisible, setLocationModalVisible] = useState(false);
 
-  function onLocationPick(coordinate: LatLng) {
-    setPin((pin.location = coordinate));
-    setLocationModalVisible(false);
-  }
-
-  const [values, handleChange]: Cat = useForm({
+  const [cat, setCat]: Cat = useState({
     catID: uuidv4(),
     comments: "",
     name: "",
@@ -49,37 +45,51 @@ export const CatForm2 = () => {
   });
 
   const [pin, setPin]: Pin = useState({
-    pinID: values.pinID,
-    location: null,
+    pinID: cat.pinID,
+    location: "",
     time: null,
     votes: 0,
     accountID: "",
-    type: values.catID,
+    type: cat.catID,
   });
 
-  console.log(values);
+  function onLocationPick(coordinate: LatLng) {
+    setPin((currentState) => ({
+      ...currentState,
+      location: coordinate,
+    }));
+    setLocationModalVisible(false);
+  }
 
   return (
-    <View>
-      <input
-        name="name"
-        value={values.name}
-        placeholder={"enter possible name here"}
-        onChange={handleChange}
-      />
-      <input
-        name="comments"
-        value={values.features}
-        placeholder={"enter additional information"}
-        onChange={handleChange}
-      />
-      <div>
+    <SafeAreaView>
+      <View>
+        <TextInput
+          value={cat.name}
+          placeholder={"enter possible name here"}
+          onChangeText={(text) =>
+            setCat((currentState) => ({
+              ...currentState,
+              name: text,
+            }))
+          }
+        />
+        <TextInput
+          value={cat.comments}
+          placeholder={"enter additional information"}
+          onChangeText={(text) =>
+            setCat((currentState) => ({
+              ...currentState,
+              comments: text,
+            }))
+          }
+        />
         <CheckBox
           title="Friendly?"
           checked={friendly}
           onPress={() => {
             setFriendly(!friendly);
-            values.friendly = !values.friendly;
+            cat.friendly = !cat.friendly;
           }}
         />
         <CheckBox
@@ -87,7 +97,7 @@ export const CatForm2 = () => {
           checked={healthy}
           onPress={() => {
             setHealthy(!healthy);
-            values.healthy = !values.healthy;
+            cat.healthy = !cat.healthy;
           }}
         />
         <CheckBox
@@ -95,16 +105,14 @@ export const CatForm2 = () => {
           checked={kitten}
           onPress={() => {
             setKitten(!kitten);
-            values.kitten = !values.kitten;
+            cat.kitten = !cat.kitten;
           }}
         />
-      </div>
-      <div>
         <Picker
           selectedValue={color}
           onValueChange={(item) => {
             setColor(item);
-            values.color = colors[item];
+            cat.color = colors[item];
           }}
         >
           {colors.map((item, index) => {
@@ -115,28 +123,42 @@ export const CatForm2 = () => {
           selectedValue={eyeColor}
           onValueChange={(item) => {
             setEyeColor(item);
-            values.eyeColor = eyeColors[item];
+            cat.eyeColor = eyeColors[item];
           }}
         >
           {eyeColors.map((item, index) => {
             return <Picker.Item label={item} value={index} key={index} />;
           })}
         </Picker>
-      </div>
-      <Button
-        title="submit cat"
-        onPress={() => {
-          addCat(values);
-          addPin(pin);
-        }}
-      />
-      <Button
-        title="print objects"
-        onPress={() => {
-          console.log(values);
-          console.log(pin);
-        }}
-      />
-    </View>
+        <Button
+          title="submit cat"
+          onPress={() => {
+            addCat(cat);
+            addPin(pin);
+          }}
+        />
+        <Button
+          title="add location"
+          color="#2126F3"
+          onPress={() => setLocationModalVisible(true)}
+        />
+        <Button
+          title="print objects"
+          onPress={() => {
+            console.log(cat);
+            console.log(pin);
+          }}
+        />
+
+        <Modal animationType="slide" visible={locationModalVisible}>
+          <LocationPicker
+            onCancel={() => {
+              setLocationModalVisible(false);
+            }}
+            onConfirm={onLocationPick}
+          />
+        </Modal>
+      </View>
+    </SafeAreaView>
   );
 };
