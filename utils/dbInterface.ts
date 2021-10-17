@@ -2,32 +2,42 @@ import firebase from "./firebase";
 import { AuthContext } from "../context/FirebaseAuthContext";
 //import { PostContext } from "../context/FirebasePostContext";
 import React from "react";
+import { Cat, Pin } from "../types";
+import { LatLng } from "react-native-maps";
 
-const user = React.useContext(AuthContext);
+const root = firebase.database().ref();
+let reference;
+
+// const user = React.useContext(AuthContext);
 //const post = React.useContext(PostContext);
 //const accountsRef = firebase.database().ref("Accounts/");
 //const post = firebase.database().ref("Posts/")
 
-export const useAddUser = async () => {
+// export function useAddUser() {
+//   firebase
+//     .database()
+//     .ref("Accounts/" + user?.uid)
+//     .set({
+//       Account: user?.uid,
+//     });
+
+//   console.log("User added");
+// }
+
+export function addCat(cat: Cat) {
   firebase
     .database()
-    .ref("Accounts/" + user?.uid)
-    .set({
-      Account: user?.uid,
-    });
+    .ref()
+    .child("Cats/" + cat.catID)
+    .set(cat);
+}
 
-  console.log("User added");
-};
+export function addPin(pin: Pin) {
+  // pin.accountID = <string>firebase.auth().currentUser?.uid;
 
-
-/*
-export const useAddPost = async () => {
   firebase
-  .database()
-  .ref("Posts/" + post?.uid)
-  .set({
-    Post: post?.uid,
-  });
-  console.log("Post added");
-};*/
-
+    .database()
+    .ref()
+    .child("Pins/" + pin.pinID)
+    .set(pin);
+}

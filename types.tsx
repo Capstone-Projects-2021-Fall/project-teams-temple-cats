@@ -72,11 +72,12 @@ export type Account = {
 };
 
 export type Pin = {
-  PinID: string;
-  Location: LatLng;
-  Time: Date;
-  Votes: number;
-  AccountID: string;
+  pinID: string;
+  location: LatLng;
+  time: Date;
+  votes: number;
+  accountID: string;
+  type: string;
 };
 
 export type FeedingStation = {
@@ -87,15 +88,14 @@ export type FeedingStation = {
 };
 
 export type Cat = {
-  CatID: string;
-  Media: string;
-  Features: string;
-  Name: string;
-  Color: string;
-  Age: number;
-  Condition: string;
-  Friendly: number;
-  Comments: string;
-  Eye: string;
-  PinID: string;
+  catID: string;
+  media: string;
+  name: string;
+  color: string;
+  eyeColor: string;
+  kitten: boolean;
+  healthy: boolean;
+  friendly: boolean;
+  comments: string;
+  pinID: string;
 };
