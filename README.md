@@ -47,6 +47,7 @@ For testing the latest version of our app, follow these testing procedures:
 * Click account button on navigation bar the screen with the word "account" will appear with a button. 
 * On account screen click sign out. 
 
-* Do not click the "i" button on top right of the home screen. You will have to close app and reopen app.
+* NOTE: Do not click the "i" button on top right of the home screen. You will have to close app and reopen app.
+
 ## Source Code
-* [V1.0](link)
+* [V1.0](https://github.com/Capstone-Projects-2021-Fall/project-teams-temple-cats/releases/tag/v1.0.0)
