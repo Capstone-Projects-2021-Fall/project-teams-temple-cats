@@ -10,7 +10,7 @@ The Temple Cats mobile app is for people in the Temple University area who want 
 * General layout
 * Facebook authentication
 * Home/Map screen
-* Map pins found in database (mock pins around Temple campus)
+* Displaying on the map of pins found in database (there are mock pins around Temple campus)
 * Cat form (submitted cats should appear on map)
 
 ## Installation instructions
