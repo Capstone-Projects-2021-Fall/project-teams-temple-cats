@@ -24,7 +24,7 @@ For testing the latest version of our app, follow these testing procedures:
 * Open the app by following installation instructions
 * Click log in button.
 * A pop-up will appear saying '"Expo" Wants to Use "expo.io" to Sign In'. Click continute button.
-* A pop-up will appear saying 'The app at exp://10.0.0.191:19000/--/expo-auth-session is asking you to sign into another servce. Is this OK?'. Click Yes.
+* A pop-up will appear saying 'The app at ... is asking you to sign into another servce. Is this OK?'. Click Yes.
 * Authenticate with Facebook and allow.
 * Click top left "+" button to enter a cat.
 * A pop-up will appear saying 1 of 2 things, "Allow to use location" or "Experience needs permissions" click allow
@@ -34,7 +34,8 @@ For testing the latest version of our app, follow these testing procedures:
 * When map is displayed click on a point on the map to create a pin. A red pin should appear.
 * Then click submit. 
 * Click submit button on form. 
-* Errors will appear click dismiss until they are gone and map appears again
+* Errors will appear click dismiss until they are gone.
+* A pop-up will appear saying 'Alert cat submitted reload app'. Click OK
 * Close the expo app
 * Open the expo app
 * Click recently opened
