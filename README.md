@@ -27,6 +27,7 @@ For testing the latest version of our app, follow these testing procedures:
 * A pop-up will appear saying 'The app at exp://10.0.0.191:19000/--/expo-auth-session is asking you to sign into another servce. Is this OK?'. Click Yes.
 * Authenticate with Facebook and allow.
 * Click top left "+" button to enter a cat.
+* A pop-up will appear saying 1 of 2 things, "Allow to use location" or "Experience needs permissions" click allow
 * Enter all or some information on the form besides the media!
 * Scroll down, you must scroll down using the bottom half of your form screen
 * Click add location
