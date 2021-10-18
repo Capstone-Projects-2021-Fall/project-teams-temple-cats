@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Button, CheckBox } from "react-native-elements";
-import { View } from "./components/Themed";
 import { Picker } from "@react-native-picker/picker";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
@@ -17,11 +16,11 @@ import {
 } from "react-native";
 import CatImagePicker from "./components/ImagePicker";
 import Camera from "./components/Camera";
-import useColorScheme from "./hooks/useColorScheme";
 
 export const CatForm2 = () => {
-  const colors = ["Orange", "Brown", "Black", "White"];
+  const colors = ["Set Cat Color", "Orange", "Brown", "Black", "White"];
   const eyeColors = [
+    "Set Cat Eye Color",
     "Brown",
     "Green",
     "Blue",
@@ -31,12 +30,6 @@ export const CatForm2 = () => {
     "Hazel",
     "Mixed",
   ];
-
-  const colorScheme = useColorScheme();
-
-  // const themeTextStyle = colorScheme === 'light' ? styles.lightThemeText : styles.darkThemeText;
-  const themeTextStyle =
-    colorScheme === "light" ? styles.lightInput : styles.darkInput;
 
   const [color, setColor] = useState();
   const [eyeColor, setEyeColor] = useState();
@@ -203,45 +196,5 @@ const styles = StyleSheet.create({
     padding: 10,
     color: "black",
     backgroundColor: "white",
-  },
-  lightInput: {
-    color: "black",
-  },
-  darkInput: {
-    color: "white",
-  },
-  multiLine: {
-    height: 60,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-    backgroundColor: "white",
-  },
-  scrollView: {
-    marginHorizontal: 20,
-  },
-  text: {
-    color: "white",
-    fontSize: 42,
-    lineHeight: 84,
-    fontWeight: "bold",
-    textAlign: "center",
-    backgroundColor: "#8b0000",
-    marginBottom: 30,
-  },
-
-  text2: {
-    fontSize: 20,
-    color: "red",
-    fontWeight: "normal",
-  },
-
-  text3: {
-    fontSize: 15,
-    fontStyle: "italic",
-  },
-  text4: {
-    fontSize: 20,
-    fontWeight: "bold",
   },
 });
