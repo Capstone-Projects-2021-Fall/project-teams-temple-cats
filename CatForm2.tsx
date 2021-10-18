@@ -153,13 +153,7 @@ export const CatForm2 = () => {
             return <Picker.Item label={item} value={index} key={index} />;
           })}
         </Picker>
-        <Button
-          title="print objects"
-          onPress={() => {
-            console.log(cat);
-            console.log(pin);
-          }}
-        />
+
         <CatImagePicker />
 
         {/* <Button title="Open Camera" onPress={() => setCamModalVisible(true)} />
