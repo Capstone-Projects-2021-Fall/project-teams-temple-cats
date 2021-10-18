@@ -18,7 +18,7 @@ Currently, the alpha version of the application is being hosted on an Expo serve
 
 On iOS: Scan the following QR code with your camera.
 
-On Android: Install the Expo Go app on Google Play and scan the following QR code within the app.
+On Android: Install the Expo Go app on Google Play, open, and click Scan QR Code. Grant permission to your device's camera and scan the following QR code within the app.
 
 ![Expo Go QR Code](/QRcode.png)
 
@@ -54,4 +54,4 @@ For testing the latest version of our app, follow these testing procedures:
 * NOTE: Do not click the "i" button on top right of the home screen. You will have to close app and reopen app.
 
 ## Source Code
-* [V1.0](https://github.com/Capstone-Projects-2021-Fall/project-teams-temple-cats/releases/tag/v1.0.0)
+* [v1.0.0](https://github.com/Capstone-Projects-2021-Fall/project-teams-temple-cats/releases/tag/v1.0.0)
