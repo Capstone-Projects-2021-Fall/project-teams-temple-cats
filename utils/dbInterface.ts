@@ -2,7 +2,7 @@ import firebase from "./firebase";
 import { AuthContext } from "../context/FirebaseAuthContext";
 //import { PostContext } from "../context/FirebasePostContext";
 import React from "react";
-import { Cat, Pin } from "../types";
+import { Account, Cat, Pin } from "../types";
 import { LatLng } from "react-native-maps";
 
 const root = firebase.database().ref();
@@ -13,16 +13,15 @@ let reference;
 //const accountsRef = firebase.database().ref("Accounts/");
 //const post = firebase.database().ref("Posts/")
 
-// export function useAddUser() {
-//   firebase
-//     .database()
-//     .ref("Accounts/" + user?.uid)
-//     .set({
-//       Account: user?.uid,
-//     });
+export function addAccount(account: Account) {
+  firebase
+    .database()
+    .ref()
+    .child("Accounts/" + account.accountID)
+    .set(account);
 
-//   console.log("User added");
-// }
+  console.log("User added");
+}
 
 export function addCat(cat: Cat) {
   firebase

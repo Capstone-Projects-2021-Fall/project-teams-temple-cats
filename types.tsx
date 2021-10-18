@@ -65,10 +65,10 @@ export type Announcement = {
 };
 
 export type Account = {
-  AccountID: string;
-  ModStatus: boolean;
-  Banned: boolean;
-  Points: number;
+  accountID: string;
+  modStatus: boolean;
+  banned: boolean;
+  points: number;
 };
 
 export type Pin = {
