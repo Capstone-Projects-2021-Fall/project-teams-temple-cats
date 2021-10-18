@@ -22,14 +22,14 @@ import Home from "../screens/Home";
 import Account from "../screens/Account";
 import Resources from "../screens/Resources";
 import Login from "../screens/Login";
-import CatForm from "../screens/CatForm"
+import CatForm from "../screens/CatForm";
 import {
   RootStackParamList,
   RootTabParamList,
   RootTabScreenProps,
 } from "../types";
 import { AuthContext } from "../context/FirebaseAuthContext";
-
+import { CatForm2 } from "../CatForm2";
 
 /**
  * Function that renders the navigation bar component.
@@ -38,9 +38,6 @@ import { AuthContext } from "../context/FirebaseAuthContext";
  * @param {ColorSchemeName} props.colorScheme ColorSchemeName to decide the color scheme of the component
  * @returns {JSX.Element} JSX element of the navigation component
  */
-
-
-
 
 export default function Navigation({
   colorScheme,
@@ -81,15 +78,13 @@ function RootNavigator() {
       <Stack.Group screenOptions={{ presentation: "transparentModal" }}>
         <Stack.Screen name="Announcements" component={Announcements} />
       </Stack.Group>
-      
+
       <Stack.Group screenOptions={{ presentation: "modal" }}>
-        <Stack.Screen name="CatForm" component={CatForm} />
+        <Stack.Screen name="CatForm" component={CatForm2} />
       </Stack.Group>
     </Stack.Navigator>
-    
   );
 }
-
 
 /**
  * A bottom tab navigator using for displaying tab buttons on the bottom of the display to switch screens.
@@ -123,7 +118,7 @@ function BottomTabNavigator() {
         component={Home}
         options={({ navigation }: RootTabScreenProps<"Home">) => ({
           title: "Home",
-         
+
           headerLeft: () => (
             <Pressable
               onPress={() => navigation.navigate("CatForm")}
@@ -139,7 +134,7 @@ function BottomTabNavigator() {
               />
             </Pressable>
           ),
-         
+
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
             <Pressable

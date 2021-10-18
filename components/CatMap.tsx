@@ -14,7 +14,7 @@ import Gps from "../utils/gps";
 export default function CatMap() {
   const [markers, setMarkers] = useState<any>([]);
   let markersArray = [];
-  let newState: { id: string; lat: any; lng: any; description: any; }[] = [];
+  let newState: { id: string; lat: any; lng: any; description: any }[] = [];
   let result: any[] = [];
   var result_counter = 0;
   let region = Gps();
@@ -27,7 +27,7 @@ export default function CatMap() {
 
       firebase
         .database()
-        .ref("Cats/")
+        .ref("Pins/")
         .on("value", (snap) => {
           //Stores cat objects results into array
 
@@ -57,8 +57,8 @@ export default function CatMap() {
             items[item].description = description;
             newState.push({
               id: item,
-              lat: items[item].Location.lat,
-              lng: items[item].Location.lng,
+              lat: items[item].location.latitude,
+              lng: items[item].location.longitude,
               description: items[item].description,
             });
 
@@ -77,9 +77,22 @@ export default function CatMap() {
         region={region}
         showsUserLocation={true}
       >
-        {markers?.map((
-          item: { id: string | undefined; lat: any; lng: any; description: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined; },
-          index: React.Key | null | undefined) => (
+        {markers?.map(
+          (
+            item: {
+              id: string | undefined;
+              lat: any;
+              lng: any;
+              description:
+                | boolean
+                | React.ReactChild
+                | React.ReactFragment
+                | React.ReactPortal
+                | null
+                | undefined;
+            },
+            index: React.Key | null | undefined
+          ) => (
             <Marker
               key={index}
               title={item.id}
@@ -92,7 +105,8 @@ export default function CatMap() {
                 <Text>{item.description}</Text>
               </Callout>
             </Marker>
-          ))}
+          )
+        )}
       </MapView>
     </View>
   );
