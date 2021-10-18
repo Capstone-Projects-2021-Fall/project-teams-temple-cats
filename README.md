@@ -14,16 +14,30 @@ The Temple Cats mobile app is for people in the Temple University area who want 
 * Cat form (submitted cats should appear on map)
 
 ## Installation instructions
-Currently, the alpha version of the application is being hosted on an Expo server. In order to access the app, install the Expo Go app (available on Google Play and the App Store), and scan to following QR code within the app to install Temple Cats.
+Currently, the alpha version of the application is being hosted on an Expo server. In order to access the app, install the Expo Go app (available on Google Play and the App Store), and scan the following QR code within the app to install Temple Cats.
 
 ![Expo Go QR Code](/QRcode.png)
 
 ## Testing Instructions
-Acceptance testing should test all of all of the functional and non-functional requirements of the application. These tests are designed to be done manually by a group of different users via the Expo Go app. Users should be able to complete these series of tasks end-to-end on their devices and note the results of each step.
-
 For testing the latest version of our app, follow these testing procedures:
-* Open the app
-* Authenticate with Facebook
+
+* Open the app by following installation instructions
+* Click log in button.
+* A pop-up will appear saying '"Expo" Wants to Use "expo.io" to Sign In'. Click continute button.
+* A pop-up will appear saying 'The app at exp://10.0.0.191:19000/--/expo-auth-session is asking you to sign into another servce. Is this OK?'. Click Yes.
+* Authenticate with Facebook and allow.
+* Click top left "+" button to enter a cat.
+* Enter all or some information on the form besides the media!
+* Scroll down, you must scroll down using the bottom half of your form screen
+* Click add location
+* When map is displayed click on a point on the map to create a pin. A red pin should appear.
+* Then click submit. 
+* Click submit button on form. 
+* Errors will appear click dismiss until they are gone and map appears again
+* Close the expo app
+* Open the expo app
+* Click recently opened
+* Your created pin will appear on map
 
 ## Source Code
 * [V1.0](link)
