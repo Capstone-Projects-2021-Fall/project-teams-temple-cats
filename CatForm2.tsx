@@ -17,6 +17,7 @@ import {
 } from "react-native";
 import CatImagePicker from "./components/ImagePicker";
 import Camera from "./components/Camera";
+import useColorScheme from "./hooks/useColorScheme";
 
 export const CatForm2 = () => {
   const colors = ["Orange", "Brown", "Black", "White"];
@@ -30,6 +31,12 @@ export const CatForm2 = () => {
     "Hazel",
     "Mixed",
   ];
+
+  const colorScheme = useColorScheme();
+
+  // const themeTextStyle = colorScheme === 'light' ? styles.lightThemeText : styles.darkThemeText;
+  const themeTextStyle =
+    colorScheme === "light" ? styles.lightInput : styles.darkInput;
 
   const [color, setColor] = useState();
   const [eyeColor, setEyeColor] = useState();
@@ -82,10 +89,10 @@ export const CatForm2 = () => {
               name: text,
             }))
           }
-          style={styles.input}
+          style={(styles.input, themeTextStyle)}
         />
         <TextInput
-          style={styles.input}
+          style={(styles.input, themeTextStyle)}
           placeholder="Enter additional information here"
           placeholderTextColor="black"
           value={cat.comments}
