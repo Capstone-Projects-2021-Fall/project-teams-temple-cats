@@ -1,140 +1,365 @@
 import firebase from "firebase";
-import React from "react";
-import { SafeAreaView, StyleSheet, TextInput ,Text, ScrollView, StatusBar, View, Button, Alert} from "react-native";
+import React, { useEffect, useState } from "react";
+import SelectDropdown from "react-native-select-dropdown";
+import {
+  SafeAreaView,
+  StyleSheet,
+  TextInput,
+  Text,
+  ScrollView,
+  StatusBar,
+  Button,
+  View,
+  useColorScheme,
+  Modal,
+  Alert,
+} from "react-native";
+import LocationPicker from "./LocationPicker";
+import { LatLng } from "react-native-maps";
+import * as Location from "expo-location";
 
+import CatImagePicker from "../components/ImagePicker";
+import Camera from "../components/Camera";
 
 const CatForm = () => {
-  const [text1, media] = React.useState("");
-  const [text2, uniqueFeatures] = React.useState("");
-  const [text3, possibleName] = React.useState("");
-  const [text4, behavior] = React.useState("");
-  const [text5, color] = React.useState("");
-  const [text6, ageEstimate] = React.useState("");
-  const [text7, condition] = React.useState("");
-  const [text8, eyeColor] = React.useState("");
-  const [text9, friendliness] = React.useState("");
-  const [text10, additionalComments] = React.useState("");
-  const [text11, pinID] = React.useState("");
+  const [content, media] = React.useState();
+  const [catLocation, location] = React.useState("");
+  const [features, uniqueFeatures] = React.useState("");
+  const [name, possibleName] = React.useState("");
+  const [catBehavior, behavior] = React.useState("");
+  const [age, ageEstimate] = React.useState("");
+  const [comments, additionalComments] = React.useState("");
+  const [id, catID] = React.useState("");
+  const colors = ["Orange", "Brown", "Black", "White", "Gray", "Tri-Colored"];
+  const scale = ["1", "2", "3", "4", "5"];
+  const types = ["Stray", "Feral"];
+  const conditions = ["Healthy", "Needs medical attention"];
+  const eyeColors = [
+    "Brown",
+    "Green",
+    "Blue",
+    "Black",
+    "Yellow",
+    "Orange",
+    "Hazel",
+    "Mixed",
+  ];
+  const times = [" months", " years"];
+
+  const [colorSelected, colorSelection] = useState("");
+  const [eyeColorSelected, eyeColorSelection] = useState("");
+  const [conditionSelected, conditionSelection] = useState("");
+  const [typeSelected, typeSelection] = useState("");
+  const [friendlinessSelected, friendlinessSelection] = useState("");
+  const [timeSelected, timeSelection] = useState("");
+
+  const [currentDate, setCurrentDate] = useState("");
+
+  const [camModalVisible, setCamModalVisible] = useState(false);
+
+  useEffect(() => {
+    var date = new Date().getDate(); //Current Date
+    var month = new Date().getMonth() + 1; //Current Month
+    var year = new Date().getFullYear(); //Current Year
+    var hours = new Date().getHours(); //Current Hours
+    var min = new Date().getMinutes(); //Current Minutes
+    var sec = new Date().getSeconds(); //Current Seconds
+    setCurrentDate(
+      year + "/" + month + "/" + date + "/" + hours + ":" + min + ":" + sec
+    );
+  }, []);
+
+  const colorScheme = useColorScheme();
+
+  // const themeTextStyle = colorScheme === 'light' ? styles.lightThemeText : styles.darkThemeText;
+  const themeTextStyle =
+    colorScheme === "light" ? styles.lightInput : styles.darkInput;
+
+  const [locationModalVisible, setLocationModalVisible] = useState(false);
+
+  function onLocationPick(coordinate: LatLng) {
+    location(coordinate.latitude + ", " + coordinate.longitude);
+    setLocationModalVisible(false);
+  }
+
+  function onUseCurrentLocation() {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        return;
+      } else {
+        const gps = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.Balanced,
+        });
+        location(gps.coords.latitude + ", " + gps.coords.longitude); // TODO: revisit this when we are submitting location to create pins in db
+      }
+    })();
+  }
 
   return (
     <SafeAreaView>
       <ScrollView>
-     
-      <Text style={styles.text}>Cat Form</Text>
-      <Text style={{ fontSize: 20, fontWeight:"bold" }}>    Media</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={media}
-        value={text1}
-      />
-      <Text style={{ fontSize: 20, fontWeight:"bold" }}>    Unique Features</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={uniqueFeatures}
-        value={text2}
-      />
-      <Text style={{ fontSize: 20, fontWeight:"bold" }}>    Possible Name</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={possibleName}
-        value={text3}
-      />
-      <Text style={{ fontSize: 20, fontWeight:"bold" }}>    Behavior</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={behavior}
-        value={text4}
-      />
-      <Text style={{ fontSize: 20, fontWeight:"bold" }}>    Color</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={color}
-        value={text5}
-      />
-      <Text style={{ fontSize: 20, fontWeight:"bold" }}>    Age Estimate</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={ageEstimate}
-        value={text6}
-      />
-      <Text style={{ fontSize: 20, fontWeight:"bold" }}>    Condition</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={condition}
-        value={text7}
-      />
-       <Text style={{ fontSize: 20, fontWeight:"bold" }}>    Eye Color</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={eyeColor}
-        value={text8}
-      />
-      <Text style={{ fontSize: 20, fontWeight:"bold" }}>    Friendliness</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={friendliness}
-        value={text9}
-      />
-      <Text style={{ fontSize: 20, fontWeight:"bold" }}>    Additional Comments</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={additionalComments}
-        value={text10}
-      />
-      <Text style={{ fontSize: 20, fontWeight:"bold" }}>    Pin ID</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={pinID}
-        value={text11}
-      />
+        <Text style={styles.text}>Cat Form</Text>
 
-       <Button
-        title="Submit"
-        color="#8b0000"
-        onPress={() => 
-        {
-            if (!text1.trim() ||  !text2.trim() || !text3.trim() || !text4.trim() || !text5.trim() || !text6.trim()
-            || !text7.trim() || !text8.trim() || !text9.trim() || !text10.trim() || !text11.trim()) {
-            alert('Please fill out all fields');
-            return;
-            }
-            firebase.database().ref('Cats/'+ "110192021-2").set({
-              media: text1,
-              uniqueFeatures: text2,
-              possibleName: text3,
-              behavior: text4,
-              color: text5,
-              ageEstimate: text6,
-              condition: text7,
-              eyeColor: text8,
-              friendliness: text9,
-              additionalComments: text10,
-              pinID: text11
-            });
-            console.log(text1,
-              text2,
-              text3,
-              text4,
-              text5,
-              text6,
-              text7,
-              text8,
-              text9,
-              text10,
-              text11)
-            alert('Submitted Successfully')
-            return;
-          }
-        }
+        <Text style={styles.text2}>
+          {" "}
+          *
+          <Text style={[styles.text3, themeTextStyle]}>
+            {" "}
+            fields are required
+          </Text>
+        </Text>
+
+        <Text style={[styles.text4, themeTextStyle]}>
+          {" "}
+          Cat ID
+          <Text style={styles.text2}> *</Text>
+        </Text>
+
+        <TextInput
+          style={styles.input}
+          onChangeText={catID}
+          value={id}
+          testID="catID"
         />
 
-      
+        <Text style={[styles.text4, themeTextStyle]}>
+          {" "}
+          Media
+          <Text style={styles.text2}> *</Text>
+        </Text>
+
+        <TextInput
+          style={styles.input}
+          onChangeText={media}
+          value={content}
+          testID="media"
+        />
+        <CatImagePicker />
+
+        <Button title="Open Camera" onPress={() => setCamModalVisible(true)} />
+
+        <Modal
+          animationType="slide"
+          onRequestClose={() => setCamModalVisible(!camModalVisible)}
+          transparent={true}
+          visible={camModalVisible}
+        >
+          <Camera />
+        </Modal>
+
+        <Text style={[styles.text4, themeTextStyle]}>
+          {" "}
+          Location
+          <Text style={styles.text2}> *</Text>
+        </Text>
+
+        <Button
+          title="Select Location"
+          onPress={() => setLocationModalVisible(true)}
+        />
+
+        <Modal animationType="slide" visible={locationModalVisible}>
+          <LocationPicker
+            onCancel={() => {
+              setLocationModalVisible(false);
+            }}
+            onConfirm={onLocationPick}
+          />
+        </Modal>
+
+        <Button title="Use Current Location" onPress={onUseCurrentLocation} />
+
+        <Text style={[styles.text3, themeTextStyle]} testID="location">
+          {" "}
+          {catLocation}{" "}
+        </Text>
+
+        <Text style={[styles.text4, themeTextStyle]}>
+          {" "}
+          Color
+          <Text style={styles.text2}> *</Text>
+        </Text>
+
+        <SelectDropdown
+          data={colors}
+          onSelect={(selectedItem: any, index: any) => {
+            colorSelection(selectedItem);
+          }}
+          buttonTextAfterSelection={(selectedItem: any, index: any) => {
+            return selectedItem;
+          }}
+          rowTextForSelection={(item: any, index: any) => {
+            return item;
+          }}
+        />
+
+        <Text style={[styles.text4, themeTextStyle]}>
+          {" "}
+          Condition
+          <Text style={styles.text2}> *</Text>
+        </Text>
+
+        <SelectDropdown
+          data={conditions}
+          onSelect={(selectedItem: string, index: any) => {
+            console.log(selectedItem, index);
+            conditionSelection(selectedItem);
+            console.log(conditionSelected);
+          }}
+          buttonTextAfterSelection={(selectedItem: any, index: any) => {
+            return selectedItem;
+          }}
+          rowTextForSelection={(item: any, index: any) => {
+            return item;
+          }}
+        />
+
+        <Text style={[styles.text4, themeTextStyle]}> Unique Features</Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={uniqueFeatures}
+          value={features}
+          testID="features"
+        />
+        <Text style={[styles.text4, themeTextStyle]}> Possible Name</Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={possibleName}
+          value={name}
+          testID="possibleName"
+        />
+        <Text style={[styles.text4, themeTextStyle]}> Behavior</Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={behavior}
+          value={catBehavior}
+          testID="catBehavior"
+        />
+
+        <Text style={[styles.text4, themeTextStyle]}> Age Estimate</Text>
+        <View style={{ flexDirection: "row" }}>
+          <TextInput
+            style={styles.input}
+            onChangeText={ageEstimate}
+            value={age}
+            testID="ageEstimate"
+          />
+          <SelectDropdown
+            data={times}
+            onSelect={(selectedItem: string, index: any) => {
+              console.log(selectedItem, index);
+              timeSelection(selectedItem);
+            }}
+            buttonTextAfterSelection={(selectedItem: any, index: any) => {
+              return selectedItem;
+            }}
+            rowTextForSelection={(item: any, index: any) => {
+              return item;
+            }}
+          />
+        </View>
+        <Text style={[styles.text4, themeTextStyle]}> Type</Text>
+        <SelectDropdown
+          data={types}
+          onSelect={(selectedItem: string, index: any) => {
+            console.log(selectedItem, index);
+            typeSelection(selectedItem);
+            console.log(typeSelected);
+          }}
+          buttonTextAfterSelection={(selectedItem: any, index: any) => {
+            return selectedItem;
+          }}
+          rowTextForSelection={(item: any, index: any) => {
+            return item;
+          }}
+        />
+
+        <Text style={[styles.text4, themeTextStyle]}> Eye Color</Text>
+        <SelectDropdown
+          data={eyeColors}
+          onSelect={(selectedItem: string, index: any) => {
+            console.log(selectedItem, index);
+            eyeColorSelection(selectedItem);
+            console.log(eyeColorSelection);
+          }}
+          buttonTextAfterSelection={(selectedItem: any, index: any) => {
+            return selectedItem;
+          }}
+          rowTextForSelection={(item: any, index: any) => {
+            return item;
+          }}
+        />
+
+        <Text style={[styles.text4, themeTextStyle]}> Friendliness</Text>
+        <SelectDropdown
+          data={scale}
+          onSelect={(selectedItem: string, index: any) => {
+            console.log(selectedItem, index);
+            friendlinessSelection(selectedItem);
+            console.log(friendlinessSelected);
+          }}
+          buttonTextAfterSelection={(selectedItem: any, index: any) => {
+            return selectedItem;
+          }}
+          rowTextForSelection={(item: any, index: any) => {
+            return item;
+          }}
+        />
+
+        <Text style={[styles.text4, themeTextStyle]}> Additional Comments</Text>
+        <TextInput
+          style={styles.multiLine}
+          onChangeText={additionalComments}
+          value={comments}
+          testID="comments"
+        />
+
+        <Button
+          testID={"Submit.Button"}
+          title="Submit"
+          color="#8b0000"
+          onPress={() => {
+            if (
+              !id.trim() ||
+              !content.trim() ||
+              !catLocation.trim() ||
+              !colorSelected.trim() ||
+              !conditionSelected.trim()
+            ) {
+              alert("Please fill out all required fields");
+              return;
+            }
+
+            firebase
+              .database()
+              .ref("Cats/" + currentDate)
+              .set({
+                media: content,
+                location: catLocation,
+                uniqueFeatures: features,
+
+                possibleName: name,
+                behavior: catBehavior,
+
+                ageEstimate: age + timeSelected,
+                strayOrFeral: typeSelected,
+                color: colorSelected,
+                condition: conditionSelected,
+                eyeColor: eyeColorSelected,
+                friendliness: friendlinessSelected,
+                additionalComments: comments,
+                catID: id,
+              });
+
+            alert("Submitted Successfully");
+            return;
+          }}
+        />
       </ScrollView>
     </SafeAreaView>
   );
 };
-
-
 
 const styles = StyleSheet.create({
   input: {
@@ -142,11 +367,27 @@ const styles = StyleSheet.create({
     margin: 12,
     borderWidth: 1,
     padding: 10,
+    color: "black",
+    backgroundColor: "white",
+  },
+  lightInput: {
+    color: "black",
+  },
+  darkInput: {
+    color: "white",
+  },
+  multiLine: {
+    height: 60,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+    backgroundColor: "white",
   },
   container: {
     flex: 1,
     paddingTop: StatusBar.currentHeight,
   },
+
   scrollView: {
     marginHorizontal: 20,
   },
@@ -157,9 +398,23 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     backgroundColor: "#8b0000",
-    marginBottom: 50,
+    marginBottom: 30,
+  },
+
+  text2: {
+    fontSize: 20,
+    color: "red",
+    fontWeight: "normal",
+  },
+
+  text3: {
+    fontSize: 15,
+    fontStyle: "italic",
+  },
+  text4: {
+    fontSize: 20,
+    fontWeight: "bold",
   },
 });
 
 export default CatForm;
-
