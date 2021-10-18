@@ -81,6 +81,7 @@ export const CatForm2 = () => {
       <ScrollView>
         <TextInput
           value={cat.name}
+          selectionColor="white"
           placeholder="Enter possible name here"
           placeholderTextColor="black"
           onChangeText={(text) =>
@@ -89,10 +90,11 @@ export const CatForm2 = () => {
               name: text,
             }))
           }
-          style={(styles.input, themeTextStyle)}
+          style={styles.input}
         />
         <TextInput
-          style={(styles.input, themeTextStyle)}
+          style={styles.input}
+          selectionColor="white"
           placeholder="Enter additional information here"
           placeholderTextColor="black"
           value={cat.comments}
@@ -128,9 +130,8 @@ export const CatForm2 = () => {
           }}
         />
         <Picker
+          style={{ backgroundColor: "white" }}
           selectedValue={color}
-          mode={"dropdown"}
-          numberOfLines={2}
           onValueChange={(item) => {
             setColor(item);
             cat.color = colors[item];
@@ -141,8 +142,8 @@ export const CatForm2 = () => {
           })}
         </Picker>
         <Picker
+          style={{ backgroundColor: "white" }}
           selectedValue={eyeColor}
-          prompt={"hello"}
           onValueChange={(item) => {
             setEyeColor(item);
             cat.eyeColor = eyeColors[item];
@@ -182,6 +183,7 @@ export const CatForm2 = () => {
           onPress={() => {
             addCat(cat);
             addPin(pin);
+            alert("Cat submitted reload app");
             return;
           }}
         />

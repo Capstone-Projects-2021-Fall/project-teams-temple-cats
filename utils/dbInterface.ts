@@ -13,15 +13,15 @@ let reference;
 //const accountsRef = firebase.database().ref("Accounts/");
 //const post = firebase.database().ref("Posts/")
 
-export function addAccount(account: Account) {
-  firebase
-    .database()
-    .ref()
-    .child("Accounts/" + account.accountID)
-    .set(account);
+// export function addAccount(account: Account) {
+//   firebase
+//     .database()
+//     .ref()
+//     .child("Accounts/" + account.accountID)
+//     .set(account);
 
-  console.log("User added");
-}
+//   console.log("User added");
+// }
 
 export function addCat(cat: Cat) {
   firebase
