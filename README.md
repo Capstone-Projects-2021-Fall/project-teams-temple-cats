@@ -41,5 +41,6 @@ For testing the latest version of our app, follow these testing procedures:
 * Click recently opened
 * Your created pin will appear on map
 
+* Do not click the "i" button on top right of the home screen. You will have to close app and reopen app.
 ## Source Code
 * [V1.0](link)
