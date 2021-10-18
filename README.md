@@ -1,4 +1,4 @@
-### Temple Cats
+# Temple Cats
 Team:
 Karl Schaller, Rebecca Robb, Jordan Billie, Christine Gregotski, Christian Davis
 
@@ -15,7 +15,7 @@ The Temple Cats mobile app is for people in the Temple University area who want 
 
 ## Installation instructions
 
-# As of milestone demo 1 only test on iPhone. Android functionality is a work in progress. 
+### As of milestone demo 1 only test on iPhone. Android functionality is a work in progress. 
 
 Currently, the alpha version of the application is being hosted on an Expo server. In order to install Temple Cats:
 
@@ -27,7 +27,7 @@ On Android: Install the Expo Go app on Google Play and scan the following QR cod
 
 ## Testing Instructions
 
-# As of milestone demo 1 only test on iPhone. Android functionality is a work in progress. 
+### As of milestone demo 1 only test on iPhone. Android functionality is a work in progress. 
 
 For testing the latest version of our app, follow these testing procedures:
 
