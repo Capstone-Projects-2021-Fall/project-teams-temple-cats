@@ -12,7 +12,7 @@ import {
   TextInput,
   SafeAreaView,
   StyleSheet,
-  ScrollView,
+  ScrollView
 } from "react-native";
 import CatImagePicker from "./components/ImagePicker";
 import Camera from "./components/Camera";
@@ -28,7 +28,7 @@ export const CatForm2 = () => {
     "Yellow",
     "Orange",
     "Hazel",
-    "Mixed",
+    "Mixed"
   ];
 
   const [color, setColor] = useState();
@@ -49,7 +49,7 @@ export const CatForm2 = () => {
     friendly: false,
     healthy: false,
     kitten: false,
-    pinID: uuidv4(),
+    pinID: uuidv4()
   });
 
   const [pin, setPin]: Pin = useState({
@@ -58,13 +58,13 @@ export const CatForm2 = () => {
     time: new Date(),
     votes: 0,
     accountID: "",
-    type: cat.catID,
+    type: cat.catID
   });
 
-  function onLocationPick(coordinate: LatLng) {
+  function onLocationPick (coordinate: LatLng) {
     setPin((currentState) => ({
       ...currentState,
-      location: coordinate,
+      location: coordinate
     }));
     setLocationModalVisible(false);
   }
@@ -80,7 +80,7 @@ export const CatForm2 = () => {
           onChangeText={(text) =>
             setCat((currentState) => ({
               ...currentState,
-              name: text,
+              name: text
             }))
           }
           style={styles.input}
@@ -94,7 +94,7 @@ export const CatForm2 = () => {
           onChangeText={(text) =>
             setCat((currentState) => ({
               ...currentState,
-              comments: text,
+              comments: text
             }))
           }
         />
@@ -171,7 +171,6 @@ export const CatForm2 = () => {
             addCat(cat);
             addPin(pin);
             alert("Cat submitted reload app");
-            return;
           }}
         />
 
@@ -195,6 +194,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
     color: "black",
-    backgroundColor: "white",
-  },
+    backgroundColor: "white"
+  }
 });
