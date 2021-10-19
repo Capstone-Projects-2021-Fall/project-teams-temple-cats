@@ -8,6 +8,6 @@ import { RootTabScreenProps } from "../types";
  * @param {RootTabScreenProps} props navigation properties from the root of the home button in navigation
  * @returns {JSX.Element} JSX element of the home screen
  */
-export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
+export default function HomeScreen ({ navigation }: RootTabScreenProps<"Home">) {
   return <CatMap />;
 }

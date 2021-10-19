@@ -3,26 +3,24 @@ import { StyleSheet, Button, View, NativeSyntheticEvent, NativeTouchEvent } from
 import MapView, { Marker, MapEvent } from "react-native-maps";
 import Gps from "../utils/gps";
 
-
 const LocationPicker = (props: { onCancel: () => void; onConfirm: (coordinate: { latitude: number; longitude: number; }) => void; }) => {
-
   const [markerCoordinate, setMarkerCoordinate] = useState({
     latitude: 0,
-    longitude: 0,
+    longitude: 0
   });
   const [markerOpacity, setMarkerOpacity] = useState(0);
-  let region = Gps();
+  const region = Gps();
 
-  function onMapPress(e: MapEvent) {
-    setMarkerCoordinate(e.nativeEvent.coordinate)
+  function onMapPress (e: MapEvent) {
+    setMarkerCoordinate(e.nativeEvent.coordinate);
     setMarkerOpacity(1);
   }
 
-  function onCancelPress(e: NativeSyntheticEvent<NativeTouchEvent>) {
+  function onCancelPress (e: NativeSyntheticEvent<NativeTouchEvent>) {
     props.onCancel();
   }
 
-  function onConfirmPress(e: NativeSyntheticEvent<NativeTouchEvent>) {
+  function onConfirmPress (e: NativeSyntheticEvent<NativeTouchEvent>) {
     props.onConfirm(markerCoordinate);
   }
 
@@ -54,24 +52,22 @@ const LocationPicker = (props: { onCancel: () => void; onConfirm: (coordinate: {
   );
 };
 
-
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
     height: "100%",
     width: "100%",
     justifyContent: "flex-end",
-    alignItems: "center",
+    alignItems: "center"
   },
   map: {
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFillObject
   },
   confirm: {
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFillObject
     // left: 50,
     // bottom: 50,
   }
 });
 
 export default LocationPicker;
-

@@ -11,55 +11,55 @@ import Gps from "../utils/gps";
  * @returns {JSX.Element} JSX element of the map
  */
 
-export default function CatMap() {
+export default function CatMap () {
   const [markers, setMarkers] = useState<any>([]);
-  let markersArray = [];
-  let newState: { id: string; lat: any; lng: any; description: any }[] = [];
-  let result: any[] = [];
-  var result_counter = 0;
-  let region = Gps();
+  const markersArray = [];
+  const newState: { id: string; lat: any; lng: any; description: any }[] = [];
+  const result: any[] = [];
+  let result_counter = 0;
+  const region = Gps();
 
   useEffect(() => {
-    var reference = firebase.database().ref("Pins/");
+    const reference = firebase.database().ref("Pins/");
     let pin;
     reference.on("value", (snapshot) => {
-      let items = snapshot.val();
+      const items = snapshot.val();
 
       firebase
         .database()
         .ref("Pins/")
         .on("value", (snap) => {
-          //Stores cat objects results into array
+          // Stores cat objects results into array
 
-          let catObject = snap.val();
-          for (var i in catObject) {
+          const catObject = snap.val();
+          for (const i in catObject) {
             result.push(i, catObject[i]);
           }
 
-          //If results length is odd, make it even
+          // If results length is odd, make it even
 
-          var resultLength = result.length;
+          let resultLength = result.length;
           if (resultLength % 2 == 0) {
             resultLength += 1;
           }
 
-          //Remove Account ID from array
+          // Remove Account ID from array
 
-          for (var l = 0; l <= resultLength; l++) {
+          for (let l = 0; l <= resultLength; l++) {
             result.splice(l, 1);
           }
 
-          //Store each array element as an item property
+          // Store each array element as an item property
 
-          for (let item in items) {
-            var descrip = JSON.stringify(result[result_counter]);
-            var description = descrip.split(",").join("\n");
+          for (const item in items) {
+            const descrip = JSON.stringify(result[result_counter]);
+            const description = descrip.split(",").join("\n");
             items[item].description = description;
             newState.push({
               id: item,
               lat: items[item].location.latitude,
               lng: items[item].location.longitude,
-              description: items[item].description,
+              description: items[item].description
             });
 
             result_counter++;
@@ -98,7 +98,7 @@ export default function CatMap() {
               title={item.id}
               coordinate={{
                 latitude: item.lat,
-                longitude: item.lng,
+                longitude: item.lng
               }}
             >
               <Callout>
@@ -118,9 +118,9 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
     justifyContent: "flex-end",
-    alignItems: "center",
+    alignItems: "center"
   },
   map: {
-    ...StyleSheet.absoluteFillObject,
-  },
+    ...StyleSheet.absoluteFillObject
+  }
 });

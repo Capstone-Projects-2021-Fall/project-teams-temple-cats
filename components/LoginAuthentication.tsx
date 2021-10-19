@@ -7,14 +7,14 @@ import { Button } from "react-native";
 
 WebBrowser.maybeCompleteAuthSession();
 
-//Request response token from user
+// Request response token from user
 
 /**
  * Function that renders the Login Authentication component with a button to log in via Facebook.
  * @component
  * @returns {JSX.Element} JSX element of the login
  */
-export default function LoginAuthentication() {
+export default function LoginAuthentication () {
   /**
    * Facebook authorization request's loaded request object.
    * @constant {FacebookAuthRequest} request
@@ -32,7 +32,7 @@ export default function LoginAuthentication() {
    */
   const [request, response, promptAsync] = Facebook.useAuthRequest({
     responseType: ResponseType.Token,
-    clientId: "562935831789483",
+    clientId: "562935831789483"
   });
 
   React.useEffect(() => {
@@ -44,8 +44,6 @@ export default function LoginAuthentication() {
       console.log("User added");
     }
   }, [response]);
-
-
 
   return (
     <Button

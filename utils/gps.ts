@@ -8,28 +8,28 @@ import * as Location from "expo-location";
  * @default region: { latitude: 39.9812,longitude: -75.1497,latitudeDelta: 0.015,longitudeDelta: 0.0121}
  * @returns Region object containing current location if permissions are approved. Otherwise a default region of Temple is returned.
  */
-export default function Gps() {
+export default function Gps () {
   const [location, setLocation] = useState({
     latitude: 39.9812,
     longitude: -75.1497,
     latitudeDelta: 0.015,
-    longitudeDelta: 0.0121,
+    longitudeDelta: 0.0121
   });
 
   useEffect(() => {
     (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
+      const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
-        return;
+
       } else {
         const location = await Location.getCurrentPositionAsync({
-          accuracy: Location.Accuracy.Balanced,
+          accuracy: Location.Accuracy.Balanced
         });
         setLocation({
           latitude: location.coords.latitude,
           longitude: location.coords.longitude,
           latitudeDelta: 0.015,
-          longitudeDelta: 0.0121,
+          longitudeDelta: 0.0121
         });
       }
     })();

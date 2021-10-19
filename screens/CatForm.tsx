@@ -12,7 +12,7 @@ import {
   View,
   useColorScheme,
   Modal,
-  Alert,
+  Alert
 } from "react-native";
 import LocationPicker from "./LocationPicker";
 import { LatLng } from "react-native-maps";
@@ -42,7 +42,7 @@ const CatForm = () => {
     "Yellow",
     "Orange",
     "Hazel",
-    "Mixed",
+    "Mixed"
   ];
   const times = [" months", " years"];
 
@@ -58,12 +58,12 @@ const CatForm = () => {
   const [camModalVisible, setCamModalVisible] = useState(false);
 
   useEffect(() => {
-    var date = new Date().getDate(); //Current Date
-    var month = new Date().getMonth() + 1; //Current Month
-    var year = new Date().getFullYear(); //Current Year
-    var hours = new Date().getHours(); //Current Hours
-    var min = new Date().getMinutes(); //Current Minutes
-    var sec = new Date().getSeconds(); //Current Seconds
+    const date = new Date().getDate(); // Current Date
+    const month = new Date().getMonth() + 1; // Current Month
+    const year = new Date().getFullYear(); // Current Year
+    const hours = new Date().getHours(); // Current Hours
+    const min = new Date().getMinutes(); // Current Minutes
+    const sec = new Date().getSeconds(); // Current Seconds
     setCurrentDate(
       year + "/" + month + "/" + date + "/" + hours + ":" + min + ":" + sec
     );
@@ -77,19 +77,19 @@ const CatForm = () => {
 
   const [locationModalVisible, setLocationModalVisible] = useState(false);
 
-  function onLocationPick(coordinate: LatLng) {
+  function onLocationPick (coordinate: LatLng) {
     location(coordinate.latitude + ", " + coordinate.longitude);
     setLocationModalVisible(false);
   }
 
-  function onUseCurrentLocation() {
+  function onUseCurrentLocation () {
     (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
+      const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
-        return;
+
       } else {
         const gps = await Location.getCurrentPositionAsync({
-          accuracy: Location.Accuracy.Balanced,
+          accuracy: Location.Accuracy.Balanced
         });
         location(gps.coords.latitude + ", " + gps.coords.longitude); // TODO: revisit this when we are submitting location to create pins in db
       }
@@ -349,11 +349,10 @@ const CatForm = () => {
                 eyeColor: eyeColorSelected,
                 friendliness: friendlinessSelected,
                 additionalComments: comments,
-                catID: id,
+                catID: id
               });
 
             alert("Submitted Successfully");
-            return;
           }}
         />
       </ScrollView>
@@ -368,28 +367,28 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
     color: "black",
-    backgroundColor: "white",
+    backgroundColor: "white"
   },
   lightInput: {
-    color: "black",
+    color: "black"
   },
   darkInput: {
-    color: "white",
+    color: "white"
   },
   multiLine: {
     height: 60,
     margin: 12,
     borderWidth: 1,
     padding: 10,
-    backgroundColor: "white",
+    backgroundColor: "white"
   },
   container: {
     flex: 1,
-    paddingTop: StatusBar.currentHeight,
+    paddingTop: StatusBar.currentHeight
   },
 
   scrollView: {
-    marginHorizontal: 20,
+    marginHorizontal: 20
   },
   text: {
     color: "white",
@@ -398,23 +397,23 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     backgroundColor: "#8b0000",
-    marginBottom: 30,
+    marginBottom: 30
   },
 
   text2: {
     fontSize: 20,
     color: "red",
-    fontWeight: "normal",
+    fontWeight: "normal"
   },
 
   text3: {
     fontSize: 15,
-    fontStyle: "italic",
+    fontStyle: "italic"
   },
   text4: {
     fontSize: 20,
-    fontWeight: "bold",
-  },
+    fontWeight: "bold"
+  }
 });
 
 export default CatForm;
