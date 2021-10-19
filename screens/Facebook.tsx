@@ -3,7 +3,7 @@ import * as React from 'react';
 import { StyleSheet, Text, View } from "react-native";
 import { StatusBar } from 'react-native';
 import { WebView } from 'react-native-webview';
-
+import { Ionicons } from "@expo/vector-icons";
 
 export default function Facebook() {
     return (

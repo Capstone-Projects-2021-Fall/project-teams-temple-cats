@@ -3,8 +3,8 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import { FontAwesome } from "@expo/vector-icons";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { FontAwesome, Ionicons } from "@expo/vector-icons";
+import { BottomTabBar, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
   NavigationContainer,
   DefaultTheme,
@@ -111,7 +111,7 @@ function BottomTabNavigator() {
    * @constant {"light" | "dark"}
    */
   const colorScheme = useColorScheme();
-
+  
   return (
     <BottomTab.Navigator
       initialRouteName="Home"
@@ -141,9 +141,7 @@ function BottomTabNavigator() {
             </Pressable>
           ),
 
-          
-
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+         // tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
             <Pressable
               onPress={() => navigation.navigate("Announcements")}
@@ -159,6 +157,13 @@ function BottomTabNavigator() {
               />
             </Pressable>
           ),
+      
+          tabBarIcon: ({ color }) => (
+            <Ionicons
+            name="home"
+            size={24}
+           />
+          )
         })}
       />
 
@@ -167,8 +172,12 @@ function BottomTabNavigator() {
         component={Resources}
         options={{
           title: "Resources",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-        }}
+          tabBarIcon: ({ color }) => (
+            <Ionicons
+            name="book"
+            size={24}
+          />
+      )}}
       />
 
       <BottomTab.Screen
@@ -176,7 +185,8 @@ function BottomTabNavigator() {
             component={Facebook}
             options={{
             title: "Facebook",
-            tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+            tabBarIcon: ({ color }) => 
+            <Ionicons name="link" size={24}/>,
         }}
       />
       <BottomTab.Screen
@@ -184,7 +194,12 @@ function BottomTabNavigator() {
         component={Leaderboard}
         options={{
           title: "Leaderboard",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => 
+          <Ionicons
+          name="filter"
+          size={24}
+          
+        />
         }}
       />
       <BottomTab.Screen
@@ -192,7 +207,11 @@ function BottomTabNavigator() {
         component={Account}
         options={{
           title: "Account",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => 
+          <Ionicons
+            name="md-person-circle-outline"
+            size={24}
+          />
         }}
       />
       
