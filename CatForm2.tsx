@@ -13,6 +13,7 @@ import {
   SafeAreaView,
   StyleSheet,
   ScrollView,
+  Alert,
 } from "react-native";
 import CatImagePicker from "./components/ImagePicker";
 import Camera from "./components/Camera";
@@ -68,6 +69,8 @@ export const CatForm2 = () => {
     }));
     setLocationModalVisible(false);
   }
+
+  const getImage = (data:string) => {cat.media = data} 
 
   return (
     <SafeAreaView>
@@ -147,7 +150,7 @@ export const CatForm2 = () => {
           })}
         </Picker>
 
-        <CatImagePicker />
+        <CatImagePicker onSubmitImage={getImage} />
 
         {/* <Button title="Open Camera" onPress={() => setCamModalVisible(true)} />
 
@@ -157,14 +160,13 @@ export const CatForm2 = () => {
           transparent={true}
           visible={camModalVisible}
         >
-          <Camera />
+          <Camera/>
         </Modal> */}
         <Button
           title="add location"
           color="#2126F3"
           onPress={() => setLocationModalVisible(true)}
         />
-
         <Button
           title="submit cat"
           onPress={() => {
