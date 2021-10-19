@@ -13,9 +13,16 @@ import {
   SafeAreaView,
   StyleSheet,
   ScrollView,
+  Alert,
 } from "react-native";
 import CatImagePicker from "./components/ImagePicker";
 import Camera from "./components/Camera";
+// import { utils } from '@react-native-firebase/app';
+// import storage from '@react-native-firebase/storage';
+
+// import storage from './utils/firebase';
+
+import { getStorage, ref, uploadBytes } from "firebase/storage";
 
 export const CatForm2 = () => {
   const colors = ["Set Cat Color", "Orange", "Brown", "Black", "White"];
@@ -38,6 +45,10 @@ export const CatForm2 = () => {
   const [kitten, setKitten] = useState(false);
   const [locationModalVisible, setLocationModalVisible] = useState(false);
   const [camModalVisible, setCamModalVisible] = useState(false);
+
+  const [imagePickerImage, setImagePickerImage] = useState("");
+  const [uploading, setUploading] = useState(false);
+  const [transferred, setTransferred] = useState(0);
 
   const [cat, setCat]: Cat = useState({
     catID: uuidv4(),
@@ -67,6 +78,45 @@ export const CatForm2 = () => {
       location: coordinate,
     }));
     setLocationModalVisible(false);
+  }
+
+  const getImage = (data:string) => {setImagePickerImage(data)} 
+
+  const uploadImage = (path:string) => {
+    const uploadUri = path;
+    let filename = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
+
+
+    const storage = getStorage();
+    const storageRef = ref(storage, uploadUri);
+
+    // 'file' comes from the Blob or File API
+    uploadBytes(storageRef, filename).then((snapshot) => {
+      console.log('Uploaded a blob or file!', snapshot);
+    });
+
+    // let reference = storage.ref(filename)
+    // // let reference = storage().bucket().file(uploadUri)
+    // let task = reference.putFile(uploadUri)
+
+    // task.then(() => {
+    //   console.log("image uploaded to the bucket!");
+    // }).catch((e:unknown) => console.log("error ~~~", e));
+
+
+
+    // setUploading(true);
+    // try {
+    //   const reference = storage().ref(filename);
+    //   const pathToFile = `${utils.FilePath.PICTURES_DIRECTORY}/${filename}`;
+    //   await reference.putFile(pathToFile);
+    //   setUploading(false);
+    //   Alert.alert(
+    //     'Image Uploaded to the firebase cloud successfully Baby',
+    //   )  
+    // } catch(e){
+    //     console.log("ERROORRRRRRR ~~~~~", e) 
+    // }
   }
 
   return (
@@ -147,7 +197,7 @@ export const CatForm2 = () => {
           })}
         </Picker>
 
-        <CatImagePicker />
+        <CatImagePicker onSubmitImage={getImage} />
 
         {/* <Button title="Open Camera" onPress={() => setCamModalVisible(true)} />
 
@@ -157,19 +207,24 @@ export const CatForm2 = () => {
           transparent={true}
           visible={camModalVisible}
         >
-          <Camera />
+          <Camera/>
         </Modal> */}
         <Button
           title="add location"
           color="#2126F3"
           onPress={() => setLocationModalVisible(true)}
         />
-
+        <Button
+          title="test"
+          color="#2126F3"
+          onPress={() => uploadImage(imagePickerImage)}
+        />
         <Button
           title="submit cat"
           onPress={() => {
             addCat(cat);
             addPin(pin);
+            // uploadImage(imagePickerImage);
             alert("Cat submitted reload app");
             return;
           }}

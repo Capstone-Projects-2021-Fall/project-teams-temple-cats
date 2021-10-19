@@ -1,0 +1,99 @@
+Arguments: 
+  /usr/local/bin/node /usr/local/bin/yarn
+
+PATH: 
+  /Library/Frameworks/Python.framework/Versions/3.8/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands
+
+Yarn version: 
+  1.22.11
+
+Node version: 
+  14.17.6
+
+Platform: 
+  darwin x64
+
+Trace: 
+  Error: EACCES: permission denied, mkdir '/Users/rebeccarobb/Documents/GitHub/project-teams-temple-cats/node_modules/@expo/json-file/node_modules/json5'
+
+npm manifest: 
+  {
+    "main": "node_modules/expo/AppEntry.js",
+    "scripts": {
+      "start": "expo start",
+      "android": "expo start --android",
+      "ios": "expo start --ios",
+      "web": "expo start --web",
+      "eject": "expo eject",
+      "test": "jest --watchAll",
+      "docs": "./node_modules/.bin/jsdoc -c jsdoc.json"
+    },
+    "jest": {
+      "preset": "jest-expo"
+    },
+    "dependencies": {
+      "@expo/vector-icons": "^12.0.0",
+      "@react-native-firebase/app": "^12.9.2",
+      "@react-native-firebase/storage": "^12.9.2",
+      "@react-native-picker/picker": "1.16.1",
+      "@react-navigation/bottom-tabs": "^6.0.5",
+      "@react-navigation/native": "^6.0.4",
+      "@react-navigation/native-stack": "^6.1.0",
+      "@react-navigation/stack": "^6.0.9",
+      "@testing-library/react-native": "^7.2.0",
+      "@types/firebase": "^3.2.1",
+      "@types/react-router-dom": "^5.3.0",
+      "bootstrap": "^4.6.0",
+      "expo": "~42.0.1",
+      "expo-asset": "~8.3.3",
+      "expo-auth-session": "~3.3.1",
+      "expo-camera": "~11.2.2",
+      "expo-constants": "~11.0.1",
+      "expo-facebook": "~11.3.1",
+      "expo-font": "~9.2.1",
+      "expo-image-picker": "~10.2.2",
+      "expo-linking": "~2.3.1",
+      "expo-location": "~12.1.2",
+      "expo-permissions": "~12.1.1",
+      "expo-random": "~11.2.0",
+      "expo-splash-screen": "~0.11.2",
+      "expo-status-bar": "~1.0.4",
+      "expo-web-browser": "~9.2.0",
+      "firebase": "8.2.3",
+      "react": "16.13.1",
+      "react-dom": "16.13.1",
+      "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",
+      "react-native-elements": "^3.4.2",
+      "react-native-gesture-handler": "~1.10.2",
+      "react-native-get-random-values": "~1.7.0",
+      "react-native-maps": "0.28.0",
+      "react-native-material-dropdown": "^0.11.1",
+      "react-native-reanimated": "~2.2.0",
+      "react-native-safe-area-context": "3.2.0",
+      "react-native-screens": "~3.4.0",
+      "react-native-select-dropdown": "^1.2.0",
+      "react-native-web": "^0.17.5",
+      "react-navigation": "^4.4.4",
+      "react-router": "^5.2.1",
+      "react-router-dom": "^5.3.0",
+      "uuid": "^8.3.2"
+    },
+    "devDependencies": {
+      "@babel/core": "~7.9.0",
+      "@ckeditor/jsdoc-plugins": "^25.4.4",
+      "@types/jest": "^27.0.2",
+      "@types/react": "^16.9.56",
+      "@types/react-native": "~0.63.2",
+      "better-docs": "^2.3.2",
+      "jest-expo": "^42.0.0",
+      "jsdoc": "^3.6.7",
+      "typescript": "~4.0.0"
+    },
+    "private": true
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
