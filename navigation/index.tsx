@@ -4,12 +4,11 @@
  *
  */
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
-import { BottomTabBar, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { StyleSheet, Text, View } from "react-native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
   NavigationContainer,
   DefaultTheme,
-  DarkTheme,
+  DarkTheme
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
@@ -28,7 +27,7 @@ import CatForm from "../screens/CatForm";
 import {
   RootStackParamList,
   RootTabParamList,
-  RootTabScreenProps,
+  RootTabScreenProps
 } from "../types";
 import { AuthContext } from "../context/FirebaseAuthContext";
 import { CatForm2 } from "../CatForm2";
@@ -42,8 +41,8 @@ import Facebook from "../screens/Facebook";
  * @returns {JSX.Element} JSX element of the navigation component
  */
 
-export default function Navigation({
-  colorScheme,
+export default function Navigation ({
+  colorScheme
 }: {
   colorScheme: ColorSchemeName;
 }) {
@@ -70,7 +69,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
  * @returns {JSX.Element} JSX element of the root navigator
  * @memberof Navigation
  */
-function RootNavigator() {
+function RootNavigator () {
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -106,18 +105,18 @@ const BottomTab = createBottomTabNavigator<RootTabParamList>();
  * @returns {JSX.Element} JSX element of the bottom tab navigator.
  * @memberof Navigation
  */
-function BottomTabNavigator() {
+function BottomTabNavigator () {
   /**
    * Color scheme for the navigator
    * @constant {"light" | "dark"}
    */
   const colorScheme = useColorScheme();
-  
+
   return (
     <BottomTab.Navigator
       initialRouteName="Home"
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme].tint,
+        tabBarActiveTintColor: Colors[colorScheme].tint
       }}
     >
       <BottomTab.Screen
@@ -130,7 +129,7 @@ function BottomTabNavigator() {
             <Pressable
               onPress={() => navigation.navigate("CatForm")}
               style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
+                opacity: pressed ? 0.5 : 1
               })}
             >
               <FontAwesome
@@ -142,12 +141,12 @@ function BottomTabNavigator() {
             </Pressable>
           ),
 
-         // tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          // tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
             <Pressable
               onPress={() => navigation.navigate("Announcements")}
               style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
+                opacity: pressed ? 0.5 : 1
               })}
             >
               <FontAwesome
@@ -158,7 +157,7 @@ function BottomTabNavigator() {
               />
             </Pressable>
           ),
-      
+
           tabBarIcon: ({ color }) => (
             <Ionicons
             name="home"
@@ -178,31 +177,32 @@ function BottomTabNavigator() {
             name="book"
             size={24}
           />
-      )}}
+          )
+        }}
       />
 
       <BottomTab.Screen
             name="Facebook"
             component={Facebook}
             options={{
-            title: "Facebook",
-            tabBarIcon: ({ color }) => 
+              title: "Facebook",
+              tabBarIcon: ({ color }) =>
             <Ionicons
             name="link"
             size={24}
           />
-        }}
+            }}
       />
       <BottomTab.Screen
         name="Leaderboard"
         component={Leaderboard}
         options={{
           title: "Leaderboard",
-          tabBarIcon: ({ color }) => 
+          tabBarIcon: ({ color }) =>
           <Ionicons
           name="filter"
           size={24}
-          
+
         />
         }}
       />
@@ -211,14 +211,14 @@ function BottomTabNavigator() {
         component={Account}
         options={{
           title: "Account",
-          tabBarIcon: ({ color }) => 
+          tabBarIcon: ({ color }) =>
           <Ionicons
             name="md-person-circle-outline"
             size={24}
           />
         }}
       />
-      
+
     </BottomTab.Navigator>
   );
 }
@@ -231,15 +231,9 @@ function BottomTabNavigator() {
  * @returns {JSX.Element} JSX element of the icon
  * @memberof Navigation
  */
-function TabBarIcon(props: {
+function TabBarIcon (props: {
   name: React.ComponentProps<typeof FontAwesome>["name"];
   color: string;
 }) {
   return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
 }
-/*
-facebook: {
-      background: "#3B5998",
-      color: "white"
-    }
-*/
