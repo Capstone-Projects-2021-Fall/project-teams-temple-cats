@@ -15,10 +15,6 @@ export default function Facebook() {
   }
 
   const styles = StyleSheet.create({
-   /* container: {
-      flex: 1,
-      marginTop: Constants.statusBarHeight,
-    },*/
     container: {
         flex: 1,
         paddingTop: StatusBar.currentHeight,
