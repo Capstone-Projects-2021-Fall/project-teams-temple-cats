@@ -23,6 +23,7 @@ import Account from "../screens/Account";
 import Resources from "../screens/Resources";
 import Login from "../screens/Login";
 import CatForm from "../screens/CatForm";
+
 import {
   RootStackParamList,
   RootTabParamList,
@@ -30,6 +31,7 @@ import {
 } from "../types";
 import { AuthContext } from "../context/FirebaseAuthContext";
 import { CatForm2 } from "../CatForm2";
+import Facebook from "../screens/Facebook";
 
 /**
  * Function that renders the navigation bar component.
@@ -81,6 +83,10 @@ function RootNavigator() {
 
       <Stack.Group screenOptions={{ presentation: "modal" }}>
         <Stack.Screen name="CatForm" component={CatForm2} />
+      </Stack.Group>
+
+      <Stack.Group screenOptions={{ presentation: "modal" }}>
+        <Stack.Screen name="Facebook" component={Facebook} />
       </Stack.Group>
     </Stack.Navigator>
   );
@@ -135,6 +141,8 @@ function BottomTabNavigator() {
             </Pressable>
           ),
 
+          
+
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
             <Pressable
@@ -162,6 +170,15 @@ function BottomTabNavigator() {
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />
+
+      <BottomTab.Screen
+            name="Facebook"
+            component={Facebook}
+            options={{
+            title: "Facebook",
+            tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+        }}
+      />
       <BottomTab.Screen
         name="Leaderboard"
         component={Leaderboard}
@@ -178,6 +195,7 @@ function BottomTabNavigator() {
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />
+      
     </BottomTab.Navigator>
   );
 }
