@@ -31,12 +31,10 @@ export function addCat(cat: Cat) {
     .set(cat);
 }
 
-export function addPin(pin: Pin) {
-  // pin.accountID = <string>firebase.auth().currentUser?.uid;
-
+export function addPicture(cat: Cat) {
   firebase
-    .database()
+    .storage()
     .ref()
-    .child("Pins/" + pin.pinID)
-    .set(pin);
+    .child(firebase.auth().currentUser?.uid + "/" + cat.catID)
+    .put(cat.media);
 }

@@ -4,7 +4,7 @@ import { Picker } from "@react-native-picker/picker";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 import { Cat, Pin } from "./types";
-import { addCat, addPin } from "./utils/dbInterface";
+import { addCat, addPicture } from "./utils/dbInterface";
 import { LatLng } from "react-native-maps";
 import LocationPicker from "./screens/LocationPicker";
 import {
@@ -70,7 +70,9 @@ export const CatForm2 = () => {
     setLocationModalVisible(false);
   }
 
-  const getImage = (data:string) => {cat.media = data} 
+  const getImage = (data: string) => {
+    cat.media = data;
+  };
 
   return (
     <SafeAreaView>
@@ -171,7 +173,7 @@ export const CatForm2 = () => {
           title="submit cat"
           onPress={() => {
             addCat(cat);
-            addPin(pin);
+            addPicture(cat);
             alert("Cat submitted reload app");
             return;
           }}
