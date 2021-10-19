@@ -70,7 +70,7 @@ export const CatForm2 = () => {
     setLocationModalVisible(false);
   }
 
-  const getImage = (data: string) => {
+  const getImage = (data: File) => {
     cat.media = data;
   };
 

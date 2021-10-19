@@ -3,7 +3,7 @@ import { Button, Image, View, Platform, Alert } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 
 type Props = {
- onSubmitImage: (imageSource: string) => void
+ onSubmitImage: (imageSource: string) => {}
 }
 
 export default function CatImagePicker(props:Props) {

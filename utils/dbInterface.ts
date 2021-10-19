@@ -23,7 +23,7 @@ let reference;
 //   console.log("User added");
 // }
 
-export function addCat(cat: Cat) {
+export async function addCat(cat: Cat) {
   firebase
     .database()
     .ref()
@@ -31,10 +31,13 @@ export function addCat(cat: Cat) {
     .set(cat);
 }
 
-export function addPicture(cat: Cat) {
+export async function addPicture(cat: Cat) {
+  const response = await fetch(cat.media)
+  const blob = await response.blob();
+
   firebase
     .storage()
     .ref()
     .child(firebase.auth().currentUser?.uid + "/" + cat.catID)
-    .put(cat.media);
+    .put(blob);
 }
