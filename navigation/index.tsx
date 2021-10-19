@@ -75,7 +75,7 @@ function RootNavigator() {
         component={BottomTabNavigator}
         options={{ headerShown: false }}
       />
-      <Stack.Group screenOptions={{ presentation: "transparentModal" }}>
+      <Stack.Group screenOptions={{ presentation: "modal" }}>
         <Stack.Screen name="Announcements" component={Announcements} />
       </Stack.Group>
 
