@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, CheckBox } from "react-native-elements";
 import { Picker } from "@react-native-picker/picker";
 import "react-native-get-random-values";
@@ -9,7 +9,6 @@ import { Cat, Pin } from "./types";
 import { addCat, addPin } from "./utils/dbInterface";
 import LocationPicker from "./screens/LocationPicker";
 import CatImagePicker from "./components/ImagePicker";
-import Camera from "./components/Camera";
 
 export const CatForm2 = () => {
   const colors = ["Set Cat Color", "Orange", "Brown", "Black", "White"];
@@ -17,11 +16,12 @@ export const CatForm2 = () => {
 
   const [color, setColor] = useState();
   const [eyeColor, setEyeColor] = useState();
+  const [image, setImage] = useState<string>();
   const [friendly, setFriendly] = useState(false);
   const [healthy, setHealthy] = useState(false);
   const [kitten, setKitten] = useState(false);
   const [locationModalVisible, setLocationModalVisible] = useState(false);
-  const [camModalVisible, setCamModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const [cat, setCat]: Cat = useState({
     catID: uuidv4(),
@@ -52,6 +52,11 @@ export const CatForm2 = () => {
     }));
     setLocationModalVisible(false);
   }
+
+  const handleSetImage = (data: string) => {
+    cat.media = data;
+    setImage(data)
+  };
 
   return (
     <SafeAreaView>
@@ -149,11 +154,10 @@ export const CatForm2 = () => {
           title="submit cat"
           onPress={() => {
             addCat(cat);
-            addPin(pin);
+            addPicture(cat);
             alert("Cat submitted reload app");
           }}
         />
-
         <Modal animationType="slide" visible={locationModalVisible}>
           <LocationPicker
             onCancel={() => {
