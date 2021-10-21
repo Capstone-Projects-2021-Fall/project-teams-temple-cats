@@ -70,8 +70,14 @@ export const CatForm2 = () => {
     setLocationModalVisible(false);
   }
 
-  const getImage = (data: File) => {
+  const getImage = (data: string) => {
     cat.media = data;
+    console.log("camera data", data)
+    setCamModalVisible(false)
+  };
+
+  const handleCameraClose = () => {
+    setCamModalVisible(false)
   };
 
   return (
@@ -154,7 +160,7 @@ export const CatForm2 = () => {
 
         <CatImagePicker onSubmitImage={getImage} />
 
-        {/* <Button title="Open Camera" onPress={() => setCamModalVisible(true)} />
+        <Button title="Open Camera" color="#2126F3" onPress={() => setCamModalVisible(true)} />
 
         <Modal
           animationType="slide"
@@ -162,8 +168,10 @@ export const CatForm2 = () => {
           transparent={true}
           visible={camModalVisible}
         >
-          <Camera/>
-        </Modal> */}
+          <Camera onClose={handleCameraClose} onCaptureImage={getImage}/>
+        </Modal> 
+        
+        
         <Button
           title="add location"
           color="#2126F3"

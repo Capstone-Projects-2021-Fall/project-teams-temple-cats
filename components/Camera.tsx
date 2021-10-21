@@ -3,7 +3,14 @@ import React from 'react'
 import {StyleSheet, Text, View, TouchableOpacity, Alert, ImageBackground, Image} from 'react-native'
 import {Camera} from 'expo-camera'
 let camera: Camera
-export default function App() {
+
+type Props = {
+  onCaptureImage: (imageSource: string) => void
+  onClose: () => void
+ }
+
+export default function App(props:Props) {
+  const {onCaptureImage, onClose} = props
   const [startCamera, setStartCamera] = React.useState(false)
   const [previewVisible, setPreviewVisible] = React.useState(false)
   const [capturedImage, setCapturedImage] = React.useState<any>(null)
@@ -25,8 +32,12 @@ export default function App() {
     setPreviewVisible(true)
     //setStartCamera(false)
     setCapturedImage(photo)
+    
   }
-  const __savePhoto = () => {}
+  const __savePhoto = () => {
+    onCaptureImage(capturedImage.uri)
+  }
+
   const __retakePicture = () => {
     setCapturedImage(null)
     setPreviewVisible(false)
@@ -47,6 +58,9 @@ export default function App() {
     } else {
       setCameraType('back')
     }
+  }
+  const __handleClose = () => {
+    onClose()
   }
   return (
     <View style={styles.container}>
@@ -117,6 +131,23 @@ export default function App() {
                       }}
                     >
                       {cameraType === 'front' ? '🤳' : '📷'}
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={__handleClose}
+                    style={{
+                      marginTop: 20,
+                      borderRadius: '50%',
+                      height: 25,
+                      width: 25
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 20
+                      }}
+                    >
+                      🚪
                     </Text>
                   </TouchableOpacity>
                 </View>
