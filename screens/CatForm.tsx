@@ -12,11 +12,11 @@ import {
   View,
   useColorScheme,
   Modal,
-  Alert
+  Alert,
 } from "react-native";
-import LocationPicker from "./LocationPicker";
 import { LatLng } from "react-native-maps";
 import * as Location from "expo-location";
+import LocationPicker from "./LocationPicker";
 
 import CatImagePicker from "../components/ImagePicker";
 import Camera from "../components/Camera";
@@ -34,16 +34,7 @@ const CatForm = () => {
   const scale = ["1", "2", "3", "4", "5"];
   const types = ["Stray", "Feral"];
   const conditions = ["Healthy", "Needs medical attention"];
-  const eyeColors = [
-    "Brown",
-    "Green",
-    "Blue",
-    "Black",
-    "Yellow",
-    "Orange",
-    "Hazel",
-    "Mixed"
-  ];
+  const eyeColors = ["Brown", "Green", "Blue", "Black", "Yellow", "Orange", "Hazel", "Mixed"];
   const times = [" months", " years"];
 
   const [colorSelected, colorSelection] = useState("");
@@ -64,34 +55,30 @@ const CatForm = () => {
     const hours = new Date().getHours(); // Current Hours
     const min = new Date().getMinutes(); // Current Minutes
     const sec = new Date().getSeconds(); // Current Seconds
-    setCurrentDate(
-      year + "/" + month + "/" + date + "/" + hours + ":" + min + ":" + sec
-    );
+    setCurrentDate(`${year}/${month}/${date}/${hours}:${min}:${sec}`);
   }, []);
 
   const colorScheme = useColorScheme();
 
   // const themeTextStyle = colorScheme === 'light' ? styles.lightThemeText : styles.darkThemeText;
-  const themeTextStyle =
-    colorScheme === "light" ? styles.lightInput : styles.darkInput;
+  const themeTextStyle = colorScheme === "light" ? styles.lightInput : styles.darkInput;
 
   const [locationModalVisible, setLocationModalVisible] = useState(false);
 
-  function onLocationPick (coordinate: LatLng) {
-    location(coordinate.latitude + ", " + coordinate.longitude);
+  function onLocationPick(coordinate: LatLng) {
+    location(`${coordinate.latitude}, ${coordinate.longitude}`);
     setLocationModalVisible(false);
   }
 
-  function onUseCurrentLocation () {
+  function onUseCurrentLocation() {
     (async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
-
       } else {
         const gps = await Location.getCurrentPositionAsync({
-          accuracy: Location.Accuracy.Balanced
+          accuracy: Location.Accuracy.Balanced,
         });
-        location(gps.coords.latitude + ", " + gps.coords.longitude); // TODO: revisit this when we are submitting location to create pins in db
+        location(`${gps.coords.latitude}, ${gps.coords.longitude}`); // TODO: revisit this when we are submitting location to create pins in db
       }
     })();
   }
@@ -103,11 +90,7 @@ const CatForm = () => {
 
         <Text style={styles.text2}>
           {" "}
-          *
-          <Text style={[styles.text3, themeTextStyle]}>
-            {" "}
-            fields are required
-          </Text>
+          *<Text style={[styles.text3, themeTextStyle]}> fields are required</Text>
         </Text>
 
         <Text style={[styles.text4, themeTextStyle]}>
@@ -116,12 +99,7 @@ const CatForm = () => {
           <Text style={styles.text2}> *</Text>
         </Text>
 
-        <TextInput
-          style={styles.input}
-          onChangeText={catID}
-          value={id}
-          testID="catID"
-        />
+        <TextInput style={styles.input} onChangeText={catID} value={id} testID="catID" />
 
         <Text style={[styles.text4, themeTextStyle]}>
           {" "}
@@ -129,12 +107,7 @@ const CatForm = () => {
           <Text style={styles.text2}> *</Text>
         </Text>
 
-        <TextInput
-          style={styles.input}
-          onChangeText={media}
-          value={content}
-          testID="media"
-        />
+        <TextInput style={styles.input} onChangeText={media} value={content} testID="media" />
         <CatImagePicker />
 
         <Button title="Open Camera" onPress={() => setCamModalVisible(true)} />
@@ -142,7 +115,7 @@ const CatForm = () => {
         <Modal
           animationType="slide"
           onRequestClose={() => setCamModalVisible(!camModalVisible)}
-          transparent={true}
+          transparent
           visible={camModalVisible}
         >
           <Camera />
@@ -154,10 +127,7 @@ const CatForm = () => {
           <Text style={styles.text2}> *</Text>
         </Text>
 
-        <Button
-          title="Select Location"
-          onPress={() => setLocationModalVisible(true)}
-        />
+        <Button title="Select Location" onPress={() => setLocationModalVisible(true)} />
 
         <Modal animationType="slide" visible={locationModalVisible}>
           <LocationPicker
@@ -216,35 +186,15 @@ const CatForm = () => {
         />
 
         <Text style={[styles.text4, themeTextStyle]}> Unique Features</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={uniqueFeatures}
-          value={features}
-          testID="features"
-        />
+        <TextInput style={styles.input} onChangeText={uniqueFeatures} value={features} testID="features" />
         <Text style={[styles.text4, themeTextStyle]}> Possible Name</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={possibleName}
-          value={name}
-          testID="possibleName"
-        />
+        <TextInput style={styles.input} onChangeText={possibleName} value={name} testID="possibleName" />
         <Text style={[styles.text4, themeTextStyle]}> Behavior</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={behavior}
-          value={catBehavior}
-          testID="catBehavior"
-        />
+        <TextInput style={styles.input} onChangeText={behavior} value={catBehavior} testID="catBehavior" />
 
         <Text style={[styles.text4, themeTextStyle]}> Age Estimate</Text>
         <View style={{ flexDirection: "row" }}>
-          <TextInput
-            style={styles.input}
-            onChangeText={ageEstimate}
-            value={age}
-            testID="ageEstimate"
-          />
+          <TextInput style={styles.input} onChangeText={ageEstimate} value={age} testID="ageEstimate" />
           <SelectDropdown
             data={times}
             onSelect={(selectedItem: string, index: any) => {
@@ -308,15 +258,10 @@ const CatForm = () => {
         />
 
         <Text style={[styles.text4, themeTextStyle]}> Additional Comments</Text>
-        <TextInput
-          style={styles.multiLine}
-          onChangeText={additionalComments}
-          value={comments}
-          testID="comments"
-        />
+        <TextInput style={styles.multiLine} onChangeText={additionalComments} value={comments} testID="comments" />
 
         <Button
-          testID={"Submit.Button"}
+          testID="Submit.Button"
           title="Submit"
           color="#8b0000"
           onPress={() => {
@@ -333,7 +278,7 @@ const CatForm = () => {
 
             firebase
               .database()
-              .ref("Cats/" + currentDate)
+              .ref(`Cats/${currentDate}`)
               .set({
                 media: content,
                 location: catLocation,
@@ -349,7 +294,7 @@ const CatForm = () => {
                 eyeColor: eyeColorSelected,
                 friendliness: friendlinessSelected,
                 additionalComments: comments,
-                catID: id
+                catID: id,
               });
 
             alert("Submitted Successfully");
@@ -367,28 +312,28 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
     color: "black",
-    backgroundColor: "white"
+    backgroundColor: "white",
   },
   lightInput: {
-    color: "black"
+    color: "black",
   },
   darkInput: {
-    color: "white"
+    color: "white",
   },
   multiLine: {
     height: 60,
     margin: 12,
     borderWidth: 1,
     padding: 10,
-    backgroundColor: "white"
+    backgroundColor: "white",
   },
   container: {
     flex: 1,
-    paddingTop: StatusBar.currentHeight
+    paddingTop: StatusBar.currentHeight,
   },
 
   scrollView: {
-    marginHorizontal: 20
+    marginHorizontal: 20,
   },
   text: {
     color: "white",
@@ -397,23 +342,23 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     backgroundColor: "#8b0000",
-    marginBottom: 30
+    marginBottom: 30,
   },
 
   text2: {
     fontSize: 20,
     color: "red",
-    fontWeight: "normal"
+    fontWeight: "normal",
   },
 
   text3: {
     fontSize: 15,
-    fontStyle: "italic"
+    fontStyle: "italic",
   },
   text4: {
     fontSize: 20,
-    fontWeight: "bold"
-  }
+    fontWeight: "bold",
+  },
 });
 
 export default CatForm;

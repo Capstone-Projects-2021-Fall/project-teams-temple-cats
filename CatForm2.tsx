@@ -3,33 +3,17 @@ import { Button, CheckBox } from "react-native-elements";
 import { Picker } from "@react-native-picker/picker";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
+import { LatLng } from "react-native-maps";
+import { Modal, TextInput, SafeAreaView, StyleSheet, ScrollView } from "react-native";
 import { Cat, Pin } from "./types";
 import { addCat, addPin } from "./utils/dbInterface";
-import { LatLng } from "react-native-maps";
 import LocationPicker from "./screens/LocationPicker";
-import {
-  Modal,
-  TextInput,
-  SafeAreaView,
-  StyleSheet,
-  ScrollView
-} from "react-native";
 import CatImagePicker from "./components/ImagePicker";
 import Camera from "./components/Camera";
 
 export const CatForm2 = () => {
   const colors = ["Set Cat Color", "Orange", "Brown", "Black", "White"];
-  const eyeColors = [
-    "Set Cat Eye Color",
-    "Brown",
-    "Green",
-    "Blue",
-    "Black",
-    "Yellow",
-    "Orange",
-    "Hazel",
-    "Mixed"
-  ];
+  const eyeColors = ["Set Cat Eye Color", "Brown", "Green", "Blue", "Black", "Yellow", "Orange", "Hazel", "Mixed"];
 
   const [color, setColor] = useState();
   const [eyeColor, setEyeColor] = useState();
@@ -49,7 +33,7 @@ export const CatForm2 = () => {
     friendly: false,
     healthy: false,
     kitten: false,
-    pinID: uuidv4()
+    pinID: uuidv4(),
   });
 
   const [pin, setPin]: Pin = useState({
@@ -58,13 +42,13 @@ export const CatForm2 = () => {
     time: new Date(),
     votes: 0,
     accountID: "",
-    type: cat.catID
+    type: cat.catID,
   });
 
-  function onLocationPick (coordinate: LatLng) {
+  function onLocationPick(coordinate: LatLng) {
     setPin((currentState) => ({
       ...currentState,
-      location: coordinate
+      location: coordinate,
     }));
     setLocationModalVisible(false);
   }
@@ -80,7 +64,7 @@ export const CatForm2 = () => {
           onChangeText={(text) =>
             setCat((currentState) => ({
               ...currentState,
-              name: text
+              name: text,
             }))
           }
           style={styles.input}
@@ -94,7 +78,7 @@ export const CatForm2 = () => {
           onChangeText={(text) =>
             setCat((currentState) => ({
               ...currentState,
-              comments: text
+              comments: text,
             }))
           }
         />
@@ -159,11 +143,7 @@ export const CatForm2 = () => {
         >
           <Camera />
         </Modal> */}
-        <Button
-          title="add location"
-          color="#2126F3"
-          onPress={() => setLocationModalVisible(true)}
-        />
+        <Button title="add location" color="#2126F3" onPress={() => setLocationModalVisible(true)} />
 
         <Button
           title="submit cat"
@@ -194,6 +174,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
     color: "black",
-    backgroundColor: "white"
-  }
+    backgroundColor: "white",
+  },
 });
