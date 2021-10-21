@@ -1,33 +1,26 @@
 import firebase from "./firebase";
-import { AuthContext } from "../context/FirebaseAuthContext";
-//import { PostContext } from "../context/FirebasePostContext";
 import React from "react";
+import { Account, Cat, Pin } from "../types";
+import { LatLng } from "react-native-maps";
 
-const user = React.useContext(AuthContext);
-//const post = React.useContext(PostContext);
-//const accountsRef = firebase.database().ref("Accounts/");
-//const post = firebase.database().ref("Posts/")
+const root = firebase.database().ref();
+let reference;
 
-export const useAddUser = async () => {
+export function addCat (cat: Cat) {
   firebase
     .database()
-    .ref("Accounts/" + user?.uid)
-    .set({
-      Account: user?.uid,
-    });
+    .ref()
+    .child("Cats/" + cat.catID)
+    .set(cat);
+}
 
-  console.log("User added");
-};
+export async function addPicture(cat: Cat) {
+  const response = await fetch(cat.media)
+  const blob = await response.blob();
 
-
-/*
-export const useAddPost = async () => {
   firebase
-  .database()
-  .ref("Posts/" + post?.uid)
-  .set({
-    Post: post?.uid,
-  });
-  console.log("Post added");
-};*/
-
+    .storage()
+    .ref()
+    .child(firebase.auth().currentUser?.uid + "/" + cat.catID)
+    .put(blob);
+}
