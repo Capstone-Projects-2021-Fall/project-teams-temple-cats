@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, Button, View, NativeSyntheticEvent, NativeTouchEvent } from "react-native";
-import MapView, { Marker, MapEvent } from "react-native-maps";
+import MapView, { Marker, MapEvent, Polygon } from "react-native-maps";
 import Gps from "../utils/gps";
 
 const LocationPicker = (props: { onCancel: () => void; onConfirm: (coordinate: { latitude: number; longitude: number; }) => void; }) => {
@@ -36,6 +36,17 @@ const LocationPicker = (props: { onCancel: () => void; onConfirm: (coordinate: {
         <Marker
           coordinate={markerCoordinate}
           opacity={markerOpacity}
+        />
+        <Polygon
+          coordinates={[
+            { latitude: 39.975237221562914, longitude: -75.16531142948794 },
+            { latitude: 39.99028527887604, longitude: -75.16201582672468 },
+            { latitude: 39.98821021677819, longitude: -75.14598521349043 },  
+            { latitude: 39.9731936067945, longitude: -75.14928693177747 }          
+          ]}
+          strokeWidth={2}
+          strokeColor="rgba(157, 34, 53, 1)"
+          fillColor="rgba(157, 34, 53, 0.05)"
         />
       </MapView>
       <Button
