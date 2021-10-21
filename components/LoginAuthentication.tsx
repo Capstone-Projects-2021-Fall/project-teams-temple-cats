@@ -41,6 +41,7 @@ export default function LoginAuthentication () {
       const credential =
         firebase.auth.FacebookAuthProvider.credential(access_token);
       firebase.auth().signInWithCredential(credential);
+
       console.log("User added");
     }
   }, [response]);

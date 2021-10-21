@@ -12,7 +12,7 @@ import {
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
-import { ColorSchemeName, Pressable, StatusBar } from "react-native";
+import { Alert, ColorSchemeName, Linking, Pressable, StatusBar } from "react-native";
 
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
@@ -32,6 +32,8 @@ import {
 import { AuthContext } from "../context/FirebaseAuthContext";
 import { CatForm2 } from "../CatForm2";
 import Facebook from "../screens/Facebook";
+import WebView from "react-native-webview";
+import { NavigationEvents } from "react-navigation";
 
 /**
  * Function that renders the navigation bar component.
@@ -42,6 +44,7 @@ import Facebook from "../screens/Facebook";
  */
 
 export default function Navigation ({
+  
   colorScheme
 }: {
   colorScheme: ColorSchemeName;
@@ -112,6 +115,8 @@ function BottomTabNavigator () {
    */
   const colorScheme = useColorScheme();
 
+  
+
   return (
     <BottomTab.Navigator
       initialRouteName="Home"
@@ -141,7 +146,6 @@ function BottomTabNavigator () {
             </Pressable>
           ),
 
-          // tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
             <Pressable
               onPress={() => navigation.navigate("Announcements")}
@@ -162,6 +166,7 @@ function BottomTabNavigator () {
             <Ionicons
             name="home"
             size={24}
+            color={Colors[colorScheme].text}
            />
           )
         })}
@@ -170,12 +175,15 @@ function BottomTabNavigator () {
       <BottomTab.Screen
         name="Resources"
         component={Resources}
+        
         options={{
           title: "Resources",
+          
           tabBarIcon: ({ color }) => (
             <Ionicons
             name="book"
             size={24}
+            color={Colors[colorScheme].text}
           />
           )
         }}
@@ -188,9 +196,10 @@ function BottomTabNavigator () {
               title: "Facebook",
               tabBarIcon: ({ color }) =>
             <Ionicons
-            name="link"
-            size={24}
-          />
+                  name="link"
+                  size={24}
+                  color={Colors[colorScheme].text} 
+                  />
             }}
       />
       <BottomTab.Screen
@@ -202,7 +211,7 @@ function BottomTabNavigator () {
           <Ionicons
           name="filter"
           size={24}
-
+          color={Colors[colorScheme].text}
         />
         }}
       />
@@ -215,6 +224,7 @@ function BottomTabNavigator () {
           <Ionicons
             name="md-person-circle-outline"
             size={24}
+            color={Colors[colorScheme].text}
           />
         }}
       />
