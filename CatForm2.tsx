@@ -3,16 +3,33 @@ import { Button, CheckBox } from "react-native-elements";
 import { Picker } from "@react-native-picker/picker";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
-import { LatLng } from "react-native-maps";
-import { Modal, TextInput, SafeAreaView, StyleSheet, ScrollView } from "react-native";
 import { Cat, Pin } from "./types";
-import { addCat, addPin } from "./utils/dbInterface";
+import { addCat, addPicture } from "./utils/dbInterface";
+import { LatLng } from "react-native-maps";
 import LocationPicker from "./screens/LocationPicker";
+import {
+  Image,
+  Modal,
+  TextInput,
+  SafeAreaView,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
 import CatImagePicker from "./components/ImagePicker";
 
 export const CatForm2 = () => {
   const colors = ["Set Cat Color", "Orange", "Brown", "Black", "White"];
-  const eyeColors = ["Set Cat Eye Color", "Brown", "Green", "Blue", "Black", "Yellow", "Orange", "Hazel", "Mixed"];
+  const eyeColors = [
+    "Set Cat Eye Color",
+    "Brown",
+    "Green",
+    "Blue",
+    "Black",
+    "Yellow",
+    "Orange",
+    "Hazel",
+    "Mixed",
+  ];
 
   const [color, setColor] = useState();
   const [eyeColor, setEyeColor] = useState();
@@ -135,27 +152,21 @@ export const CatForm2 = () => {
             return <Picker.Item label={item} value={index} key={index} />;
           })}
         </Picker>
-
-        <CatImagePicker />
-
-        {/* <Button title="Open Camera" onPress={() => setCamModalVisible(true)} />
-
-        <Modal
-          animationType="slide"
-          onRequestClose={() => setCamModalVisible(!camModalVisible)}
-          transparent={true}
-          visible={camModalVisible}
-        >
-          <Camera />
-        </Modal> */}
-        <Button title="add location" color="#2126F3" onPress={() => setLocationModalVisible(true)} />
-
+        {image && (<Image source={{ uri: image }} style={{ width: 200, height: 200 }} />)}
+        <CatImagePicker onSetImage={handleSetImage} onCloseModal={() => setModalVisible(false)} modalVisible={modalVisible}/>
+        <Button title="Upload Image" color="#2126F3" onPress={() => setModalVisible(true)} />
+        <Button
+          title="add location"
+          color="#2126F3"
+          onPress={() => setLocationModalVisible(true)}
+        />
         <Button
           title="submit cat"
           onPress={() => {
             addCat(cat);
             addPicture(cat);
             alert("Cat submitted reload app");
+            return; 
           }}
         />
         <Modal animationType="slide" visible={locationModalVisible}>
