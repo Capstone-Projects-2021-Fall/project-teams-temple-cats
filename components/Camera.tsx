@@ -7,30 +7,20 @@ let camera: Camera
 type Props = {
   onCaptureImage: (imageSource: string) => void
   onClose: () => void
+  startCamera: boolean
  }
 
-export default function App(props:Props) {
-  const {onCaptureImage, onClose} = props
-  const [startCamera, setStartCamera] = React.useState(false)
+export default function CatCamera(props:Props) {
+  const {onCaptureImage, onClose, startCamera} = props
   const [previewVisible, setPreviewVisible] = React.useState(false)
   const [capturedImage, setCapturedImage] = React.useState<any>(null)
   const [cameraType, setCameraType] = React.useState(Camera.Constants.Type.back)
   const [flashMode, setFlashMode] = React.useState('off')
 
-  const __startCamera = async () => {
-    const {status} = await Camera.requestPermissionsAsync()
-    console.log(status)
-    if (status === 'granted') {
-      setStartCamera(true)
-    } else {
-      Alert.alert('Access denied')
-    }
-  }
   const __takePicture = async () => {
     const photo: any = await camera.takePictureAsync()
     console.log(photo)
     setPreviewVisible(true)
-    //setStartCamera(false)
     setCapturedImage(photo)
     
   }
@@ -41,7 +31,6 @@ export default function App(props:Props) {
   const __retakePicture = () => {
     setCapturedImage(null)
     setPreviewVisible(false)
-    __startCamera()
   }
   const __handleFlashMode = () => {
     if (flashMode === 'on') {
@@ -64,7 +53,7 @@ export default function App(props:Props) {
   }
   return (
     <View style={styles.container}>
-      {startCamera ? (
+      {startCamera && (
         <View
           style={{
             flex: 1,
@@ -100,12 +89,30 @@ export default function App(props:Props) {
                   }}
                 >
                   <TouchableOpacity
+                    onPress={__handleClose}
+                    style={{
+                      marginBottom: 20,
+                      borderRadius: '50%',
+                      height: 25,
+                      width: 25
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 20
+                      }}
+                    >
+                      🚪
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
                     onPress={__handleFlashMode}
                     style={{
                       backgroundColor: flashMode === 'off' ? '#000' : '#fff',
                       borderRadius: '50%',
                       height: 25,
-                      width: 25
+                      width: 25,
+                      marginBottom: 20,
                     }}
                   >
                     <Text
@@ -119,7 +126,6 @@ export default function App(props:Props) {
                   <TouchableOpacity
                     onPress={__switchCamera}
                     style={{
-                      marginTop: 20,
                       borderRadius: '50%',
                       height: 25,
                       width: 25
@@ -130,24 +136,7 @@ export default function App(props:Props) {
                         fontSize: 20
                       }}
                     >
-                      {cameraType === 'front' ? '🤳' : '📷'}
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={__handleClose}
-                    style={{
-                      marginTop: 20,
-                      borderRadius: '50%',
-                      height: 25,
-                      width: 25
-                    }}
-                  >
-                    <Text
-                      style={{
-                        fontSize: 20
-                      }}
-                    >
-                      🚪
+                      {cameraType === 'front' ? '📷' : '🤳'}
                     </Text>
                   </TouchableOpacity>
                 </View>
@@ -185,40 +174,7 @@ export default function App(props:Props) {
             </Camera>
           )}
         </View>
-      ) : (
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: '#fff',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
-        >
-          <TouchableOpacity
-            onPress={__startCamera}
-            style={{
-              width: 130,
-              borderRadius: 4,
-              backgroundColor: '#14274e',
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-              height: 40
-            }}
-          >
-            <Text
-              style={{
-                color: '#fff',
-                fontWeight: 'bold',
-                textAlign: 'center'
-              }}
-            >
-              Take picture
-            </Text>
-          </TouchableOpacity>
-        </View>
       )}
-
       <StatusBar style="auto" />
     </View>
   )

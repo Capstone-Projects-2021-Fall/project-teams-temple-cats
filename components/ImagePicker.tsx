@@ -41,9 +41,10 @@ export default function CatImagePicker(props:Props) {
   return (
     <View>
       <Button title="Pick an image from camera roll" onPress={pickImage} />
-      {image && (
+      {/* {console.log("IMAGEEEEEEE ~", image)} */}
+      {/* {image && (
         <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
-      )}
+      )} */}
     </View>
   );
 }

@@ -8,6 +8,7 @@ import { addCat, addPicture } from "./utils/dbInterface";
 import { LatLng } from "react-native-maps";
 import LocationPicker from "./screens/LocationPicker";
 import {
+  Image,
   Modal,
   TextInput,
   SafeAreaView,
@@ -16,7 +17,9 @@ import {
   Alert,
 } from "react-native";
 import CatImagePicker from "./components/ImagePicker";
-import Camera from "./components/Camera";
+import CatCamera from "./components/Camera";
+import {Camera} from 'expo-camera'
+let camera: Camera
 
 export const CatForm2 = () => {
   const colors = ["Set Cat Color", "Orange", "Brown", "Black", "White"];
@@ -34,6 +37,7 @@ export const CatForm2 = () => {
 
   const [color, setColor] = useState();
   const [eyeColor, setEyeColor] = useState();
+  const [image, setImage] = useState<string>();
   const [friendly, setFriendly] = useState(false);
   const [healthy, setHealthy] = useState(false);
   const [kitten, setKitten] = useState(false);
@@ -72,10 +76,19 @@ export const CatForm2 = () => {
 
   const getImage = (data: string) => {
     cat.media = data;
-    console.log("camera data", data)
+    setImage(data)
     setCamModalVisible(false)
   };
 
+  const handleCameraOpen = async () => {
+    const {status} = await Camera.requestPermissionsAsync()
+    if (status === 'granted') {
+      setCamModalVisible(true)
+    } else {
+      Alert.alert('Access denied')
+    }
+    
+  };
   const handleCameraClose = () => {
     setCamModalVisible(false)
   };
@@ -157,10 +170,10 @@ export const CatForm2 = () => {
             return <Picker.Item label={item} value={index} key={index} />;
           })}
         </Picker>
-
+        {image && (<Image source={{ uri: image }} style={{ width: 200, height: 200 }} />)}
         <CatImagePicker onSubmitImage={getImage} />
 
-        <Button title="Open Camera" color="#2126F3" onPress={() => setCamModalVisible(true)} />
+        <Button title="Open Camera" color="#2126F3" onPress={handleCameraOpen} />
 
         <Modal
           animationType="slide"
@@ -168,7 +181,7 @@ export const CatForm2 = () => {
           transparent={true}
           visible={camModalVisible}
         >
-          <Camera onClose={handleCameraClose} onCaptureImage={getImage}/>
+          <CatCamera startCamera={camModalVisible} onClose={handleCameraClose} onCaptureImage={getImage}/>
         </Modal> 
         
         
