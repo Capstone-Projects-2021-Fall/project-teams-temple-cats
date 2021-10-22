@@ -1,6 +1,6 @@
 import firebase from "./firebase";
 import React from "react";
-import { Account, Cat, Pin } from "../types";
+import { Account, Cat, Pin, User } from "../types";
 import { LatLng } from "react-native-maps";
 
 const root = firebase.database().ref();
@@ -24,3 +24,19 @@ export async function addPicture(cat: Cat) {
     .child(firebase.auth().currentUser?.uid + "/" + cat.catID)
     .put(blob);
 }
+
+export function addUser(id: User['accountID'], email: User['email'], photo: User['photo']){
+  firebase
+  .database()
+  .ref()
+  .child("Accounts/" + id)
+  .set({
+    accountID: id,
+    email: email,
+    photo: photo,
+    posts: 0,
+    modStatus: true,
+    banStatus: false,
+  });
+}
+

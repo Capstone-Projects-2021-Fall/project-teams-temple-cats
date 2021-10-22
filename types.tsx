@@ -95,3 +95,12 @@ export type Cat = {
   votes: number;
   accountID: string;
 };
+
+export type User = {
+  accountID: string | undefined;
+  email: string | null | undefined;
+  photo: string | null | undefined;
+  posts: 0,
+  modStatus: true | false,
+  banStatus: true | false,
+};
