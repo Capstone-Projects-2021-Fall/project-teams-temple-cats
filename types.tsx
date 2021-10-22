@@ -21,6 +21,7 @@ export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Announcements: undefined;
   CatForm: undefined;
+  Facebook: undefined;
   NotFound: undefined;
 };
 
@@ -32,6 +33,7 @@ export type RootTabParamList = {
   Resources: undefined;
   Leaderboard: undefined;
   Account: undefined;
+  Facebook: undefined;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> =
