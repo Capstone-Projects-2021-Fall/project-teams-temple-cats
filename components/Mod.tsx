@@ -12,14 +12,14 @@ export default function Mod() {
                 color="#8b0000"
                 title="Report"
                 onPress={() => {
-                    alert("button pressed");
+                    alert("Report button pressed");
                 }}
             />
             <Button
                 color="#8b0000"
                 title="Annoucements"
                 onPress={() => {
-                    alert("button pressed");
+                    alert("Annoucements button pressed");
                 }}
             />
         </React.Fragment>

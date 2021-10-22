@@ -38,7 +38,6 @@ const user = React.useContext(AuthContext)
 
   }, []);
 
-  console.log(modStatus)
 
   return (
     <View style={styles.container}>
