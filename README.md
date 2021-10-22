@@ -1,33 +1,66 @@
-### Temple Cats
+# Temple Cats
 Team:
 Karl Schaller, Rebecca Robb, Jordan Billie, Christine Gregotski, Christian Davis
 
+## Project Overview
+The Temple Cats mobile app is for people in the Temple University area who want to help local stray cats. The Temple Cats organization tracks its own feral cat colony, but the Temple University area also has an extremely high population of stray cats who were abandoned by their owners and are in need of care or a home. The mobile app aims mainly to address this problem by providing a lost & found service for reporting cats, as well as by connecting users with extensive resources and information specific to the Temple University area for all different types of cat related situations users might encounter.
 
+## Release Notes
+### V1.0
+* General layout
+* Facebook authentication
+* Home/Map screen
+* Displaying on the map of pins found in database (there are mock pins around Temple campus)
+* Cat form (submitted cats should appear on map)
 
-## Project Abstract
-The Temple Cats mobile app is for people in the Temple University area who want to help local stray cats. The Temple Cats organization tracks its own feral cat colony, but the Temple University area also has an extremely high population of stray cats who were abandoned by their owners and are in need of care or a home. The mobile app aims mainly to address this problem by providing a lost & found type of service for reporting cats, as well as by connecting users with extensive resources and information specific to the Temple University area for all different types of cat related situations users might encounter.
+## Installation instructions
 
-## High Level Requirement
-Users will be able to report cats that they have seen outside so that they appear to other users on a map. Additional information will be collected about the cats appearance, estimated age, behavior, etc. The app aims to be integrated with Facebook to allow users to contact each other and connect with the Temple Cats organization's official Facebook page. Temple Cats also aims to provide resources and information in the event that a stray cat is found that needs help, including nearby shelters, spay/neuter programs, vets who can scan for microchips, etc.
+### As of milestone demo 1 only test on iPhone. Android functionality is a work in progress. 
 
-## Conceptual Design
-The app should be available for both Android and iOS. Most development will probably be completed with something like React Native, and we will be using APIs like Facebook and a map API. For storing data of reported cats, database hosting may be necessary as well (SQL).
+Currently, the alpha version of the application is being hosted on an Expo server. In order to install Temple Cats:
 
-## Background
-Most popular existing lost & found services are websites like [petfinder.com](https://www.petfinder.com/cats/lost-and-found-cats/), [pawboost.com](https://www.pawboost.com/lost-found-pets/), and [lostmykitty.com](https://www.lostmykitty.com/). Unlike these services, the Temple Cats app strives to have an extremely intuitive and convenient user interface by showing cats on an interactive map, while being easier to use on-the-go since users will come across stray cats suddenly and unexpectedly outside, where they can then quickly capture and upload an image. The app also will provide much more extensive resources and information to help users through cat related situations.
+On iOS: Scan the following QR code with your camera.
 
-## Required Resources
-#### Background Info: Cat Resources & Info (some stuff that will be figured out in detail during development)
-* where to look for assistance for pet cat care, what to do when taking-in friendly stray cats (flea prevention, "low cost" or "free" vaccinations & spay/neuter surgeries, etc.)
-* what to do when feeding stray cats outside (flea prevention, available assistance for free vaccinations & spay/neuter surgeries, providing winter shelter boxes, etc.)
-* what to do when encountering a "lost or found" cat or an injured cat (how to report, what public shelter to bring the animal to, emergency medical care, etc.)
-* where to look for volunteer or internship opportunities working with cats (local organizations, shelters, agencies, etc)
-* what the "commitment" of adopting a pet is (graduating/relocating a pet, re-homing a pet, etc.)
-#### Software
-* Firebase
-* React Native
-* Facebook API
-* Some Map API
-* Firebase Realtime Database
-#### Hardware
-* Possible an Android phone or IPhone for testing (can really just use an emulator instead)
+On Android: Install the Expo Go app on Google Play and scan the following QR code within the app.
+
+![Expo Go QR Code](/QRcode.png)
+
+## Testing Instructions
+
+### As of milestone demo 1 only test on iPhone. Android functionality is a work in progress. 
+
+For testing the latest version of our app, follow these testing procedures:
+
+Depending on iOS and Andriod some of the pop-ups may appear in a different order. In any case please click allow on all permission pop-ups.
+
+* Open the app by following installation instructions.
+* Click log in button.
+* (iphone only) A pop-up will appear saying '"Expo" Wants to Use "expo.io" to Sign In'. Click continute button.
+* A pop-up will appear saying 'The app ... is asking you to sign into another service. Is this OK?'. Click Yes.
+* Authenticate with Facebook and allow. (FB will promp you ro enter user name and password then click submit. After this FB will say "Temple Cats is requesting access to: Your name and profile picture" Click contine as *your name here* 
+* (on android) A pop-up will appear asking to use your location. 
+* Click top left "+" button to enter a cat.
+* (on iphone) A pop-up will appear saying 1 of 2 things, "Allow to use location" or "Experience needs permissions" click allow.
+* Enter all or some information on the form besides the media!
+* Scroll down, you must scroll down using the bottom half of your form screen.
+* Click add location.
+* When map is displayed click on a point on the map to create a pin. A red pin should appear. Ensure there is a red pin.
+* Then click submit. 
+* Click submit button on form. 
+* Errors will appear click dismiss until they are gone.
+* A pop-up will appear saying 'Alert cat submitted reload app'. Click OK.
+* Close the expo app.
+* Open the expo app.
+* Click "Temple Cats" recently opened.
+* Your created pin will appear on map.
+* Zoom in to it.
+* Click red pin, this will display information about the pin for now. 
+* Click resources button on navigation bar the screen with the word "resources" will appear. 
+* Click leaderboard button on navigation bar the screen with the word "leaderboard" will appear with a button. 
+* Click account button on navigation bar the screen with the word "account" will appear with a button. 
+* On account screen click sign out. 
+
+* NOTE: Do not click the "i" button on top right of the home screen. You will have to close app and reopen app.
+
+## Source Code
+* [V1.0](https://github.com/Capstone-Projects-2021-Fall/project-teams-temple-cats/releases/tag/v1.0.0)

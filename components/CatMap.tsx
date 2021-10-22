@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, Text } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { StyleSheet, Text, Image, TouchableOpacity } from "react-native";
 import MapView, { Marker, Callout, Region } from "react-native-maps";
 import { View } from "./Themed";
 import firebase from "../utils/firebase";
 import Gps from "../utils/gps";
+import TUMapBorder from "./TUMapBorder";
 
 /**
  * Function that renders the Cat Map component, including the map and all it's children (e.g. pins/markers).
@@ -11,67 +12,77 @@ import Gps from "../utils/gps";
  * @returns {JSX.Element} JSX element of the map
  */
 
-export default function CatMap() {
+export default function CatMap () {
   const [markers, setMarkers] = useState<any>([]);
+  const [region, setRegion] = useState<Region>(Gps());
+  const mapViewRef: React.MutableRefObject<MapView> | React.MutableRefObject<null> = useRef(null);
   let markersArray = [];
-  let newState: { id: string; lat: any; lng: any; description: any }[] = [];
+  let newMarkers: { id: string; lat: any; lng: any; description: any }[] = [];
   let result: any[] = [];
   var result_counter = 0;
-  let region = Gps();
 
   useEffect(() => {
-    var reference = firebase.database().ref("Pins/");
+    const reference = firebase.database().ref("Pins/");
     let pin;
     reference.on("value", (snapshot) => {
-      let items = snapshot.val();
+      const items = snapshot.val();
 
       firebase
         .database()
         .ref("Pins/")
         .on("value", (snap) => {
-          //Stores cat objects results into array
+          // Stores cat objects results into array
 
-          let catObject = snap.val();
-          for (var i in catObject) {
+          const catObject = snap.val();
+          for (const i in catObject) {
             result.push(i, catObject[i]);
           }
 
-          //If results length is odd, make it even
+          // If results length is odd, make it even
 
-          var resultLength = result.length;
+          let resultLength = result.length;
           if (resultLength % 2 == 0) {
             resultLength += 1;
           }
 
-          //Remove Account ID from array
+          // Remove Account ID from array
 
-          for (var l = 0; l <= resultLength; l++) {
+          for (let l = 0; l <= resultLength; l++) {
             result.splice(l, 1);
           }
 
-          //Store each array element as an item property
+          // Store each array element as an item property
 
-          for (let item in items) {
-            var descrip = JSON.stringify(result[result_counter]);
-            var description = descrip.split(",").join("\n");
+          for (const item in items) {
+            const descrip = JSON.stringify(result[result_counter]);
+            const description = descrip.split(",").join("\n");
             items[item].description = description;
-            newState.push({
+            newMarkers.push({
               id: item,
               lat: items[item].location.latitude,
               lng: items[item].location.longitude,
-              description: items[item].description,
+              description: items[item].description
             });
 
             result_counter++;
           }
-          setMarkers(newState);
+          setMarkers(newMarkers);
         });
     });
   }, []);
 
+  function goToTemple() {
+    mapViewRef.current?.animateToRegion({
+      latitude: 39.9806438149835,
+      longitude: -75.15574242934214,
+      latitudeDelta: 0.022,
+      longitudeDelta: 0.022 },
+      1000);
+  }
+
   return (
     <View style={styles.container}>
-      <MapView
+      <MapView ref={mapViewRef}
         style={styles.map}
         provider={"google"}
         region={region}
@@ -97,8 +108,8 @@ export default function CatMap() {
               key={index}
               title={item.id}
               coordinate={{
-                latitude: item.lat,
-                longitude: item.lng,
+                latitude: (item.lat === undefined) ? 0 : item.lat,
+                longitude: (item.lng === undefined) ? 0 : item.lng,
               }}
             >
               <Callout>
@@ -107,7 +118,11 @@ export default function CatMap() {
             </Marker>
           )
         )}
+        <TUMapBorder/>
       </MapView>
+      <TouchableOpacity style={styles.templeButton} onPress={goToTemple}>
+        <Image style={styles.templeLogo} source={require("../assets/images/temple-logo.png")}/>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -118,9 +133,21 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
     justifyContent: "flex-end",
-    alignItems: "center",
+    alignItems: "center"
   },
   map: {
     ...StyleSheet.absoluteFillObject,
   },
+  templeButton: {
+    position: "absolute",
+    right: 12,
+    top: 60,
+    width: 38,
+    height: 38,
+  },
+  templeLogo: {
+    ...StyleSheet.absoluteFillObject,
+    width: "100%",
+    height: "100%",
+  }
 });

@@ -4,7 +4,6 @@ import { StyleSheet, Button } from "react-native";
 import { Text, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
 import firebase from "firebase";
-import { AuthContext } from "../context/FirebaseAuthContext";
 
 /**
  * Function that renders the account screen.
@@ -12,8 +11,8 @@ import { AuthContext } from "../context/FirebaseAuthContext";
  * @param {RootTabScreenProps} props navigation properties from the root of the account button in navigation
  * @returns {JSX.Element} JSX element of the account screen
  */
-export default function AccountScreen({
-  navigation,
+export default function AccountScreen ({
+  navigation
 }: RootTabScreenProps<"Account">) {
   return (
     <View style={styles.container}>
@@ -42,15 +41,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   title: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: "bold"
   },
   separator: {
     marginVertical: 30,
     height: 1,
-    width: "80%",
-  },
+    width: "80%"
+  }
 });
