@@ -21,6 +21,7 @@ export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Announcements: undefined;
   CatForm: undefined;
+  Facebook: undefined;
   NotFound: undefined;
 };
 
@@ -32,6 +33,7 @@ export type RootTabParamList = {
   Resources: undefined;
   Leaderboard: undefined;
   Account: undefined;
+  Facebook: undefined;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> =
@@ -71,15 +73,6 @@ export type Account = {
   points: number;
 };
 
-export type Pin = {
-  pinID: string;
-  location: LatLng;
-  time: Date;
-  votes: number;
-  accountID: string;
-  type: string;
-};
-
 export type FeedingStation = {
   StationID: string;
   Media: string;
@@ -97,7 +90,10 @@ export type Cat = {
   healthy: boolean;
   friendly: boolean;
   comments: string;
-  pinID: string;
+  location: LatLng;
+  time: Date;
+  votes: number;
+  accountID: string;
 };
 
 export type User = {
