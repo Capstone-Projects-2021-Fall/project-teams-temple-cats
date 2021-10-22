@@ -16,21 +16,22 @@ export default function CatMap() {
   const [cats, setCats] = useState<Array<Cat>>([]);
   const catsRef = firebase.database().ref().child("Cats/")
   let region = Gps();
-
   let newState: Cat[] = []
-    catsRef
+
+catsRef
     .on("child_added", (snapshot) => {
       newState.push(snapshot.val())
+      console.log(newState)
     })
   
+  
   useEffect(() => {
-    console.log("effect used")
-    setCats(newState)
-  }, [])
+  setCats(newState)
+}, [...newState])
     
   
   console.log(cats)
-
+  console.log(cats.length)
 
   return (
     <View style={styles.container}>
@@ -39,8 +40,13 @@ export default function CatMap() {
         provider={"google"}
         region={region}
         showsUserLocation={true}
+        <Marker
+        coordinate={ }
       >
-        
+        {cats?.map((cats, index) => (
+          <Marker
+        )
+        )}
       </MapView>
     </View>
   );
