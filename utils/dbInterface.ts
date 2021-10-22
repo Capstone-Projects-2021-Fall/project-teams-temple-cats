@@ -2,26 +2,11 @@ import firebase from "./firebase";
 import { AuthContext } from "../context/FirebaseAuthContext";
 //import { PostContext } from "../context/FirebasePostContext";
 import React from "react";
-import { Account, Cat, Pin } from "../types";
+import { Account, Cat, Pin, User } from "../types";
 import { LatLng } from "react-native-maps";
 
 const root = firebase.database().ref();
 let reference;
-
-// const user = React.useContext(AuthContext);
-//const post = React.useContext(PostContext);
-//const accountsRef = firebase.database().ref("Accounts/");
-//const post = firebase.database().ref("Posts/")
-
-// export function addAccount(account: Account) {
-//   firebase
-//     .database()
-//     .ref()
-//     .child("Accounts/" + account.accountID)
-//     .set(account);
-
-//   console.log("User added");
-// }
 
 export function addCat(cat: Cat) {
   firebase
@@ -40,3 +25,19 @@ export function addPin(pin: Pin) {
     .child("Pins/" + pin.pinID)
     .set(pin);
 }
+
+export function addUser(id: User['accountID'], email: User['email'], photo: User['photo']){
+  firebase
+  .database()
+  .ref()
+  .child("Accounts/" + id)
+  .set({
+    accountID: id,
+    email: email,
+    photo: photo,
+    posts: 0,
+    modStatus: false,
+    banStatus: false,
+  });
+}
+

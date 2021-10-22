@@ -1,10 +1,15 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, Button } from "react-native";
 
 import { Text, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
 import firebase from "firebase";
 import { AuthContext } from "../context/FirebaseAuthContext";
+import Mod from "../components/Mod"
+import { AuthProvider } from "../context/FirebaseAuthProvider";
+import { useState } from "react";
+
+let modStatus: any[] = [];
 
 /**
  * Function that renders the account screen.
@@ -15,6 +20,26 @@ import { AuthContext } from "../context/FirebaseAuthContext";
 export default function AccountScreen({
   navigation,
 }: RootTabScreenProps<"Account">) {
+
+ //Needs to be refactored
+
+const [word, setWord] = useState<any>([]);
+
+const user = React.useContext(AuthContext)
+//console.log(user.uid)
+
+
+
+  useEffect(() => {
+    firebase.database().ref(`Accounts/${user?.uid}/modStatus`).on('value', function (snapshot) {
+      modStatus.push(snapshot.val())
+      setWord(modStatus)
+    });
+
+  }, []);
+
+  console.log(modStatus)
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Account</Text>
@@ -30,8 +55,10 @@ export default function AccountScreen({
           signOut();
         }}
       />
+      {JSON.stringify(modStatus[0]) === "true" ? Mod() : null}
     </View>
   );
+
 }
 
 const signOut = async () => {
