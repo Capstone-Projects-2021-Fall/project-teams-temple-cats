@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text } from "react-native";
-import MapView, { Marker, Callout, Region } from "react-native-maps";
+import { Pressable, StyleSheet, Text, Image, TouchableOpacity } from "react-native";
+import MapView, { Marker, Callout, Region, Overlay } from "react-native-maps";
 import { View } from "./Themed";
 import firebase from "../utils/firebase";
 import Gps from "../utils/gps";
@@ -13,11 +13,11 @@ import Gps from "../utils/gps";
 
 export default function CatMap() {
   const [markers, setMarkers] = useState<any>([]);
+  const [region, setRegion] = useState<Region>(Gps());
   let markersArray = [];
-  let newState: { id: string; lat: any; lng: any; description: any }[] = [];
+  let newMarkers: { id: string; lat: any; lng: any; description: any }[] = [];
   let result: any[] = [];
   var result_counter = 0;
-  let region = Gps();
 
   useEffect(() => {
     var reference = firebase.database().ref("Pins/");
@@ -55,7 +55,7 @@ export default function CatMap() {
             var descrip = JSON.stringify(result[result_counter]);
             var description = descrip.split(",").join("\n");
             items[item].description = description;
-            newState.push({
+            newMarkers.push({
               id: item,
               lat: items[item].location.latitude,
               lng: items[item].location.longitude,
@@ -64,7 +64,7 @@ export default function CatMap() {
 
             result_counter++;
           }
-          setMarkers(newState);
+          setMarkers(newMarkers);
         });
     });
   }, []);
@@ -97,8 +97,8 @@ export default function CatMap() {
               key={index}
               title={item.id}
               coordinate={{
-                latitude: item.lat,
-                longitude: item.lng,
+                latitude: item.lat | 0,
+                longitude: item.lng | 0,
               }}
             >
               <Callout>
@@ -108,6 +108,12 @@ export default function CatMap() {
           )
         )}
       </MapView>
+      <TouchableOpacity
+        style={styles.templeButton}
+        onPress={() => setRegion({latitude: 39.9806438149835, longitude: -75.15574242934214, latitudeDelta: region.latitudeDelta, longitudeDelta: region.longitudeDelta })}
+      >
+        <Image style={styles.templeLogo} source={require("../assets/images/temple-logo.png")}/>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -123,4 +129,16 @@ const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
   },
+  templeButton: {
+    position: "absolute",
+    right: 12,
+    top: 60,
+    width: 38,
+    height: 38,
+  },
+  templeLogo: {
+    ...StyleSheet.absoluteFillObject,
+    width: "100%",
+    height: "100%",
+  }
 });
