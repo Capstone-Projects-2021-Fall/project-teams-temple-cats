@@ -36,7 +36,7 @@ export function addUser(id: User['accountID'], email: User['email'], photo: User
     email: email,
     photo: photo,
     posts: 0,
-    modStatus: false,
+    modStatus: true,
     banStatus: false,
   });
 }
