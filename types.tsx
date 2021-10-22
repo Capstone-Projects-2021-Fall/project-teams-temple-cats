@@ -71,15 +71,6 @@ export type Account = {
   points: number;
 };
 
-export type Pin = {
-  pinID: string;
-  location: LatLng;
-  time: Date;
-  votes: number;
-  accountID: string;
-  type: string;
-};
-
 export type FeedingStation = {
   StationID: string;
   Media: string;
@@ -97,5 +88,8 @@ export type Cat = {
   healthy: boolean;
   friendly: boolean;
   comments: string;
-  pinID: string;
+  location: LatLng;
+  time: Date;
+  votes: number;
+  accountID: string;
 };
