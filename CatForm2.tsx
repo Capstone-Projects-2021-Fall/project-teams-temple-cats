@@ -50,20 +50,16 @@ export const CatForm2 = () => {
     friendly: false,
     healthy: false,
     kitten: false,
-    pinID: uuidv4(),
+    location: "",
+    time: new Date().toDateString(),
+    votes: 0,
+    accountID: ""
   });
 
-  const [pin, setPin]: Pin = useState({
-    pinID: cat.pinID,
-    location: "",
-    time: new Date(),
-    votes: 0,
-    accountID: "",
-    type: cat.catID,
-  });
+
 
   function onLocationPick(coordinate: LatLng) {
-    setPin((currentState) => ({
+    setCat((currentState) => ({
       ...currentState,
       location: coordinate,
     }));
