@@ -49,9 +49,8 @@ export const CatForm2 = () => {
     friendly: false,
     healthy: false,
     kitten: false,
-    pinID: uuidv4(),
     location: "",
-    time: new Date,
+    time: new Date().toDateString(),
     votes: 0,
     accountID: ""
   });
