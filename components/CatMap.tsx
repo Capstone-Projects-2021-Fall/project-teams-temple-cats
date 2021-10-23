@@ -6,19 +6,17 @@ import firebase from "../utils/firebase";
 import Gps from "../utils/gps";
 import { Cat } from "../types";
 
+
 /**
  * Function that renders the Cat Map component, including the map and all it's children (e.g. pins/markers).
  * @component
  * @returns {JSX.Element} JSX element of the map
  */
-
 export default function CatMap() {
   const [cats, setCats] = useState<any>([]);
   const catsRef = firebase.database().ref().child("Cats/")
   let region = Gps();
   let newState: Cat[] = []
-
-  
 
   useEffect(() => {
     catsRef.on("child_added", snapshot => {
@@ -28,11 +26,19 @@ export default function CatMap() {
       setCats([...newState])
     })
   }, [])
-  
+
+  function goToTemple() {
+    mapViewRef.current?.animateToRegion({
+      latitude: 39.9806438149835,
+      longitude: -75.15574242934214,
+      latitudeDelta: 0.022,
+      longitudeDelta: 0.022 },
+      1000);
+  }
 
   return (
     <View style={styles.container}>
-      <MapView
+      <MapView ref={mapViewRef}
         style={styles.map}
         provider={"google"}
         region={region}
@@ -47,7 +53,11 @@ export default function CatMap() {
             }}
           />
         ))}
-        </MapView>
+        <TUMapBorder/>
+      </MapView>
+      <TouchableOpacity style={styles.templeButton} onPress={goToTemple}>
+        <Image style={styles.templeLogo} source={require("../assets/images/temple-logo.png")}/>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -58,9 +68,21 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
     justifyContent: "flex-end",
-    alignItems: "center",
+    alignItems: "center"
   },
   map: {
     ...StyleSheet.absoluteFillObject,
   },
+  templeButton: {
+    position: "absolute",
+    right: 12,
+    top: 60,
+    width: 38,
+    height: 38,
+  },
+  templeLogo: {
+    ...StyleSheet.absoluteFillObject,
+    width: "100%",
+    height: "100%",
+  }
 });

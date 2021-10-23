@@ -3,16 +3,16 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
   NavigationContainer,
   DefaultTheme,
-  DarkTheme,
+  DarkTheme
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
-import { ColorSchemeName, Pressable } from "react-native";
+import { Alert, ColorSchemeName, Linking, Pressable, StatusBar } from "react-native";
 
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
@@ -23,13 +23,17 @@ import Account from "../screens/Account";
 import Resources from "../screens/Resources";
 import Login from "../screens/Login";
 import CatForm from "../screens/CatForm";
+
 import {
   RootStackParamList,
   RootTabParamList,
-  RootTabScreenProps,
+  RootTabScreenProps
 } from "../types";
 import { AuthContext } from "../context/FirebaseAuthContext";
 import { CatForm2 } from "../CatForm2";
+import Facebook from "../screens/Facebook";
+import WebView from "react-native-webview";
+import { NavigationEvents } from "react-navigation";
 
 /**
  * Function that renders the navigation bar component.
@@ -39,8 +43,9 @@ import { CatForm2 } from "../CatForm2";
  * @returns {JSX.Element} JSX element of the navigation component
  */
 
-export default function Navigation({
-  colorScheme,
+export default function Navigation ({
+  
+  colorScheme
 }: {
   colorScheme: ColorSchemeName;
 }) {
@@ -67,7 +72,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
  * @returns {JSX.Element} JSX element of the root navigator
  * @memberof Navigation
  */
-function RootNavigator() {
+function RootNavigator () {
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -81,6 +86,10 @@ function RootNavigator() {
 
       <Stack.Group screenOptions={{ presentation: "modal" }}>
         <Stack.Screen name="CatForm" component={CatForm2} />
+      </Stack.Group>
+
+      <Stack.Group screenOptions={{ presentation: "modal" }}>
+        <Stack.Screen name="Facebook" component={Facebook} />
       </Stack.Group>
     </Stack.Navigator>
   );
@@ -99,18 +108,20 @@ const BottomTab = createBottomTabNavigator<RootTabParamList>();
  * @returns {JSX.Element} JSX element of the bottom tab navigator.
  * @memberof Navigation
  */
-function BottomTabNavigator() {
+function BottomTabNavigator () {
   /**
    * Color scheme for the navigator
    * @constant {"light" | "dark"}
    */
   const colorScheme = useColorScheme();
 
+  
+
   return (
     <BottomTab.Navigator
       initialRouteName="Home"
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme].tint,
+        tabBarActiveTintColor: Colors[colorScheme].tint
       }}
     >
       <BottomTab.Screen
@@ -123,7 +134,7 @@ function BottomTabNavigator() {
             <Pressable
               onPress={() => navigation.navigate("CatForm")}
               style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
+                opacity: pressed ? 0.5 : 1
               })}
             >
               <FontAwesome
@@ -135,12 +146,11 @@ function BottomTabNavigator() {
             </Pressable>
           ),
 
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
             <Pressable
               onPress={() => navigation.navigate("Announcements")}
               style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
+                opacity: pressed ? 0.5 : 1
               })}
             >
               <FontAwesome
@@ -151,23 +161,58 @@ function BottomTabNavigator() {
               />
             </Pressable>
           ),
+
+          tabBarIcon: ({ color }) => (
+            <Ionicons
+            name="home"
+            size={24}
+            color={Colors[colorScheme].text}
+           />
+          )
         })}
       />
 
       <BottomTab.Screen
         name="Resources"
         component={Resources}
+        
         options={{
           title: "Resources",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          
+          tabBarIcon: ({ color }) => (
+            <Ionicons
+            name="book"
+            size={24}
+            color={Colors[colorScheme].text}
+          />
+          )
         }}
+      />
+
+      <BottomTab.Screen
+            name="Facebook"
+            component={Facebook}
+            options={{
+              title: "Facebook",
+              tabBarIcon: ({ color }) =>
+            <Ionicons
+                  name="link"
+                  size={24}
+                  color={Colors[colorScheme].text} 
+                  />
+            }}
       />
       <BottomTab.Screen
         name="Leaderboard"
         component={Leaderboard}
         options={{
           title: "Leaderboard",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) =>
+          <Ionicons
+          name="filter"
+          size={24}
+          color={Colors[colorScheme].text}
+        />
         }}
       />
       <BottomTab.Screen
@@ -175,9 +220,15 @@ function BottomTabNavigator() {
         component={Account}
         options={{
           title: "Account",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) =>
+          <Ionicons
+            name="md-person-circle-outline"
+            size={24}
+            color={Colors[colorScheme].text}
+          />
         }}
       />
+
     </BottomTab.Navigator>
   );
 }
@@ -190,7 +241,7 @@ function BottomTabNavigator() {
  * @returns {JSX.Element} JSX element of the icon
  * @memberof Navigation
  */
-function TabBarIcon(props: {
+function TabBarIcon (props: {
   name: React.ComponentProps<typeof FontAwesome>["name"];
   color: string;
 }) {

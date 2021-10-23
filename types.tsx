@@ -21,6 +21,7 @@ export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Announcements: undefined;
   CatForm: undefined;
+  Facebook: undefined;
   NotFound: undefined;
 };
 
@@ -32,6 +33,7 @@ export type RootTabParamList = {
   Resources: undefined;
   Leaderboard: undefined;
   Account: undefined;
+  Facebook: undefined;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> =
@@ -92,4 +94,13 @@ export type Cat = {
   time: Date;
   votes: number;
   accountID: string;
+};
+
+export type User = {
+  accountID: string | undefined;
+  email: string | null | undefined;
+  photo: string | null | undefined;
+  posts: 0,
+  modStatus: true | false,
+  banStatus: true | false,
 };
