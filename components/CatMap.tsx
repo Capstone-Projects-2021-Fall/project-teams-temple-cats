@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text } from "react-native";
-import MapView, { Marker, Callout, Region } from "react-native-maps";
+import { StyleSheet } from "react-native";
+import MapView, { Marker} from "react-native-maps";
 import { View } from "./Themed";
 import firebase from "../utils/firebase";
 import Gps from "../utils/gps";
@@ -13,25 +13,22 @@ import { Cat } from "../types";
  */
 
 export default function CatMap() {
-  const [cats, setCats] = useState<Array<Cat>>([]);
+  const [cats, setCats] = useState<any>([]);
   const catsRef = firebase.database().ref().child("Cats/")
   let region = Gps();
   let newState: Cat[] = []
 
-catsRef
-    .on("child_added", (snapshot) => {
-      newState.push(snapshot.val())
-      console.log(newState)
-    })
   
-  
+
   useEffect(() => {
-  setCats(newState)
-}, [...newState])
-    
+    catsRef.on("child_added", snapshot => {
+      newState.push(snapshot.val())
+      console.log(snapshot.key)
+      console.log(newState)
+      setCats([...newState])
+    })
+  }, [])
   
-  console.log(cats)
-  console.log(cats.length)
 
   return (
     <View style={styles.container}>
@@ -40,14 +37,17 @@ catsRef
         provider={"google"}
         region={region}
         showsUserLocation={true}
-        <Marker
-        coordinate={ }
       >
-        {cats?.map((cats, index) => (
+        {cats?.map((cat, index) => (
           <Marker
-        )
-        )}
-      </MapView>
+            key={index}
+            coordinate={{
+              latitude: cat.location.latitude,
+              longitude: cat.location.longitude
+            }}
+          />
+        ))}
+        </MapView>
     </View>
   );
 }
