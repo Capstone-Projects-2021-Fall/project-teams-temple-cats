@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet } from "react-native";
-import MapView, { Marker} from "react-native-maps";
+import React, { useEffect, useState, useRef } from "react";
+import { StyleSheet, TouchableOpacity, Image } from "react-native";
+import MapView, { Marker, Region} from "react-native-maps";
 import { View } from "./Themed";
 import firebase from "../utils/firebase";
 import Gps from "../utils/gps";
 import { Cat } from "../types";
+import TUMapBorder from "./TUMapBorder";
 
 
 /**
@@ -14,8 +15,9 @@ import { Cat } from "../types";
  */
 export default function CatMap() {
   const [cats, setCats] = useState<any>([]);
+  const mapViewRef: React.MutableRefObject<MapView> | React.MutableRefObject<null> = useRef(null);
   const catsRef = firebase.database().ref().child("Cats/")
-  let region = Gps();
+  let region = Gps()
   let newState: Cat[] = []
 
   useEffect(() => {
