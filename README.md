@@ -19,9 +19,7 @@ The Temple Cats mobile app is for people in the Temple University area who want 
 
 Currently, the alpha version of the application is being hosted on an Expo server. In order to install Temple Cats:
 
-On iOS: Scan the following QR code with your camera.
-
-On Android: Install the Expo Go app on Google Play and scan the following QR code within the app.
+On either platform please install the expo go app before scanning the QR code.
 
 ![Expo Go QR Code](/QRcode.png)
 
