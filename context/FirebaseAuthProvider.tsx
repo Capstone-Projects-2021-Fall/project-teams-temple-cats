@@ -16,7 +16,7 @@ export const AuthProvider: React.FC = ({ children }) => {
       firebase.database().ref(`Accounts/${firebaseUser?.uid}`).once("value", snapshot => {
         console.log(snapshot)
       if(!snapshot.exists()){
-        addUser(firebaseUser?.uid, firebaseUser?.email, firebaseUser?.photoURL)
+        addUser(firebaseUser?.displayName,firebaseUser?.uid, firebaseUser?.email, firebaseUser?.photoURL)
         console.log("added")
         }
       })
