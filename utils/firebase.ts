@@ -1,4 +1,4 @@
-import firebase from "firebase";
+import firebase from "firebase/app";
 
 
 const firebaseConfig = {
@@ -12,6 +12,6 @@ const firebaseConfig = {
   measurementId: "G-PTQHR7RT4M",
 };
 
-if (firebase.apps.length === 0) firebase.initializeApp(firebaseConfig);
+if (firebase.getApp.length === 0) firebase.initializeApp(firebaseConfig);
 
 export default firebase;
