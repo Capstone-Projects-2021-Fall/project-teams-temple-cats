@@ -94,7 +94,7 @@
     "hooks": {
       "pre-commit": "npm lint-staged"
     },
-    "engine": {
+    "engines": {
       "node": "14.15.4",
       "npm": "8.1.0"
     }
