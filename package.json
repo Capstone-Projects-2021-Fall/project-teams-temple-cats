@@ -93,10 +93,10 @@
   "husky": {
     "hooks": {
       "pre-commit": "npm lint-staged"
-    },
-    "engines": {
+    }
+  },
+  "engines": {
       "node": "14.15.4",
       "npm": "8.1.0"
     }
-  }
 }
