@@ -3,7 +3,7 @@ import { StyleSheet, Button } from "react-native";
 
 import { Text, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
-import firebase from "firebase";
+import firebase from "../utils/firebase";
 import { AuthContext } from "../context/FirebaseAuthContext";
 
 /**

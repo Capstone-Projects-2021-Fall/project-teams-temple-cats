@@ -1,6 +1,3 @@
-import "@firebase/database";
-import "@firebase/auth";
-import "@firebase/app";
 import firebase from "firebase";
 
 
