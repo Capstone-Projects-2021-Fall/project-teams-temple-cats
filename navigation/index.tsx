@@ -34,6 +34,7 @@ import { CatForm2 } from "../CatForm2";
 import Facebook from "../screens/Facebook";
 import WebView from "react-native-webview";
 import { NavigationEvents } from "react-navigation";
+import Settings from "../screens/Settings";
 
 /**
  * Function that renders the navigation bar component.
@@ -90,6 +91,10 @@ function RootNavigator () {
 
       <Stack.Group screenOptions={{ presentation: "modal" }}>
         <Stack.Screen name="Facebook" component={Facebook} />
+      </Stack.Group>
+
+      <Stack.Group screenOptions={{ presentation: "modal" }}>
+        <Stack.Screen name="Settings" component={Settings} />
       </Stack.Group>
     </Stack.Navigator>
   );
@@ -218,15 +223,30 @@ function BottomTabNavigator () {
       <BottomTab.Screen
         name="Account"
         component={Account}
-        options={{
+        options={({ navigation }: RootTabScreenProps<"Account">) => ({
           title: "Account",
+          headerRight: () => (
+            <Pressable
+              onPress={() => navigation.navigate("Settings")}
+              style={({ pressed }) => ({
+                opacity: pressed ? 0.5 : 1
+              })}
+            >
+              <FontAwesome
+                name="cog"
+                size={25}
+                color={Colors[colorScheme].text}
+                style={{ marginRight: 15 }}
+              />
+            </Pressable>
+          ),
           tabBarIcon: ({ color }) =>
-          <Ionicons
-            name="md-person-circle-outline"
-            size={24}
-            color={Colors[colorScheme].text}
-          />
-        }}
+            <Ionicons
+              name="md-person-circle-outline"
+              size={24}
+              color={Colors[colorScheme].text}
+            />
+        })}
       />
 
     </BottomTab.Navigator>
