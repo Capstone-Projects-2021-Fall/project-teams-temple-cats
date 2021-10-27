@@ -69,5 +69,11 @@
     "jsdoc": "^3.6.7",
     "typescript": "~4.0.0"
   },
-  "private": true
+  "private": true,
+  "name": "Temple-Cats",
+  "description": "a really cool app",
+  "version": "1.0.0",
+  "engines": {
+    "node": "14.15.4"
+  }
 }
