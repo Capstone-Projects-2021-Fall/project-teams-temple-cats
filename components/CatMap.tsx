@@ -23,8 +23,6 @@ export default function CatMap() {
   useEffect(() => {
     catsRef.on("child_added", snapshot => {
       newState.push(snapshot.val())
-      console.log(snapshot.key)
-      console.log(newState)
       setCats([...newState])
     })
   }, [])
