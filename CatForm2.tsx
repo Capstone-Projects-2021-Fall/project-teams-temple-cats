@@ -54,10 +54,10 @@ export const CatForm2 = () => {
     location: "",
     time: new Date().toDateString(),
     votes: 0,
-    accountID: firebase.database().ref().child("Accounts/")
+    accountID: firebase.auth().currentUser?.uid
   });
 
-
+  
 
   function onLocationPick(coordinate: LatLng) {
     setCat((currentState) => ({

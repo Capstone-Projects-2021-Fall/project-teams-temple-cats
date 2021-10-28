@@ -22,25 +22,25 @@ export default function CatMap() {
   //console.log(catsRef)
 
  
-
+ 
   let region = Gps()
   let newState: Cat[] = []
   //let pic: string;
-  const [firebasePic, pic] = useState("");
+  const [firebasePic, pic2] = useState("");
 
   useEffect(() => {
     catsRef.on("child_added", async snapshot => {
       newState.push(snapshot.val())
-      pic(await firebase.storage().ref().child(snapshot.val().accountID + "/" + snapshot.val().catID).getDownloadURL());
-    
-     console.log(snapshot.key)
-      console.log(newState)
-      console.log(pic)
+      let pic = firebase.storage().ref().child(snapshot.val().accountID + "/" + snapshot.val().catID + "/" ).getDownloadURL();
+      pic2(await pic);
+     //console.log(snapshot.key)
+      //console.log(newState)
+      //console.log(pic)
       setCats([...newState])
     })
     
   }, [])
-
+  console.log(firebasePic)
   function goToTemple() {
     
     mapViewRef.current?.animateToRegion({
