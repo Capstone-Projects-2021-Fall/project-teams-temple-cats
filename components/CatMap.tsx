@@ -21,24 +21,21 @@ export default function CatMap() {
   //console.log(catPicRef)
   //console.log(catsRef)
 
-  firebase.database().ref().child("Cats").child("catID").child("media").get().then((snapshot) => {
-    if (snapshot.exists()) {
-      console.log(snapshot.val());
-    } else {
-      console.log("No data available");
-    }
-  }).catch((error) => {
-    console.error(error);
-  });
+ 
 
   let region = Gps()
   let newState: Cat[] = []
+  //let pic: string;
+  const [firebasePic, pic] = useState("");
 
   useEffect(() => {
-    catsRef.on("child_added", snapshot => {
+    catsRef.on("child_added", async snapshot => {
       newState.push(snapshot.val())
-      console.log(snapshot.key)
+      pic(await firebase.storage().ref().child(snapshot.val().accountID + "/" + snapshot.val().catID).getDownloadURL());
+    
+     console.log(snapshot.key)
       console.log(newState)
+      console.log(pic)
       setCats([...newState])
     })
     
@@ -53,7 +50,7 @@ export default function CatMap() {
       longitudeDelta: 0.022 },
       1000);
   }
-  const image ="file:///var/mobile/Containers/Data/Application/CA3F780E-2A3C-41CF-87D5-81B4B2529C81/Library/Caches/ExponentExperienceData/%2540cgregotski%252Ftemple-cats/ImagePicker/C80AAB3B-BD48-452F-9331-FEEFC8893323.jpg"
+  
   return (
     <View style={styles.container}>
       <MapView ref={mapViewRef}
@@ -62,19 +59,17 @@ export default function CatMap() {
         region={region}
         showsUserLocation={true}
       >
-       
-       {cats?.map((cat: { location: { latitude: any; longitude: any; }; }, index: any) => (
-    
         
-          <Marker coordinate={{ latitude : cat.location.latitude, longitude : cat.location.longitude}} image={{uri: image}} >
-             
-          </Marker>
-         
-      
-
-
-    
-          
+       {cats?.map((cat: { location: { latitude: any; longitude: any; }; }, index: any) => (
+   
+        <Marker
+           image = {{uri: firebasePic}}
+           key={index}
+             coordinate={{
+                latitude: cat.location.latitude,
+                longitude: cat.location.longitude
+               }}
+        />
           
         ))}
         
@@ -112,14 +107,3 @@ const styles = StyleSheet.create({
   }
 });
 
-
-/* <Marker
-          
-           // image = {require("http://vignette4.wikia.nocookie.net/stuartlittle/images/2/27/Stuart_Little_Michael_J._Fox.png/revision/latest?cb=20150624183432")}
-            key={index}
-            coordinate={{
-              latitude: cat.location.latitude,
-              longitude: cat.location.longitude
-            }}
-            //image={{uri: "https://i.ibb.co/nnV730F/maxresdefault.png"}}
-          />*/

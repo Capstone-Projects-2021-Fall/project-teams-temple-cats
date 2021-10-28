@@ -16,6 +16,7 @@ import {
   ScrollView,
 } from "react-native";
 import CatImagePicker from "./components/ImagePicker";
+import firebase from "firebase";
 
 export const CatForm2 = () => {
   const colors = ["Set Cat Color", "Orange", "Brown", "Black", "White"];
@@ -53,7 +54,7 @@ export const CatForm2 = () => {
     location: "",
     time: new Date().toDateString(),
     votes: 0,
-    accountID: ""
+    accountID: firebase.database().ref().child("Accounts/")
   });
 
 
@@ -65,16 +66,18 @@ export const CatForm2 = () => {
     }));
     setLocationModalVisible(false);
   }
-
+  
+    
   const handleSetImage = (data: string) => {
     cat.media = data;
     setImage(data)
   };
-
+ 
   return (
     <SafeAreaView>
       <ScrollView>
         <TextInput
+         
           value={cat.name}
           selectionColor="white"
           placeholder="Enter possible name here"
@@ -173,6 +176,7 @@ export const CatForm2 = () => {
             onConfirm={onLocationPick}
           />
         </Modal>
+        
       </ScrollView>
     </SafeAreaView>
   );
