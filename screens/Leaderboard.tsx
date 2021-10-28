@@ -12,60 +12,34 @@ import Leaderboard from 'react-native-leaderboard';
  * @returns {JSX.Element} JSX element of the leaderboard screen
  */
 
-let data1: any[] = [];
+let pointValuesArr: any[] = [];
 export default function LeaderboardScreen({ navigation }: RootTabScreenProps<"Leaderboard">) {
 
   //console.log(data1)
 
-  const [word, setWord] = useState<any>([]);
+  const [points, setPoints] = useState<any>([]);
 
   useEffect(() => {
     firebase.database().ref('Accounts').on('value', function (snapshot) {
       snapshot.forEach((child) => {
-        var test = child.child("points").val();
-        if(test!= null){
-          data1.push(test)
+        var pointValues = child.child("points").val();
+        if(pointValues!= null){
+          pointValuesArr.push(pointValues)
         }
         console.log(child.child("accountID").val())
-          //console.log(test)
       })
       
-      setWord(data1)
+      setPoints(pointValuesArr)
     });
-
   }, []);
 
-
-  //delete word[2]
-
-  console.log(word)
-
-
-  //console.log(word)
-
   return (
-
     <Leaderboard
-      data= {word}
+      data= {points}
       labelBy='userName'
       sortBy='highScore'
        />   
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold"
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%"
-  }
-});
+
