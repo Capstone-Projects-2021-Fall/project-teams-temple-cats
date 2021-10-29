@@ -13,7 +13,7 @@ import TUMapBorder from "./TUMapBorder";
  * @returns {JSX.Element} JSX element of the map
  */
 export default function CatMap() {
-  const [cats, setCats] = useState<any>([]);
+  const [cats, setCats] = useState<Cat[]>([]);
   const mapViewRef: React.MutableRefObject<MapView> | React.MutableRefObject<null> = useRef(null);
   const catsRef = firebase.database().ref().child("Cats/")
   //const [pics, setPics] = useState<any>([]);
@@ -26,14 +26,14 @@ export default function CatMap() {
 
   useEffect(() => {
     catsRef.on("child_added", async snapshot => {
-      newState.push(snapshot.val());
+      const picUri = await firebase.storage().ref().child(snapshot.val().accountID + "/" + snapshot.val().catID + "/").getDownloadURL();
+      newState.push({ ...snapshot.val(), media: picUri });
       setCats([...newState])
     })
     
   }, [])
 
-  function goToTemple() {
-    
+  function goToTemple() { 
     mapViewRef.current?.animateToRegion({
       latitude: 39.9806438149835,
       longitude: -75.15574242934214,
@@ -43,7 +43,6 @@ export default function CatMap() {
   }
  
   return (
-    
     <View style={styles.container}>
       <MapView ref={mapViewRef}
         style={styles.map}
@@ -51,21 +50,16 @@ export default function CatMap() {
         region={region}
         showsUserLocation={true}
       >
-        {cats?.map(async (cat, index) =>  (
-        pics = await firebase.storage().ref().child(cat.accountID + "/" + cat.catID + "/").getDownloadURL(),
-       // console.log(pics),
-         <Marker
-           key={index}
-           coordinate={{
+        {cats?.map((cat, index) => (
+          <Marker
+            key={index}
+            coordinate={{
               latitude: cat.location.latitude,
               longitude: cat.location.longitude
-           }}
-           
-          image = {{uri: await firebase.storage().ref().child(cat.accountID + "/" + cat.catID + "/").getDownloadURL()}} 
+            }}
+            image = {{ uri: cat.media }} 
           />
-          ))} 
-       
-        
+        ))} 
         <TUMapBorder/>
       </MapView>
       <TouchableOpacity style={styles.templeButton} onPress={goToTemple}>
