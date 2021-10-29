@@ -60,7 +60,7 @@ export const CatForm2 = () => {
 
 
   function onLocationPick(coordinate: LatLng) {
-    setCat((currentState:) => ({
+    setCat((currentState) => ({
       ...currentState,
       location: coordinate,
     }));
