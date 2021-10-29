@@ -16,18 +16,14 @@ export default function CatMap() {
   const [cats, setCats] = useState<Cat[]>([]);
   const mapViewRef: React.MutableRefObject<MapView> | React.MutableRefObject<null> = useRef(null);
   const catsRef = firebase.database().ref().child("Cats/")
-  //const [pics, setPics] = useState<any>([]);
  
   let region = Gps()
   let newState: Cat[] = []
- 
-  const [firebasePic, pic] = useState("");
-  let pics = "";
 
   useEffect(() => {
     catsRef.on("child_added", async snapshot => {
       const picUri = await firebase.storage().ref().child(snapshot.val().accountID + "/" + snapshot.val().catID + "/").getDownloadURL();
-      newState.push({ ...snapshot.val(), media: picUri });
+      newState.push({ ...snapshot.val(), media: picUri});
       setCats([...newState])
     })
     
@@ -51,14 +47,22 @@ export default function CatMap() {
         showsUserLocation={true}
       >
         {cats?.map((cat, index) => (
-          <Marker
+        
+         <Marker
             key={index}
             coordinate={{
               latitude: cat.location.latitude,
               longitude: cat.location.longitude
+            }}>
+            <Image
+            style={{width: 50, height: 50, borderWidth: 5, borderColor: "#a52a2a"}}
+            source={{
+              uri: cat.media,
             }}
-            image = {{ uri: cat.media }} 
           />
+           
+          </Marker>
+            
         ))} 
         <TUMapBorder/>
       </MapView>
@@ -91,6 +95,11 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     width: "100%",
     height: "100%",
+  },
+  catPin: {
+    width: 30,
+    height: 30,
   }
 });
 
+/* //image = {{// uri: cat.media, width: 50, height:50, resize }}*/
