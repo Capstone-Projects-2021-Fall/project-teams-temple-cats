@@ -16,6 +16,7 @@ import {
   ScrollView,
 } from "react-native";
 import CatImagePicker from "./components/ImagePicker";
+import firebase from "./utils/firebase";
 
 export const CatForm2 = () => {
   const colors = ["Set Cat Color", "Orange", "Brown", "Black", "White"];
@@ -53,13 +54,13 @@ export const CatForm2 = () => {
     location: "",
     time: new Date().toDateString(),
     votes: 0,
-    accountID: ""
+    accountID: firebase.auth().currentUser?.uid
   });
 
 
 
   function onLocationPick(coordinate: LatLng) {
-    setCat((currentState) => ({
+    setCat((currentState:) => ({
       ...currentState,
       location: coordinate,
     }));
