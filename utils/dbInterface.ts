@@ -46,7 +46,7 @@ export function addUser(name: User['displayName'], id: User['accountID'], email:
   .child("Accounts/" + id).child("/points")
   .set({
     userName: name,
-    highScore: 0,
+    highScore: 1,
   });
 }
 

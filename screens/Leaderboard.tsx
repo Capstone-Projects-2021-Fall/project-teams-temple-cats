@@ -27,12 +27,11 @@ export default function LeaderboardScreen({ navigation }: RootTabScreenProps<"Le
   const [button, setbutton] = useState<any>(false);
   
 
-var curr = new Date; // get current date
-var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
-var last = first + 6; // last day is the first day + 6
-
-var firstday = new Date(curr.setDate(first));
-var lastday = new Date(curr.setDate(last));
+  var curr = new Date; 
+  var first = curr.getDate() - curr.getDay(); 
+  var last = first + 6; 
+  var firstday = new Date(curr.setDate(first));
+  var lastday = new Date(curr.setDate(last));
 
   useEffect(() => {
     firebase.database().ref('Accounts').on('value', function (snapshot) {
@@ -45,17 +44,17 @@ var lastday = new Date(curr.setDate(last));
         }
 
         var currentDate = new Date(pointTimes);
-
-        if (pointTimes != null &&  (currentDate > firstday) && (currentDate < lastday) ) {
+        if (pointTimes != null &&  (currentDate > firstday) && (currentDate < lastday)) {
           pointValuesWeekArr.push(pointValues)
-          //console.log(pointValuesWeekArr)
+          console.log(pointValuesWeekArr)
         }
-
-        //console.log(child.child("accountID").val())
       })
       setPoints(pointValuesArr)
       setPointsWeek(pointValuesWeekArr)
       setValue(pointValuesArr)
+
+      pointValuesArr = [];
+      pointValuesWeekArr = [];
     });
   }, []);
 
@@ -66,11 +65,9 @@ var lastday = new Date(curr.setDate(last));
         color="#8b0000"
         title= {title}
         onPress={() => {
-
           {button === false ? setTitle("Click for All Time") : null}
           {button === false ? setbutton(true) : null}
           {button === false ? setValue(pointsWeek) : null}
-
           {button === true ? setTitle("Click for Weekly Board") : null}
           {button === true ? setbutton(false) : null}
           {button === true ? setValue(points) : null}
@@ -83,7 +80,6 @@ var lastday = new Date(curr.setDate(last));
         sortBy='highScore'
       />
     </View>
-
   );
 }
 
