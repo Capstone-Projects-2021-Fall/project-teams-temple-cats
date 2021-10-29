@@ -16,37 +16,17 @@ export default function CatMap() {
   const [cats, setCats] = useState<any>([]);
   const mapViewRef: React.MutableRefObject<MapView> | React.MutableRefObject<null> = useRef(null);
   const catsRef = firebase.database().ref().child("Cats/")
-  const [pics, setPics] = useState<any>([]);
+  //const [pics, setPics] = useState<any>([]);
  
   let region = Gps()
   let newState: Cat[] = []
  
   const [firebasePic, pic] = useState("");
- // let pic : any;
-  //var pics: any[] = [];
+  let pics = "";
 
   useEffect(() => {
     catsRef.on("child_added", async snapshot => {
       newState.push(snapshot.val());
-      pic(await firebase.storage().ref().child(snapshot.val().accountID + "/" + snapshot.val().catID + "/").getDownloadURL());
-      //var pic = snapshot.val()
-      //console.log(pic.media)
-      {cats?.map((cat: { location: { latitude: any; longitude: any; }; }, index: any) => (
-    
-        <Marker
-           key={index}
-             coordinate={{
-                latitude: cat.location.latitude,
-                longitude: cat.location.longitude
-               }}
-               
-           image = {{uri: firebasePic}} 
-        />
-        ))}
-      //setPics(pic);
-     // console.log(pics);
-      //pics.push(pic);
-     // console.log(snapshot.val())
       setCats([...newState])
     })
     
@@ -71,8 +51,9 @@ export default function CatMap() {
         region={region}
         showsUserLocation={true}
       >
-        {cats?.map((cat: { location: { latitude: any; longitude: any; }; }, index: any) => (
-    
+        {cats?.map(async (cat, index) =>  (
+        pics = await firebase.storage().ref().child(cat.accountID + "/" + cat.catID + "/").getDownloadURL(),
+       // console.log(pics),
          <Marker
            key={index}
            coordinate={{
@@ -80,10 +61,9 @@ export default function CatMap() {
               longitude: cat.location.longitude
            }}
            
-          image = {{uri: firebasePic}} 
+          image = {{uri: await firebase.storage().ref().child(cat.accountID + "/" + cat.catID + "/").getDownloadURL()}} 
           />
-          )
-          )} 
+          ))} 
        
         
         <TUMapBorder/>
@@ -120,18 +100,3 @@ const styles = StyleSheet.create({
   }
 });
 
-/*
- {cats?.map((cat: { location: { latitude: any; longitude: any; }; }, index: any) => (
-    
-        <Marker
-           key={index}
-             coordinate={{
-                latitude: cat.location.latitude,
-                longitude: cat.location.longitude
-               }}
-               
-           image = {{uri: firebasePic}} 
-        />
-        //)
-       // )} 
-*/
