@@ -22,7 +22,7 @@ import Home from "../screens/Home";
 import Account from "../screens/Account";
 import Resources from "../screens/Resources";
 import Login from "../screens/Login";
-import CatForm from "../screens/CatForm";
+import { CatForm } from "../screens/CatForm";
 
 import {
   RootStackParamList,
