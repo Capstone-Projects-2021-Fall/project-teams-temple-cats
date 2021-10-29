@@ -3,7 +3,7 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import { FontAwesome, Ionicons } from "@expo/vector-icons";
+import { FontAwesome, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
   NavigationContainer,
@@ -12,7 +12,7 @@ import {
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
-import { Alert, ColorSchemeName, Linking, Pressable, StatusBar } from "react-native";
+import { Alert, ColorSchemeName, Linking, Pressable, StatusBar, View } from "react-native";
 
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
@@ -35,6 +35,7 @@ import Facebook from "../screens/Facebook";
 import WebView from "react-native-webview";
 import { NavigationEvents } from "react-navigation";
 import Settings from "../screens/Settings";
+import Rewards from "../screens/Rewards";
 
 /**
  * Function that renders the navigation bar component.
@@ -96,6 +97,10 @@ function RootNavigator () {
       <Stack.Group screenOptions={{ presentation: "modal" }}>
         <Stack.Screen name="Settings" component={Settings} />
       </Stack.Group>
+
+      <Stack.Group screenOptions={{ presentation: "modal" }}>
+        <Stack.Screen name="Rewards" component={Rewards} />
+      </Stack.Group>
     </Stack.Navigator>
   );
 }
@@ -130,6 +135,35 @@ function BottomTabNavigator () {
       }}
     >
       <BottomTab.Screen
+        name="Resources"
+        component={Resources}
+        
+        options={{
+          title: "Resources",
+          
+          tabBarIcon: ({ color }) => (
+            <Ionicons
+              name="book"
+              size={24}
+              color={Colors[colorScheme].text}
+            />
+          )
+        }}
+      />
+      <BottomTab.Screen
+            name="Facebook"
+            component={Facebook}
+            options={{
+              title: "Facebook",
+              tabBarIcon: ({ color }) =>
+            <Ionicons
+                  name="logo-facebook"
+                  size={24}
+                  color={Colors[colorScheme].text} 
+                  />
+            }}
+      />
+      <BottomTab.Screen
         name="Home"
         component={Home}
         options={({ navigation }: RootTabScreenProps<"Home">) => ({
@@ -150,7 +184,6 @@ function BottomTabNavigator () {
               />
             </Pressable>
           ),
-
           headerRight: () => (
             <Pressable
               onPress={() => navigation.navigate("Announcements")}
@@ -166,46 +199,14 @@ function BottomTabNavigator () {
               />
             </Pressable>
           ),
-
           tabBarIcon: ({ color }) => (
             <Ionicons
-            name="home"
-            size={24}
-            color={Colors[colorScheme].text}
-           />
+              name="home"
+              size={24}
+              color={Colors[colorScheme].text}
+            />
           )
         })}
-      />
-
-      <BottomTab.Screen
-        name="Resources"
-        component={Resources}
-        
-        options={{
-          title: "Resources",
-          
-          tabBarIcon: ({ color }) => (
-            <Ionicons
-            name="book"
-            size={24}
-            color={Colors[colorScheme].text}
-          />
-          )
-        }}
-      />
-
-      <BottomTab.Screen
-            name="Facebook"
-            component={Facebook}
-            options={{
-              title: "Facebook",
-              tabBarIcon: ({ color }) =>
-            <Ionicons
-                  name="link"
-                  size={24}
-                  color={Colors[colorScheme].text} 
-                  />
-            }}
       />
       <BottomTab.Screen
         name="Leaderboard"
@@ -213,11 +214,11 @@ function BottomTabNavigator () {
         options={{
           title: "Leaderboard",
           tabBarIcon: ({ color }) =>
-          <Ionicons
-          name="filter"
-          size={24}
-          color={Colors[colorScheme].text}
-        />
+          <MaterialIcons
+            name="leaderboard"
+            size={24}
+            color={Colors[colorScheme].text}
+          />
         }}
       />
       <BottomTab.Screen
@@ -226,19 +227,34 @@ function BottomTabNavigator () {
         options={({ navigation }: RootTabScreenProps<"Account">) => ({
           title: "Account",
           headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate("Settings")}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1
-              })}
-            >
-              <FontAwesome
-                name="cog"
-                size={25}
-                color={Colors[colorScheme].text}
-                style={{ marginRight: 15 }}
-              />
-            </Pressable>
+            <View style={{ flexDirection: "row" }}>
+              <Pressable
+                onPress={() => navigation.navigate("Rewards")}
+                style={({ pressed }) => ({
+                  opacity: pressed ? 0.5 : 1
+                })}
+              >
+                <FontAwesome
+                  name="gift"
+                  size={25}
+                  color={Colors[colorScheme].text}
+                  style={{ marginRight: 15 }}
+                />
+              </Pressable>
+              <Pressable
+                onPress={() => navigation.navigate("Settings")}
+                style={({ pressed }) => ({
+                  opacity: pressed ? 0.5 : 1
+                })}
+              >
+                <FontAwesome
+                  name="cog"
+                  size={25}
+                  color={Colors[colorScheme].text}
+                  style={{ marginRight: 15 }}
+                />
+              </Pressable>
+            </View>
           ),
           tabBarIcon: ({ color }) =>
             <Ionicons

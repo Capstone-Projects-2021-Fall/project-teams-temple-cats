@@ -23,6 +23,7 @@ export type RootStackParamList = {
   CatForm: undefined;
   Facebook: undefined;
   Settings: undefined;
+  Rewards: undefined;
   NotFound: undefined;
 };
 
