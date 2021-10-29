@@ -16,7 +16,7 @@ import {
   ScrollView,
 } from "react-native";
 import CatImagePicker from "./components/ImagePicker";
-import firebase from "firebase";
+import firebase from "./utils/firebase";
 
 export const CatForm2 = () => {
   const colors = ["Set Cat Color", "Orange", "Brown", "Black", "White"];

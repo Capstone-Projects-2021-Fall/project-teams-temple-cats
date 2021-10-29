@@ -24,6 +24,7 @@ export default function CatMap() {
     catsRef.on("child_added", async snapshot => {
       const picUri = await firebase.storage().ref().child(snapshot.val().accountID + "/" + snapshot.val().catID + "/").getDownloadURL();
       newState.push({ ...snapshot.val(), media: picUri});
+
       setCats([...newState])
     })
     

@@ -94,7 +94,7 @@ export default function CatCamera(props:Props) {
                     onPress={__handleClose}
                     style={{
                       marginBottom: 20,
-                      borderRadius: '50%',
+                      borderRadius: 50,
                       height: 25,
                       width: 25
                     }}
@@ -111,7 +111,7 @@ export default function CatCamera(props:Props) {
                     onPress={__handleFlashMode}
                     style={{
                       backgroundColor: flashMode === "off" ? "#000" : "#fff",
-                      borderRadius: "50%",
+                      borderRadius: 50,
                       height: 25,
                       width: 25,
                       marginBottom: 20,
@@ -128,7 +128,7 @@ export default function CatCamera(props:Props) {
                   <TouchableOpacity
                     onPress={__switchCamera}
                     style={{
-                      borderRadius: '50%',
+                      borderRadius: 50,
                       height: 25,
                       width: 25
                     }}

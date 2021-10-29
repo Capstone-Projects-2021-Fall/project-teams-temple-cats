@@ -10,7 +10,7 @@ export default function Facebook () {
   return (
     Alert.alert(
       "Alert",
-      "Do you want to open Facebook in the App?",
+      "Do you want to open the in the Facebook App?",
       [ 
         { text: "No", 
           onPress: () => console.log("Button pressed"),
