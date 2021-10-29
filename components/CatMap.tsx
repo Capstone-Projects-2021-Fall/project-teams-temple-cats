@@ -7,27 +7,30 @@ import Gps from "../utils/gps";
 import { Cat } from "../types";
 import TUMapBorder from "./TUMapBorder";
 
-
 /**
  * Function that renders the Cat Map component, including the map and all it's children (e.g. pins/markers).
  * @component
  * @returns {JSX.Element} JSX element of the map
  */
 export default function CatMap() {
-  const [cats, setCats] = useState<any>([]);
+  const [cats, setCats] = useState<Cat[]>([]);
   const mapViewRef: React.MutableRefObject<MapView> | React.MutableRefObject<null> = useRef(null);
   const catsRef = firebase.database().ref().child("Cats/")
+ 
   let region = Gps()
   let newState: Cat[] = []
 
   useEffect(() => {
-    catsRef.on("child_added", snapshot => {
-      newState.push(snapshot.val())
+    catsRef.on("child_added", async snapshot => {
+      const picUri = await firebase.storage().ref().child(snapshot.val().accountID + "/" + snapshot.val().catID + "/").getDownloadURL();
+      newState.push({ ...snapshot.val(), media: picUri});
+
       setCats([...newState])
     })
+    
   }, [])
 
-  function goToTemple() {
+  function goToTemple() { 
     mapViewRef.current?.animateToRegion({
       latitude: 39.9806438149835,
       longitude: -75.15574242934214,
@@ -35,7 +38,7 @@ export default function CatMap() {
       longitudeDelta: 0.022 },
       1000);
   }
-
+ 
   return (
     <View style={styles.container}>
       <MapView ref={mapViewRef}
@@ -45,14 +48,23 @@ export default function CatMap() {
         showsUserLocation={true}
       >
         {cats?.map((cat, index) => (
-          <Marker
+        
+         <Marker
             key={index}
             coordinate={{
               latitude: cat.location.latitude,
               longitude: cat.location.longitude
+            }}>
+            <Image
+            style={{width: 50, height: 50, borderWidth: 5, borderColor: "#a52a2a"}}
+            source={{
+              uri: cat.media
             }}
           />
-        ))}
+           
+          </Marker>
+            
+        ))} 
         <TUMapBorder/>
       </MapView>
       <TouchableOpacity style={styles.templeButton} onPress={goToTemple}>
@@ -84,5 +96,9 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     width: "100%",
     height: "100%",
+  },
+  catPin: {
+    width: 30,
+    height: 30,
   }
 });
