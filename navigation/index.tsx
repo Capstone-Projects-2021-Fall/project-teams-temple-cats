@@ -30,7 +30,6 @@ import {
   RootTabScreenProps
 } from "../types";
 import { AuthContext } from "../context/FirebaseAuthContext";
-import { CatForm2 } from "../CatForm2";
 import Facebook from "../screens/Facebook";
 import WebView from "react-native-webview";
 import { NavigationEvents } from "react-navigation";
@@ -86,7 +85,7 @@ function RootNavigator () {
       </Stack.Group>
 
       <Stack.Group screenOptions={{ presentation: "modal" }}>
-        <Stack.Screen name="CatForm" component={CatForm2} />
+        <Stack.Screen name="CatForm" component={CatForm} />
       </Stack.Group>
 
       <Stack.Group screenOptions={{ presentation: "modal" }}>

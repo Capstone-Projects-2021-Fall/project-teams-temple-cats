@@ -4,8 +4,7 @@ import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
 import { AuthProvider } from "./context/FirebaseAuthProvider";
 import Navigation from "./navigation/index";
-import { CatForm2 } from "./CatForm2";
-import CatForm from "./screens/CatForm";
+import { CatForm } from "./screens/CatForm";
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -16,7 +15,7 @@ export default function App() {
     return (
       <SafeAreaProvider>
         <AuthProvider>
-          <Navigation colorScheme={colorScheme} />
+          <CatForm />
         </AuthProvider>
       </SafeAreaProvider>
     );

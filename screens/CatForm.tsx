@@ -1,134 +1,233 @@
-import firebase from "firebase";
 import React, { useEffect, useState } from "react";
-import SelectDropdown from "react-native-select-dropdown";
+import { Button, CheckBox} from "react-native-elements";
+import { Picker } from "@react-native-picker/picker";
+import "react-native-get-random-values";
+import { v4 as uuidv4 } from "uuid";
+import { Cat, Pin } from "../types";
+import { addCat, addPicture } from "../utils/dbInterface";
+import { LatLng } from "react-native-maps";
+import LocationPicker from "./LocationPicker";
 import {
+  Image,
+  Modal,
+  TextInput,
   SafeAreaView,
   StyleSheet,
-  TextInput,
-  Text,
   ScrollView,
-  StatusBar,
-  Button,
-  View,
-  useColorScheme,
-  Modal,
-  Alert,
 } from "react-native";
-import { LatLng } from "react-native-maps";
-import * as Location from "expo-location";
-import LocationPicker from "./LocationPicker";
-
 import CatImagePicker from "../components/ImagePicker";
-import Camera from "../components/Camera";
+import { View } from "../components/Themed";
 
-const CatForm = () => {
-  const [content, media] = React.useState();
-  const [catLocation, location] = React.useState("");
-  const [features, uniqueFeatures] = React.useState("");
-  const [name, possibleName] = React.useState("");
-  const [catBehavior, behavior] = React.useState("");
-  const [age, ageEstimate] = React.useState("");
-  const [comments, additionalComments] = React.useState("");
-  const [id, catID] = React.useState("");
-  const colors = ["Orange", "Brown", "Black", "White", "Gray", "Tri-Colored"];
-  const scale = ["1", "2", "3", "4", "5"];
-  const types = ["Stray", "Feral"];
-  const conditions = ["Healthy", "Needs medical attention"];
-  const eyeColors = ["Brown", "Green", "Blue", "Black", "Yellow", "Orange", "Hazel", "Mixed"];
-  const times = [" months", " years"];
+export const CatForm = () => {
+  const colors = ["Cat Fur Color", "Orange", "Brown", "Black", "White"];
+  const eyeColors = [
+    "Cat Eye Color",
+    "Brown",
+    "Green",
+    "Blue",
+    "Black",
+    "Yellow",
+    "Orange",
+    "Hazel",
+    "Mixed",
+  ];
 
-  const [colorSelected, colorSelection] = useState("");
-  const [eyeColorSelected, eyeColorSelection] = useState("");
-  const [conditionSelected, conditionSelection] = useState("");
-  const [typeSelected, typeSelection] = useState("");
-  const [friendlinessSelected, friendlinessSelection] = useState("");
-  const [timeSelected, timeSelection] = useState("");
-
-  const [currentDate, setCurrentDate] = useState("");
-
-  const [camModalVisible, setCamModalVisible] = useState(false);
-
-  useEffect(() => {
-    const date = new Date().getDate(); // Current Date
-    const month = new Date().getMonth() + 1; // Current Month
-    const year = new Date().getFullYear(); // Current Year
-    const hours = new Date().getHours(); // Current Hours
-    const min = new Date().getMinutes(); // Current Minutes
-    const sec = new Date().getSeconds(); // Current Seconds
-    setCurrentDate(`${year}/${month}/${date}/${hours}:${min}:${sec}`);
-  }, []);
-
-  const colorScheme = useColorScheme();
-
-  // const themeTextStyle = colorScheme === 'light' ? styles.lightThemeText : styles.darkThemeText;
-  const themeTextStyle = colorScheme === "light" ? styles.lightInput : styles.darkInput;
-
+  const [color, setColor] = useState();
+  const [eyeColor, setEyeColor] = useState();
+  const [image, setImage] = useState<string>();
+  const [friendly, setFriendly] = useState(false);
+  const [healthy, setHealthy] = useState(false);
+  const [kitten, setKitten] = useState(false);
   const [locationModalVisible, setLocationModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const [cat, setCat]: Cat = useState({
+    catID: uuidv4(),
+    comments: "",
+    name: "",
+    color: "",
+    eyeColor: "",
+    media: "",
+    friendly: false,
+    healthy: false,
+    kitten: false,
+    location: "",
+    time: new Date().toDateString(),
+    votes: 0,
+    accountID: ""
+  });
+
+
 
   function onLocationPick(coordinate: LatLng) {
-    location(`${coordinate.latitude}, ${coordinate.longitude}`);
+    setCat((currentState: Cat) => ({
+      ...currentState,
+      location: coordinate,
+    }));
     setLocationModalVisible(false);
   }
 
-  function onUseCurrentLocation() {
-    (async () => {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-      } else {
-        const gps = await Location.getCurrentPositionAsync({
-          accuracy: Location.Accuracy.Balanced,
-        });
-        location(`${gps.coords.latitude}, ${gps.coords.longitude}`); // TODO: revisit this when we are submitting location to create pins in db
-      }
-    })();
-  }
+  const handleSetImage = (data: string) => {
+    cat.media = data;
+    setImage(data)
+  };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.container}>
       <ScrollView>
-        <Text style={styles.text}>Cat Form</Text>
-
-        <Text style={styles.text2}>
-          {" "}
-          *<Text style={[styles.text3, themeTextStyle]}> fields are required</Text>
-        </Text>
-
-        <Text style={[styles.text4, themeTextStyle]}>
-          {" "}
-          Cat ID
-          <Text style={styles.text2}> *</Text>
-        </Text>
-
-        <TextInput style={styles.input} onChangeText={catID} value={id} testID="catID" />
-
-        <Text style={[styles.text4, themeTextStyle]}>
-          {" "}
-          Media
-          <Text style={styles.text2}> *</Text>
-        </Text>
-
-        <TextInput style={styles.input} onChangeText={media} value={content} testID="media" />
-        <CatImagePicker />
-
-        <Button title="Open Camera" onPress={() => setCamModalVisible(true)} />
-
-        <Modal
-          animationType="slide"
-          onRequestClose={() => setCamModalVisible(!camModalVisible)}
-          transparent
-          visible={camModalVisible}
+        <TextInput
+          style={styles.nameInput}
+          value={cat.name}
+          selectionColor="white"
+          placeholder="Enter possible name here"
+          placeholderTextColor="black"
+          onChangeText={(text) =>
+            setCat((currentState: Cat) => ({
+              ...currentState,
+              name: text,
+            }))
+          }
+        />
+        <TextInput
+          style={styles.additionalInput}
+          selectionColor="white"
+          placeholder="Enter additional information here"
+          placeholderTextColor="black"
+          value={cat.comments}
+          onChangeText={(text) =>
+            setCat((currentState: Cat) => ({
+              ...currentState,
+              comments: text,
+            }))
+          }
+        />
+        <View
+        style= {styles.checkboxes}> 
+        <CheckBox
+          containerStyle={{
+            padding: 0,
+            backgroundColor: "white",
+            borderWidth: 0,
+          }}
+          title="Friendly"
+          checked={friendly}
+          onPress={() => {
+            setFriendly(!friendly);
+            cat.friendly = !cat.friendly;
+          }}
+          checkedIcon='dot-circle-o'
+            uncheckedIcon='circle-o'
+            checkedColor="#8b0000"
+        />
+        <CheckBox
+          containerStyle={{
+            padding: 0,
+            backgroundColor: "white",
+            borderWidth: 0
+            }}
+          title="Healthy"
+          checked={healthy}
+          onPress={() => {
+            setHealthy(!healthy);
+            cat.healthy = !cat.healthy;
+          }}
+          checkedIcon='dot-circle-o'
+          uncheckedIcon='circle-o'
+        />
+        <CheckBox
+            containerStyle={{
+              padding: 0,
+              backgroundColor: "transparent",
+              borderWidth: 0
+          }}
+          title="Kitten"
+          checked={kitten}
+          onPress={() => {
+            setKitten(!kitten);
+            cat.kitten = !cat.kitten;
+          }}
+          checkedIcon='dot-circle-o'
+          uncheckedIcon='circle-o'
+        />
+        </View>
+        <View style={styles.pickers}>
+        <Picker
+            style={{
+              backgroundColor: "white",
+              width: 175,
+              height: 200,
+            }}
+            selectedValue={color}
+            onValueChange={(item) => {
+              setColor(item);
+              cat.color = colors[item];
+            }}
         >
-          <Camera />
-        </Modal>
-
-        <Text style={[styles.text4, themeTextStyle]}>
-          {" "}
-          Location
-          <Text style={styles.text2}> *</Text>
-        </Text>
-
-        <Button title="Select Location" onPress={() => setLocationModalVisible(true)} />
-
+          {colors.map((item, index) => {
+            return <Picker.Item label={item} value={index} key={index} />;
+          })}
+        </Picker>
+        <Picker
+          style={{ 
+              backgroundColor: "white",
+              width: 175,
+              height: 200,
+            }}
+          selectedValue={eyeColor}
+          onValueChange={(item) => {
+            setEyeColor(item);
+            cat.eyeColor = eyeColors[item];
+          }}
+        >
+          {eyeColors.map((item, index) => {
+            return <Picker.Item label={item} value={index} key={index} />;
+          })}
+        </Picker>
+        </View>
+        <View style={styles.buttons}>
+        {image && (<Image source={{ uri: image }} style={{ width: 100, height: 100 }} />)}
+        <CatImagePicker onSetImage={handleSetImage} onCloseModal={() => setModalVisible(false)} modalVisible={modalVisible}/>
+        <Button
+        title="Upload Image"
+        buttonStyle={{
+            width: 150,
+            backgroundColor: "#8b0000"
+          }}
+          containerStyle={{
+            alignItems: "center",
+            marginBottom: 10,
+          }}  color="#8b0000" onPress={() => setModalVisible(true)} />
+        <Button
+          title="Add Location"
+          buttonStyle={{
+            width: 150,
+            backgroundColor: "#8b0000"
+          }}
+          containerStyle={{
+            alignItems: "center",
+            marginBottom: 10,
+          }}
+          backgroundColor="#8b0000"
+          onPress={() => setLocationModalVisible(true)}
+        />
+        <Button
+          title="Submit Cat"
+          buttonStyle={{
+            width: 150,
+            backgroundColor: "#8b0000"
+          }}
+          containerStyle={{
+            alignItems: "center",
+            marginBottom: 10,
+          }}
+          onPress={() => {
+            addCat(cat);
+            addPicture(cat);
+            alert("Cat submitted reload app");
+            return; 
+          }}
+        />
+        </View>
         <Modal animationType="slide" visible={locationModalVisible}>
           <LocationPicker
             onCancel={() => {
@@ -137,176 +236,13 @@ const CatForm = () => {
             onConfirm={onLocationPick}
           />
         </Modal>
-
-        <Button title="Use Current Location" onPress={onUseCurrentLocation} />
-
-        <Text style={[styles.text3, themeTextStyle]} testID="location">
-          {" "}
-          {catLocation}{" "}
-        </Text>
-
-        <Text style={[styles.text4, themeTextStyle]}>
-          {" "}
-          Color
-          <Text style={styles.text2}> *</Text>
-        </Text>
-
-        <SelectDropdown
-          data={colors}
-          onSelect={(selectedItem: any, index: any) => {
-            colorSelection(selectedItem);
-          }}
-          buttonTextAfterSelection={(selectedItem: any, index: any) => {
-            return selectedItem;
-          }}
-          rowTextForSelection={(item: any, index: any) => {
-            return item;
-          }}
-        />
-
-        <Text style={[styles.text4, themeTextStyle]}>
-          {" "}
-          Condition
-          <Text style={styles.text2}> *</Text>
-        </Text>
-
-        <SelectDropdown
-          data={conditions}
-          onSelect={(selectedItem: string, index: any) => {
-            console.log(selectedItem, index);
-            conditionSelection(selectedItem);
-            console.log(conditionSelected);
-          }}
-          buttonTextAfterSelection={(selectedItem: any, index: any) => {
-            return selectedItem;
-          }}
-          rowTextForSelection={(item: any, index: any) => {
-            return item;
-          }}
-        />
-
-        <Text style={[styles.text4, themeTextStyle]}> Unique Features</Text>
-        <TextInput style={styles.input} onChangeText={uniqueFeatures} value={features} testID="features" />
-        <Text style={[styles.text4, themeTextStyle]}> Possible Name</Text>
-        <TextInput style={styles.input} onChangeText={possibleName} value={name} testID="possibleName" />
-        <Text style={[styles.text4, themeTextStyle]}> Behavior</Text>
-        <TextInput style={styles.input} onChangeText={behavior} value={catBehavior} testID="catBehavior" />
-
-        <Text style={[styles.text4, themeTextStyle]}> Age Estimate</Text>
-        <View style={{ flexDirection: "row" }}>
-          <TextInput style={styles.input} onChangeText={ageEstimate} value={age} testID="ageEstimate" />
-          <SelectDropdown
-            data={times}
-            onSelect={(selectedItem: string, index: any) => {
-              console.log(selectedItem, index);
-              timeSelection(selectedItem);
-            }}
-            buttonTextAfterSelection={(selectedItem: any, index: any) => {
-              return selectedItem;
-            }}
-            rowTextForSelection={(item: any, index: any) => {
-              return item;
-            }}
-          />
-        </View>
-        <Text style={[styles.text4, themeTextStyle]}> Type</Text>
-        <SelectDropdown
-          data={types}
-          onSelect={(selectedItem: string, index: any) => {
-            console.log(selectedItem, index);
-            typeSelection(selectedItem);
-            console.log(typeSelected);
-          }}
-          buttonTextAfterSelection={(selectedItem: any, index: any) => {
-            return selectedItem;
-          }}
-          rowTextForSelection={(item: any, index: any) => {
-            return item;
-          }}
-        />
-
-        <Text style={[styles.text4, themeTextStyle]}> Eye Color</Text>
-        <SelectDropdown
-          data={eyeColors}
-          onSelect={(selectedItem: string, index: any) => {
-            console.log(selectedItem, index);
-            eyeColorSelection(selectedItem);
-            console.log(eyeColorSelection);
-          }}
-          buttonTextAfterSelection={(selectedItem: any, index: any) => {
-            return selectedItem;
-          }}
-          rowTextForSelection={(item: any, index: any) => {
-            return item;
-          }}
-        />
-
-        <Text style={[styles.text4, themeTextStyle]}> Friendliness</Text>
-        <SelectDropdown
-          data={scale}
-          onSelect={(selectedItem: string, index: any) => {
-            console.log(selectedItem, index);
-            friendlinessSelection(selectedItem);
-            console.log(friendlinessSelected);
-          }}
-          buttonTextAfterSelection={(selectedItem: any, index: any) => {
-            return selectedItem;
-          }}
-          rowTextForSelection={(item: any, index: any) => {
-            return item;
-          }}
-        />
-
-        <Text style={[styles.text4, themeTextStyle]}> Additional Comments</Text>
-        <TextInput style={styles.multiLine} onChangeText={additionalComments} value={comments} testID="comments" />
-
-        <Button
-          testID="Submit.Button"
-          title="Submit"
-          color="#8b0000"
-          onPress={() => {
-            if (
-              !id.trim() ||
-              !content.trim() ||
-              !catLocation.trim() ||
-              !colorSelected.trim() ||
-              !conditionSelected.trim()
-            ) {
-              alert("Please fill out all required fields");
-              return;
-            }
-
-            firebase
-              .database()
-              .ref(`Cats/${currentDate}`)
-              .set({
-                media: content,
-                location: catLocation,
-                uniqueFeatures: features,
-
-                possibleName: name,
-                behavior: catBehavior,
-
-                ageEstimate: age + timeSelected,
-                strayOrFeral: typeSelected,
-                color: colorSelected,
-                condition: conditionSelected,
-                eyeColor: eyeColorSelected,
-                friendliness: friendlinessSelected,
-                additionalComments: comments,
-                catID: id,
-              });
-
-            alert("Submitted Successfully");
-          }}
-        />
       </ScrollView>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  input: {
+  nameInput: {
     height: 40,
     margin: 12,
     borderWidth: 1,
@@ -314,51 +250,37 @@ const styles = StyleSheet.create({
     color: "black",
     backgroundColor: "white",
   },
-  lightInput: {
-    color: "black",
-  },
-  darkInput: {
-    color: "white",
-  },
-  multiLine: {
-    height: 60,
+  additionalInput: {
+    height: 120,
     margin: 12,
     borderWidth: 1,
     padding: 10,
+    color: "black",
     backgroundColor: "white",
+  },
+  checkboxes: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "white",
+    padding: 0,
+
+  },
+  pickers: {
+    flexDirection: "row",
+    alignContent: "center",
+    backgroundColor: "white",
+    height: 100,
+    marginBottom: 20,
+
+  },
+  buttons: {
+    padding: 0,
+    backgroundColor: "white"
+
   },
   container: {
     flex: 1,
-    paddingTop: StatusBar.currentHeight,
-  },
-
-  scrollView: {
-    marginHorizontal: 20,
-  },
-  text: {
-    color: "white",
-    fontSize: 42,
-    lineHeight: 84,
-    fontWeight: "bold",
-    textAlign: "center",
-    backgroundColor: "#8b0000",
-    marginBottom: 30,
-  },
-
-  text2: {
-    fontSize: 20,
-    color: "red",
-    fontWeight: "normal",
-  },
-
-  text3: {
-    fontSize: 15,
-    fontStyle: "italic",
-  },
-  text4: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
+    justifyContent: 'center',
+    marginHorizontal: 12,
+  }
 });
-
-export default CatForm;
