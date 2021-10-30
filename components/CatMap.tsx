@@ -1,11 +1,14 @@
 import React, { useEffect, useState, useRef } from "react";
-import { StyleSheet, TouchableOpacity, Image } from "react-native";
+import { StyleSheet, TouchableOpacity, Image, useColorScheme } from "react-native";
 import MapView, { Marker, Region} from "react-native-maps";
 import { View } from "./Themed";
 import firebase from "../utils/firebase";
 import Gps from "../utils/gps";
 import { Cat } from "../types";
 import TUMapBorder from "./TUMapBorder";
+
+import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
+import Colors from "../constants/Colors";
 
 /**
  * Function that renders the Cat Map component, including the map and all it's children (e.g. pins/markers).
@@ -44,8 +47,9 @@ export default function CatMap() {
       <MapView ref={mapViewRef}
         style={styles.map}
         provider={"google"}
-        region={region}
+        region={myLocation}
         showsUserLocation={true}
+        showsMyLocationButton={false}
       >
         {cats?.map((cat, index) => (
         
@@ -67,6 +71,14 @@ export default function CatMap() {
         ))} 
         <TUMapBorder/>
       </MapView>
+      <TouchableOpacity style={styles.myLocationButton} onPress={goToMyLocation}>
+        <MaterialIcons
+          name="my-location"
+          size={25}
+          color={Colors["light"].text}
+          style={styles.myLocationIcon}
+        />
+      </TouchableOpacity>
       <TouchableOpacity style={styles.templeButton} onPress={goToTemple}>
         <Image style={styles.templeLogo} source={require("../assets/images/temple-logo.png")}/>
       </TouchableOpacity>
@@ -85,12 +97,33 @@ const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
   },
+  myLocationButton: {
+    position: "absolute",
+    right: 12,
+    top: 10,
+    width: 38,
+    height: 38,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1, },
+    shadowOpacity: 0.20,
+    shadowRadius: 1.41,
+    backgroundColor: "rgba(255, 255, 255, 0.7)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  myLocationIcon: {
+    opacity: 0.7,
+  },
   templeButton: {
     position: "absolute",
     right: 12,
     top: 60,
     width: 38,
     height: 38,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1, },
+    shadowOpacity: 0.20,
+    shadowRadius: 1.41,
   },
   templeLogo: {
     ...StyleSheet.absoluteFillObject,
