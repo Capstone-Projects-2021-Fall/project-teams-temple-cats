@@ -1,6 +1,6 @@
 import * as React from "react";
-import { StyleSheet } from "react-native";
-
+import { Button, Linking, StyleSheet, Pressable } from "react-native";
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { Text, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
 
@@ -11,19 +11,43 @@ import { RootTabScreenProps } from "../types";
  * @returns {JSX.Element} JSX element of the resources screen
  */
 export default function ResourcesScreen ({ navigation }: RootTabScreenProps<"Resources">) {
+  const urlPaws="https://phillypaws.org/clinic-services/"
+  const urlForgottenCats="https://forgottencats.org/program-services-fees/"
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Resources</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+      <Pressable style={styles.button}
+        onPress={() => Linking.openURL(urlPaws)}>
+        <Text style={styles.text}>PAWS</Text>
+      </Pressable>
+
+      <Pressable style={styles.button}
+        onPress={() => Linking.openURL(urlForgottenCats)}>
+        <Text style={styles.text}>FORGOTTEN CATS</Text>
+      </Pressable>
     </View>
-  );
-}
+  )}
 
 const styles = StyleSheet.create({
+  button: {
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    paddingVertical: 20,
+    paddingHorizontal: 90,
+    borderRadius: 10,
+    elevation: 3,
+    backgroundColor: '#8B0000',
+  },
+  text: {
+    fontSize: 16,
+    lineHeight: 20,
+    fontWeight: 'bold',
+    letterSpacing: .25,
+    color: 'white',
+  },
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "space-evenly"
   },
   title: {
     fontSize: 20,
