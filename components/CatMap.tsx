@@ -6,6 +6,7 @@ import firebase from "../utils/firebase";
 import Gps from "../utils/gps";
 import { Cat } from "../types";
 import TUMapBorder from "./TUMapBorder";
+
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 
@@ -18,7 +19,8 @@ export default function CatMap() {
   const [cats, setCats] = useState<Cat[]>([]);
   const mapViewRef: React.MutableRefObject<MapView> | React.MutableRefObject<null> = useRef(null);
   const catsRef = firebase.database().ref().child("Cats/")
-  let myLocation = Gps()
+ 
+  let region = Gps()
   let newState: Cat[] = []
 
   useEffect(() => {
@@ -31,13 +33,7 @@ export default function CatMap() {
     
   }, [])
 
-  function goToMyLocation() {
-    mapViewRef.current?.animateToRegion(
-      myLocation,
-      1000);
-  }
-
-  function goToTemple() {
+  function goToTemple() { 
     mapViewRef.current?.animateToRegion({
       latitude: 39.9806438149835,
       longitude: -75.15574242934214,
@@ -66,7 +62,7 @@ export default function CatMap() {
             <Image
             style={{width: 50, height: 50, borderWidth: 5, borderColor: "#a52a2a"}}
             source={{
-              uri: cat.media
+              uri: cat.media,
             }}
           />
            
@@ -133,10 +129,11 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     width: "100%",
     height: "100%",
-    opacity: 0.7,
   },
   catPin: {
     width: 30,
     height: 30,
-  },
+  }
 });
+
+/* //image = {{// uri: cat.media, width: 50, height:50, resize }}*/

@@ -57,7 +57,7 @@ export const CatForm2 = () => {
     accountID: firebase.auth().currentUser?.uid
   });
 
-
+  
 
   function onLocationPick(coordinate: LatLng) {
     setCat((currentState) => ({
@@ -66,16 +66,18 @@ export const CatForm2 = () => {
     }));
     setLocationModalVisible(false);
   }
-
+  
+    
   const handleSetImage = (data: string) => {
     cat.media = data;
     setImage(data)
   };
-
+ 
   return (
     <SafeAreaView>
       <ScrollView>
         <TextInput
+         
           value={cat.name}
           selectionColor="white"
           placeholder="Enter possible name here"
@@ -174,6 +176,7 @@ export const CatForm2 = () => {
             onConfirm={onLocationPick}
           />
         </Modal>
+        
       </ScrollView>
     </SafeAreaView>
   );
