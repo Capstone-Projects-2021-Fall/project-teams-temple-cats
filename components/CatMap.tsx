@@ -1,12 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
-import { StyleSheet, TouchableOpacity, Image, useColorScheme } from "react-native";
+import { StyleSheet, TouchableOpacity, Image } from "react-native";
 import MapView, { Marker, Region} from "react-native-maps";
 import { View } from "./Themed";
 import firebase from "../utils/firebase";
 import Gps from "../utils/gps";
 import { Cat } from "../types";
 import TUMapBorder from "./TUMapBorder";
-
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 
@@ -20,7 +19,7 @@ export default function CatMap() {
   const mapViewRef: React.MutableRefObject<MapView> | React.MutableRefObject<null> = useRef(null);
   const catsRef = firebase.database().ref().child("Cats/")
  
-  let region = Gps()
+  let myLocation = Gps()
   let newState: Cat[] = []
 
   useEffect(() => {
@@ -32,6 +31,12 @@ export default function CatMap() {
     })
     
   }, [])
+
+  function goToMyLocation() {
+    mapViewRef.current?.animateToRegion(
+      myLocation,
+      1000);
+  }
 
   function goToTemple() { 
     mapViewRef.current?.animateToRegion({
@@ -49,7 +54,6 @@ export default function CatMap() {
         provider={"google"}
         region={myLocation}
         showsUserLocation={true}
-        showsMyLocationButton={false}
       >
         {cats?.map((cat, index) => (
         
@@ -129,11 +133,10 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     width: "100%",
     height: "100%",
+    opacity: 0.7,
   },
   catPin: {
     width: 30,
     height: 30,
-  }
+  },
 });
-
-/* //image = {{// uri: cat.media, width: 50, height:50, resize }}*/
