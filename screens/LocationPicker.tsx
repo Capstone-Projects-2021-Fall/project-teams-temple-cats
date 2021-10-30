@@ -1,7 +1,9 @@
+import { MaterialIcons } from "@expo/vector-icons";
 import React, { useRef, useState } from "react";
 import { StyleSheet, Button, View, NativeSyntheticEvent, NativeTouchEvent, TouchableOpacity, Image } from "react-native";
 import MapView, { Marker, MapEvent } from "react-native-maps";
 import TUMapBorder from "../components/TUMapBorder";
+import Colors from "../constants/Colors";
 import Gps from "../utils/gps";
 
 const LocationPicker = (props: {
@@ -14,7 +16,13 @@ const LocationPicker = (props: {
   });
   const [markerOpacity, setMarkerOpacity] = useState(0);
   const mapViewRef: React.MutableRefObject<MapView> | React.MutableRefObject<null> = useRef(null);
-  const region = Gps();
+  const myLocation = Gps();
+
+  function goToMyLocation() {
+    mapViewRef.current?.animateToRegion(
+      myLocation,
+      1000);
+  }
 
   function goToTemple() {
     mapViewRef.current?.animateToRegion({
@@ -42,13 +50,23 @@ const LocationPicker = (props: {
     <View style={styles.container}>
       <MapView ref={mapViewRef}
         style={styles.map}
-        provider="google"
-        initialRegion={region}
-        showsUserLocation onPress={onMapPress}
+        provider={"google"}
+        initialRegion={myLocation}
+        showsUserLocation={true}
+        showsMyLocationButton={false}
+        onPress={onMapPress}
       >
         <Marker coordinate={markerCoordinate} opacity={markerOpacity} />
         <TUMapBorder/>
       </MapView>
+      <TouchableOpacity style={styles.myLocationButton} onPress={goToMyLocation}>
+        <MaterialIcons
+          name="my-location"
+          size={25}
+          color={Colors["light"].text}
+          style={styles.myLocationIcon}
+        />
+      </TouchableOpacity>
       <TouchableOpacity style={styles.templeButton} onPress={goToTemple}>
         <Image style={styles.templeLogo} source={require("../assets/images/temple-logo.png")}/>
       </TouchableOpacity>
@@ -74,6 +92,23 @@ const styles = StyleSheet.create({
   },
   map: {
     ...StyleSheet.absoluteFillObject,
+  },
+  myLocationButton: {
+    position: "absolute",
+    right: 12,
+    top: 10,
+    width: 38,
+    height: 38,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1, },
+    shadowOpacity: 0.20,
+    shadowRadius: 1.41,
+    backgroundColor: "rgba(255, 255, 255, 0.7)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  myLocationIcon: {
+    opacity: 0.7,
   },
   templeButton: {
     position: "absolute",
