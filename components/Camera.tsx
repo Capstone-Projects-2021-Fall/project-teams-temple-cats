@@ -3,35 +3,53 @@ import React from 'react'
 import {StyleSheet, Text, View, TouchableOpacity, Alert, ImageBackground, Image} from 'react-native'
 import {Camera} from 'expo-camera'
 let camera: Camera
-
+/**
+ *  @props called in ImagePicker 
+ */
 type Props = {
   onCaptureImage: (imageSource: string) => void
   onClose: () => void
   startCamera: boolean
  }
-
+/**
+ * This function is the camera
+ * @component
+ * @param props 
+ * @returns camera display with flash, selfie mode, and calls CameraPreview
+ */
 export default function CatCamera(props:Props) {
   const {onCaptureImage, onClose, startCamera} = props
   const [previewVisible, setPreviewVisible] = React.useState(false)
   const [capturedImage, setCapturedImage] = React.useState<any>(null)
   const [cameraType, setCameraType] = React.useState(Camera.Constants.Type.back)
   const [flashMode, setFlashMode] = React.useState('off')
-
+  /**
+   * This function handles taking the photo
+   * @async __takePicture
+   * @description this allows photo to be taken and sets prop to the photo
+   */
   const __takePicture = async () => {
     const photo: any = await camera.takePictureAsync()
-    console.log(photo)
+    //console.log(photo)
     setPreviewVisible(true)
     setCapturedImage(photo)
-    
   }
+  /**
+   * This function handles saving the photo
+   */
   const __savePhoto = () => {
     onCaptureImage(capturedImage.uri)
   }
-
+  /**
+   * This function handles retaking the photo
+   */
   const __retakePicture = () => {
     setCapturedImage(null)
     setPreviewVisible(false)
   }
+  /**
+   * This function handles the flash mode
+   */
   const __handleFlashMode = () => {
     if (flashMode === "on") {
       setFlashMode("off");
@@ -40,7 +58,10 @@ export default function CatCamera(props:Props) {
     } else {
       setFlashMode("auto");
     }
-  };
+  }
+  /**
+   * This function handles the selfie mode
+   */
   const __switchCamera = () => {
     if (cameraType === "back") {
       setCameraType("front");
@@ -48,6 +69,9 @@ export default function CatCamera(props:Props) {
       setCameraType("back");
     }
   }
+  /**
+   * This function calls on close
+   */
   const __handleClose = () => {
     onClose()
   }
@@ -190,7 +214,13 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   }
 });
-
+/**
+ * This is a function that displays the photo taken.
+ * @param photo
+ * @param retakePicture
+ * @param savePhoto
+ * @returns displays photo taken with camera with retake and save buttons
+ */
 const CameraPreview = ({ photo, retakePicture, savePhoto }: any) => {
   console.log("sdsfds", photo);
   return (
