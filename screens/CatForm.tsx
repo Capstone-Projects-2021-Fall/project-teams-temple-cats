@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Button, CheckBox} from "react-native-elements";
+import { Button, CheckBox, Header, Divider, Text, Icon} from "react-native-elements";
 import { Picker } from "@react-native-picker/picker";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
-import { Cat, Pin } from "../types";
+import { Cat } from "../types";
 import { addCat, addPicture } from "../utils/dbInterface";
 import { LatLng } from "react-native-maps";
 import LocationPicker from "./LocationPicker";
@@ -14,9 +14,9 @@ import {
   SafeAreaView,
   StyleSheet,
   ScrollView,
+  View
 } from "react-native";
 import CatImagePicker from "../components/ImagePicker";
-import { View } from "../components/Themed";
 
 export const CatForm = () => {
   const colors = ["Cat Fur Color", "Orange", "Brown", "Black", "White"];
@@ -34,7 +34,7 @@ export const CatForm = () => {
 
   const [color, setColor] = useState();
   const [eyeColor, setEyeColor] = useState();
-  const [image, setImage] = useState<string>();
+  const [image, setImage] = useState<string>("./assets/images/cat-placeholder-tall.svg");
   const [friendly, setFriendly] = useState(false);
   const [healthy, setHealthy] = useState(false);
   const [kitten, setKitten] = useState(false);
@@ -75,38 +75,48 @@ export const CatForm = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
-        <TextInput
-          style={styles.nameInput}
-          value={cat.name}
-          selectionColor="white"
-          placeholder="Enter possible name here"
-          placeholderTextColor="black"
-          onChangeText={(text) =>
-            setCat((currentState: Cat) => ({
-              ...currentState,
-              name: text,
-            }))
-          }
+        <Modal animationType="slide" visible={locationModalVisible}>
+          <LocationPicker
+            onCancel={() => {
+              setLocationModalVisible(false);
+            }}
+            onConfirm={onLocationPick}
+          />
+        </Modal> 
+        <Text h3 h3Style={{textAlign: "center"}}> Required Fields </Text>
+        <Divider style={{marginBottom: 12}} color="#9D2235" />
+        {image && (<Image source={{ uri: image }} style={{ width: 250, height: 250, alignSelf: "center", borderColor: "#9D2235", borderWidth: 5 }} />)}
+        <CatImagePicker onSetImage={handleSetImage} onCloseModal={() => setModalVisible(false)} modalVisible={modalVisible}/>
+        <Button
+          title="Upload Image"
+          buttonStyle={styles.buttonStyle}
+          containerStyle={{
+            alignItems: "center",
+            marginBottom: 10,
+          }}
+          onPress={() => setModalVisible(true)} />
+        <Text h3 h3Style={{ borderColor: "white", borderWidth: 1, fontSize: 18 }}> {cat.location ? cat.location.latitude + "," + cat.location.longitude : "Location"}
+          <Icon /> </Text>
+        <Button
+          title="Add Location"
+          buttonStyle={styles.buttonStyle}
+          containerStyle={{
+            alignItems: "center",
+            marginBottom: 10,
+          }}
+          onPress={() => setLocationModalVisible(true)}
         />
-        <TextInput
-          style={styles.additionalInput}
-          selectionColor="white"
-          placeholder="Enter additional information here"
-          placeholderTextColor="black"
-          value={cat.comments}
-          onChangeText={(text) =>
-            setCat((currentState: Cat) => ({
-              ...currentState,
-              comments: text,
-            }))
-          }
-        />
+        
+
+
+        <Text h3 h3Style={{textAlign: "center"}}> Additional Fields </Text>
+        <Divider style={{ marginBottom: 8 }} color="#9D2235" />
         <View
         style= {styles.checkboxes}> 
         <CheckBox
           containerStyle={{
             padding: 0,
-            backgroundColor: "white",
+            backgroundColor: "transparent",
             borderWidth: 0,
           }}
           title="Friendly"
@@ -117,12 +127,12 @@ export const CatForm = () => {
           }}
           checkedIcon='dot-circle-o'
             uncheckedIcon='circle-o'
-            checkedColor="#8b0000"
+            checkedColor="#9D2235"
         />
         <CheckBox
           containerStyle={{
             padding: 0,
-            backgroundColor: "white",
+            backgroundColor: "transparent",
             borderWidth: 0
             }}
           title="Healthy"
@@ -132,7 +142,8 @@ export const CatForm = () => {
             cat.healthy = !cat.healthy;
           }}
           checkedIcon='dot-circle-o'
-          uncheckedIcon='circle-o'
+            uncheckedIcon='circle-o'
+            checkedColor="#9D2235"
         />
         <CheckBox
             containerStyle={{
@@ -147,10 +158,17 @@ export const CatForm = () => {
             cat.kitten = !cat.kitten;
           }}
           checkedIcon='dot-circle-o'
-          uncheckedIcon='circle-o'
+            uncheckedIcon='circle-o'
+            checkedColor="#9D2235"
         />
         </View>
-        <View style={styles.pickers}>
+
+
+        {/* <View style={styles.image}>
+        
+        </View>
+       
+        <View style={styles.image}>
         <Picker
             style={{
               backgroundColor: "white",
@@ -187,29 +205,7 @@ export const CatForm = () => {
         <View style={styles.buttons}>
         {image && (<Image source={{ uri: image }} style={{ width: 100, height: 100 }} />)}
         <CatImagePicker onSetImage={handleSetImage} onCloseModal={() => setModalVisible(false)} modalVisible={modalVisible}/>
-        <Button
-        title="Upload Image"
-        buttonStyle={{
-            width: 150,
-            backgroundColor: "#8b0000"
-          }}
-          containerStyle={{
-            alignItems: "center",
-            marginBottom: 10,
-          }}  color="#8b0000" onPress={() => setModalVisible(true)} />
-        <Button
-          title="Add Location"
-          buttonStyle={{
-            width: 150,
-            backgroundColor: "#8b0000"
-          }}
-          containerStyle={{
-            alignItems: "center",
-            marginBottom: 10,
-          }}
-          backgroundColor="#8b0000"
-          onPress={() => setLocationModalVisible(true)}
-        />
+        
         <Button
           title="Submit Cat"
           buttonStyle={{
@@ -228,14 +224,7 @@ export const CatForm = () => {
           }}
         />
         </View>
-        <Modal animationType="slide" visible={locationModalVisible}>
-          <LocationPicker
-            onCancel={() => {
-              setLocationModalVisible(false);
-            }}
-            onConfirm={onLocationPick}
-          />
-        </Modal>
+        */}
       </ScrollView>
     </SafeAreaView>
   );
@@ -261,22 +250,13 @@ const styles = StyleSheet.create({
   checkboxes: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "white",
     padding: 0,
 
   },
-  pickers: {
-    flexDirection: "row",
-    alignContent: "center",
-    backgroundColor: "white",
-    height: 100,
-    marginBottom: 20,
-
-  },
-  buttons: {
-    padding: 0,
-    backgroundColor: "white"
-
+  buttonStyle: {
+    width: 150,
+    backgroundColor: "#9D2235",
+    borderRadius: 30
   },
   container: {
     flex: 1,
@@ -284,3 +264,30 @@ const styles = StyleSheet.create({
     marginHorizontal: 12,
   }
 });
+
+{/* <TextInput
+          style={styles.nameInput}
+          value={cat.name}
+          selectionColor="white"
+          placeholder="Enter possible name here"
+          placeholderTextColor="black"
+          onChangeText={(text) =>
+            setCat((currentState: Cat) => ({
+              ...currentState,
+              name: text,
+            }))
+          }
+        />
+        <TextInput
+          style={styles.additionalInput}
+          selectionColor="white"
+          placeholder="Enter additional information here"
+          placeholderTextColor="black"
+          value={cat.comments}
+          onChangeText={(text) =>
+            setCat((currentState: Cat) => ({
+              ...currentState,
+              comments: text,
+            }))
+          }
+        /> */}
