@@ -3,7 +3,7 @@ import * as WebBrowser from "expo-web-browser";
 import * as Facebook from "expo-auth-session/providers/facebook";
 import { ResponseType } from "expo-auth-session";
 import firebase from "../utils/firebase";
-import { Button } from "react-native";
+import { TouchableOpacity, StyleSheet, SafeAreaView, View, Text, Image} from "react-native";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -47,13 +47,44 @@ export default function LoginAuthentication () {
   }, [response]);
 
   return (
-    <Button
+    <TouchableOpacity 
       disabled={!request}
-      color="#8b0000"
-      title="Login"
-      onPress={() => {
-        promptAsync();
-      }}
+      style={styles.buttonFacebookStyle} 
+      activeOpacity={0.5}
+      onPress={() => {promptAsync()}}
+    >
+    <Image
+     source={require('../assets/images/fb.jpg')}
+     style={styles.buttonImageIconStyle}
     />
+    <Text style={styles.buttonTextStyle}>Continue with Facebook </Text>
+  </TouchableOpacity>
   );
 }
+
+const styles = StyleSheet.create({
+  buttonFacebookStyle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#485a96',
+    borderWidth: 0.5,
+    borderColor: '#fff',
+    height: 40,
+    borderRadius: 5,
+    marginBottom: 40,
+    marginTop: 'auto'
+  },
+  buttonImageIconStyle: {
+    padding: 10,
+    margin: 5,
+    height: 25,
+    width: 25,
+    resizeMode: 'stretch',
+  },
+  buttonTextStyle: {
+    color: '#fff',
+    fontWeight: 'bold',
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
+});
