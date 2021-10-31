@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
-import { StyleSheet, TouchableOpacity, Image } from "react-native";
-import MapView, { Marker, Region} from "react-native-maps";
+import { StyleSheet, TouchableOpacity, Image, Text} from "react-native";
+import MapView, { Callout, Marker, Region } from "react-native-maps";
 import { View } from "./Themed";
 import firebase from "../utils/firebase";
 import Gps from "../utils/gps";
@@ -8,6 +8,7 @@ import { Cat } from "../types";
 import TUMapBorder from "./TUMapBorder";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
+import {Stations} from "../components/Stations"
 
 /**
  * Function that renders the Cat Map component, including the map and all it's children (e.g. pins/markers).
@@ -16,20 +17,21 @@ import Colors from "../constants/Colors";
  */
 export default function CatMap() {
   const [cats, setCats] = useState<Cat[]>([]);
+  const feedingStations = Stations
+
   const mapViewRef: React.MutableRefObject<MapView> | React.MutableRefObject<null> = useRef(null);
   const catsRef = firebase.database().ref().child("Cats/")
- 
+
   let myLocation = Gps()
   let newState: Cat[] = []
 
   useEffect(() => {
     catsRef.on("child_added", async snapshot => {
       const picUri = await firebase.storage().ref().child(snapshot.val().accountID + "/" + snapshot.val().catID + "/").getDownloadURL();
-      newState.push({ ...snapshot.val(), media: picUri});
-
+      newState.push({ ...snapshot.val(), media: picUri });
       setCats([...newState])
     })
-    
+
   }, [])
 
   function goToMyLocation() {
@@ -38,15 +40,16 @@ export default function CatMap() {
       1000);
   }
 
-  function goToTemple() { 
+  function goToTemple() {
     mapViewRef.current?.animateToRegion({
       latitude: 39.9806438149835,
       longitude: -75.15574242934214,
       latitudeDelta: 0.022,
-      longitudeDelta: 0.022 },
+      longitudeDelta: 0.022
+    },
       1000);
   }
- 
+
   return (
     <View style={styles.container}>
       <MapView ref={mapViewRef}
@@ -56,24 +59,41 @@ export default function CatMap() {
         showsUserLocation={true}
       >
         {cats?.map((cat, index) => (
-        
-         <Marker
+          <Marker
             key={index}
             coordinate={{
               latitude: cat.location.latitude,
               longitude: cat.location.longitude
             }}>
             <Image
-            style={{width: 50, height: 50, borderWidth: 5, borderColor: "#a52a2a"}}
-            source={{
-              uri: cat.media,
-            }}
-          />
-           
+              style={{ width: 50, height: 50, borderWidth: 5, borderColor: "#a52a2a" }}
+              source={{
+                uri: cat.media,
+              }}
+            />
           </Marker>
-            
-        ))} 
-        <TUMapBorder/>
+        ))}
+
+        {feedingStations?.map((feedingStations, index) => (
+          <Marker
+            key={index}
+            coordinate={{
+              latitude: feedingStations.latitude,
+              longitude: feedingStations.longitude
+            }}>
+            <Image
+              style={{ width: 35, height: 35}}
+              source={{
+                uri: "https://cdn-icons-png.flaticon.com/512/2809/2809799.png"
+              }}
+            />
+            <Callout>
+              <Text>{feedingStations.street}</Text>
+            </Callout>
+          </Marker>
+        ))}
+
+        <TUMapBorder />
       </MapView>
       <TouchableOpacity style={styles.myLocationButton} onPress={goToMyLocation}>
         <MaterialIcons
@@ -84,12 +104,11 @@ export default function CatMap() {
         />
       </TouchableOpacity>
       <TouchableOpacity style={styles.templeButton} onPress={goToTemple}>
-        <Image style={styles.templeLogo} source={require("../assets/images/temple-logo.png")}/>
+        <Image style={styles.templeLogo} source={require("../assets/images/temple-logo.png")} />
       </TouchableOpacity>
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
