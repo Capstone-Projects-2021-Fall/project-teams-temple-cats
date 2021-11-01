@@ -21,6 +21,7 @@ import { addCat, addPicture } from '../utils/dbInterface';
 import LocationPicker from './LocationPicker';
 import CatImagePicker from '../components/ImagePicker';
 import { AuthContext } from '../context/FirebaseAuthContext';
+import firebase from '../utils/firebase';
 
 export default CatForm = () => {
   const colors = ['Cat Fur Color', 'Orange', 'Brown', 'Black', 'White'];
@@ -62,7 +63,7 @@ export default CatForm = () => {
     date: '',
     time: '',
     votes: 0,
-    accountID: '',
+    accountID: firebase.auth().currentUser?.uid,
   });
 
   function onLocationPick(coordinate: LatLng) {

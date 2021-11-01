@@ -9,7 +9,6 @@ const root = firebase.database().ref();
 let reference;
 
 export function addCat(cat: Cat) {
-  cat.id = firebase.auth().currentUser?.uid;
   firebase
     .database()
     .ref()

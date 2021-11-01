@@ -1,41 +1,41 @@
-import Constants from "expo-constants";
-import * as React from "react";
-import { StyleSheet, Text, View, StatusBar, Linking, Button, Alert} from "react-native";
-import { WebView } from "react-native-webview";
-import LoginAuthentication from "../components/LoginAuthentication";
+import Constants from 'expo-constants';
+import * as React from 'react';
+import {
+  StyleSheet, Text, View, StatusBar, Linking, Button, Alert,
+} from 'react-native';
+import { WebView } from 'react-native-webview';
+import LoginAuthentication from '../components/LoginAuthentication';
 
-
-export default function Facebook () {
-
+export default function Facebook() {
   return (
     Alert.alert(
-      "Alert",
-      "Do you want to open the in the Facebook App?",
-      [ 
-        { text: "No", 
-          onPress: () => console.log("Button pressed"),
-          style: "cancel"
+      'Alert',
+      'Do you want to open the in the Facebook App?',
+      [
+        {
+          text: 'No',
+          onPress: () => console.log('Button pressed'),
+          style: 'cancel',
         },
         {
-          text: "Yes",
-          onPress: () => Linking.openURL("fb://profile/250544657405"),
-          
-        }
-        
+          text: 'Yes',
+          onPress: () => Linking.openURL('fb://profile/250544657405'),
+
+        },
+
       ],
-      { cancelable: false }
+      { cancelable: false },
     ),
-    <WebView
+      <WebView
         styles={styles.container}
-        source={{ uri: "https://www.facebook.com/groups/templecats" }} 
-        />
+        source={{ uri: 'https://www.facebook.com/groups/templecats' }}
+      />
   );
-  
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: StatusBar.currentHeight
-  }
+    paddingTop: StatusBar.currentHeight,
+  },
 });

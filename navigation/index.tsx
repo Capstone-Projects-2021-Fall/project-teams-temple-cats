@@ -21,19 +21,19 @@ import { NavigationEvents } from 'react-navigation';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import Announcements from '../screens/AnnouncementsModal';
-import Leaderboard from '../screens/Leaderboard';
+import LeaderboardScreen from '../screens/Leaderboard';
 import Home from '../screens/Home';
 import Account from '../screens/Account';
 import Resources from '../screens/Resources';
 import Login from '../screens/Login';
 import CatForm from '../screens/CatForm';
 
-import RootTabScreenProps, {
+import {
   RootStackParamList,
   RootTabParamList,
   RootTabScreenProps,
 } from '../types';
-import { AuthContext, AuthContext } from '../context/FirebaseAuthContext';
+import { AuthContext } from '../context/FirebaseAuthContext';
 import Settings from '../screens/Settings';
 import Facebook from '../screens/Facebook';
 import Rewards from '../screens/Rewards';
@@ -210,7 +210,7 @@ function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="Leaderboard"
-        component={Leaderboard}
+        component={LeaderboardScreen}
         options={{
           title: 'Leaderboard',
           tabBarIcon: ({ color }) => (
