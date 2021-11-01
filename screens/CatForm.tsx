@@ -47,7 +47,6 @@ export default CatForm = () => {
   const [cameraModalVisible, setCameraModalVisible] = useState(false);
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
-  const user = useContext(AuthContext);
 
   const [cat, setCat]: Cat = useState({
     catID: uuidv4(),
@@ -292,7 +291,7 @@ export default CatForm = () => {
               cat.color = colors[item];
             }}
           >
-            {colors.map((item, index) => <Picker.Item label={item} value={index} key={item.index} />)}
+            {colors.map((item, index) => <Picker.Item label={item} value={index} key={index} />)}
           </Picker>
           <Picker
             style={styles.twoPickers}
@@ -303,7 +302,7 @@ export default CatForm = () => {
               cat.eyeColor = eyeColors[item];
             }}
           >
-            {eyeColors.map((item, index) => <Picker.Item label={item} value={index} key={item.index} />)}
+            {eyeColors.map((item, index) => <Picker.Item label={item} value={index} key={index} />)}
           </Picker>
         </View>
         <Input
