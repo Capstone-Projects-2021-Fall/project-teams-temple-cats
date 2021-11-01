@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, Button } from "react-native";
-import { Text, View } from "../components/Themed";
-import { RootTabScreenProps } from "../types";
-import firebase from "firebase";
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Button } from 'react-native';
+import firebase from 'firebase';
 import Leaderboard from 'react-native-leaderboard';
+import { Text, View } from '../components/Themed';
+import { RootTabScreenProps } from '../types';
 
 /**
  * Function that renders the leaderboard screen.
@@ -14,44 +14,42 @@ import Leaderboard from 'react-native-leaderboard';
 
 let pointValuesArr: any[] = [];
 let pointValuesWeekArr: any[] = [];
-let final: any[] = [];
+const final: any[] = [];
 
-export default function LeaderboardScreen({ navigation }: RootTabScreenProps<"Leaderboard">) {
-
-  //console.log(data1)
+export default function LeaderboardScreen({ navigation }: RootTabScreenProps<'Leaderboard'>) {
+  // console.log(data1)
 
   const [points, setPoints] = useState<any>([]);
   const [pointsWeek, setPointsWeek] = useState<any>([]);
   const [value, setValue] = useState<any>([]);
-  const [title, setTitle] = useState<any>("Click for Weekly Board");
+  const [title, setTitle] = useState<any>('Click for Weekly Board');
   const [button, setbutton] = useState<any>(false);
-  
 
-  var curr = new Date; 
-  var first = curr.getDate() - curr.getDay(); 
-  var last = first + 6; 
-  var firstday = new Date(curr.setDate(first));
-  var lastday = new Date(curr.setDate(last));
+  const curr = new Date();
+  const first = curr.getDate() - curr.getDay();
+  const last = first + 6;
+  const firstday = new Date(curr.setDate(first));
+  const lastday = new Date(curr.setDate(last));
 
   useEffect(() => {
-    firebase.database().ref('Accounts').on('value', function (snapshot) {
+    firebase.database().ref('Accounts').on('value', (snapshot) => {
       snapshot.forEach((child) => {
-        var pointValues = child.child("points").val();
-        var pointTimes = child.child("points").child("time").val();
+        const pointValues = child.child('points').val();
+        const pointTimes = child.child('points').child('time').val();
 
         if (pointValues != null) {
-          pointValuesArr.push(pointValues)
+          pointValuesArr.push(pointValues);
         }
 
-        var currentDate = new Date(pointTimes);
-        if (pointTimes != null &&  (currentDate > firstday) && (currentDate < lastday)) {
-          pointValuesWeekArr.push(pointValues)
-          console.log(pointValuesWeekArr)
+        const currentDate = new Date(pointTimes);
+        if (pointTimes != null && (currentDate > firstday) && (currentDate < lastday)) {
+          pointValuesWeekArr.push(pointValues);
+          console.log(pointValuesWeekArr);
         }
-      })
-      setPoints(pointValuesArr)
-      setPointsWeek(pointValuesWeekArr)
-      setValue(pointValuesArr)
+      });
+      setPoints(pointValuesArr);
+      setPointsWeek(pointValuesWeekArr);
+      setValue(pointValuesArr);
 
       pointValuesArr = [];
       pointValuesWeekArr = [];
@@ -63,21 +61,20 @@ export default function LeaderboardScreen({ navigation }: RootTabScreenProps<"Le
 
       <Button
         color="#8b0000"
-        title= {title}
+        title={title}
         onPress={() => {
-          {button === false ? setTitle("Click for All Time") : null}
-          {button === false ? setbutton(true) : null}
-          {button === false ? setValue(pointsWeek) : null}
-          {button === true ? setTitle("Click for Weekly Board") : null}
-          {button === true ? setbutton(false) : null}
-          {button === true ? setValue(points) : null}
-
+          { button === false ? setTitle('Click for All Time') : null; }
+          { button === false ? setbutton(true) : null; }
+          { button === false ? setValue(pointsWeek) : null; }
+          { button === true ? setTitle('Click for Weekly Board') : null; }
+          { button === true ? setbutton(false) : null; }
+          { button === true ? setValue(points) : null; }
         }}
       />
       <Leaderboard
         data={value}
-        labelBy='userName'
-        sortBy='highScore'
+        labelBy="userName"
+        sortBy="highScore"
       />
     </View>
   );
@@ -86,24 +83,20 @@ export default function LeaderboardScreen({ navigation }: RootTabScreenProps<"Le
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center"
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   title: {
     fontSize: 20,
-    fontWeight: "bold"
+    fontWeight: 'bold',
   },
   separator: {
     marginVertical: 30,
     height: 1,
-    width: "80%"
+    width: '80%',
   },
   buttonStyle: {
-    textAlign: "left",
-    fontFamily: "Cochin"
-  }
+    textAlign: 'left',
+    fontFamily: 'Cochin',
+  },
 });
-
-
-
-
