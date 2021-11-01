@@ -23,10 +23,8 @@ export default function CatMap() {
   const newState: Cat[] = [];
 
   useEffect(() => {
-    catsRef.on('child_added', async (snapshot) => {
-      const picUri = await firebase.storage().ref().child(`${snapshot.val().accountID}/${snapshot.val().catID}/`).getDownloadURL();
-      newState.push({ ...snapshot.val(), media: picUri });
-
+    catsRef.on('child_added', (snapshot) => {
+      newState.push(snapshot.val());
       setCats([...newState]);
     });
   }, []);

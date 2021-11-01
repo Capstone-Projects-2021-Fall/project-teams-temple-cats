@@ -16,6 +16,7 @@ import {
   Platform,
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { add } from 'react-native-reanimated';
 import { Cat } from '../types';
 import { addCat, addPicture } from '../utils/dbInterface';
 import LocationPicker from './LocationPicker';
@@ -103,15 +104,34 @@ export default CatForm = () => {
     showMode('time');
   };
 
-  function submitCat() {
+  async function submitCat() {
     if (cat.media === '' || null) return alert('Add picture to report a cat');
     if (cat.location === '' || null) return alert('Add location to report a cat');
     if (cat.date === '' || null) return alert('Add date to report a cat');
     if (cat.time === '' || null) return alert('Add time to report a cat');
 
-    addCat(cat);
-    addPicture(cat);
-    return alert('Cat submitted');
+    const response = await fetch(cat.media);
+    const blob = await response.blob();
+
+    const uploadTask = firebase
+      .storage()
+      .ref()
+      .child(`${firebase.auth().currentUser?.uid}/${cat.catID}`)
+      .put(blob);
+    uploadTask
+      .then((uploadTaskSnapshot) => {
+        // The upload is complete!
+        window.alert('Upload complete');
+
+        // In addition, if needed you can get a Download URL, as follows
+        return uploadTaskSnapshot.ref.getDownloadURL();
+      })
+      .then((url) => {
+        cat.media = url;
+      }).then(() => addCat(cat))
+      .catch((err) => { console.log(err); });
+    // addCat(cat);
+    // return alert('Cat submitted');
   }
 
   return (
