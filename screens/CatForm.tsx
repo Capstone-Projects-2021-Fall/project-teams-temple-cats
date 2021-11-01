@@ -110,7 +110,7 @@ export default CatForm = () => {
 
     addCat(cat);
     addPicture(cat);
-    return alert('Cat submitted reload app');
+    return alert('Cat submitted');
   }
 
   return (
