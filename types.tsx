@@ -3,13 +3,13 @@
  * https://reactnavigation.org/docs/typescript/
  */
 
-import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import {
   CompositeScreenProps,
   NavigatorScreenParams,
-} from "@react-navigation/native";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { LatLng } from "react-native-maps";
+} from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { LatLng } from 'react-native-maps';
 
 declare global {
   namespace ReactNavigation {
@@ -93,6 +93,7 @@ export type Cat = {
   friendly: boolean;
   comments: string;
   location: LatLng;
+  date: Date
   time: Date;
   votes: number;
   accountID: string;
