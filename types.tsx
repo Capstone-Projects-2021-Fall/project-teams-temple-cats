@@ -93,7 +93,7 @@ export type Cat = {
   comments: string;
   location: LatLng;
   date: Date
-  time: string;
+  time: Date;
   votes: number;
   accountID: string;
 };

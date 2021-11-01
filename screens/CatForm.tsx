@@ -42,7 +42,7 @@ export default CatForm = () => {
   const [friendly, setFriendly] = useState(false);
   const [healthy, setHealthy] = useState(false);
   const [kitten, setKitten] = useState(false);
-  const [date, setDate] = useState<Date>(new Date());
+  const [date, setDate] = useState(new Date());
   const [locationModalVisible, setLocationModalVisible] = useState(false);
   const [cameraModalVisible, setCameraModalVisible] = useState(false);
   const [mode, setMode] = useState('date');
@@ -80,20 +80,14 @@ export default CatForm = () => {
   };
 
   const onChange = (event, selectedDate: Date) => {
+    const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
-    if (event.type === 'set') {
-      setCat((currentState: Cat) => ({
-        ...currentState,
-        date: selectedDate.toLocaleDateString(),
-        time: selectedDate.toLocaleTimeString(),
-      }));
-    } else {
-      setCat((currentState: Cat) => ({
-        ...currentState,
-        date: new Date().toLocaleDateString(),
-        time: new Date().toLocaleTimeString(),
-      }));
-    }
+    setDate(currentDate);
+    setCat((currentState: Cat) => ({
+      ...currentState,
+      date: currentDate.toLocaleDateString(),
+      time: currentDate.toLocaleTimeString(),
+    }));
   };
 
   const showMode = (currentMode) => {
