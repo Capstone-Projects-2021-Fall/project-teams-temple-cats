@@ -63,7 +63,7 @@ export default CatForm = () => {
     date: '',
     time: '',
     votes: 0,
-    accountID: user?.uid,
+    accountID: '',
   });
 
   function onLocationPick(coordinate: LatLng) {
@@ -104,11 +104,10 @@ export default CatForm = () => {
   };
 
   function submitCat() {
-    console.log(cat);
     if (cat.media === '' || null) return alert('Add picture to report a cat');
     if (cat.location === '' || null) return alert('Add location to report a cat');
     if (cat.date === '' || null) return alert('Add date to report a cat');
-    if (cat.date === '' || null) return alert('Add time to report a cat');
+    if (cat.time === '' || null) return alert('Add time to report a cat');
 
     addCat(cat);
     addPicture(cat);
