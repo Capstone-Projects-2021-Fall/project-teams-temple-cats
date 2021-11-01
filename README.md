@@ -10,7 +10,6 @@ The Temple Cats mobile app is for people in the Temple University area who want 
 * Login Page (UPDATED)
   * Layout and styling updates
 * Map (UPDATED)
-  * Real-time Pin Generation
   * Pins Display as Cat Pictures
   * Button to redirect to Temple
   * Button to redirect to current location
@@ -85,7 +84,7 @@ For testing the latest version of our app, follow these testing procedures:
   * The time should appear on the form.
 * Click Submit Cat
   * An alert should appear telling you that the cat was submitted
-* Go back to the Home screen
+* Reload the app in order to update the pins on the map.
 * Your cat should appear at your selected location on the map.
 
 ### Resources Tab
