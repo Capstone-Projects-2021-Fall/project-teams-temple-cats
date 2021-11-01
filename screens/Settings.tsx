@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, Text, View, StatusBar, Linking, Button, Alert} from "react-native";
+import { StyleSheet, StatusBar} from "react-native";
 import { WebView } from "react-native-webview";
 
 

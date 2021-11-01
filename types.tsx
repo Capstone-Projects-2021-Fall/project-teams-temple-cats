@@ -23,6 +23,7 @@ export type RootStackParamList = {
   CatForm: undefined;
   Facebook: undefined;
   Settings: undefined;
+  Rewards: undefined;
   NotFound: undefined;
 };
 
@@ -99,9 +100,11 @@ export type Cat = {
 };
 
 export type User = {
+  displayName: string | null | undefined;
   accountID: string | undefined;
   email: string | null | undefined;
   photo: string | null | undefined;
+  points: 0,
   posts: 0,
   modStatus: true | false,
   banStatus: true | false,

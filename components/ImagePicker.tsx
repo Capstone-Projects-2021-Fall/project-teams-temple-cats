@@ -15,7 +15,9 @@ type Props = {
 export default function CatImagePicker(props:Props) {
   const { modalVisible, onCloseModal, onSetImage } = props;
   const [camModalVisible, setCamModalVisible] = useState(false);
-
+  /** 
+   * This is a function that calls another
+  */
   const handleCloseModal = () => {
     onCloseModal();
   };

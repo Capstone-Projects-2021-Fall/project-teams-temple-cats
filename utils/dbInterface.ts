@@ -28,17 +28,27 @@ export async function addPicture(cat: Cat) {
     .put(blob);
 }
 
-export function addUser(id: User['accountID'], email: User['email'], photo: User['photo']) {
+export function addUser(name: User['displayName'], id: User['accountID'], email: User['email'], photo: User['photo']) {
   firebase
     .database()
     .ref()
     .child(`Accounts/${id}`)
     .set({
+      display: name,
       accountID: id,
       email,
       photo,
       posts: 0,
       modStatus: true,
       banStatus: false,
+    });
+
+  firebase
+    .database()
+    .ref()
+    .child(`Accounts/${id}`).child('/points')
+    .set({
+      userName: name,
+      highScore: 1,
     });
 }

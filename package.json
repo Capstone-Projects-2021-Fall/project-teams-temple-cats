@@ -55,6 +55,7 @@
     "react-native-elements": "^3.4.2",
     "react-native-gesture-handler": "~1.10.2",
     "react-native-get-random-values": "~1.7.0",
+    "react-native-leaderboard": "^1.0.6",
     "react-native-maps": "0.28.0",
     "react-native-material-dropdown": "^0.11.1",
     "react-native-reanimated": "~2.2.0",
