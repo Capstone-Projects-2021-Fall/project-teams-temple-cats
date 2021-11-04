@@ -52,6 +52,7 @@ export default function CatMap() {
     );
   }
 
+
   return (
     <View style={styles.container}>
       <MapView ref={mapViewRef} style={styles.map} provider={"google"} region={myLocation} showsUserLocation={true}>
