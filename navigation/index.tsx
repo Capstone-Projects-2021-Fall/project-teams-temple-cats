@@ -36,6 +36,7 @@ import WebView from "react-native-webview";
 import { NavigationEvents } from "react-navigation";
 import Settings from "../screens/Settings";
 import Rewards from "../screens/Rewards";
+import FeedingStationModal from "../screens/FeedingStationModal";
 
 /**
  * Function that renders the navigation bar component.
@@ -99,6 +100,10 @@ function RootNavigator () {
       </Stack.Group>
 
       <Stack.Group screenOptions={{ presentation: "modal" }}>
+        <Stack.Screen name="FeedingStationModal" component={FeedingStationModal} />
+      </Stack.Group>
+
+      <Stack.Group screenOptions={{ presentation: "modal" }}>
         <Stack.Screen name="Rewards" component={Rewards} />
       </Stack.Group>
     </Stack.Navigator>
@@ -124,8 +129,6 @@ function BottomTabNavigator () {
    * @constant {"light" | "dark"}
    */
   const colorScheme = useColorScheme();
-
-  
 
   return (
     <BottomTab.Navigator
