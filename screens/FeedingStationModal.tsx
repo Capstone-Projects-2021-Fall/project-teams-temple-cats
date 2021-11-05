@@ -1,6 +1,5 @@
-import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useState } from "react";
-import { Platform, StyleSheet, Image, ScrollView} from "react-native";
+import React from "react";
+import { StyleSheet, Image} from "react-native";
 
 import { Text, View } from "../components/Themed";
 import { RootStackParamList, RootTabScreenProps } from "../types";

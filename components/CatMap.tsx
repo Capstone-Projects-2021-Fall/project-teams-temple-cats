@@ -21,15 +21,10 @@ import { RootTabScreenProps } from "../types";
 
 export default function CatMap({ navigation }: RootTabScreenProps<"Home">) {
   const [cats, setCats] = useState<Cat[]>([]);
-  const [data, setData] = useState({});
-
-  
-  
   
   const feedingStations = Stations
   const mapViewRef: React.MutableRefObject<MapView> | React.MutableRefObject<null> = useRef(null);
   const catsRef = firebase.database().ref().child('Cats/');
-
 
   const myLocation = Gps();
   const newState: Cat[] = [];
