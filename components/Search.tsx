@@ -4,6 +4,7 @@ import React, {useEffect, useState} from "react";
 import {StyleSheet, View, TextInput, Button, TouchableOpacity, StatusBar, FlatList, SafeAreaView } from "react-native";
 import { Icon } from "react-native-elements";
 import MapView from "react-native-maps";
+import { Cat } from "../types";
 
 
 
@@ -13,35 +14,83 @@ export default function Search () {
   const catsRef = firebase.database().ref().child("Cats/");
   const [search, setSearch] = useState("");
   const [data, setData] = useState("");
-  const cats: any[] = [];
+  const newState: Cat[] = [];
+ // const cats: any[] = [];
+  const [cats, setCats] = useState<Cat[]>([]);
+  const currentData: Cat[] = [];
+  const [catData, setCatData] = useState<Cat[]>([]);
 
   useEffect(() => {
-    catsRef.on("child_added", async () => {
-     const res = await fetch(
-      "https://temple-cats-default-rtdb.firebaseio.com/Cats.json"
-    );
-    res
-      .json()
-      .then((res) => {
-        //console.log(res);
-        cats.push(res);
-        //console.log(cats)
-       // searchData(search)
-      })
-      .catch((err) => console.log(err));
+    catsRef.on("child_added", async (snapshot) => {
+  /*    const picUri = await firebase
+        .storage()
+        .ref()
+        .child(snapshot.val().accountID + "/" + snapshot.val().catID + "/")
+        .getDownloadURL();
+       
+
+      newState.push({ ...snapshot.val() });*/
+   
+     // console.log(cats[1])
+   
+     // setCats([...newState]);
+
+      snapshot.forEach(function(data) {
+       
+       currentData.push(data.val());
+       setCatData([...currentData])
+     //  console.log(catData)
+    });
     });
   }, []);
+
+
   
 
-  function searchData(text: string) {
-    return(cats.find((element)=> {
-      alert(element.text);
-      return element.text === text;
-    })
+  
+
+  function searchData(search) {
+    //console.log(currentData);
+   
+
+    if (!search) {
+        return cats;
+    }
+   /* for(let i = 0; i < cats.length; i++){
+     
+      const tmp = cats[i].toString().split(',');
+      if(tmp.includes(search)){
+        alert("Cat found!");
+        console.log(cats[i]);
+      }
+      else{
+        alert("Cat not found");
+       
+        
+      }
+    }*/
+   // console.log(catData)
+/*
+      catData.map(function(x) {
+        if(x == search){
+          console.log(x);
+          alert("Cat found!");
+         // console.log(cats[i]);
+        }
+        else{
+          console.log(x)
+          alert("Cat not found");
+        }
+    });*/
+    if(catData.includes(search)){
+      alert("Cat found!")
+    }
+    else{
+      alert("Cat not found.")
+    }
     
-    )
-    
-  }
+    return;
+};
 
   return ( 
   <SafeAreaView style={{ flex: 1 }}>
@@ -104,6 +153,7 @@ const styles = StyleSheet.create({
 		</View>
 	);
 //first paper code
+*/
 
 
 
@@ -120,8 +170,7 @@ const styles = StyleSheet.create({
 
 
 
-
-
+/*
 <View style= {{backgroundColor: '#fff', width: 1, height: 40}}>
   </View>
  
