@@ -5,23 +5,34 @@ import {
 import * as ImagePicker from 'expo-image-picker';
 import { Camera } from 'expo-camera';
 import CatCamera from './Camera';
-
+/**
+ *  @props called in camera and catform 
+ */
 type Props = {
   modalVisible: boolean
   onCloseModal: () => void
   onSetImage: (image: string) => void
 }
-
+/**
+ * This function opens the camera roll 
+ * @component
+ * @param props 
+ * @returns modal that enters camera roll or modal that calls camera
+ */
 export default function CatImagePicker(props:Props) {
   const { modalVisible, onCloseModal, onSetImage } = props;
   const [camModalVisible, setCamModalVisible] = useState(false);
   /** 
-   * This is a function that calls another
+   * This is a function that calls another for modal closing 
   */
   const handleCloseModal = () => {
     onCloseModal();
   };
-
+  /**
+   * This hook asks for camera roll permission 
+   * @async permissions
+   * @description this allows photo to be taken and sets prop to the photo
+   */
   useEffect(() => {
     (async () => {
       if (Platform.OS !== 'web') {
@@ -32,7 +43,11 @@ export default function CatImagePicker(props:Props) {
       }
     })();
   }, []);
-
+  /**
+   * This function handles openning camera roll 
+   * @async handle camera roll open  
+   * @description this allows photo to be chosen from camera
+   */
   const handleCameraRollOpen = async () => {
     onCloseModal();
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -46,7 +61,11 @@ export default function CatImagePicker(props:Props) {
       onSetImage(result.uri);
     }
   };
-
+  /**
+   * This function handles openning camera
+   * @async handle camera open  
+   * @description this asks for permission to open cam 
+   */
   const handleCameraOpen = async () => {
     onCloseModal();
     const { status } = await Camera.requestPermissionsAsync();
@@ -56,12 +75,20 @@ export default function CatImagePicker(props:Props) {
       Alert.alert('Access denied');
     }
   };
-
+  /**
+   * This function handles openning camera
+   * @params data of photo uri
+   * @type string   
+   * @description this sets the photo from photo uri
+   */
   const handleCameraCapture = (data: string) => {
     setCamModalVisible(false);
     onSetImage(data);
   };
-
+  /**
+   * This function hanfles camera close
+   * @description sets camera modal visiable to false
+   */
   const handleCameraClose = () => {
     setCamModalVisible(false);
   };
