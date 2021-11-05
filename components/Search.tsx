@@ -2,15 +2,14 @@ import { Ionicons } from "@expo/vector-icons";
 import firebase from "firebase";
 import React, {useEffect, useState} from "react";
 import {StyleSheet, View, TextInput, Button, TouchableOpacity, StatusBar, FlatList, SafeAreaView } from "react-native";
-import { Icon } from "react-native-elements";
+import { SearchBar} from "react-native-elements";
 import MapView from "react-native-maps";
 import { Cat } from "../types";
-
-
-
-
+import { Searchbar } from "react-native-paper";
+import { Avatar} from "react-native-ui-kitten";
 
 export default function Search () {
+  
   const catsRef = firebase.database().ref().child("Cats/");
   const [search, setSearch] = useState("");
   const [data, setData] = useState("");
@@ -19,110 +18,86 @@ export default function Search () {
   const [cats, setCats] = useState<Cat[]>([]);
   const currentData: Cat[] = [];
   const [catData, setCatData] = useState<Cat[]>([]);
+  const [searchTimer, setSearchTimer] = useState(null);
+///
+const [input, setInput] = useState("");
+const [results, setResults] = useState<Cat[]>([]);
+//const [searchTimer, setSearchTimer] = useState(null);
+  const state = {
+  loading: false,
+  data: [],
+  page: 1,
+  seed: 1,
+  error: null
+}
+///
+  
+async function fetchData() {
+  const res = await fetch(
+      `https://temple-cats-default-rtdb.firebaseio.com/Cats.json`
+  );
+  res
+      .json()
+      .then((res) => {
+          setResults(res);
+          console.log(res);
+      })
+      .catch((err) => console.log(err));
+}
 
-  useEffect(() => {
+
+  function searchData(text) {
     catsRef.on("child_added", async (snapshot) => {
-  /*    const picUri = await firebase
-        .storage()
-        .ref()
-        .child(snapshot.val().accountID + "/" + snapshot.val().catID + "/")
-        .getDownloadURL();
-       
-
-      newState.push({ ...snapshot.val() });*/
-   
-     // console.log(cats[1])
-   
-     // setCats([...newState]);
-
       snapshot.forEach(function(data) {
        
-       currentData.push(data.val());
-       setCatData([...currentData])
-     //  console.log(catData)
-    });
-    });
-  }, []);
-
-
-  
-
-  
-
-  function searchData(search) {
-    //console.log(currentData);
-   
-
-    if (!search) {
-        return cats;
-    }
-   /* for(let i = 0; i < cats.length; i++){
-     
-      const tmp = cats[i].toString().split(',');
-      if(tmp.includes(search)){
-        alert("Cat found!");
-        console.log(cats[i]);
-      }
-      else{
-        alert("Cat not found");
-       
-        
-      }
-    }*/
-   // console.log(catData)
-/*
-      catData.map(function(x) {
-        if(x == search){
-          console.log(x);
-          alert("Cat found!");
-         // console.log(cats[i]);
-        }
-        else{
-          console.log(x)
-          alert("Cat not found");
-        }
-    });*/
-    if(catData.includes(search)){
+        currentData.push(data.val());
+        setCatData([...currentData])
+        //console.log(catData)
+     });
+     });
+     if(catData.includes(text)){
       alert("Cat found!")
     }
     else{
       alert("Cat not found.")
     }
-    
-    return;
-};
+   };
+
 
   return ( 
   <SafeAreaView style={{ flex: 1 }}>
-  <View style={{left: -210, position: 'absolute', top: -5, width: '100%', flexDirection: 'row'}}>
+    <View style={{left: -185, position: 'absolute', top: -5, width: "90%", flexDirection: 'row', alignItems: "center"}}>
+    <Searchbar
+          placeholder="Search"
+          onChangeText={(text) => {
+            if (searchTimer) {
+              clearTimeout(searchTimer);
+            }
+            setInput(text);
+            setSearchTimer(
+              setTimeout(() => {
+                fetchData();
+                searchData(text);
+              }, 2000)
+            );
+          } }
+          value={input} onPressIn={undefined} onPressOut={undefined}            
+          />          
+      
+
+    <FlatList
+		  data={results}
+		  renderItem={({item}) => (
+		  <View style={styles.container}>
+       <Text>{item.color}</Text>
+			 <Text>{item.name}</Text>
+		  </View>
+		)}
+		keyExtractor={(item) => "" + item.catID}
+	/>
+ 
+    </View>
    
-   <TextInput
-       style={{
-       flex: 1,
-       borderRadius: 10,
-       margin: 10,
-       color: '#000',
-       borderColor: '#666',
-       backgroundColor: '#FFF',
-       borderWidth: 1,
-       height: 45,
-       paddingHorizontal: 10,
-       fontSize: 18,
-     }}
-     placeholder={'Search for cats here'}
-     placeholderTextColor={'#666'}
-
-     onChangeText={setSearch} value={search}
-    
-   />
-   <TouchableOpacity onPress={() => searchData(search)} activeOpacity={0.5}>
-        <View style={{left: -8,top: 15, backgroundColor: "white"}}>
-          <Ionicons name="search" size={32} color="black"/>
-        </View>
-   </TouchableOpacity>
-  
-
- </View>
  </SafeAreaView>
 );  
 }
@@ -135,101 +110,52 @@ const styles = StyleSheet.create({
       alignItems: "center",
       justifyContent: "center",
   },
+  
   itemStyle: {
     padding: 10,
   }
 });
-
-/*
-
-<View style={styles.container}>
-  <Searchbar
-				placeholder="Search"
-				onChangeText={(text) => {
-					setInput(text);
-				}}
-				value={input}
-			/>
-		</View>
-	);
-//first paper code
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-<View style= {{backgroundColor: '#fff', width: 1, height: 40}}>
-  </View>
- 
-
-
- <View style={{ position: 'absolute', top: -5, width: '100%', flexDirection: 'row'}}>
-
-        <TextInput
-            style={{
-            flex: 1,
-            borderRadius: 10,
-            margin: 10,
-            color: '#000',
-            borderColor: '#666',
-            backgroundColor: '#FFF',
-            borderWidth: 1,
-            height: 45,
-            paddingHorizontal: 10,
-            fontSize: 18,
-        }}
-        placeholder={'Search'}
-        placeholderTextColor={'#666'}
+/* 
+//up to date flatlist
+<FlatList
+  data={state.data}
+  renderItem={({ item }) => (
+    <TouchableOpacity onPress={() => alert('Item pressed!')}>
+      <View
+        style={{
+          flexDirection: 'row',
+          padding: 16,
+          alignItems: 'center'
+        }}>
+        <Avatar
+          source={{ uri: item.picture.thumbnail }}
+          size='giant'
+          style={{ marginRight: 16 }}
         />
-        <Button onPress={ () => console.log("hello") } title="">
-            <Icon
-                name="Search"
-                color='#000'
-                size={14}
-            />
-        </Button>
-        
-    </View>
+        <Text
+          category='s1'
+          style={{
+            color: '#000'
+          }}>{`${item.name.first} ${item.name.last}`}</Text>
+      </View>
+    </TouchableOpacity>
+  )}
+  keyExtractor={item => item.email}
+  ItemSeparatorComponent={this.renderSeparator}
+  ListFooterComponent={this.renderFooter}
+/>
 
 
 
 
 
-
- //<MapView loadingEnabled={true} style={styles.map} />
-  <View style={{ position: 'absolute', top: -5, width: '100%', flexDirection: 'row'}}>
-   
-    <TextInput
-      style={{
-        flex: 1,
-        borderRadius: 10,
-        margin: 10,
-        color: '#000',
-        borderColor: '#666',
-        backgroundColor: '#FFF',
-        borderWidth: 1,
-        height: 45,
-        paddingHorizontal: 10,
-        fontSize: 18,
-      }}
-      placeholder={'Search'}
-      placeholderTextColor={'#666'}
-    />
-     <Button onPress={ () => this.onSubmit(this.state.searchText) }>
-        <Image source={ require('../images/searchImage.png') } style={ { width: 50, height: 50 } } />
-    </Button>
-  </View>
-*/
+<FlatList
+        data={results}
+        renderItem={({ item }) => (
+            <View>
+                <Text>{item.title.rendered}</Text>
+                      <Text>{item.excerpt.rendered}</Text>
+                </View>
+        )}
+        keyExtractor={(item) => "" + item.id}
+      /> */
