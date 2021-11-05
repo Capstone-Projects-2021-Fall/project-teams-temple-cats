@@ -1,24 +1,46 @@
 import { StatusBar } from "expo-status-bar";
-import * as React from "react";
-import { Platform, StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Platform, StyleSheet, Image, ScrollView} from "react-native";
 
 import { Text, View } from "../components/Themed";
-import {  RootStackParamList, RootTabScreenProps } from "../types";
+import { RootStackParamList, RootTabScreenProps } from "../types";
 
-export default function ModalScreen ({route}){
+export default function ModalScreen({ route }, { navigation }: RootTabScreenProps<"Home">) {
+ 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
         {route.params.title}
       </Text>
+      <Image
+        style={{ width: 200, height: 200, top: -150 }}
+        source={{
+          uri: "https://media.istockphoto.com/vectors/pet-food-food-for-cats-bowl-packaging-advertising-vector-simple-flat-vector-id1176308523?k=20&m=1176308523&s=612x612&w=0&h=dtUknn9C3iCgRDNkwbnuKUO9rwgf_5rNjLkPEX5_xiM="
+        }}
+      />
+
       <View
         style={styles.separator}
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
-      />
-      {/* Use a light status bar on iOS to account for the black space above the modal */}
-      <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
+      />      
+
+      {route.params.info.map((item) => {
+        return (
+            <View style={styles.content}>
+              <Text style={styles.contentList}>
+                {"Status: " + item.status}
+                {'\n'}
+                {"Ingredients Needed: " + item.ingredients}
+                {'\n'}
+                {"Time: " + item.time}
+                {'\n\n'}
+              </Text>
+            </View> 
+        )
+      })}
     </View>
+
   );
 }
 
@@ -30,11 +52,23 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontWeight: "bold"
+    fontWeight: "bold",
+    top: 100
   },
   separator: {
-    marginVertical: 30,
+    marginVertical: 40,
     height: 1,
-    width: "80%"
-  }
+    width: "80%",
+    top: -140
+  },
+  content: {
+    fontSize: 20,
+    top: -160,
+    left: -150
+  },
+  contentList: {
+    left: 100, 
+    top: 25 
+  },
+
 });

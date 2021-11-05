@@ -21,10 +21,15 @@ import { RootTabScreenProps } from "../types";
 
 export default function CatMap({ navigation }: RootTabScreenProps<"Home">) {
   const [cats, setCats] = useState<Cat[]>([]);
+  const [data, setData] = useState({});
+
+  
+  
   
   const feedingStations = Stations
   const mapViewRef: React.MutableRefObject<MapView> | React.MutableRefObject<null> = useRef(null);
   const catsRef = firebase.database().ref().child('Cats/');
+
 
   const myLocation = Gps();
   const newState: Cat[] = [];
@@ -34,6 +39,7 @@ export default function CatMap({ navigation }: RootTabScreenProps<"Home">) {
       newState.push(snapshot.val());
       setCats([...newState]);
     });
+
   }, []);
 
   function goToMyLocation() {
@@ -82,9 +88,10 @@ export default function CatMap({ navigation }: RootTabScreenProps<"Home">) {
           <Marker 
             key={index}
             onPress={() => {
-              navigation.push('FeedingStationModal',{
+              navigation.push('FeedingStation',{
                 title: feedingStations.street,
-              }) //this is navigation to one of the child screens when button is clicked
+                info: feedingStations.Info
+              })
             }}
             coordinate={{
               latitude: feedingStations.latitude,
@@ -163,28 +170,6 @@ const styles = StyleSheet.create({
   catPin: {
     width: 30,
     height: 30,
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "transparent",
-    marginTop: 22
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 35,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5
   },
 });
 

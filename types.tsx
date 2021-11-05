@@ -25,7 +25,7 @@ export type RootStackParamList = {
   Settings: undefined;
   Rewards: undefined;
   NotFound: undefined;
-  FeedingStationModal: {title: String};
+  FeedingStation: {title: String, info: any}
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
