@@ -25,7 +25,7 @@ import { AuthContext } from '../context/FirebaseAuthContext';
 import firebase from '../utils/firebase';
 
 export default CatForm = () => {
-  const colors = ['Cat Fur Color', 'Orange', 'Brown', 'Black', 'White'];
+  const colors = ['Cat Fur Color', 'Orange', 'Brown', 'Black', 'White', 'Grey', 'Mixed'];
   const eyeColors = [
     'Cat Eye Color',
     'Brown',
