@@ -28,7 +28,6 @@ export default function AccountScreen ({
 const [word, setWord] = useState<any>([]);
 
 const user = React.useContext(AuthContext)
-//console.log(user.uid)
 
 
 
