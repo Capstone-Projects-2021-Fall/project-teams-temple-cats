@@ -31,6 +31,7 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
           {cat.kitten != null ? 'Kitten: ' + cat.kitten + '\n' : ''}
           {cat.healthy != null ? 'Healthy: ' + cat.healthy + '\n' : ''}
           {cat.friendly != null ? 'Friendly: ' + cat.friendly + '\n' : ''}
+          {cat.comments ? 'Additional Comments: ' + cat.comments + '\n' : ''}
         </Text>
       </View> 
     </View>
