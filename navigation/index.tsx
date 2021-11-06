@@ -38,6 +38,7 @@ import Facebook from "../screens/Facebook";
 import Settings from "../screens/Settings";
 import Rewards from "../screens/Rewards";
 import FeedingStationModal from "../screens/FeedingStationModal";
+import CatModal from '../screens/CatModal';
 
 /**
  * Function that renders the navigation bar component.
@@ -98,6 +99,10 @@ function RootNavigator() {
 
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Settings" component={Settings} />
+      </Stack.Group>
+
+      <Stack.Group screenOptions={{ presentation: "modal" }}>
+        <Stack.Screen name="Cat" component={CatModal} />
       </Stack.Group>
 
       <Stack.Group screenOptions={{ presentation: "modal" }}>

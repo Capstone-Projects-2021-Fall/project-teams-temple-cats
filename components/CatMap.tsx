@@ -34,7 +34,6 @@ export default function CatMap({ navigation }: RootTabScreenProps<"Home">) {
       newState.push(snapshot.val());
       setCats([...newState]);
     });
-
   }, []);
 
   function goToMyLocation() {
@@ -66,6 +65,9 @@ export default function CatMap({ navigation }: RootTabScreenProps<"Home">) {
         {cats?.map((cat, index) => (
           <Marker
             key={index}
+            onPress={() => {
+              navigation.push('Cat', {cat: cat})
+            }}
             coordinate={{
               latitude: cat.location.latitude,
               longitude: cat.location.longitude
