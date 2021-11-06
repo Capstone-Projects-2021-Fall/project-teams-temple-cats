@@ -62,7 +62,7 @@ export default function CatMap() {
             key={index}
             coordinate={{
               latitude: cat.location.latitude,
-              longitude: cat.location.longitude
+              longitude: cat.location.longitude,
             }}
           >
             <Image
