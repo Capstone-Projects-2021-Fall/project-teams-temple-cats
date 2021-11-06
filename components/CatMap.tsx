@@ -1,13 +1,13 @@
-import React, { useEffect, useState, useRef } from "react";
-import { StyleSheet, TouchableOpacity, Image } from "react-native";
-import MapView, { Marker} from "react-native-maps";
-import { View } from "./Themed";
-import firebase from "../utils/firebase";
-import Gps from "../utils/gps";
-import { Cat } from "../types";
-import TUMapBorder from "./TUMapBorder";
-import { MaterialIcons } from "@expo/vector-icons";
-import Colors from "../constants/Colors";
+import React, { useEffect, useState, useRef } from 'react';
+import { StyleSheet, TouchableOpacity, Image } from 'react-native';
+import MapView, { Marker} from 'react-native-maps';
+import { View } from './Themed';
+import firebase from '../utils/firebase';
+import Gps from '../utils/gps';
+import { Cat } from '../types';
+import TUMapBorder from './TUMapBorder';
+import { MaterialIcons } from '@expo/vector-icons';
+import Colors from '../constants/Colors';
 
 /**
  * Function that renders the Cat Map component, including the map and all it's children (e.g. pins/markers).
@@ -51,7 +51,7 @@ export default function CatMap() {
       <MapView
         ref={mapViewRef}
         style={styles.map}
-        provider="google"
+        provider='google'
         region={myLocation}
         showsUserLocation
         showsMyLocationButton={false}
@@ -66,7 +66,7 @@ export default function CatMap() {
             }}
           >
             <Image
-              style={{width: 40, height: 40, borderWidth: 4, borderColor: "rgba(160, 28, 52, 0.75)", borderRadius: 7 }}
+              style={{width: 40, height: 40, borderWidth: 4, borderColor: 'rgba(160, 28, 52, 0.75)', borderRadius: 7 }}
               source={{ uri: cat.media }}
             />
           </Marker>
@@ -75,7 +75,7 @@ export default function CatMap() {
       </MapView>
       <TouchableOpacity style={styles.myLocationButton} onPress={goToMyLocation}>
         <MaterialIcons
-          name="my-location"
+          name='my-location'
           size={25}
           color={Colors.light.text}
           style={styles.myLocationIcon}
@@ -109,9 +109,9 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.20,
     shadowRadius: 1.41,
-    backgroundColor: "rgba(255, 255, 255, 0.8)",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   myLocationIcon: {
     opacity: 0.7,
@@ -129,8 +129,8 @@ const styles = StyleSheet.create({
   },
   templeLogo: {
     ...StyleSheet.absoluteFillObject,
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
     opacity: 0.8,
   },
   catPin: {
