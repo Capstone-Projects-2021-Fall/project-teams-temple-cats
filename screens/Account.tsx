@@ -55,7 +55,7 @@ const user = React.useContext(AuthContext)
           signOut();
         }}
       />
-      {JSON.stringify(modStatus[0]) === "true" ? Mod() : null}
+      {JSON.stringify(modStatus[0]) === '3' ? Mod() : null}
     </View>
   );
 

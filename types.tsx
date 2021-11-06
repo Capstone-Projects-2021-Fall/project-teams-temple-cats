@@ -107,6 +107,6 @@ export type User = {
   photo: string | null | undefined;
   points: 0,
   posts: 0,
-  modStatus: true | false,
+  modStatus: 1 | 2 | 3, //user, feeder, moderator
   banStatus: true | false,
 };
