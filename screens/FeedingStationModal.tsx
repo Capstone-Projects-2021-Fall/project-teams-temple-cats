@@ -5,6 +5,13 @@ import { Text, View } from "../components/Themed";
 import { RootStackParamList, RootTabScreenProps } from "../types";
 
 export default function ModalScreen({ route }, { navigation }: RootTabScreenProps<"Home">) {
+
+  console.log(route.params.info)
+  var statusReports: any[] = [];
+
+  for(const i in route.params.info){
+    statusReports.push(route.params.info[i])
+  }
  
   return (
     <View style={styles.container}>
@@ -24,7 +31,7 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
         darkColor="rgba(255,255,255,0.1)"
       />      
 
-      {route.params.info.map((item) => {
+      {statusReports.map((item) => {
         return (
             <View style={styles.content}>
               <Text style={styles.contentList}>

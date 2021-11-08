@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
-import { StyleSheet, TouchableOpacity, Image} from "react-native";
+import { StyleSheet, TouchableOpacity, Image } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { View } from "./Themed";
 import firebase from "../utils/firebase";
 import Gps from "../utils/gps";
-import { Cat } from "../types";
+import { Cat, FeedingStations } from "../types";
 import TUMapBorder from "./TUMapBorder";
 import { MaterialIcons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
@@ -18,23 +18,30 @@ import { RootTabScreenProps } from "../types";
  */
 
 
-
 export default function CatMap({ navigation }: RootTabScreenProps<"Home">) {
   const [cats, setCats] = useState<Cat[]>([]);
-  
+  const [stations, setStations] = useState<FeedingStations[]>([]);
+
   const feedingStations = Stations
   const mapViewRef: React.MutableRefObject<MapView> | React.MutableRefObject<null> = useRef(null);
   const catsRef = firebase.database().ref().child('Cats/');
+  const stationsRef = firebase.database().ref('Stations/');
 
   const myLocation = Gps();
   const newState: Cat[] = [];
+  const newStations: FeedingStations[] = [];
 
   useEffect(() => {
     catsRef.on('child_added', (snapshot) => {
       newState.push(snapshot.val());
       setCats([...newState]);
     });
+    stationsRef.on('child_added', (snapshot) => {
+      newStations.push(snapshot.val());
+      setStations([...newStations]);
+    });
   }, []);
+
 
   function goToMyLocation() {
     mapViewRef.current?.animateToRegion(
@@ -50,8 +57,11 @@ export default function CatMap({ navigation }: RootTabScreenProps<"Home">) {
       latitudeDelta: 0.022,
       longitudeDelta: 0.022,
     },
-    1000);
+      1000);
   }
+
+  console.log(stations)
+
 
   return (
     <View style={styles.container}>
@@ -67,34 +77,35 @@ export default function CatMap({ navigation }: RootTabScreenProps<"Home">) {
           <Marker
             key={index}
             onPress={() => {
-              navigation.push('Cat', {cat: cat})
+              navigation.push('Cat', { cat: cat })
             }}
             coordinate={{
               latitude: cat.location.latitude,
               longitude: cat.location.longitude
             }}>
             <Image
-               style={{width: 40, height: 40, borderWidth: 4, borderColor: 'rgba(160, 28, 52, 0.75)', borderRadius: 7 }}
-               source={{ uri: cat.media }}
-             />
-           </Marker>
-         ))} 
+              style={{ width: 40, height: 40, borderWidth: 4, borderColor: 'rgba(160, 28, 52, 0.75)', borderRadius: 7 }}
+              source={{ uri: cat.media }}
+            />
+          </Marker>
+        ))}
 
-        {feedingStations?.map((feedingStations, index) => (
-          <Marker 
+
+        {stations?.map((station, index) => (
+          <Marker
             key={index}
             onPress={() => {
-              navigation.push('FeedingStation',{
-                title: feedingStations.street,
-                info: feedingStations.Info
+              navigation.push('FeedingStations', {
+                title: station.street,
+                info: station.info
               })
             }}
             coordinate={{
-              latitude: feedingStations.latitude,
-              longitude: feedingStations.longitude,
+              latitude: station.latitude,
+              longitude: station.longitude,
             }
             }>
-            <Image 
+            <Image
               style={{ width: 35, height: 35 }}
               source={{
                 uri: "https://cdn-icons-png.flaticon.com/512/2809/2809799.png"
@@ -102,6 +113,7 @@ export default function CatMap({ navigation }: RootTabScreenProps<"Home">) {
             />
           </Marker>
         ))}
+
         <TUMapBorder />
 
       </MapView>
