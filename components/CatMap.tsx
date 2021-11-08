@@ -1,13 +1,15 @@
 import React, { useEffect, useState, useRef } from "react";
-import { StyleSheet, TouchableOpacity, Image } from "react-native";
-import MapView, { Marker, Region } from "react-native-maps";
+import { StyleSheet, TouchableOpacity, Image} from "react-native";
+import MapView, { Marker } from "react-native-maps";
 import { View } from "./Themed";
 import firebase from "../utils/firebase";
 import Gps from "../utils/gps";
 import { Cat } from "../types";
 import TUMapBorder from "./TUMapBorder";
-import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
+import { Stations } from "../components/Stations"
+import { RootTabScreenProps } from "../types";
 import Search from "./Search";
 
 /**
@@ -15,8 +17,13 @@ import Search from "./Search";
  * @component
  * @returns {JSX.Element} JSX element of the map
  */
-export default function CatMap() {
+
+
+
+export default function CatMap({ navigation }: RootTabScreenProps<"Home">) {
   const [cats, setCats] = useState<Cat[]>([]);
+  
+  const feedingStations = Stations
   const mapViewRef: React.MutableRefObject<MapView> | React.MutableRefObject<null> = useRef(null);
   const catsRef = firebase.database().ref().child("Cats/");
 
@@ -58,37 +65,57 @@ export default function CatMap() {
       <MapView
         ref={mapViewRef}
         style={styles.map}
-        provider="google"
+        provider='google'
         region={myLocation}
         showsUserLocation
+        showsMyLocationButton={false}
       >
         {cats?.map((cat, index) => (
-
           <Marker
             key={index}
+            onPress={() => {
+              navigation.push('Cat', {cat: cat})
+            }}
             coordinate={{
               latitude: cat.location.latitude,
-              longitude: cat.location.longitude,
-            }}
-          >
+              longitude: cat.location.longitude
+            }}>
             <Image
-              style={{
-                width: 50, height: 50, borderWidth: 5, borderColor: '#a52a2a',
-              }}
+               style={{width: 40, height: 40, borderWidth: 4, borderColor: 'rgba(160, 28, 52, 0.75)', borderRadius: 7 }}
+               source={{ uri: cat.media }}
+             />
+           </Marker>
+         ))} 
+
+        {feedingStations?.map((feedingStations, index) => (
+          <Marker 
+            key={index}
+            onPress={() => {
+              navigation.push('FeedingStation',{
+                title: feedingStations.street,
+                info: feedingStations.Info
+              })
+            }}
+            coordinate={{
+              latitude: feedingStations.latitude,
+              longitude: feedingStations.longitude,
+            }
+            }>
+            <Image 
+              style={{ width: 35, height: 35 }}
               source={{
-                uri: cat.media,
+                uri: "https://cdn-icons-png.flaticon.com/512/2809/2809799.png"
               }}
             />
-
           </Marker>
-
         ))}
         <TUMapBorder />
+
       </MapView>
       <Search />
       <TouchableOpacity style={styles.myLocationButton} onPress={goToMyLocation}>
         <MaterialIcons
-          name="my-location"
+          name='my-location'
           size={25}
           color={Colors.light.text}
           style={styles.myLocationIcon}
@@ -100,7 +127,6 @@ export default function CatMap() {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
@@ -122,7 +148,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
-    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -144,10 +170,11 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     width: '100%',
     height: '100%',
-    opacity: 0.7,
+    opacity: 0.8,
   },
   catPin: {
     width: 30,
     height: 30,
   },
 });
+

@@ -2,153 +2,92 @@ import { Ionicons } from "@expo/vector-icons";
 import firebase from "firebase";
 //import * as React from "react";
 import React, {useEffect, useState} from "react";
-import {StyleSheet,Image, View, TextInput, Text, Button, TouchableOpacity, StatusBar, FlatList, SafeAreaView, Pressable } from "react-native";
-import { SearchBar} from "react-native-elements";
+import { StyleSheet,Image, View, TextInput, Text, Button, TouchableOpacity, StatusBar, FlatList, SafeAreaView, Pressable } from "react-native";
+import { ListItem, SearchBar} from "react-native-elements";
 import MapView from "react-native-maps";
 import { Cat } from "../types";
 import { Searchbar } from "react-native-paper";
 import { Avatar} from "react-native-ui-kitten";
 
 export default function Search () {
-  const [filteredDataSource, setFilteredDataSource] = useState<Cat[]>([]);
-  const [masterDataSource, setMasterDataSource] = useState<Cat[]>([]);
-  const catsRef = firebase.database().ref().child("Cats/");
+  const currentData: Cat[] = [];
+  const state = {
+    loading: false,      
+    data: currentData,      
+    error: null,    
+  };
+
   const [search, setSearch] = useState("");
   //const [data, setData] = useState("");
-
-  const currentData: Cat[] = [];
+  const [stateVal, setState] = useState(state);
+ 
   const [catData, setCatData] = useState<Cat[]>([]);
-  //const [searchTimer, setSearchTimer] = useState(null);
-///
-//const [input, setInput] = useState("");
-const [results, setResults] = useState<Cat[]>([]);//supposed to use this
+  const [results, setResults] = useState<Cat[]>([]);
 
+  
 
 useEffect(() => {
-  fetchData()
-  //searchData()
-}, []);
-
-async function fetchData() {
-  const res = await fetch(
+  setState({ loading: true, data: [], error: null } );
+  fetch(
     `https://temple-cats-default-rtdb.firebaseio.com/Cats.json`
-);
-res
-    .json()
-    .then((res) => {
+    ).then(res => res.json())
+    .then(res => {
+      setState({
+        data: res.results,          
+        error: res.error || null,          
+        loading: false,
+      });        
         currentData.push(res)
         setResults([...currentData]);
-        setFilteredDataSource([...currentData]);
-        setMasterDataSource([...currentData]);
-        //console.log(typeof(masterDataSource));
+       // setFilteredDataSource([...currentData]);
+      //  setMasterDataSource([...currentData]);
+        console.log(typeof(results));
     })
-    .catch((err) => console.log(err));
-}
+    .catch((err) => { console.log(err)
+      //setState({ ... error: err  });  
+    });
+  
+});
 
-
-  function searchData() {
-
-    catsRef.on("child_added", async (snapshot) => {
-      snapshot.forEach(function(data) {
-       
-        currentData.push(data.val());
-        setCatData([...currentData])
-        setResults([...currentData]);
-        setFilteredDataSource([...currentData]);
-        setMasterDataSource([...currentData]);
-       // console.log(typeof(masterDataSource));
-       // console.log(data.val())
-     });
-     });
-     //for(let i = 0; i < catData.length; i++){
-     //  if(catData.includes(text))
-    // }
-   //  if(catData.includes(text)){
-   //   alert("Cat found!")
-  //  }
-   // else{
-   //   alert("Cat not found.")
-     // console.log(catData)
-  //  }
-   };
-
-   const searchFilterFunction = (text) => {
-    // Check if searched text is not blank
-    if (text) {
-      // Inserted text is not blank
-      // Filter the masterDataSource and update FilteredDataSource
-      //console.log(masterDataSource)
-      const newData = masterDataSource.filter(
-        function (item) {
-          // Applying filter for the inserted text in search bar
-          const itemData = item.name
-              ? item.name.toUpperCase()
-              : ''.toUpperCase();
-          const textData = text.toUpperCase();
-          return itemData.indexOf(textData) > -1;
-        }
-      );
-      setFilteredDataSource(newData);
-      setSearch(text);
-    } else {
-      // Inserted text is blank
-      // Update FilteredDataSource with masterDataSource
-      setFilteredDataSource(masterDataSource);
-      setSearch(text);
-    }
-  };
-
-  const ItemView = ({item}) => {
-    return (
-      // Flat List Item
-      <Text
-        style={styles.itemStyle}
-        onPress={() => getItem(item)}>
-        {item.id}
-        {'.'}
-        {item.name}
-      </Text>
-    );
-  };
-
-  const ItemSeparatorView = () => {
-    return (
-      // Flat List Item Separator
-      <View
-        style={{
-          height: 0.5,
-          width: '100%',
-          backgroundColor: '#C8C8C8',
-        }}
-      />
-    );
-  };
-
-  const getItem = (item: { id: string; title: string; }) => {
-    // Function for click on an item
-    alert('Id : ' + item.id + ' Title : ' + item.title);
-  };
+  const searchFilterFunction = text => {    
+  const newData = results.filter(item => {      
+    const itemData = `${item.name.toUpperCase()}   
+    ${item.name.toUpperCase()} ${item.color.toUpperCase()}`;
+    
+     const textData = text.toUpperCase();
+      
+     return itemData.indexOf(textData) > -1;    
+  });
+  
+    setState({ loading: false, error: null, data: newData });  
+};
 
   return ( 
   <SafeAreaView style={{ flex: 1 }}>
     <View style={{left: -190, position: 'absolute', top: -5, width: "90%", borderColor: "black",flexDirection: 'row', alignItems: "center"}}>
       <Searchbar
           placeholder="Search for cats here"
-          onChangeText={(text) => {
-            searchFilterFunction(text)
-           // setInput(text);
-           // searchData(text);
+          onChangeText={(text) => searchFilterFunction(text)}
             
-          } } value={search} onPressIn={undefined} onPressOut={undefined}               
+          value={search} onPressIn={undefined} onPressOut={undefined}               
       />     
-      
-      <FlatList
-          data={filteredDataSource}
-          keyExtractor={(item, index) => index.toString()}
-          ItemSeparatorComponent={ItemSeparatorView}
-          renderItem={ItemView}
-        />
-
+      <View style={{ borderTopWidth: 0, borderBottomWidth: 0 }}>
+        <FlatList          
+          data={stateVal.data}          
+          renderItem={({ item }) => ( 
+            <ListItem              
+              leftAvatar={{ source: { uri: item.media } }}         
+              title={`${item.name} ${item.color}`}  
+              subtitle={item.name}                           
+              avatar={{ uri: item.media }}   
+              containerStyle={{ borderBottomWidth: 0 }} 
+            />          
+          )}          
+        keyExtractor={item => item.catID}  
+        ItemSeparatorComponent={this.renderSeparator} 
+        ListHeaderComponent={this.renderHeader}                             
+        />            
+    </View>
    </View>
  </SafeAreaView>
 );  
@@ -189,6 +128,12 @@ const styles = StyleSheet.create({
   },
 });
 /* 
+
+
+
+
+
+
 <View style={{backgroundColor: "red", height: 10, width: 0, right: 460, borderColor: "black"}}>
 
 

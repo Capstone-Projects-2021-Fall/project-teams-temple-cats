@@ -25,6 +25,8 @@ export type RootStackParamList = {
   Settings: undefined;
   Rewards: undefined;
   NotFound: undefined;
+  Cat: {cat: Cat};
+  FeedingStation: {title: String, info: any};
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
@@ -106,6 +108,6 @@ export type User = {
   photo: string | null | undefined;
   points: 0,
   posts: 0,
-  modStatus: true | false,
+  modStatus: 1 | 2 | 3, //user, feeder, moderator
   banStatus: true | false,
 };

@@ -28,7 +28,6 @@ export default function AccountScreen ({
 const [word, setWord] = useState<any>([]);
 
 const user = React.useContext(AuthContext)
-//console.log(user.uid)
 
 
 
@@ -56,7 +55,7 @@ const user = React.useContext(AuthContext)
           signOut();
         }}
       />
-      {JSON.stringify(modStatus[0]) === "true" ? Mod() : null}
+      {JSON.stringify(modStatus[0]) === '3' ? Mod() : null}
     </View>
   );
 
