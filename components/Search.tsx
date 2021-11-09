@@ -17,12 +17,14 @@ export default function Search () {
   const [catData, setCatData] = useState<Cat[]>([]); //Stores Cat data that is fetched from Firebase
   const [data, setData] = useState<Cat[]>([]); //Stores the new data array to be rendered once the user types something in the search bar
   const mapViewRef: React.MutableRefObject<MapView> | React.MutableRefObject<null> = useRef(null);
-  const catLocation = {latitude: LatLng,
-    longitude: LatLng,
-    latitudeDelta 0.022,
-    longitudeDelta: 0.022,
-   };
-  const [location, setLocation] = useState(Gps());
+  let catLocation : {
+    latitude: Number;
+    longitude: Number;
+    latitudeDelta: 0.022;
+    longitudeDelta: 0.022;
+   }
+  const [locationLat, setLocationLat] = useState(Number);
+  const [locationLng, setLocationLng] = useState(Number);
   const myLocation = Gps();
 
 /*Fetches data asynchronously from firebase to store in catData(Cat[]) hook array after it was first pushed to currentData (Cat[]) so that it can be traversed within the search function by
@@ -84,13 +86,20 @@ var renderSeparator = () => {
   );
 };
 
-function goToCat() {
+const handlePress = () => {
+  goToCat();
+}
+
+function goToCat() { 
   mapViewRef.current?.animateToRegion(
+    {
+      latitude: locationLat,
+      longitude: locationLng,
+      latitudeDelta: 0.022,
+      longitudeDelta: 0.022,
+    },
     
-    catLocation,
-  
-    
-    1000,
+    1000
   );
 }
 
@@ -104,8 +113,8 @@ function goToCat() {
           data={data}          
           renderItem={({ item }) => ( 
              
-              <View style={{backgroundColor: "white"}} {...catLocation.longitude = item.location.longitude } {...catLocation.latitude = item.location.latitude}>
-                <TouchableOpacity onPress={goToCat}>
+              <View style={{backgroundColor: "white"}} >
+                <TouchableOpacity onPress={handlePress} {...setLocationLat(item.location.latitude)} {...setLocationLng(item.location.longitude)}>
                 <Image
                   style={{ left: 10, top: 6, width: 40, height: 40, borderWidth: 4, borderColor: 'rgba(160, 28, 52, 0.75)', borderRadius: 7 }}
                   source={{ uri: item.media }} /><Text style={styles.listItem}>{item.name ? item.name : 'Unknown' }</Text>
