@@ -51,6 +51,7 @@ export default function CatMap({ navigation }: RootTabScreenProps<"Home">) {
   }
 
   function goToTemple() {
+    
     mapViewRef.current?.animateToRegion({
       latitude: 39.9806438149835,
       longitude: -75.15574242934214,
@@ -58,6 +59,7 @@ export default function CatMap({ navigation }: RootTabScreenProps<"Home">) {
       longitudeDelta: 0.022,
     },
     1000);
+    console.log(mapViewRef)
   }
 
   return (
@@ -71,6 +73,7 @@ export default function CatMap({ navigation }: RootTabScreenProps<"Home">) {
         showsMyLocationButton={false}
       >
         {cats?.map((cat, index) => (
+          
           <Marker
             key={index}
             onPress={() => {
@@ -85,6 +88,7 @@ export default function CatMap({ navigation }: RootTabScreenProps<"Home">) {
                source={{ uri: cat.media }}
              />
            </Marker>
+           
          ))} 
 
         {feedingStations?.map((feedingStations, index) => (
@@ -100,6 +104,7 @@ export default function CatMap({ navigation }: RootTabScreenProps<"Home">) {
               latitude: feedingStations.latitude,
               longitude: feedingStations.longitude,
             }
+            
             }>
             <Image 
               style={{ width: 35, height: 35 }}
@@ -112,7 +117,7 @@ export default function CatMap({ navigation }: RootTabScreenProps<"Home">) {
         <TUMapBorder />
 
       </MapView>
-      <Search />
+      <Search mapViewRef={mapViewRef} />
       <TouchableOpacity style={styles.myLocationButton} onPress={goToMyLocation}>
         <MaterialIcons
           name='my-location'

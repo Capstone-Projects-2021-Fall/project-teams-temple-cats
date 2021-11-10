@@ -1,22 +1,20 @@
 import firebase from "firebase";
 import React, {useEffect, useState,  useRef} from "react";
-import MapView, { LatLng, Marker } from "react-native-maps";
 import { StyleSheet, Image, View, Text, FlatList, SafeAreaView, ScrollView, Pressable, Button } from "react-native";
 import {SearchBar} from "react-native-elements";
 import { Cat } from "../types";
 import { Searchbar } from "react-native-paper";
 import Gps from "../utils/gps";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import CatCamera from "./Camera";
 
 
-export default function Search () {
+export default function Search ({mapViewRef}){
   const currentData: Cat[] = []; //Used to initialize catData
   const catsRef = firebase.database().ref().child("Cats/");
   const [search, setSearch] = useState(""); //Stores the user's query
   const [catData, setCatData] = useState<Cat[]>([]); //Stores Cat data that is fetched from Firebase
   const [data, setData] = useState<Cat[]>([]); //Stores the new data array to be rendered once the user types something in the search bar
-  const mapViewRef: React.MutableRefObject<MapView> | React.MutableRefObject<null> = useRef(null);
+  //const mapViewRef: React.MutableRefObject<MapView> | React.MutableRefObject<null> = useRef(null);
   let catLocation : {
     latitude: Number;
     longitude: Number;
@@ -32,12 +30,7 @@ filtering search bar text input to see if any of the input matches any element w
 
   useEffect(() => {
     catsRef.on("child_added", async (snapshot) => {
-      const picUri = await firebase
-      .storage()
-      .ref()
-      .child(snapshot.val().accountID + "/" + snapshot.val().catID + "/");
       currentData.push({ ...snapshot.val()});
-    
       setCatData([...currentData]);
     });
   }, []);
@@ -47,16 +40,16 @@ filtering search bar text input to see if any of the input matches any element w
   each element (Cat[]), itemData (String) will read through each element and check if it contains the user input. The setData() (Cat[]) hook
   will initialize newData (Cat[]) as the new data to be rendered by the flatlist when the user enters text within the search bar. */
   
-  function searchFilterFunction(text){ 
+  function searchFilterFunction(text: any[] | React.SetStateAction<string>){ 
   
     let newData = catData.filter(item => {
-    const itemData = `${item.name}`;
+    const itemData = `${item.name} ${item.healthy}` ;
     const textData = text;
     if(text.length > 0 ){
       return itemData.indexOf(textData) > -1;
     }
     });
-  
+    
     setSearch(text);
     setData(newData);
   }
@@ -86,17 +79,14 @@ var renderSeparator = () => {
   );
 };
 
-const handlePress = () => {
-  goToCat();
-}
 
-function goToCat() { 
+function goToCat(lat, lng) { 
   mapViewRef.current?.animateToRegion(
     {
-      latitude: locationLat,
-      longitude: locationLng,
-      latitudeDelta: 0.022,
-      longitudeDelta: 0.022,
+      latitude: lat,
+      longitude: lng,
+      latitudeDelta: 0.001,
+      longitudeDelta: 0.001,
     },
     
     1000
@@ -111,10 +101,11 @@ function goToCat() {
         <FlatList      
         //Flatlist renders when new data is pulled from the user's search query that comes from the renderHeader() function.    
           data={data}          
-          renderItem={({ item }) => ( 
+          renderItem={({ item }) => ( //setLocationLng(item.location.longitude), setLocationLat(item.location.latitude),
              
               <View style={{backgroundColor: "white"}} >
-                <TouchableOpacity onPress={handlePress} {...setLocationLat(item.location.latitude)} {...setLocationLng(item.location.longitude)}>
+                
+                <TouchableOpacity onPress={() => {goToCat(item.location.latitude,item.location.longitude) }} >
                 <Image
                   style={{ left: 10, top: 6, width: 40, height: 40, borderWidth: 4, borderColor: 'rgba(160, 28, 52, 0.75)', borderRadius: 7 }}
                   source={{ uri: item.media }} /><Text style={styles.listItem}>{item.name ? item.name : 'Unknown' }</Text>
