@@ -1,10 +1,17 @@
 import React from 'react';
-import { StyleSheet, Image} from 'react-native';
+import { useState} from 'react';
+import { Button, StyleSheet, Image} from 'react-native';
 import { Text, View } from '../components/Themed';
 import { Cat, RootStackParamList, RootTabScreenProps } from '../types';
+import r1 from '../components/Report';
 
 export default function ModalScreen({ route }, { navigation }: RootTabScreenProps<'Home'>) {
   const cat: Cat = route.params.cat;
+  const [reportModalVisible, setReportModalVisible] = useState(false);
+    
+  function onReport() {
+    setReportModalVisible(false);
+  }
 
   return (
     <View style={styles.container}>
@@ -15,13 +22,11 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
           uri: cat.media
         }}
       />
-
       <View
         style={styles.separator}
         lightColor='#eee'
         darkColor='rgba(255,255,255,0.1)'
       />      
-
       <View style={styles.content}>
         <Text style={styles.contentList}>
           {'Date Sighted: ' + cat.date + ' ' + cat.time + '\n'}
@@ -33,7 +38,11 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
           {cat.friendly != null ? 'Friendly: ' + cat.friendly + '\n' : ''}
           {cat.comments ? 'Additional Comments: ' + cat.comments + '\n' : ''}
         </Text>
-      </View> 
+      </View>
+      <Button
+          title="Report"
+          onPress={() => setReportModalVisible(true)}
+        />
     </View>
   );
 }
@@ -64,5 +73,10 @@ const styles = StyleSheet.create({
     left: 100, 
     top: 25 
   },
-
+  buttonStyle: {
+    width: 150,
+    padding: 10,
+    backgroundColor: '#9D2235',
+    borderRadius: 30,
+  },
 });
