@@ -3,12 +3,11 @@ import { useState} from 'react';
 import { Button, StyleSheet, Image} from 'react-native';
 import { Text, View } from '../components/Themed';
 import { Cat, RootStackParamList, RootTabScreenProps } from '../types';
-import r1 from '../components/Report';
+import Report from '../components/Report';
 
 export default function ModalScreen({ route }, { navigation }: RootTabScreenProps<'Home'>) {
   const cat: Cat = route.params.cat;
   const [reportModalVisible, setReportModalVisible] = useState(false);
-    
   function onReport() {
     setReportModalVisible(false);
   }
@@ -39,10 +38,7 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
           {cat.comments ? 'Additional Comments: ' + cat.comments + '\n' : ''}
         </Text>
       </View>
-      <Button
-          title="Report"
-          onPress={() => setReportModalVisible(true)}
-        />
+      <Report/>
     </View>
   );
 }
