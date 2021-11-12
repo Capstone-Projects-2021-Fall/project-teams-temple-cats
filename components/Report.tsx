@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 import {
-  Button, Modal, StyleSheet, TextInput, Dimensions,
+  Text, Button, Modal, StyleSheet, TextInput, Dimensions,
 } from 'react-native';
 import { View } from '../components/Themed';
 
@@ -63,6 +63,7 @@ export default function Report() {
       >
         <View style={styles.viewWrapper}>
           <View style={styles.modalView}>
+            <Text> Enter reason for reporting this post: </Text>
             <TextInput
               placeholder="Enter why you're reporting this post..."
               value={inputValue}
@@ -70,6 +71,7 @@ export default function Report() {
               onChangeText={(value) => setInputValue(value)}
             />
             <Button title="Submit" onPress={toggleModalVisibility} />
+            <Button title="Close" onPress={toggleModalVisibility} />
           </View>
         </View>
       </Modal>
