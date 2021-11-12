@@ -46,8 +46,9 @@ export type RootTabScreenProps<Screen extends keyof RootTabParamList> = Composit
 
 export type Report = {
   reportID: string;
-  commentID: string;
+  catID: string;
   accountID: string;
+  reason: string;
 };
 
 export type Comment = {

@@ -1,30 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, Platform, Alert, Modal, StyleSheet, Pressable, Text, SafeAreaView } from 'react-native';
+import {
+  View, Platform, Alert, Modal, StyleSheet, Pressable, Text, SafeAreaView,
+} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { Camera } from 'expo-camera';
 import CatCamera from './Camera';
 /**
- *  @props called in camera and catform 
+ *  @props called in camera and catform
  */
 type Props = {
-<<<<<<< HEAD
-  modalVisible: boolean
-  onCloseModal: () => void
-  onSetImage: (image: string) => void
-}
-/**
- * This function opens the camera roll 
- * @component
- * @param props 
- * @returns modal that enters camera roll or modal that calls camera
- */
-export default function CatImagePicker(props:Props) {
-  const { modalVisible, onCloseModal, onSetImage } = props;
-  const [camModalVisible, setCamModalVisible] = useState(false);
-  /** 
-   * This is a function that calls another for modal closing 
-  */
-=======
   modalVisible: boolean;
   onCloseModal: () => void;
   onSetImage: (image: string) => void;
@@ -36,12 +20,11 @@ export default function CatImagePicker(props: Props) {
   /**
    * This is a function that calls another
    */
->>>>>>> 3fed67378a6a5d77cdbddf86e9b45d08ef940de6
   const handleCloseModal = () => {
     onCloseModal();
   };
   /**
-   * This hook asks for camera roll permission 
+   * This hook asks for camera roll permission
    * @async permissions
    * @description this allows photo to be taken and sets prop to the photo
    */
@@ -56,8 +39,8 @@ export default function CatImagePicker(props: Props) {
     })();
   }, []);
   /**
-   * This function handles openning camera roll 
-   * @async handle camera roll open  
+   * This function handles openning camera roll
+   * @async handle camera roll open
    * @description this allows photo to be chosen from camera
    */
   const handleCameraRollOpen = async () => {
@@ -75,8 +58,8 @@ export default function CatImagePicker(props: Props) {
   };
   /**
    * This function handles openning camera
-   * @async handle camera open  
-   * @description this asks for permission to open cam 
+   * @async handle camera open
+   * @description this asks for permission to open cam
    */
   const handleCameraOpen = async () => {
     onCloseModal();
@@ -90,7 +73,7 @@ export default function CatImagePicker(props: Props) {
   /**
    * This function handles openning camera
    * @params data of photo uri
-   * @type string   
+   * @type string
    * @description this sets the photo from photo uri
    */
   const handleCameraCapture = (data: string) => {

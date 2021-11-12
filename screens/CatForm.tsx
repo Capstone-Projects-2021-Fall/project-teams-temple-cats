@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
-import { Button, CheckBox, Divider, Text, Icon, Input } from 'react-native-elements';
+import {
+  Button, CheckBox, Divider, Text, Icon, Input,
+} from 'react-native-elements';
 import { Picker } from '@react-native-picker/picker';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { LatLng } from 'react-native-maps';
-import { Image, Modal, SafeAreaView, StyleSheet, ScrollView, View, Platform } from 'react-native';
+import {
+  Image, Modal, SafeAreaView, StyleSheet, ScrollView, View, Platform,
+} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Cat } from '../types';
 import { addCat } from '../utils/dbInterface';
@@ -13,23 +17,8 @@ import CatImagePicker from '../components/ImagePicker';
 import firebase from '../utils/firebase';
 
 export default CatForm = () => {
-<<<<<<< HEAD
-  const colors = ['Cat Fur Color', 'Orange', 'Brown', 'Black', 'White', 'Grey', 'Mixed'];
-  const eyeColors = [
-    'Cat Eye Color',
-    'Brown',
-    'Green',
-    'Blue',
-    'Black',
-    'Yellow',
-    'Orange',
-    'Hazel',
-    'Mixed',
-  ];
-=======
   const colors = ['Cat Fur Color', 'Orange', 'Brown', 'Black', 'White'];
   const eyeColors = ['Cat Eye Color', 'Brown', 'Green', 'Blue', 'Black', 'Yellow', 'Orange', 'Hazel', 'Mixed'];
->>>>>>> 3fed67378a6a5d77cdbddf86e9b45d08ef940de6
 
   const [color, setColor] = useState();
   const [eyeColor, setEyeColor] = useState();
@@ -139,7 +128,8 @@ export default CatForm = () => {
         </Modal>
         <Text h3 h3Style={{ textAlign: 'center' }}>
           {' '}
-          Required Fields{' '}
+          Required Fields
+          {' '}
         </Text>
         <Divider style={{ marginBottom: 12 }} color="#9D2235" />
         {image && (
@@ -255,7 +245,8 @@ export default CatForm = () => {
 
         <Text h3 h3Style={{ textAlign: 'center' }}>
           {' '}
-          Additional Fields{' '}
+          Additional Fields
+          {' '}
         </Text>
         <Divider style={{ marginBottom: 8 }} color="#9D2235" />
         <View style={styles.checkboxes}>
@@ -342,12 +333,10 @@ export default CatForm = () => {
           selectionColor="white"
           placeholder="Enter possible name here"
           placeholderTextColor="black"
-          onChangeText={(text) =>
-            setCat((currentState: Cat) => ({
-              ...currentState,
-              name: text,
-            }))
-          }
+          onChangeText={(text) => setCat((currentState: Cat) => ({
+            ...currentState,
+            name: text,
+          }))}
         />
         <Input
           style={styles.additionalInput}
@@ -355,12 +344,10 @@ export default CatForm = () => {
           placeholder="Enter additional information here"
           placeholderTextColor="black"
           value={cat.comments}
-          onChangeText={(text) =>
-            setCat((currentState: Cat) => ({
-              ...currentState,
-              comments: text,
-            }))
-          }
+          onChangeText={(text) => setCat((currentState: Cat) => ({
+            ...currentState,
+            comments: text,
+          }))}
         />
       </ScrollView>
     </SafeAreaView>
