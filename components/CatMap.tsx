@@ -10,6 +10,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 import { Stations } from "../components/Stations"
 import { RootTabScreenProps } from "../types";
+import Search from "./Search";
 
 /**
  * Function that renders the Cat Map component, including the map and all it's children (e.g. pins/markers).
@@ -24,14 +25,20 @@ export default function CatMap({ navigation }: RootTabScreenProps<"Home">) {
   
   const feedingStations = Stations
   const mapViewRef: React.MutableRefObject<MapView> | React.MutableRefObject<null> = useRef(null);
-  const catsRef = firebase.database().ref().child('Cats/');
+  const catsRef = firebase.database().ref().child("Cats/");
 
   const myLocation = Gps();
   const newState: Cat[] = [];
 
   useEffect(() => {
-    catsRef.on('child_added', (snapshot) => {
-      newState.push(snapshot.val());
+    catsRef.on("child_added", async (snapshot) => {
+      const picUri = await firebase
+        .storage()
+        .ref()
+        .child(snapshot.val().accountID + "/" + snapshot.val().catID + "/")
+        .getDownloadURL();
+      newState.push({ ...snapshot.val(), media: picUri });
+
       setCats([...newState]);
     });
   }, []);
@@ -44,6 +51,7 @@ export default function CatMap({ navigation }: RootTabScreenProps<"Home">) {
   }
 
   function goToTemple() {
+    
     mapViewRef.current?.animateToRegion({
       latitude: 39.9806438149835,
       longitude: -75.15574242934214,
@@ -51,6 +59,7 @@ export default function CatMap({ navigation }: RootTabScreenProps<"Home">) {
       longitudeDelta: 0.022,
     },
     1000);
+    console.log(mapViewRef)
   }
 
   return (
@@ -64,6 +73,7 @@ export default function CatMap({ navigation }: RootTabScreenProps<"Home">) {
         showsMyLocationButton={false}
       >
         {cats?.map((cat, index) => (
+          
           <Marker
             key={index}
             onPress={() => {
@@ -78,6 +88,7 @@ export default function CatMap({ navigation }: RootTabScreenProps<"Home">) {
                source={{ uri: cat.media }}
              />
            </Marker>
+           
          ))} 
 
         {feedingStations?.map((feedingStations, index) => (
@@ -93,6 +104,7 @@ export default function CatMap({ navigation }: RootTabScreenProps<"Home">) {
               latitude: feedingStations.latitude,
               longitude: feedingStations.longitude,
             }
+            
             }>
             <Image 
               style={{ width: 35, height: 35 }}
@@ -105,6 +117,7 @@ export default function CatMap({ navigation }: RootTabScreenProps<"Home">) {
         <TUMapBorder />
 
       </MapView>
+      <Search mapViewRef={mapViewRef} />
       <TouchableOpacity style={styles.myLocationButton} onPress={goToMyLocation}>
         <MaterialIcons
           name='my-location'
@@ -122,10 +135,10 @@ export default function CatMap({ navigation }: RootTabScreenProps<"Home">) {
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
-    height: '100%',
-    width: '100%',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
+    height: "100%",
+    width: "100%",
+    justifyContent: "flex-end",
+    alignItems: "center",
   },
   map: {
     ...StyleSheet.absoluteFillObject,
@@ -133,12 +146,12 @@ const styles = StyleSheet.create({
   myLocationButton: {
     position: 'absolute',
     right: 12,
-    top: 10,
+    top: 60,
     width: 38,
     height: 38,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.20,
+    shadowOpacity: 0.2,
     shadowRadius: 1.41,
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
     justifyContent: 'center',
@@ -150,12 +163,12 @@ const styles = StyleSheet.create({
   templeButton: {
     position: 'absolute',
     right: 12,
-    top: 60,
+    top: 110,
     width: 38,
     height: 38,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.20,
+    shadowOpacity: 0.2,
     shadowRadius: 1.41,
   },
   templeLogo: {
