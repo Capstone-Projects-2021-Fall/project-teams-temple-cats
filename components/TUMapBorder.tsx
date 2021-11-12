@@ -1,7 +1,18 @@
 import * as React from 'react';
+import { useState } from 'react';
 import { Polygon } from 'react-native-maps';
 
 export default function TUMapBorder() {
+  const [strokeColor, setStrokeColor] = useState<string | undefined>(undefined);
+  const [fillColor, setFillColor] = useState<string | undefined>(undefined);
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      setStrokeColor("rgba(157, 34, 53, 1)");
+      setFillColor("rgba(157, 34, 53, 0.05)");
+    }, 10)
+
+  })
   return (
     <Polygon
       coordinates={[
@@ -11,8 +22,8 @@ export default function TUMapBorder() {
         { latitude: 39.9731936067945, longitude: -75.14928693177747 },
       ]}
       strokeWidth={2}
-      strokeColor="rgba(157, 34, 53, 1)"
-      fillColor="rgba(157, 34, 53, 0.05)"
+      strokeColor={strokeColor}
+      fillColor={fillColor}
     />
   );
 }
