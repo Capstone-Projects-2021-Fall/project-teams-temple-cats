@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Image, ScrollView, Modal, StyleSheet, TextInput, Dimensions,
+  Image, ScrollView, Modal, StyleSheet, Dimensions,
 } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import { v4 as uuidv4 } from 'uuid';
@@ -20,7 +20,7 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
   const [commentList, setCommentList] = useState<Comment[]>([]);
   const newState: Comment[] = [];
   const [isModalVisible, setModalVisible] = useState(false);
-  const [inputValue, setInputValue] = useState('');
+  // const [inputValue, setInputValue] = useState('');
   const toggleModalVisibility = () => {
     setModalVisible(!isModalVisible);
   };
@@ -87,11 +87,16 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
             <View style={styles.viewWrapper}>
               <View style={styles.modalView}>
                 <Text> Report </Text>
-                <TextInput
-                  placeholder="Enter why you're reporting this post..."
-                  value={inputValue}
+                <Input
                   style={styles.textInput}
-                  onChangeText={(value) => setInputValue(value)}
+                  value={report.reason}
+                  selectionColor="white"
+                  placeholder="Enter why you're reporting this post..."
+                  placeholderTextColor="black"
+                  onChangeText={(text) => setReport((currentState: Report) => ({
+                    ...currentState,
+                    reason: text,
+                  }))}
                 />
                 <Button
                   title="Submit"
