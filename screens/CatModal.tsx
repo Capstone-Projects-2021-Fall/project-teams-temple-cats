@@ -20,10 +20,6 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
   const [commentList, setCommentList] = useState<Comment[]>([]);
   const newState: Comment[] = [];
   const [isModalVisible, setModalVisible] = useState(false);
-  // const [inputValue, setInputValue] = useState('');
-  const toggleModalVisibility = () => {
-    setModalVisible(!isModalVisible);
-  };
 
   const [report, setReport]: Report = useState({
     reportID: '',
@@ -38,6 +34,14 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
     accountID: firebase.auth().currentUser?.uid,
     reports: '',
   });
+
+  const toggleModalVisibility = () => {
+    setModalVisible(!isModalVisible);
+    setReport((currentState: Report) => ({
+      ...currentState,
+      reportID: `${uuidv4()}`,
+    }));
+  };
 
   useEffect(() => {
     commentsRef.on('child_added', (snapshot) => {
@@ -103,10 +107,7 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
                   buttonStyle={styles.buttonStyle}
                   onPress={() => {
                     toggleModalVisibility();
-                    setReport((currentState: Report) => ({
-                      ...currentState,
-                      reportID: `${uuidv4()}`,
-                    }));
+                    console.log(report);
                     firebase.database().ref().child(`Cats/${cat.catID}/reports/${report.reportID}`).set(report);
                   }}
                 />
