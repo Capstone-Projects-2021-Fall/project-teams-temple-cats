@@ -22,8 +22,8 @@ export type RootStackParamList = {
   Settings: undefined;
   Rewards: undefined;
   NotFound: undefined;
-  Cat: { cat: Cat };
-  FeedingStation: { title: String; info: any };
+  Cat: {cat: Cat};
+  FeedingStations: {title: String, info: any};
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<
@@ -96,6 +96,16 @@ export type Cat = {
   accountID: string;
   commentList: string;
 };
+
+export type FeedingStations = {
+ title: String;
+ info: String;
+ latitude: any,
+ longitude: any,
+ street: String,
+};
+
+
 
 export type User = {
   displayName: string | null | undefined;

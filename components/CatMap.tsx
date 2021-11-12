@@ -1,14 +1,14 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { StyleSheet, TouchableOpacity, Image } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
-import { MaterialIcons } from '@expo/vector-icons';
-import { View } from './Themed';
-import firebase from '../utils/firebase';
-import Gps from '../utils/gps';
-import { Cat, RootTabScreenProps } from '../types';
-import TUMapBorder from './TUMapBorder';
-import Colors from '../constants/Colors';
-import { Stations } from '../components/Stations';
+import React, { useEffect, useState, useRef } from "react";
+import { StyleSheet, TouchableOpacity, Image } from "react-native";
+import MapView, { Marker } from "react-native-maps";
+import { View } from "./Themed";
+import firebase from "../utils/firebase";
+import Gps from "../utils/gps";
+import { Cat, FeedingStations, RootTabScreenProps } from "../types";
+import TUMapBorder from "./TUMapBorder";
+import { MaterialIcons } from "@expo/vector-icons";
+import Colors from "../constants/Colors";
+import { Stations } from "../components/Stations"
 import Search from "./Search";
 
 /**
@@ -17,15 +17,19 @@ import Search from "./Search";
  * @returns {JSX.Element} JSX element of the map
  */
 
-export default function CatMap({ navigation }: RootTabScreenProps<'Home'>) {
-  const [cats, setCats] = useState<Cat[]>([]);
 
-  const feedingStations = Stations;
+export default function CatMap({ navigation }: RootTabScreenProps<"Home">) {
+  const [cats, setCats] = useState<Cat[]>([]);
+  const [stations, setStations] = useState<FeedingStations[]>([]);
+
+  const feedingStations = Stations
   const mapViewRef: React.MutableRefObject<MapView> | React.MutableRefObject<null> = useRef(null);
-  const catsRef = firebase.database().ref().child("Cats/");
+  const catsRef = firebase.database().ref().child('Cats/');
+  const stationsRef = firebase.database().ref('Stations/');
 
   const myLocation = Gps();
   const newState: Cat[] = [];
+  const newStations: FeedingStations[] = [];
 
   useEffect(() => {
     catsRef.on("child_added", async (snapshot) => {
@@ -38,7 +42,12 @@ export default function CatMap({ navigation }: RootTabScreenProps<'Home'>) {
 
       setCats([...newState]);
     });
+    stationsRef.on('child_added', (snapshot) => {
+      newStations.push(snapshot.val());
+      setStations([...newStations]);
+    });
   }, []);
+
 
   function goToMyLocation() {
     mapViewRef.current?.animateToRegion(myLocation, 1000);
@@ -55,6 +64,8 @@ export default function CatMap({ navigation }: RootTabScreenProps<'Home'>) {
       1000,
     );
   }
+
+
 
   return (
     <View style={styles.container}>
@@ -91,20 +102,21 @@ export default function CatMap({ navigation }: RootTabScreenProps<'Home'>) {
           </Marker>
         ))}
 
-        {feedingStations?.map((feedingStations, index) => (
+
+        {stations?.map((station, index) => (
           <Marker
             key={index}
             onPress={() => {
-              navigation.push('FeedingStation', {
-                title: feedingStations.street,
-                info: feedingStations.Info,
-              });
+              navigation.push('FeedingStations', {
+                title: station.street,
+                info: station.info
+              })
             }}
             coordinate={{
-              latitude: feedingStations.latitude,
-              longitude: feedingStations.longitude,
-            }}
-          >
+              latitude: station.latitude,
+              longitude: station.longitude,
+            }
+            }>
             <Image
               style={{ width: 35, height: 35 }}
               source={{
@@ -113,6 +125,7 @@ export default function CatMap({ navigation }: RootTabScreenProps<'Home'>) {
             />
           </Marker>
         ))}
+
         <TUMapBorder />
       </MapView>
       <Search mapViewRef={mapViewRef} />

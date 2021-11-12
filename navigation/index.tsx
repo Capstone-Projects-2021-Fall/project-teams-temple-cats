@@ -106,7 +106,7 @@ function RootNavigator() {
       </Stack.Group>
 
       <Stack.Group screenOptions={{ presentation: "modal" }}>
-        <Stack.Screen name="FeedingStation" component={FeedingStationModal} />
+        <Stack.Screen name="FeedingStations" component={FeedingStationModal} />
       </Stack.Group>
 
       <Stack.Group screenOptions={{ presentation: "modal" }}>
