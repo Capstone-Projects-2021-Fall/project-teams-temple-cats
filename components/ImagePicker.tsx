@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  View, Platform, Alert, Modal, StyleSheet, Pressable, Text, SafeAreaView,
-} from 'react-native';
+import { View, Platform, Alert, Modal, StyleSheet, Pressable, Text, SafeAreaView } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { Camera } from 'expo-camera';
 import CatCamera from './Camera';
@@ -9,6 +7,7 @@ import CatCamera from './Camera';
  *  @props called in camera and catform 
  */
 type Props = {
+<<<<<<< HEAD
   modalVisible: boolean
   onCloseModal: () => void
   onSetImage: (image: string) => void
@@ -25,6 +24,19 @@ export default function CatImagePicker(props:Props) {
   /** 
    * This is a function that calls another for modal closing 
   */
+=======
+  modalVisible: boolean;
+  onCloseModal: () => void;
+  onSetImage: (image: string) => void;
+};
+
+export default function CatImagePicker(props: Props) {
+  const { modalVisible, onCloseModal, onSetImage } = props;
+  const [camModalVisible, setCamModalVisible] = useState(false);
+  /**
+   * This is a function that calls another
+   */
+>>>>>>> 3fed67378a6a5d77cdbddf86e9b45d08ef940de6
   const handleCloseModal = () => {
     onCloseModal();
   };
@@ -96,29 +108,16 @@ export default function CatImagePicker(props:Props) {
   return (
     <SafeAreaView>
       <View style={styles.centeredView}>
-        <Modal
-          animationType="slide"
-          transparent
-          visible={modalVisible}
-        >
+        <Modal animationType="slide" transparent visible={modalVisible}>
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Pressable
-                style={styles.modalButton}
-                onPress={handleCameraOpen}
-              >
+              <Pressable style={styles.modalButton} onPress={handleCameraOpen}>
                 <Text style={styles.textStyle}>From Camera</Text>
               </Pressable>
-              <Pressable
-                style={styles.modalButton}
-                onPress={handleCameraRollOpen}
-              >
+              <Pressable style={styles.modalButton} onPress={handleCameraRollOpen}>
                 <Text style={styles.textStyle}>From Camera Roll</Text>
               </Pressable>
-              <Pressable
-                style={styles.closeButton}
-                onPress={handleCloseModal}
-              >
+              <Pressable style={styles.closeButton} onPress={handleCloseModal}>
                 <Text style={styles.closeTextStyle}>Close</Text>
               </Pressable>
             </View>
