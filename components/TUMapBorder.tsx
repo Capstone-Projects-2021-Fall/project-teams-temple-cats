@@ -10,7 +10,7 @@ export default function TUMapBorder() {
     setTimeout(() => {
       setStrokeColor("rgba(157, 34, 53, 1)");
       setFillColor("rgba(157, 34, 53, 0.05)");
-    }, 10)
+    }, 1000)
 
   })
   return (
