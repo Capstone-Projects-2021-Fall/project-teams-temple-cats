@@ -1,71 +1,93 @@
-import React, { useState } from 'react';
-import { StyleSheet, Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Image, ScrollView } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import { v4 as uuidv4 } from 'uuid';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text, View } from '../components/Themed';
+import CommentComponent from '../components/CommentComponent';
 import firebase from '../utils/firebase';
-import { Cat, RootStackParamList, RootTabScreenProps } from '../types';
+import { Cat, Comment, RootTabScreenProps } from '../types';
 
 export default function ModalScreen({ route }, { navigation }: RootTabScreenProps<'Home'>) {
   const { cat } = route.params;
+  const commentsRef = firebase.database().ref().child(`Cats/${cat.catID}/commentList/`);
+  const [commentList, setCommentList] = useState<Comment[]>([]);
+  const newState: Comment[] = [];
 
   const [comment, setComment]: Cat = useState({
-    commentID: uuidv4(),
+    commentID: `${new Date()} ${uuidv4()}`,
     content: '',
     accountID: firebase.auth().currentUser?.uid,
     reports: '',
   });
 
+  useEffect(() => {
+    commentsRef.on('child_added', (snapshot) => {
+      newState.push(snapshot.val());
+      setCommentList([...newState]);
+    });
+  }, []);
+
   return (
     <SafeAreaView>
-      <Text style={styles.title}>{cat.votes} updoots</Text>
-      <Image
-        style={{ width: 200, height: 200 }}
-        source={{
-          uri: cat.media,
-        }}
-      />
+      <ScrollView>
+        <Text style={styles.title}>{cat.votes} updoots</Text>
+        <Image
+          style={{ width: 200, height: 200 }}
+          source={{
+            uri: cat.media,
+          }}
+        />
 
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+        <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
 
-      <View style={styles.content}>
-        <Text>
-          {`Date Sighted: ${cat.date} ${cat.time}\n`}
-          {cat.name ? `Collar Name: ${cat.name}\n` : ''}
-          {cat.color ? `Color: ${cat.color}\n` : ''}
-          {cat.eyeColor ? `Eye Color: ${cat.eyeColor}\n` : ''}
-          {cat.kitten != null ? `Kitten: ${cat.kitten}\n` : ''}
-          {cat.healthy != null ? `Healthy: ${cat.healthy}\n` : ''}
-          {cat.friendly != null ? `Friendly: ${cat.friendly}\n` : ''}
-          {cat.comments ? `Additional Comments: ${cat.comments}\n` : ''}
-        </Text>
-      </View>
-      <Input
-        style={styles.commentInput}
-        value={comment.content}
-        selectionColor="white"
-        placeholder="Enter Comment"
-        placeholderTextColor="black"
-        onChangeText={(text) =>
-          setComment((currentState: Comment) => ({
-            ...currentState,
-            content: text,
-          }))
-        }
-      />
-      <Button
-        title="Submit Comment"
-        buttonStyle={styles.buttonStyle}
-        containerStyle={{
-          alignItems: 'center',
-          marginBottom: 10,
-        }}
-        onPress={() => {
-          firebase.database().ref().child(`Cats/${cat.catID}/comments/${comment.commentID}`).set(comment);
-        }}
-      />
-      <View />
+        <View style={styles.content}>
+          <Text>
+            {`Date Sighted: ${cat.date} ${cat.time}\n`}
+            {cat.name ? `Collar Name: ${cat.name}\n` : ''}
+            {cat.color ? `Color: ${cat.color}\n` : ''}
+            {cat.eyeColor ? `Eye Color: ${cat.eyeColor}\n` : ''}
+            {cat.kitten != null ? `Kitten: ${cat.kitten}\n` : ''}
+            {cat.healthy != null ? `Healthy: ${cat.healthy}\n` : ''}
+            {cat.friendly != null ? `Friendly: ${cat.friendly}\n` : ''}
+            {cat.comments ? `Additional Comments: ${cat.comments}\n` : ''}
+          </Text>
+        </View>
+        <ScrollView style={styles.scrollView}>
+          {commentList.map((comment, index) => (
+            <CommentComponent key={index} comment={comment} />
+          ))}
+        </ScrollView>
+        <Input
+          style={styles.commentInput}
+          value={comment.content}
+          selectionColor="white"
+          placeholder="Enter Comment"
+          placeholderTextColor="black"
+          onChangeText={(text) =>
+            setComment((currentState: Comment) => ({
+              ...currentState,
+              content: text,
+            }))
+          }
+        />
+        <Button
+          title="Submit Comment"
+          buttonStyle={styles.buttonStyle}
+          containerStyle={{
+            alignItems: 'center',
+            marginBottom: 10,
+          }}
+          onPress={() => {
+            firebase.database().ref().child(`Cats/${cat.catID}/commentList/${comment.commentID}`).set(comment);
+            setComment((currentState: Comment) => ({
+              ...currentState,
+              commentID: `${new Date()} ${uuidv4()}`,
+            }));
+          }}
+        />
+        <View />
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -91,7 +113,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   commentInput: {
-    height: 120,
+    height: 80,
     margin: 12,
     borderWidth: 1,
     padding: 10,
@@ -103,5 +125,9 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: '#9D2235',
     borderRadius: 30,
+  },
+  scrollView: {
+    height: 100,
+    backgroundColor: 'white',
   },
 });
