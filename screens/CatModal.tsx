@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Image, ScrollView, Modal, StyleSheet, Dimensions,
-} from 'react-native';
-import { Input, Button } from 'react-native-elements';
+import { Image, ScrollView, Modal, StyleSheet, Dimensions } from 'react-native';
+import { Input, Button, Icon } from 'react-native-elements';
 import { v4 as uuidv4 } from 'uuid';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text, View } from '../components/Themed';
 import CommentComponent from '../components/CommentComponent';
 import firebase from '../utils/firebase';
-import {
-  Cat, Comment, RootTabScreenProps, Report,
-} from '../types';
+import { Cat, Comment, RootTabScreenProps, Report } from '../types';
 
 const { width } = Dimensions.get('window');
 
@@ -20,6 +16,8 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
   const [commentList, setCommentList] = useState<Comment[]>([]);
   const newState: Comment[] = [];
   const [isModalVisible, setModalVisible] = useState(false);
+
+  const [votes, setVotes] = useState(cat.votes);
 
   const [report, setReport]: Report = useState({
     reportID: '',
@@ -53,18 +51,39 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
   return (
     <SafeAreaView>
       <ScrollView>
-        <Text style={styles.title}>
-          {cat.votes}
-          {' '}
-          updoots
-        </Text>
+        <Text style={styles.title}>{`${votes} updoots`}</Text>
         <Image
           style={{ width: 200, height: 200 }}
           source={{
             uri: cat.media,
           }}
         />
-
+        <Icon
+          name="chevron-up"
+          type="material-community"
+          size={22}
+          onPress={() => {
+            setVotes(votes + 1);
+            firebase
+              .database()
+              .ref()
+              .child(`Cats/${cat.catID}/votes`)
+              .set(votes + 1);
+          }}
+        />
+        <Icon
+          name="chevron-down"
+          type="material-community"
+          size={22}
+          onPress={() => {
+            setVotes(votes - 1);
+            firebase
+              .database()
+              .ref()
+              .child(`Cats/${cat.catID}/votes`)
+              .set(votes - 1);
+          }}
+        />
         <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
 
         <View style={styles.content}>
@@ -97,10 +116,12 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
                   selectionColor="white"
                   placeholder="Enter why you're reporting this post..."
                   placeholderTextColor="black"
-                  onChangeText={(text) => setReport((currentState: Report) => ({
-                    ...currentState,
-                    reason: text,
-                  }))}
+                  onChangeText={(text) =>
+                    setReport((currentState: Report) => ({
+                      ...currentState,
+                      reason: text,
+                    }))
+                  }
                 />
                 <Button
                   title="Submit"
@@ -127,10 +148,12 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
           selectionColor="white"
           placeholder="Enter Comment"
           placeholderTextColor="black"
-          onChangeText={(text) => setComment((currentState: Comment) => ({
-            ...currentState,
-            content: text,
-          }))}
+          onChangeText={(text) =>
+            setComment((currentState: Comment) => ({
+              ...currentState,
+              content: text,
+            }))
+          }
         />
         <Button
           title="Submit Comment"
@@ -210,8 +233,7 @@ const styles = StyleSheet.create({
     top: '50%',
     left: '50%',
     elevation: 5,
-    transform: [{ translateX: -(width * 0.4) },
-      { translateY: -90 }],
+    transform: [{ translateX: -(width * 0.4) }, { translateY: -90 }],
     height: 180,
     width: width * 0.8,
     backgroundColor: '#fff',
