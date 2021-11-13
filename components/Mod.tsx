@@ -4,23 +4,23 @@ import * as Facebook from 'expo-auth-session/providers/facebook';
 import { ResponseType } from 'expo-auth-session';
 import { Button } from 'react-native';
 import firebase from '../utils/firebase';
+import Navigation from '../navigation';
 
-export default function Mod() {
+export default function Mod(props: {
+  onReportedPostsPress: () => void;
+  onDownvotedPostsPress: () => void;
+}) {
   return (
     <>
       <Button
         color="#8b0000"
-        title="Report"
-        onPress={() => {
-          alert('Report button pressed');
-        }}
+        title="Reported Posts"
+        onPress={props.onReportedPostsPress}
       />
       <Button
         color="#8b0000"
-        title="Annoucements"
-        onPress={() => {
-          alert('Annoucements button pressed');
-        }}
+        title="Downvoted Posts"
+        onPress={props.onDownvotedPostsPress}
       />
     </>
 
