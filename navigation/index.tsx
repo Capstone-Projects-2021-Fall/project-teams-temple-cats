@@ -39,6 +39,7 @@ import Settings from "../screens/Settings";
 import Rewards from "../screens/Rewards";
 import FeedingStationModal from "../screens/FeedingStationModal";
 import CatModal from '../screens/CatModal';
+import CreateAnnouncementModal from '../screens/CreateAnnouncementModal';
 
 /**
  * Function that renders the navigation bar component.
@@ -78,6 +79,11 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
  * @memberof Navigation
  */
 function RootNavigator() {
+   /**
+   * Color scheme for the navigator
+   * @constant {"light" | "dark"}
+   */
+    const colorScheme = useColorScheme();
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -86,7 +92,35 @@ function RootNavigator() {
         options={{ headerShown: false }}
       />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="Announcements" component={Announcements} />
+        <Stack.Screen 
+        name="Announcements" 
+        component={Announcements} 
+        options={({ navigation }: RootStackParamList<'Announcements'>) => ({
+          title: 'Announcements',
+
+          headerRight: () => (
+            <Pressable
+              onPress={() => navigation.navigate('CreateAnnouncement')}
+              style={({ pressed }) => ({
+                opacity: pressed ? 0.5 : 1,
+              })}
+            >
+              <FontAwesome
+                name="plus"
+                size={25}
+                color={Colors[colorScheme].text}
+                style={{ marginRight: 15 }}
+              />
+            </Pressable>
+          ),
+  
+        })}
+        />
+      </Stack.Group>
+
+
+      <Stack.Group screenOptions={{ presentation: 'modal' }}>
+        <Stack.Screen name="CreateAnnouncement" component={CreateAnnouncementModal} />
       </Stack.Group>
 
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
@@ -202,7 +236,7 @@ function BottomTabNavigator() {
               })}
             >
               <FontAwesome
-                name="info-circle"
+                name="bell"
                 size={25}
                 color={Colors[colorScheme].text}
                 style={{ marginRight: 15 }}
@@ -218,6 +252,9 @@ function BottomTabNavigator() {
           ),
         })}
       />
+
+   
+      
       <BottomTab.Screen
         name="Leaderboard"
         component={LeaderboardScreen}
