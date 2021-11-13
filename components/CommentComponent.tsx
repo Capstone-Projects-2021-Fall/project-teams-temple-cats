@@ -4,7 +4,9 @@ import { Text } from 'react-native-elements';
 import { Comment } from '../types';
 
 export default function CommentComponent(props: Comment) {
-  const { accountID, content, commentID, reports } = props.comment;
+  const {
+    accountID, content, commentID, reports,
+  } = props.comment;
   console.log(props);
   return (
     <View style={styles.comment}>
@@ -28,6 +30,7 @@ const styles = StyleSheet.create({
   comment: {
     margin: 12,
     borderWidth: 1,
+    borderRadius: 30,
     padding: 10,
     color: 'black',
     backgroundColor: 'white',
