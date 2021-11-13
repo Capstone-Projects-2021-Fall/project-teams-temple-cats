@@ -247,6 +247,5 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
     marginRight: 'auto',
     display: 'flex',
-    // paddingTop: 20,
   },
 });
