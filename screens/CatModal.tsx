@@ -56,17 +56,15 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
         <Text style={styles.title}>
           {cat.votes}
           {' '}
-          updoots
+          Upvotes
         </Text>
         <Image
-          style={{ width: 200, height: 200 }}
+          style={styles.catImage}
           source={{
             uri: cat.media,
           }}
         />
-
         <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-
         <View style={styles.content}>
           <Text>
             {`Date Sighted: ${cat.date} ${cat.time}\n`}
@@ -164,9 +162,15 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     alignItems: 'center',
     justifyContent: 'center',
+    color: 'white',
+    paddingVertical: 10,
+    paddingHorizontal: 90,
+    backgroundColor: '#8B0000',
+    marginBottom: 5,
+    textAlign: 'center',
   },
   separator: {
-    marginVertical: 40,
+    marginVertical: 5,
     height: 1,
     width: '80%',
   },
@@ -180,12 +184,6 @@ const styles = StyleSheet.create({
     padding: 10,
     color: 'black',
     backgroundColor: 'white',
-  },
-  buttonStyle: {
-    width: 150,
-    padding: 10,
-    backgroundColor: '#9D2235',
-    borderRadius: 30,
   },
   scrollView: {
     height: 100,
@@ -225,5 +223,30 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0, 0, 0, 0.2)',
     borderWidth: 1,
     marginBottom: 8,
+  },
+  buttonStyle: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 90,
+    borderRadius: 40,
+    elevation: 3,
+    backgroundColor: '#8B0000',
+    marginBottom: 20,
+    marginLeft: 30,
+    marginRight: 30,
+  },
+  catImage: {
+    width: 200,
+    height: 200,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 40,
+    marginBottom: 20,
+    backgroundColor: '#8B0000',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    display: 'flex',
+    // paddingTop: 20,
   },
 });
