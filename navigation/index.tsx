@@ -31,12 +31,14 @@ import CatForm from '../screens/CatForm';
 import {
   RootStackParamList,
   RootTabParamList,
-  RootTabScreenProps,
-} from '../types';
-import { AuthContext } from '../context/FirebaseAuthContext';
-import Settings from '../screens/Settings';
-import Facebook from '../screens/Facebook';
-import Rewards from '../screens/Rewards';
+  RootTabScreenProps
+} from "../types";
+import { AuthContext } from "../context/FirebaseAuthContext";
+import Facebook from "../screens/Facebook";
+import Settings from "../screens/Settings";
+import Rewards from "../screens/Rewards";
+import FeedingStationModal from "../screens/FeedingStationModal";
+import CatModal from '../screens/CatModal';
 
 /**
  * Function that renders the navigation bar component.
@@ -99,7 +101,15 @@ function RootNavigator() {
         <Stack.Screen name="Settings" component={Settings} />
       </Stack.Group>
 
-      <Stack.Group screenOptions={{ presentation: 'modal' }}>
+      <Stack.Group screenOptions={{ presentation: "modal" }}>
+        <Stack.Screen name="Cat" component={CatModal} />
+      </Stack.Group>
+
+      <Stack.Group screenOptions={{ presentation: "modal" }}>
+        <Stack.Screen name="FeedingStations" component={FeedingStationModal} />
+      </Stack.Group>
+
+      <Stack.Group screenOptions={{ presentation: "modal" }}>
         <Stack.Screen name="Rewards" component={Rewards} />
       </Stack.Group>
     </Stack.Navigator>

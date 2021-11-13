@@ -25,11 +25,10 @@ export default function LeaderboardScreen({ navigation }: RootTabScreenProps<'Le
   const [title, setTitle] = useState<any>('Click for Weekly Board');
   const [button, setbutton] = useState<any>(false);
 
-  const curr = new Date();
-  const first = curr.getDate() - curr.getDay();
-  const last = first + 6;
-  const firstday = new Date(curr.setDate(first));
-  const lastday = new Date(curr.setDate(last));
+  var curr = new Date(); 
+  var first = curr.getDate() - curr.getDay(); 
+  var firstday = new Date(curr.setDate(first));    
+  var lastday = new Date(curr.setDate(curr.getDate()+6));
 
   useEffect(() => {
     firebase.database().ref('Accounts').on('value', (snapshot) => {
