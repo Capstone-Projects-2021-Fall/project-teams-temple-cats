@@ -24,6 +24,8 @@ export type RootStackParamList = {
   NotFound: undefined;
   Cat: {cat: Cat};
   FeedingStations: {title: String, info: any};
+  ReportedPosts: undefined;
+  DownvotedPosts: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<
