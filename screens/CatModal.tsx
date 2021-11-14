@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Image, ScrollView, Modal, StyleSheet, Dimensions } from 'react-native';
+import {
+  Image, ScrollView, Modal, StyleSheet, Dimensions,
+} from 'react-native';
 import { Input, Button, Icon } from 'react-native-elements';
 import { v4 as uuidv4 } from 'uuid';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text, View } from '../components/Themed';
 import CommentComponent from '../components/CommentComponent';
 import firebase from '../utils/firebase';
-import { Cat, Comment, RootTabScreenProps, Report } from '../types';
+import {
+  Cat, Comment, RootTabScreenProps, Report,
+} from '../types';
 
 const { width } = Dimensions.get('window');
 
@@ -51,53 +55,59 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
   return (
     <SafeAreaView>
       <ScrollView>
-        <Text style={styles.title}>{`${votes} updoots`}</Text>
+        <Text style={styles.title}>{cat.name ? `Known Name: ${cat.name}\n` : 'Unkown Name'}</Text>
+        <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
         <Image
-          style={{ width: 200, height: 200 }}
+          style={styles.catImage}
           source={{
             uri: cat.media,
           }}
         />
-        <Icon
-          name="chevron-up"
-          type="material-community"
-          size={22}
-          onPress={() => {
-            setVotes(votes + 1);
-            firebase
-              .database()
-              .ref()
-              .child(`Cats/${cat.catID}/votes`)
-              .set(votes + 1);
-          }}
-        />
-        <Icon
-          name="chevron-down"
-          type="material-community"
-          size={22}
-          onPress={() => {
-            setVotes(votes - 1);
-            firebase
-              .database()
-              .ref()
-              .child(`Cats/${cat.catID}/votes`)
-              .set(votes - 1);
-          }}
-        />
-        <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-
-        <View style={styles.content}>
-          <Text>
-            {`Date Sighted: ${cat.date} ${cat.time}\n`}
-            {cat.name ? `Collar Name: ${cat.name}\n` : ''}
-            {cat.color ? `Color: ${cat.color}\n` : ''}
-            {cat.eyeColor ? `Eye Color: ${cat.eyeColor}\n` : ''}
-            {cat.kitten != null ? `Kitten: ${cat.kitten}\n` : ''}
-            {cat.healthy != null ? `Healthy: ${cat.healthy}\n` : ''}
-            {cat.friendly != null ? `Friendly: ${cat.friendly}\n` : ''}
-            {cat.comments ? `Additional Comments: ${cat.comments}\n` : ''}
-          </Text>
+        <View style={styles.separator} lightColor="rgba(255,255,255,0.1)" darkColor="rgba(255,255,255,0.1)" />
+        <View style={styles.listImageContainer}>
+          <Icon
+            name="chevron-up"
+            color="white"
+            type="material-community"
+            size={30}
+            onPress={() => {
+              setVotes(votes + 1);
+              firebase
+                .database()
+                .ref()
+                .child(`Cats/${cat.catID}/votes`)
+                .set(votes + 1);
+            }}
+          />
+          <Text style={styles.upvoteStyle}>{`${votes} upvotes`}</Text>
+          <Icon
+            name="chevron-down"
+            color="white"
+            type="material-community"
+            size={30}
+            onPress={() => {
+              setVotes(votes - 1);
+              firebase
+                .database()
+                .ref()
+                .child(`Cats/${cat.catID}/votes`)
+                .set(votes - 1);
+            }}
+          />
         </View>
+        <View style={styles.separator} lightColor="rgba(255,255,255,0.1)" darkColor="rgba(255,255,255,0.1)" />
+        <Text style={styles.catDate}>
+          {`Date Sighted: ${cat.date} ${cat.time}\n`}
+        </Text>
+        <Text style={styles.catInfo}>
+          {cat.color ? `Color: ${cat.color}\n` : ''}
+          {cat.eyeColor ? `Eye Color: ${cat.eyeColor}\n` : ''}
+          {cat.kitten != null ? `Kitten: ${cat.kitten}\n` : ''}
+          {cat.healthy != null ? `Healthy: ${cat.healthy}\n` : ''}
+          {cat.friendly != null ? `Friendly: ${cat.friendly}\n` : ''}
+          {cat.comments ? `Additional Comments: ${cat.comments}\n` : ''}
+        </Text>
+        <View style={styles.separator} lightColor="rgba(255,255,255,0.1)" darkColor="rgba(255,255,255,0.1)" />
         <View>
           <Button title="Report" buttonStyle={styles.buttonStyle} onPress={toggleModalVisibility} />
           <Modal
@@ -116,12 +126,10 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
                   selectionColor="white"
                   placeholder="Enter why you're reporting this post..."
                   placeholderTextColor="black"
-                  onChangeText={(text) =>
-                    setReport((currentState: Report) => ({
-                      ...currentState,
-                      reason: text,
-                    }))
-                  }
+                  onChangeText={(text) => setReport((currentState: Report) => ({
+                    ...currentState,
+                    reason: text,
+                  }))}
                 />
                 <Button
                   title="Submit"
@@ -137,6 +145,9 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
             </View>
           </Modal>
         </View>
+        <Text style={styles.catDate}>
+          Comments:
+        </Text>
         <ScrollView style={styles.scrollView}>
           {commentList.map((comment, index) => (
             <CommentComponent key={index} comment={comment} />
@@ -148,12 +159,10 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
           selectionColor="white"
           placeholder="Enter Comment"
           placeholderTextColor="black"
-          onChangeText={(text) =>
-            setComment((currentState: Comment) => ({
-              ...currentState,
-              content: text,
-            }))
-          }
+          onChangeText={(text) => setComment((currentState: Comment) => ({
+            ...currentState,
+            content: text,
+          }))}
         />
         <Button
           title="Submit Comment"
@@ -183,15 +192,28 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    fontSize: 20,
+    fontSize: 25,
     fontWeight: 'bold',
+    justifyContent: 'center',
+    color: 'white',
+    backgroundColor: '#8B0000',
+    textAlign: 'center',
+    height: 35,
+  },
+  upvoteStyle: {
+    fontSize: 20,
+    color: 'white',
     alignItems: 'center',
     justifyContent: 'center',
   },
   separator: {
-    marginVertical: 40,
-    height: 1,
-    width: '80%',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 5,
+    height: 5,
+    width: '40%',
   },
   content: {
     fontSize: 20,
@@ -205,10 +227,16 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   buttonStyle: {
-    width: 150,
-    padding: 10,
-    backgroundColor: '#9D2235',
-    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 90,
+    borderRadius: 40,
+    elevation: 3,
+    backgroundColor: '#8B0000',
+    marginBottom: 20,
+    marginLeft: 30,
+    marginRight: 30,
   },
   scrollView: {
     height: 100,
@@ -247,5 +275,54 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0, 0, 0, 0.2)',
     borderWidth: 1,
     marginBottom: 8,
+  },
+  catImage: {
+    width: 200,
+    height: 200,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 40,
+    marginBottom: 5,
+    backgroundColor: '#8B0000',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  },
+  listImageContainer: {
+    justifyContent: 'center',
+    textAlign: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+    backgroundColor: '#8B0000',
+    marginLeft: 'auto',
+    borderRadius: 40,
+    marginRight: 'auto',
+  },
+  catInfoContainer: {
+    justifyContent: 'center',
+    textAlign: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginBottom: 'auto',
+    marginTop: 'auto',
+  },
+  catInfo: {
+    justifyContent: 'center',
+    color: 'white',
+    backgroundColor: '#8B0000',
+    flexDirection: 'row',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginTop: 'auto',
+    marginBottom: 'auto',
+  },
+  catDate: {
+    justifyContent: 'center',
+    textAlign: 'center',
+    flexDirection: 'row',
+    fontSize: 19,
+    marginLeft: 'auto',
+    marginRight: 'auto',
   },
 });
