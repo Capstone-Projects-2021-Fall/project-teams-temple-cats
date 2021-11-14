@@ -13,6 +13,7 @@ import {
 } from '../types';
 
 const { width } = Dimensions.get('window');
+const modStatus: any[] = [];
 
 export default function ModalScreen({ route }, { navigation }: RootTabScreenProps<'Home'>) {
   const { cat } = route.params;
@@ -20,8 +21,8 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
   const [commentList, setCommentList] = useState<Comment[]>([]);
   const newState: Comment[] = [];
   const [isModalVisible, setModalVisible] = useState(false);
-
   const [votes, setVotes] = useState(cat.votes);
+  const [word, setWord] = useState<any>([]);
 
   const [report, setReport]: Report = useState({
     reportID: '',
@@ -52,6 +53,15 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
     });
   }, []);
 
+  useEffect(() => {
+    firebase
+      .database()
+      .ref(`Accounts/${user?.uid}/modStatus`)
+      .on('value', (snapshot) => {
+        modStatus.push(snapshot.val());
+        setWord(modStatus);
+      });
+  }, []);
   return (
     <SafeAreaView>
       <ScrollView>
@@ -179,6 +189,13 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
             }));
           }}
         />
+        {JSON.stringify(modStatus[0]) === '3'
+          ? (
+            <Button
+              title="Submit Comment"
+            />
+          )
+          : null}
         <View />
       </ScrollView>
     </SafeAreaView>
