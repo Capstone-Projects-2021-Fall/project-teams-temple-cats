@@ -55,7 +55,7 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
   return (
     <SafeAreaView>
       <ScrollView>
-        <Text style={styles.title}>{cat.name ? `Known Name: ${cat.name}\n` : 'Unkown Name'}</Text>
+        <Text style={styles.title}>{cat.name ? `Known Name: ${cat.name}\n` : 'Unknown Name'}</Text>
         <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
         <Image
           style={styles.catImage}

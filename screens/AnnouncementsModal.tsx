@@ -1,23 +1,44 @@
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
+import firebase from 'firebase';
 import * as React from 'react';
 import { Button, Platform, StyleSheet, TouchableOpacity } from 'react-native';
 import { Colors, Icon } from 'react-native-elements';
-
+import Mod from '../components/Mod';
+import { RootTabScreenProps } from '../types';
 import { Text, View } from '../components/Themed';
+import { AuthContext } from '../context/FirebaseAuthContext';
+import navigation from '../navigation';
+
+const modStatus: any[] = [];
+
 
 export default function ModalScreen() {
 
-  function createAnnouncement() { 
-    console.log("hi")
-  }
+  const [word, setWord] = React.useState<any>([]);
+  const user = React.useContext(AuthContext);
+
+  React.useEffect(() => {
+    firebase
+      .database()
+      .ref(`Accounts/${user?.uid}/modStatus`)
+      .on('value', (snapshot) => {
+        modStatus.push(snapshot.val());
+        setWord(modStatus);
+      });
+  }, []);
+
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Moderator view</Text>
-     
+    
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      {/* Use a light status bar on iOS to account for the black space above the modal */}
+      {
+     
+      
+      
+      /* Use a light status bar on iOS to account for the black space above the modal */
+      }
       <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
     </View>
   );
