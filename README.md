@@ -6,6 +6,26 @@ Karl Schaller, Rebecca Robb, Jordan Billie, Christine Gregotski, Christian Davis
 The Temple Cats mobile app is for people in the Temple University area who want to help local stray cats. The Temple Cats organization tracks its own feral cat colony, but the Temple University area also has an extremely high population of stray cats who were abandoned by their owners and are in need of care or a home. The mobile app aims mainly to address this problem by providing a lost & found service for reporting cats, as well as by connecting users with extensive resources and information specific to the Temple University area for all different types of cat related situations users might encounter.
 
 ## Release Notes
+### v3.0
+* User Features Added
+  * Query Feature
+    * Search name on home screen and map directs to you the searched cats location
+  * Report Inappropriate Cat Functionaily 
+    *Added button to report cats and give reason why 
+  * Feeding Stations 
+    * Added various feeding stations with modal pop up
+  * Pin Tap View
+    * Cats and feeding stations have pop-up views on pin press
+  * Commenting
+    * Commenting functionality on cat pop-up view
+* Moderator Features Added
+  * Account Screen Buttons
+    * Moderators see “Reported Posts” button
+    * Moderators see “Downvoted Posts” button
+  * Delete Cat Functionality (ADDED)
+    * On cat view of pin, moderators see a “Delete Cat Button” which deletes the cat’s information and photo in the database in real time. 
+
+
 ### v2.0
 * Login Page (UPDATED)
   * Layout and styling updates
