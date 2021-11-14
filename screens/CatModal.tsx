@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Image, ScrollView, Modal, StyleSheet, Dimensions,
+  Image, ScrollView, Modal, StyleSheet, Dimensions, Alert,
 } from 'react-native';
 import { Input, Button, Icon } from 'react-native-elements';
 import { v4 as uuidv4 } from 'uuid';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text, View } from '../components/Themed';
 import CommentComponent from '../components/CommentComponent';
+import { AuthContext } from '../context/FirebaseAuthContext';
 import firebase from '../utils/firebase';
 import {
   Cat, Comment, RootTabScreenProps, Report,
 } from '../types';
 
 const { width } = Dimensions.get('window');
+const modStatus: any[] = [];
 
 export default function ModalScreen({ route }, { navigation }: RootTabScreenProps<'Home'>) {
   const { cat } = route.params;
@@ -20,8 +22,10 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
   const [commentList, setCommentList] = useState<Comment[]>([]);
   const newState: Comment[] = [];
   const [isModalVisible, setModalVisible] = useState(false);
-
   const [votes, setVotes] = useState(cat.votes);
+  const [word, setWord] = useState<any>([]);
+  const user = React.useContext(AuthContext);
+  const [showValidation, setShowValidation] = useState(true);
 
   const [report, setReport]: Report = useState({
     reportID: '',
@@ -45,6 +49,30 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
     }));
   };
 
+  const deleteCat = () => {
+    const catRef = firebase.database().ref('Cats').child(cat.catID);
+    catRef.remove();
+    const imageRef = firebase.storage().refFromURL(cat.media);
+    imageRef.delete();
+  };
+
+  const showValidationAlert = () => Alert.alert(
+    'Delete',
+    'Are your sure you want to delete this post?',
+    [
+      {
+        text: 'Yes',
+        onPress: () => {
+          setShowValidation(false);
+          deleteCat();
+        },
+      },
+      {
+        text: 'No',
+      },
+    ],
+  );
+
   useEffect(() => {
     commentsRef.on('child_added', (snapshot) => {
       newState.push(snapshot.val());
@@ -52,6 +80,15 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
     });
   }, []);
 
+  useEffect(() => {
+    firebase
+      .database()
+      .ref(`Accounts/${user?.uid}/modStatus`)
+      .on('value', (snapshot) => {
+        modStatus.push(snapshot.val());
+        setWord(modStatus);
+      });
+  }, []);
   return (
     <SafeAreaView>
       <ScrollView>
@@ -179,6 +216,15 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
             }));
           }}
         />
+        {JSON.stringify(modStatus[0]) === '3'
+          ? (
+            <Button
+              title="Delete Cat"
+              buttonStyle={styles.buttonStyle}
+              onPress={() => showValidationAlert()}
+            />
+          )
+          : null}
         <View />
       </ScrollView>
     </SafeAreaView>

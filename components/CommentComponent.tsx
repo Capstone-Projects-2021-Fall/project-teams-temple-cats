@@ -3,10 +3,14 @@ import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-elements';
 import { Comment } from '../types';
 
+/**
+ * Function for rendering comments.
+ * @param props: Comment
+ * @returns {JSX.Element} JSX render of a Comment
+ */
+
 export default function CommentComponent(props: Comment) {
-  const {
-    accountID, content, commentID, reports,
-  } = props.comment;
+  const { accountID, content, commentID, reports } = props.comment;
   console.log(props);
   return (
     <View style={styles.comment}>
