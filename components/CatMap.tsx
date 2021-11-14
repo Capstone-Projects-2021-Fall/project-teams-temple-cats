@@ -61,7 +61,14 @@ export default function CatMap({ navigation }: RootTabScreenProps<'Home'>) {
 
   return (
     <View style={styles.container}>
-      <MapView ref={mapViewRef} style={styles.map} provider="google" showsUserLocation showsMyLocationButton={false}>
+      <MapView
+        ref={mapViewRef}
+        style={styles.map}
+        provider="google"
+        initialRegion={myLocation}
+        showsUserLocation
+        showsMyLocationButton={false}
+      >
         {cats?.map((cat, index) => (
           <Marker
             key={index}
