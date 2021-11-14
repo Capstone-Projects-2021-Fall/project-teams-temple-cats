@@ -2,11 +2,19 @@ import React from 'react';
 import { LatLng } from 'react-native-maps';
 import firebase from './firebase';
 import {
-  Account, Cat, Pin, User,
+  Account, Announcement, Cat, Pin, User,
 } from '../types';
 
 const root = firebase.database().ref();
 let reference;
+
+export function addAnnouncement(announcement: Announcement) {
+  firebase
+    .database()
+    .ref()
+    .child(`Announcements/${announcement.announcementID}`)
+    .set(announcement);
+}
 
 export function addCat(cat: Cat) {
   firebase

@@ -61,11 +61,11 @@ export type Comment = {
 };
 
 export type Announcement = {
-  AnnouncementID: string;
-  Time: Date;
-  Content: string;
-  Type: string;
-  AccountID: string;
+  announcementID: string;
+  time: Date;
+  content: string;
+  subject: string;
+  accountID: string;
 };
 
 export type Account = {
