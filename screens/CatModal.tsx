@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Image, ScrollView, Modal, StyleSheet, Dimensions,
+  Image, ScrollView, Modal, StyleSheet, Dimensions, Alert,
 } from 'react-native';
 import { Input, Button, Icon } from 'react-native-elements';
 import { v4 as uuidv4 } from 'uuid';
@@ -25,6 +25,7 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
   const [votes, setVotes] = useState(cat.votes);
   const [word, setWord] = useState<any>([]);
   const user = React.useContext(AuthContext);
+  const [showValidation, setShowValidation] = useState(true);
 
   const [report, setReport]: Report = useState({
     reportID: '',
