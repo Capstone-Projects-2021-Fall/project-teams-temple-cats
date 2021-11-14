@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import {
-  Text, Button, Modal, StyleSheet, TextInput, Dimensions,
-} from 'react-native';
+import { Text, Button, Modal, StyleSheet, TextInput, Dimensions } from 'react-native';
 import { View } from '../components/Themed';
 
 const { width } = Dimensions.get('window');
@@ -27,8 +25,7 @@ const styles = StyleSheet.create({
     top: '50%',
     left: '50%',
     elevation: 5,
-    transform: [{ translateX: -(width * 0.4) },
-      { translateY: -90 }],
+    transform: [{ translateX: -(width * 0.4) }, { translateY: -90 }],
     height: 180,
     width: width * 0.8,
     backgroundColor: '#fff',
@@ -44,7 +41,11 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
 });
-
+/**
+ * Function for generating a cat report.
+ * @component
+ * @returns {JSX.Element} JSx element for reporting a cat.
+ */
 export default function Report() {
   const [isModalVisible, setModalVisible] = useState(false);
   const [inputValue, setInputValue] = useState('');

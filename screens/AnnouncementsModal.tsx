@@ -11,6 +11,11 @@ import { AuthContext } from '../context/FirebaseAuthContext';
 import { useState } from 'react';
 
 
+/**
+ * Function that returns a view for displaying announcements
+ * @component
+ * @returns { View } for displaying announcements
+ */
 export default function ModalScreen() {
   const currentData: Announcement[] = [];
   const announcementRef = firebase.database().ref().child("Announcements/");
