@@ -48,6 +48,11 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
     }));
   };
 
+  const deleteCat = () => {
+    const catRef = firebase.database().ref('Cats').child(cat.catID);
+    catRef.remove();
+  };
+
   useEffect(() => {
     commentsRef.on('child_added', (snapshot) => {
       newState.push(snapshot.val());
@@ -194,7 +199,11 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
         {JSON.stringify(modStatus[0]) === '3'
           ? (
             <Button
-              title="Submit Comment"
+              title="DELETE CAT"
+              buttonStyle={styles.buttonStyle}
+              onPress={() => {
+                deleteCat();
+              }}
             />
           )
           : null}
