@@ -2,13 +2,14 @@ import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
 import firebase from 'firebase';
 import * as React from 'react';
-import { Button, FlatList, Platform, StyleSheet, TouchableOpacity } from 'react-native';
+import { Image, FlatList, Platform, StyleSheet, TouchableOpacity } from 'react-native';
 import { Colors, Icon } from 'react-native-elements';
 import Mod from '../components/Mod';
 import { Announcement, RootTabScreenProps } from '../types';
 import { Text, View } from '../components/Themed';
 import { AuthContext } from '../context/FirebaseAuthContext';
 import { useState } from 'react';
+import { black } from 'react-native-paper/lib/typescript/styles/colors';
 
 
 /**
@@ -18,8 +19,7 @@ import { useState } from 'react';
  */
 export default function ModalScreen() {
   const currentData: Announcement[] = [];
-  const announcementRef = firebase.database().ref().child("Announcements/");
-  const [data, setData] = useState<Announcement[]>([]);
+  const announcementRef = firebase.database().ref("Announcements/");
   const [announcementData, setAnnouncementData] = React.useState<Announcement[]>([]); 
 
   
@@ -39,27 +39,31 @@ export default function ModalScreen() {
 
   return (
     <View style={styles.container}>
-    
-    <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      {
+      <Image
+        style={{ width: 200, height: 200, top: 5 }}
+        source={{
+          uri: 'https://i1.wp.com/consciouscat.net/wp-content/uploads/2017/12/cat-newspaper-e1513176589145.jpg?resize=550%2C367&ssl=1',
+        }}
+      />
+
+<View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+      
         <FlatList          
        data={announcementData}          
        renderItem={({ item }) => ( 
          
-           <View style={{paddingBottom: -10}} >
+           <View style={{width: -50, top: -100}} >
              <TouchableOpacity onPress={() => { alert(item.content)}} >
              <Text style={styles.listItem}>{item.subject}</Text>
             </TouchableOpacity>
            </View>
        )}          
      keyExtractor={item => item.announcementID}  
-     //ItemSeparatorComponent={renderSeparator} 
-     
-     //ListHeaderComponent={<Text>Announcements</Text>}                             
+                                
      />         
       
       
-      }
+      
      
     </View>
   );
@@ -74,11 +78,15 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: 'bold',
+    top: 100,
   },
+ 
   separator: {
     marginVertical: 30,
     height: 1,
+    top:-20,
     width: '80%',
+    
   },
   listItem: {
     fontSize: 16,

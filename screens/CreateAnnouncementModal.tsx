@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import firebase from 'firebase';
 import * as React from 'react';
-import {  Platform, StyleSheet } from 'react-native';
+import {  Platform, StyleSheet, Image } from 'react-native';
 import { Input } from 'react-native-elements';
 import { Button } from 'react-native-elements';
 import { View } from '../components/Themed';
@@ -39,17 +39,20 @@ export default function ModalScreen() {
   }, []);
 
   async function submitAnnouncement() {
-    
+    setAnnouncement((currentState: Announcement) => ({
+      ...currentState,
+      subject: announcementTitle,
+      content: announcementBody,
+    }))
     if (announcement.content === '' || null) return alert('Add content to send an announcement');
     if (announcement.subject === '' || null) return alert('Add subject to send an announcement');
-    const response = await fetch(announcement.announcementID);
-    const blob = await response.blob();
-    const uploadTask = firebase.storage().ref().child(`Announcements/${announcement.announcementID}`).put(blob);
+    
+    const uploadTask = firebase.storage().ref().child(`Announcements/${announcement.announcementID}`).put(announcement);
     //const uploadTask = firebase.storage().ref().child(`Announcements/${announcement.announcementID}`);
     uploadTask
     .then((uploadTaskSnapshot) => {
       // The upload is complete!
-      window.alert('Upload complete');
+     // window.alert('Upload complete');
 
       // In addition, if needed you can get a Download URL, as follows
       return uploadTaskSnapshot.ref.getDownloadURL();
@@ -64,6 +67,12 @@ export default function ModalScreen() {
 
     return (
       <View style={styles.container}>
+          <Image
+        style={{ width: 200, height: 200, top: 5 }}
+        source={{
+          uri: 'https://cdn.pixabay.com/photo/2018/06/18/14/20/cat-3482623_960_720.jpg',
+        }}
+      />
        <Input
           style={styles.nameInput}
           value={announcementTitle}
@@ -89,16 +98,12 @@ export default function ModalScreen() {
             marginBottom: 10,
           }}
           onPress={() => {
-            setAnnouncement((currentState: Announcement) => ({
-              ...currentState,
-              subject: announcementTitle,
-              content: announcementBody,
-            }))
-           //submitAnnouncement();
+           
+           submitAnnouncement();
           
-            firebase.database().ref(`Announcements/${announcement.announcementID}`).set({
+        /*    firebase.database().ref(`Announcements/${announcement.announcementID}`).set({
               Announcement: announcement
-            });
+            });*/
             
             
             alert('Submitted Successfully');
