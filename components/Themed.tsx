@@ -8,7 +8,14 @@ import { Text as DefaultText, View as DefaultView } from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-
+/**
+ * Default property provided by Expo. Declares a light and Text them to apply
+ * to entire app when passed to top level component.
+ * Style props on individual components override these themes.
+ * @param props: String
+ * @param colorName Color object for {text, background, tint, tabIconDefault, tabIconSelected}
+ * @returns Theme for Light or Dark mode
+ */
 export function useThemeColor(
   props: { light?: string; dark?: string },
   colorName: keyof typeof Colors.light & keyof typeof Colors.dark,
