@@ -40,6 +40,8 @@ import Rewards from "../screens/Rewards";
 import FeedingStationModal from "../screens/FeedingStationModal";
 import CatModal from '../screens/CatModal';
 import CreateAnnouncementModal from '../screens/CreateAnnouncementModal';
+import ReportedPostsModal from '../screens/ReportedPostsModal';
+import DownvotedPostsModal from '../screens/DownvotedPostsModal';
 
 /**
  * Function that renders the navigation bar component.
@@ -145,6 +147,14 @@ function RootNavigator() {
 
       <Stack.Group screenOptions={{ presentation: "modal" }}>
         <Stack.Screen name="Rewards" component={Rewards} />
+      </Stack.Group>
+
+      <Stack.Group screenOptions={{ presentation: "modal" }}>
+        <Stack.Screen name="ReportedPosts" component={ReportedPostsModal} />
+      </Stack.Group>
+
+      <Stack.Group screenOptions={{ presentation: "modal" }}>
+        <Stack.Screen name="DownvotedPosts" component={DownvotedPostsModal} />
       </Stack.Group>
     </Stack.Navigator>
   );
