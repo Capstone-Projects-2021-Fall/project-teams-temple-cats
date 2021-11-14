@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text, View } from '../components/Themed';
 import CommentComponent from '../components/CommentComponent';
+import { AuthContext } from '../context/FirebaseAuthContext';
 import firebase from '../utils/firebase';
 import {
   Cat, Comment, RootTabScreenProps, Report,
@@ -23,6 +24,7 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
   const [isModalVisible, setModalVisible] = useState(false);
   const [votes, setVotes] = useState(cat.votes);
   const [word, setWord] = useState<any>([]);
+  const user = React.useContext(AuthContext);
 
   const [report, setReport]: Report = useState({
     reportID: '',
