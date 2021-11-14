@@ -52,7 +52,26 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
   const deleteCat = () => {
     const catRef = firebase.database().ref('Cats').child(cat.catID);
     catRef.remove();
+    const imageRef = firebase.storage().refFromURL(cat.media);
+    imageRef.delete();
   };
+
+  const showValidationAlert = () => Alert.alert(
+    'Delete',
+    'Are your sure you want to delete this post?',
+    [
+      {
+        text: 'Yes',
+        onPress: () => {
+          setShowValidation(false);
+          deleteCat();
+        },
+      },
+      {
+        text: 'No',
+      },
+    ],
+  );
 
   useEffect(() => {
     commentsRef.on('child_added', (snapshot) => {
@@ -200,11 +219,9 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
         {JSON.stringify(modStatus[0]) === '3'
           ? (
             <Button
-              title="DELETE CAT"
+              title="Delete Cat"
               buttonStyle={styles.buttonStyle}
-              onPress={() => {
-                deleteCat();
-              }}
+              onPress={() => showValidationAlert()}
             />
           )
           : null}
