@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 import { Modal } from 'react-native-ui-kitten';
 
-import { Text, View } from '../components/Themed';
+import { Text} from '../components/Themed';
 
 /**
  * Function that returns a view for displaying announcements
