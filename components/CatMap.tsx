@@ -27,16 +27,15 @@ export default function CatMap({ navigation }: RootTabScreenProps<'Home'>) {
   const stationsRef = firebase.database().ref('Stations/');
 
   const myLocation = Gps();
-  const newState: Cat[] = [];
   const newStations: FeedingStations[] = [];
 
   useEffect(() => {
     catsRef.on('value', (snapshot) => {
+      const newState: Cat[] = [];
       snapshot.forEach((child) => {
         newState.push({ ...child.val() });
+        setCats([...newState]);
       });
-
-      setCats([...newState]);
     });
     stationsRef.on('child_added', (snapshot) => {
       newStations.push(snapshot.val());
