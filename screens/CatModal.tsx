@@ -101,7 +101,7 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
           }}
         />
         <View style={styles.separator} lightColor="rgba(255,255,255,0.1)" darkColor="rgba(255,255,255,0.1)" />
-        <View style={styles.listImageContainer}>
+        <View style={styles.voteContainer}>
           <Icon
             name="chevron-up"
             color="white"
@@ -136,36 +136,36 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
         <Text style={styles.catDate}>
           {`Date Sighted: ${cat.date} ${cat.time}\n`}
         </Text>
-        <View style={styles.friendlyContainer}>
+        <View style={styles.cattributeContainer}>
           <Text style={styles.catInfo}>
             {cat.friendly != null ? `Friendly: ${cat.friendly}\n` : ''}
           </Text>
         </View>
-        <View style={styles.healthyContainer}>
+        <View style={styles.cattributeContainer}>
           <Text style={styles.catInfo}>
             {cat.healthy != null ? `Healthy: ${cat.healthy}\n` : ''}
           </Text>
         </View>
-        <View style={styles.kittenContainer}>
+        <View style={styles.cattributeContainer}>
           <Text style={styles.catInfo}>
             {cat.kitten != null ? `Kitten: ${cat.kitten}\n` : ''}
           </Text>
         </View>
-        {/*          <Text style={styles.catInfo}>
-            {cat.eyeColor ? `Eye Color: ${cat.eyeColor}\n` : ''}
-          </Text>
-          <Text style={styles.catInfo}>
-            {cat.kitten != null ? `Kitten: ${cat.kitten}\n` : ''}
-          </Text>
-          <Text style={styles.catInfo}>
-            {cat.healthy != null ? `Healthy: ${cat.healthy}\n` : ''}
-          </Text>
+        <View style={styles.cattributeContainer}>
           <Text style={styles.catInfo}>
             {cat.color ? `Color: ${cat.color}\n` : ''}
           </Text>
+        </View>
+        <View style={styles.cattributeContainer}>
           <Text style={styles.catInfo}>
-            {cat.comments ? `Additional Comments: ${cat.comments}\n` : ''}
-          </Text> */}
+            {cat.eyeColor ? `Eye Color: ${cat.eyeColor}` : ''}
+          </Text>
+        </View>
+        <View style={styles.cattributeContainer}>
+          <Text style={styles.catInfo}>
+            {cat.comments ? `Additional Comments: ${cat.comments}\n` : 'No Additional Info'}
+          </Text>
+        </View>
         <View style={styles.separator} lightColor="rgba(255,255,255,0.1)" darkColor="rgba(255,255,255,0.1)" />
         <Text style={styles.catDate}>
           Comments:
@@ -356,7 +356,7 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
     marginRight: 'auto',
   },
-  listImageContainer: {
+  voteContainer: {
     justifyContent: 'center',
     textAlign: 'center',
     display: 'flex',
@@ -366,26 +366,22 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     marginRight: 'auto',
   },
-  friendlyContainer: {
-    marginLeft: 20,
-    width: 100,
+  cattributeContainer: {
     height: 20,
     borderRadius: 40,
     backgroundColor: '#8B0000',
+    marginBottom: 5,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    paddingLeft: 5,
+    paddingRight: 5,
   },
-  healthyContainer: {
-    marginLeft: 140,
-    width: 100,
-    height: 20,
+  additionalCommentContainer: {
+    width: 'auto',
+    height: 'auto',
     borderRadius: 40,
     backgroundColor: '#8B0000',
-  },
-  kittenContainer: {
-    marginRight: 20,
-    width: 100,
-    height: 20,
-    borderRadius: 40,
-    backgroundColor: '#8B0000',
+    marginBottom: 5,
   },
   catInfo: {
     justifyContent: 'center',
