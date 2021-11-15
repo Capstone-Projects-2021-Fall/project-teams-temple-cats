@@ -57,7 +57,7 @@ export type Comment = {
   commentID: string;
   content: string;
   accountID: string;
-  reports: string;
+  reports: Report[];
 };
 
 export type Announcement = {
@@ -96,7 +96,8 @@ export type Cat = {
   time: Date;
   votes: number;
   accountID: string;
-  commentList: string;
+  commentList: Comment[];
+  reports: Report[];
 };
 
 export type FeedingStations = {
