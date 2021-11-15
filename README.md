@@ -67,11 +67,12 @@ Currently, v2.0 of the application is being hosted on an Expo server. In order t
 
 ## Testing Instructions
 
-Depending on iOS and Andriod some of the pop-ups may appear in a different order. In any case please click allow on all permission pop-ups.
-
+Depending on iOS and Andriod some of the pop-ups may appear in a different order. 
+In any case please click allow on all permission pop-ups.
+Warnings may appear you may dismiss them. 
 For testing the latest version of our app, follow these testing procedures:
 
-### Login
+### Login Procedure
 * Open the app after following the installation instructions.
 * Click the login button.
 * (iPhone only) A pop-up will appear saying '"Expo" Wants to Use "expo.io" to Sign In'. Click the continue button.
@@ -80,12 +81,12 @@ For testing the latest version of our app, follow these testing procedures:
 * (on Android) A pop-up will appear asking to use your location.
 * You should be redirected to the home screen.
 
-### Cat Form Submission
+### Map on Home Tab: Cat Form Submission
 * From the home screen, click the top left "+" button to open the cat form screen.
 * (on iPhone) A pop-up will appear saying 1 of 2 things, "Allow to use location" or "Experience needs permissions" click allow.
 * Click Submit Cat
   * An alert should say an image is required
-* Click upload image and choose either from camera or from camera roll. 
+* Click upload image and choose either from camera or from camera roll. (Note: we prefer you to upload picture of an actual cat) 
   * If you pick from the camera, test out the flash and selfie modes.
     * The door icon will allow you to go back to the cat form.
   * If you pick from a camera roll, you’ll then be prompted to crop the image you select.
@@ -102,10 +103,40 @@ For testing the latest version of our app, follow these testing procedures:
   * The date should appear on the form.
 * Click on the time and choose a time.
   * The time should appear on the form.
-* Click Submit Cat
-  * An alert should appear telling you that the cat was submitted
-* Reload the app in order to update the pins on the map.
+* Fill in additional information "Enter possible name"
+    * Remember the name you give that cat. 
+* Click Submit Cat 
+  * (Might have a few seconds of delay) An alert should appear telling you that the cat was submitted
+  * Click OK and swipe down
 * Your cat should appear at your selected location on the map.
+
+### Map on Home Tab: Feeding Station, Query, Comment and Report and Downvote
+* Click on the icon of a yellow cat food bag.
+  * Feeding Station modal will appear.
+  * Swipe down the feeding modal. 
+* Click on the text input box that says "Search for cats here"
+* Type in the the name you gave the cat you just uploaded and tap on it when the drop down appears
+  * The map should redirect you to the pin picture of the cat
+* Click on the photo
+  * A view will appear with information about the cat
+* Give your cat 1 upvote.
+* Scroll down to the text box that says "Enter a comment"
+  * Keyboard should appear and enter a comment "This is a test"
+  * Close keyboard
+* Click submit comment.
+* Swipe down the cat information view to look at map again.
+* Once again we will click on the "Search for cats here"
+  * Enter the name "Gwapo"
+* Click Gwapo on the drop down, the map will direct you to 10th and Edgley
+* Click Gwapo on the map. 
+* Scroll down to the report button and click on it.
+* A pop up will appear asking for a reason.
+  * You may enter "This is a dog" in the text box and click submit.
+* Click report button again and click close.
+  * The pop up should close.
+* Swipe entire view down from top of screen to display home again. 
+
+
 
 ### Resources Tab
 * Click the resources button on the navigation bar.
@@ -141,5 +172,6 @@ For testing the latest version of our app, follow these testing procedures:
 
 
 ## Source Code
+* [v3.0](https://github.com/Capstone-Projects-2021-Fall/project-teams-temple-cats/releases/tag/v3.0.0)
 * [v2.0](https://github.com/Capstone-Projects-2021-Fall/project-teams-temple-cats/releases/tag/v2.0.0)
 * [v1.0](https://github.com/Capstone-Projects-2021-Fall/project-teams-temple-cats/releases/tag/v1.0.0)
