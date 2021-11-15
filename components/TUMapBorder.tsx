@@ -2,17 +2,21 @@ import * as React from 'react';
 import { useState } from 'react';
 import { Polygon } from 'react-native-maps';
 
+/**
+ * Function that renders border of Temple's Campus. Used to indicate where users can earn points.
+ * @component
+ * @returns {JSX.Element} JSX element that displays border or Temple's Campus on the map view
+ */
 export default function TUMapBorder() {
   const [strokeColor, setStrokeColor] = useState<string | undefined>(undefined);
   const [fillColor, setFillColor] = useState<string | undefined>(undefined);
 
   React.useEffect(() => {
     setTimeout(() => {
-      setStrokeColor("rgba(157, 34, 53, 1)");
-      setFillColor("rgba(157, 34, 53, 0.05)");
-    }, 1000)
-
-  })
+      setStrokeColor('rgba(157, 34, 53, 1)');
+      setFillColor('rgba(157, 34, 53, 0.05)');
+    }, 1000);
+  });
   return (
     <Polygon
       coordinates={[

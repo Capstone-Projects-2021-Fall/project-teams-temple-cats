@@ -3,6 +3,12 @@ import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-elements';
 import { Comment } from '../types';
 
+/**
+ * Function for rendering comments.
+ * @param props: Comment
+ * @returns {JSX.Element} JSX render of a Comment
+ */
+
 export default function CommentComponent(props: Comment) {
   const { accountID, content, commentID, reports } = props.comment;
   console.log(props);
@@ -28,6 +34,7 @@ const styles = StyleSheet.create({
   comment: {
     margin: 12,
     borderWidth: 1,
+    borderRadius: 30,
     padding: 10,
     color: 'black',
     backgroundColor: 'white',

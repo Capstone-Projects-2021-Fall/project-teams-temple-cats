@@ -1,14 +1,10 @@
 import React, { useState } from 'react';
-import {
-  Button, CheckBox, Divider, Text, Icon, Input,
-} from 'react-native-elements';
+import { Button, CheckBox, Divider, Text, Icon, Input } from 'react-native-elements';
 import { Picker } from '@react-native-picker/picker';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { LatLng } from 'react-native-maps';
-import {
-  Image, Modal, SafeAreaView, StyleSheet, ScrollView, View, Platform,
-} from 'react-native';
+import { Image, Modal, SafeAreaView, StyleSheet, ScrollView, View, Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Cat } from '../types';
 import { addCat } from '../utils/dbInterface';
@@ -16,6 +12,11 @@ import LocationPicker from './LocationPicker';
 import CatImagePicker from '../components/ImagePicker';
 import firebase from '../utils/firebase';
 
+/**
+ * Function that generates form for cat submission
+ * @component
+ * @returns {JSX.Element} Form for submitting a cat into the database
+ */
 export default CatForm = () => {
   const colors = ['Cat Fur Color', 'Orange', 'Brown', 'Black', 'White'];
   const eyeColors = ['Cat Eye Color', 'Brown', 'Green', 'Blue', 'Black', 'Yellow', 'Orange', 'Hazel', 'Mixed'];
@@ -49,6 +50,10 @@ export default CatForm = () => {
     accountID: firebase.auth().currentUser?.uid,
   });
 
+  /**
+   * Helper function to assign location to cat
+   * @param coordinate
+   */
   function onLocationPick(coordinate: LatLng) {
     setCat((currentState: Cat) => ({
       ...currentState,
@@ -56,7 +61,10 @@ export default CatForm = () => {
     }));
     setLocationModalVisible(false);
   }
-
+  /**
+   * Places picture into the image place holder
+   * @param data
+   */
   const handleSetImage = (data: string) => {
     cat.media = data;
     setImage(data);
@@ -86,6 +94,10 @@ export default CatForm = () => {
     showMode('time');
   };
 
+  /**
+   * Helper function that checks for required fields before submitting cat into database
+   * @function
+   */
   async function submitCat() {
     if (cat.media === '' || null) return alert('Add picture to report a cat');
     if (cat.location === '' || null) return alert('Add location to report a cat');
@@ -94,7 +106,6 @@ export default CatForm = () => {
 
     const response = await fetch(cat.media);
     const blob = await response.blob();
-
     const uploadTask = firebase.storage().ref().child(`${firebase.auth().currentUser?.uid}/${cat.catID}`).put(blob);
     uploadTask
       .then((uploadTaskSnapshot) => {
@@ -111,8 +122,6 @@ export default CatForm = () => {
       .catch((err) => {
         console.log(err);
       });
-    // addCat(cat);
-    // return alert('Cat submitted');
   }
 
   return (
@@ -128,8 +137,7 @@ export default CatForm = () => {
         </Modal>
         <Text h3 h3Style={{ textAlign: 'center' }}>
           {' '}
-          Required Fields
-          {' '}
+          Required Fields{' '}
         </Text>
         <Divider style={{ marginBottom: 12 }} color="#9D2235" />
         {image && (
@@ -245,8 +253,7 @@ export default CatForm = () => {
 
         <Text h3 h3Style={{ textAlign: 'center' }}>
           {' '}
-          Additional Fields
-          {' '}
+          Additional Fields{' '}
         </Text>
         <Divider style={{ marginBottom: 8 }} color="#9D2235" />
         <View style={styles.checkboxes}>
@@ -333,10 +340,12 @@ export default CatForm = () => {
           selectionColor="white"
           placeholder="Enter possible name here"
           placeholderTextColor="black"
-          onChangeText={(text) => setCat((currentState: Cat) => ({
-            ...currentState,
-            name: text,
-          }))}
+          onChangeText={(text) =>
+            setCat((currentState: Cat) => ({
+              ...currentState,
+              name: text,
+            }))
+          }
         />
         <Input
           style={styles.additionalInput}
@@ -344,10 +353,12 @@ export default CatForm = () => {
           placeholder="Enter additional information here"
           placeholderTextColor="black"
           value={cat.comments}
-          onChangeText={(text) => setCat((currentState: Cat) => ({
-            ...currentState,
-            comments: text,
-          }))}
+          onChangeText={(text) =>
+            setCat((currentState: Cat) => ({
+              ...currentState,
+              comments: text,
+            }))
+          }
         />
       </ScrollView>
     </SafeAreaView>
