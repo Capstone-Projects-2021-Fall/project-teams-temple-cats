@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, Image, Button, Alert } from 'react-native';
+import { StyleSheet, Image, Button, Alert, TouchableOpacity } from 'react-native';
 import firebase from "../utils/firebase";
 import { Text, View } from '../components/Themed';
 import { useEffect } from 'react';
@@ -50,15 +50,14 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Report
       <View style={styles.flexColumnContainer}>
         {reportedCats.map((cat, index) => (
           <View key={index} style={styles.flexRowContainer}>
-            <Image
-              style={styles.catImage}
-              source={{ uri: cat.media }}
-            />
+            <TouchableOpacity onPress={() => navigation.push('Cat', { cat })}>
+              <Image style={styles.catImage} source={{ uri: cat.media }}/>
+            </TouchableOpacity>
             {Object.values(cat.reports).map((report, index) => {
               return (
                 <View key={index}>
-                  <Text>{report.reason}</Text>
-                  <Button title='Resolve' onPress={() => resolveReport(report)}/>
+                  <Text>{'Reason: ' + report.reason}</Text>
+                  <Button title='Resolve' color='#9D2235' onPress={() => resolveReport(report)}/>
                 </View>
               );
             })}
@@ -77,8 +76,8 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Report
             {Object.values(comment.reports).map((report, index) => {
               return (
                 <View key={index}>
-                  <Text>{report.reason}</Text>
-                  <Button title='Resolve' onPress={() => resolveReport(report)}/>
+                  <Text>{'Reason: ' + report.reason}</Text>
+                  <Button title='Resolve' color='#9D2235' onPress={() => resolveReport(report)}/>
                 </View>
               );
             })}
@@ -100,7 +99,8 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Report
         {
           text: 'Yes',
           onPress: () => {
-            console.log('Delete report.')
+            catsRef.child(report.catID + '/reports/' + report.reportID).remove();
+            setReportedCats(reportedCats.filter((cat) => cat.catID !== report.catID));
           },
         },
       ],
