@@ -28,7 +28,7 @@ export default function ModalScreen() {
       const reportedComments: Comment[] = [];
       cats.forEach((cat) => {
         if (cat.commentList) {
-          cat.commentList.forEach((comment) => {
+          Object.values(cat.commentList).forEach((comment) => {
             if (comment.reports && Object.keys(comment.reports).length > 0) {
               reportedComments.push(comment);
             }
