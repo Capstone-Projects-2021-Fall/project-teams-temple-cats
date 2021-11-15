@@ -43,10 +43,18 @@ export default function CatMap({ navigation }: RootTabScreenProps<'Home'>) {
     });
   }, []);
 
+  /**
+   * Helper function that moves map view to current location of the user.
+   * @function
+   */
   function goToMyLocation() {
     mapViewRef.current?.animateToRegion(myLocation, 1000);
   }
 
+  /**
+   * Helper function that moves map view to Temple's Campus
+   * @function
+   */
   function goToTemple() {
     mapViewRef.current?.animateToRegion(
       {
