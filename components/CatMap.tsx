@@ -88,7 +88,7 @@ export default function CatMap({ navigation }: RootTabScreenProps<'Home'>) {
               longitude: cat.location.longitude,
             }}
           >
-            {/* <Image
+            <Image
               style={{
                 width: 40,
                 height: 40,
@@ -97,7 +97,7 @@ export default function CatMap({ navigation }: RootTabScreenProps<'Home'>) {
                 borderRadius: 7,
               }}
               source={{ uri: cat.media }}
-            /> */}
+            />
           </Marker>
         ))}
 
