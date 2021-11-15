@@ -1,9 +1,9 @@
-import * as React from "react";
-import * as WebBrowser from "expo-web-browser";
-import * as Facebook from "expo-auth-session/providers/facebook";
-import { ResponseType } from "expo-auth-session";
-import firebase from "../utils/firebase";
-import { TouchableOpacity, StyleSheet, SafeAreaView, View, Text, Image} from "react-native";
+import * as React from 'react';
+import * as WebBrowser from 'expo-web-browser';
+import * as Facebook from 'expo-auth-session/providers/facebook';
+import { ResponseType } from 'expo-auth-session';
+import { TouchableOpacity, StyleSheet, SafeAreaView, View, Text, Image } from 'react-native';
+import firebase from '../utils/firebase';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -14,7 +14,7 @@ WebBrowser.maybeCompleteAuthSession();
  * @component
  * @returns {JSX.Element} JSX element of the login
  */
-export default function LoginAuthentication () {
+export default function LoginAuthentication() {
   /**
    * Facebook authorization request's loaded request object.
    * @constant {FacebookAuthRequest} request
@@ -32,33 +32,31 @@ export default function LoginAuthentication () {
    */
   const [request, response, promptAsync] = Facebook.useAuthRequest({
     responseType: ResponseType.Token,
-    clientId: "562935831789483"
+    clientId: '562935831789483',
   });
 
   React.useEffect(() => {
-    if (response?.type === "success") {
+    if (response?.type === 'success') {
       const { access_token } = response.params;
-      const credential =
-        firebase.auth.FacebookAuthProvider.credential(access_token);
+      const credential = firebase.auth.FacebookAuthProvider.credential(access_token);
       firebase.auth().signInWithCredential(credential);
 
-      console.log("User added");
+      console.log('User added');
     }
   }, [response]);
 
   return (
-    <TouchableOpacity 
+    <TouchableOpacity
       disabled={!request}
-      style={styles.buttonFacebookStyle} 
+      style={styles.buttonFacebookStyle}
       activeOpacity={0.5}
-      onPress={() => {promptAsync()}}
+      onPress={() => {
+        promptAsync();
+      }}
     >
-    <Image
-     source={require('../assets/images/fb.jpg')}
-     style={styles.buttonImageIconStyle}
-    />
-    <Text style={styles.buttonTextStyle}>Continue with Facebook </Text>
-  </TouchableOpacity>
+      <Image source={require('../assets/images/fb.jpg')} style={styles.buttonImageIconStyle} />
+      <Text style={styles.buttonTextStyle}>Continue with Facebook </Text>
+    </TouchableOpacity>
   );
 }
 
@@ -72,7 +70,7 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 5,
     marginBottom: 40,
-    marginTop: 'auto'
+    marginTop: 'auto',
   },
   buttonImageIconStyle: {
     padding: 10,

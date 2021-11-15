@@ -38,7 +38,7 @@ export function addUser(name: User['displayName'], id: User['accountID'], email:
       email,
       photo,
       posts: 0,
-      modStatus: true,
+      modStatus: 1,
       banStatus: false,
     });
 
