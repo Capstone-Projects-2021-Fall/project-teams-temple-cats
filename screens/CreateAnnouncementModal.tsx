@@ -98,7 +98,11 @@ export default function ModalScreen() {
             marginBottom: 10,
           }}
           onPress={() => {
-           
+            setAnnouncement((currentState: Announcement) => ({
+              ...currentState,
+              subject: announcementTitle,
+              content: announcementBody,
+            }))
            submitAnnouncement();
           
         /*    firebase.database().ref(`Announcements/${announcement.announcementID}`).set({

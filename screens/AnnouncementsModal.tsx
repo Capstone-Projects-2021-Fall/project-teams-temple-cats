@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
     
   },
   listItem: {
+    color: 'black',
     fontSize: 16,
     alignItems: 'center',
     fontWeight: "bold", 
