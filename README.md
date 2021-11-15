@@ -11,16 +11,19 @@ The Temple Cats mobile app is for people in the Temple University area who want 
   * Query Feature
     * Search name on home screen and map directs to you the searched cats location
   * Report Inappropriate Cat Functionaily 
-    *Added button to report cats and give reason why 
+    * Added button to report cats and give reason why 
   * Feeding Stations 
     * Added various feeding stations with modal pop up
   * Pin Tap View
     * Cats and feeding stations have pop-up views on pin press
   * Commenting
     * Commenting functionality on cat pop-up view
+  * Upvoting and Downvoting
+    * On cat pop-view you can now vote on the posts
 * Moderator Features Added
   * Account Screen Buttons
     * Moderators see “Reported Posts” button
+      * This screen displays all reported posts and has functionailty to resolve or navigate to the post. 
     * Moderators see “Downvoted Posts” button
   * Delete Cat Functionality (ADDED)
     * On cat view of pin, moderators see a “Delete Cat Button” which deletes the cat’s information and photo in the database in real time. 
@@ -129,14 +132,13 @@ For testing the latest version of our app, follow these testing procedures:
   * Enter the name "Gwapo"
 * Click Gwapo on the drop down, the map will direct you to 10th and Edgley
 * Click Gwapo on the map. 
+* Downvote Gwapo.
 * Scroll down to the report button and click on it.
 * A pop up will appear asking for a reason.
   * You may enter "This is a dog" in the text box and click submit.
 * Click report button again and click close.
   * The pop up should close.
 * Swipe entire view down from top of screen to display home again. 
-
-
 
 ### Resources Tab
 * Click the resources button on the navigation bar.
