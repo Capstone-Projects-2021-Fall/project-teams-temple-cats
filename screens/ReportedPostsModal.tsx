@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { StyleSheet, Image } from 'react-native';
+import { StyleSheet, Image, Button, Alert } from 'react-native';
 import firebase from "../utils/firebase";
 import { Text, View } from '../components/Themed';
 import { useEffect } from 'react';
-import { Cat, Comment } from '../types';
+import { Cat, Comment, Report, RootStackScreenProps } from '../types';
 
-export default function ModalScreen() {
+export default function ModalScreen({ navigation }: RootStackScreenProps<'ReportedPosts'>) {
   const [reportedCats, setReportedCats] = React.useState<Cat[]>([]);
   const [reportedComments, setReportedComments] = React.useState<Comment[]>([]);
 
@@ -13,20 +13,21 @@ export default function ModalScreen() {
   const picsRef = firebase.storage().ref();
 
   useEffect(() => {
-    let cats: Cat[];
     catsRef.get().then((snapshot) => {
-      cats = Object.values(snapshot.val());
-
-      // find cats that have reports
-      const reportedCats = cats.filter((cat) => {
-        picsRef.child(cat.accountID + '/' + cat.catID).getDownloadURL().then((picUrl) => cat.media = picUrl);
-        return cat.reports && Object.keys(cat.reports).length > 0;
-      })
-      setReportedCats(reportedCats);
-
-      // find comments that have reports
+      const cats: Cat[] = Object.values(snapshot.val());
+      const reportedCats: Cat[] = [];
       const reportedComments: Comment[] = [];
+
       cats.forEach((cat) => {
+        // find cats that have reports
+        if (cat.reports && Object.keys(cat.reports).length > 0) {
+          picsRef.child(cat.accountID + '/' + cat.catID).getDownloadURL().then((picUrl) => {
+            cat.media = picUrl
+          });
+          reportedCats.push(cat);
+        }
+        
+        // find comments that have reports
         if (cat.commentList) {
           Object.values(cat.commentList).forEach((comment) => {
             if (comment.reports && Object.keys(comment.reports).length > 0) {
@@ -35,34 +36,77 @@ export default function ModalScreen() {
           });
         }
       });
+
+      setReportedCats(reportedCats);
       setReportedComments(reportedComments);
     });
   }, []);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, styles.flexColumnContainer]}>
+
       <Text style={styles.title}>Reported Cats</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      {reportedCats?.map((cat, index) => (
-        <Image
-          style={{
-            width: 40,
-            height: 40,
-            borderWidth: 4,
-            borderColor: 'rgba(160, 28, 52, 0.75)',
-            borderRadius: 7,
-          }}
-          source={{ uri: cat.media }}
-        />
-      ))}
+      {/* <View style={styles.separator}/> */}
+      <View style={styles.flexColumnContainer}>
+        {reportedCats.map((cat, index) => (
+          <View key={index} style={styles.flexRowContainer}>
+            <Image
+              style={styles.catImage}
+              source={{ uri: cat.media }}
+            />
+            {Object.values(cat.reports).map((report, index) => {
+              return (
+                <View key={index}>
+                  <Text>{report.reason}</Text>
+                  <Button title='Resolve' onPress={() => resolveReport(report)}/>
+                </View>
+              );
+            })}
+          </View>
+        ))}
+      </View>
+
+      <View style={styles.separator}/>
 
       <Text style={styles.title}>Reported Comments</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      {reportedComments?.map((comment, index) => (
-        <Text>{comment.content}</Text>
-      ))}
+      {/* <View style={styles.separator}/> */}
+      <View style={styles.flexColumnContainer}>
+        {reportedComments.map((comment, index) => (
+          <View key={index} style={styles.flexRowContainer}>
+            <Text>{comment.content}</Text>
+            {Object.values(comment.reports).map((report, index) => {
+              return (
+                <View key={index}>
+                  <Text>{report.reason}</Text>
+                  <Button title='Resolve' onPress={() => resolveReport(report)}/>
+                </View>
+              );
+            })}
+          </View>
+        ))}
+      </View>
     </View>
   );
+
+  function resolveReport(report: Report) {
+    Alert.alert(
+      'Alert',
+      'Do you want to resolve this report? This will delete the report. This should be done when you have reviewed the report and do not want to delete the post.',
+      [
+        {
+          text: 'No',
+          style: 'cancel',
+        },
+        {
+          text: 'Yes',
+          onPress: () => {
+            console.log('Delete report.')
+          },
+        },
+      ],
+      { cancelable: true },
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -79,5 +123,20 @@ const styles = StyleSheet.create({
     marginVertical: 30,
     height: 1,
     width: '80%',
+    color: 'rgba(160, 28, 52, 0.75)',
+  },
+  flexColumnContainer: {
+    flex: 1,
+  },
+  flexRowContainer: {
+    flex: 1,
+    flexDirection: "row",
+  },
+  catImage: {
+    width: 70,
+    height: 70,
+    borderWidth: 4,
+    borderColor: 'rgba(160, 28, 52, 0.75)',
+    borderRadius: 7,
   },
 });
