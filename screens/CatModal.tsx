@@ -166,9 +166,9 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
             {cat.comments ? `Additional Comments: ${cat.comments}\n` : 'No Additional Info'}
           </Text>
         </View>
-        <View style={styles.separator} lightColor="rgba(255,255,255,0.1)" darkColor="rgba(255,255,255,0.1)" />
+        <View style={styles.bottomSeparator} lightColor="rgba(255,255,255,0.1)" darkColor="rgba(255,255,255,0.1)" />
         <Text style={styles.catDate}>
-          Comments:
+          Comment Thread:
         </Text>
         <ScrollView style={styles.scrollView}>
           {commentList.map((comment, index) => (
@@ -178,9 +178,8 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
         <Input
           style={styles.commentInput}
           value={comment.content}
-          selectionColor="white"
-          placeholder="Enter Comment"
-          placeholderTextColor="black"
+          placeholder="Enter Comment..."
+          placeholderTextColor="#8B0000"
           onChangeText={(text) => setComment((currentState: Comment) => ({
             ...currentState,
             content: text,
@@ -189,9 +188,6 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
         <Button
           title="Submit Comment"
           buttonStyle={styles.buttonStyle}
-          containerStyle={{
-            alignItems: 'center',
-          }}
           onPress={() => {
             firebase.database().ref().child(`Cats/${cat.catID}/commentList/${comment.commentID}`).set(comment);
             setComment((currentState: Comment) => ({
@@ -200,6 +196,7 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
             }));
           }}
         />
+        <View style={styles.bottomSeparator} lightColor="rgba(255,255,255,0.1)" darkColor="rgba(255,255,255,0.1)" />
         <View>
           <Button title="Report" buttonStyle={styles.buttonStyle} onPress={toggleModalVisibility} />
           <Modal
@@ -247,6 +244,7 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
           )
           : null}
         <View />
+        <View style={styles.bottomSeparator} lightColor="#8B0000" darkColor="rgba(255,255,255,0.1)" />
       </ScrollView>
     </SafeAreaView>
   );
@@ -287,28 +285,27 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   commentInput: {
-    height: 80,
+    height: 'auto',
     margin: 12,
     borderWidth: 1,
     padding: 10,
-    color: 'black',
+    color: '#8B0000',
     backgroundColor: 'white',
   },
   buttonStyle: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 10,
+    paddingVertical: 8,
     paddingHorizontal: 90,
     borderRadius: 40,
-    elevation: 3,
     backgroundColor: '#8B0000',
     marginBottom: 20,
-    marginLeft: 30,
-    marginRight: 30,
+    marginLeft: 'auto',
+    marginRight: 'auto',
   },
   scrollView: {
-    height: 100,
-    backgroundColor: 'white',
+    height: 160,
+    backgroundColor: '#8B0000',
   },
   screen: {
     flex: 1,
@@ -408,5 +405,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#8B0000',
     textAlign: 'center',
     letterSpacing: 1,
+  },
+  bottomSeparator: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 40,
+    height: 5,
+    width: '100%',
   },
 });
