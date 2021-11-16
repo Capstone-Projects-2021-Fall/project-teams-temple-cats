@@ -32,6 +32,7 @@ import CatModal from '../screens/CatModal';
 import CreateAnnouncementModal from '../screens/CreateAnnouncementModal';
 import ReportedPostsModal from '../screens/ReportedPostsModal';
 import DownvotedPostsModal from '../screens/DownvotedPostsModal';
+import Mod from '../components/Mod';
 
 /**
  * Function that renders the navigation bar component.
@@ -73,33 +74,12 @@ function RootNavigator() {
     <Stack.Navigator>
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
+
         <Stack.Screen 
-        name="Announcements" 
-        component={Announcements} 
-        options={({ navigation }: RootStackParamList<'Announcements'>) => ({
-          title: 'Announcements',
+        name="Announcements" component={Announcements} />
+        </Stack.Group>
 
-          headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate('CreateAnnouncement')}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}
-            >
-              <FontAwesome
-                name="plus"
-                size={25}
-                color={Colors[colorScheme].text}
-                style={{ marginRight: 15 }}
-              />
-            </Pressable>
-          ),
-  
-        })}
-        />
-      </Stack.Group>
-
-
+      
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="CreateAnnouncement" component={CreateAnnouncementModal} />
       </Stack.Group>

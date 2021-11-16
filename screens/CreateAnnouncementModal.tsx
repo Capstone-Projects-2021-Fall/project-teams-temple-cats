@@ -6,14 +6,12 @@ import { Input } from 'react-native-elements';
 import { Button } from 'react-native-elements';
 import { View } from '../components/Themed';
 import { v4 as uuidv4 } from 'uuid';
-import { Announcement, Cat } from '../types';
+import { Announcement} from '../types';
 import { useState } from 'react';
 import { addAnnouncement } from '../utils/dbInterface';
 
 export default function ModalScreen() {
-  const [announcementBody, setAnnouncementBody] = React.useState("");
-  const [announcementTitle, setAnnouncementTitle] = React.useState("");
-  const [currentDate, setCurrentDate] = React.useState('');
+  
   const [announcement, setAnnouncement]: Announcement = useState({
     announcementID: uuidv4(),
     subject: '',
@@ -28,42 +26,31 @@ export default function ModalScreen() {
     var hours = new Date().getHours(); //Current Hours
     var min = new Date().getMinutes(); //Current Minutes
     var sec = new Date().getSeconds(); //Current Seconds
-    setCurrentDate(
-      month + '/' + date + '/' + year + '/' + hours + ':' + min + ':' + sec
-    );
+   
     setAnnouncement((currentState: Announcement) => ({
       ...currentState,
-      time: currentDate,
+      time: month + '/' + date + '/' + year + '/' + hours + ':' + min + ':' + sec,
     }))
     
   }, []);
 
   async function submitAnnouncement() {
-    setAnnouncement((currentState: Announcement) => ({
-      ...currentState,
-      subject: announcementTitle,
-      content: announcementBody,
-    }))
+    
     if (announcement.content === '' || null) return alert('Add content to send an announcement');
     if (announcement.subject === '' || null) return alert('Add subject to send an announcement');
-    
+    else{
+      
     const uploadTask = firebase.storage().ref().child(`Announcements/${announcement.announcementID}`).put(announcement);
-    //const uploadTask = firebase.storage().ref().child(`Announcements/${announcement.announcementID}`);
     uploadTask
-    .then((uploadTaskSnapshot) => {
-      // The upload is complete!
-     // window.alert('Upload complete');
-
-      // In addition, if needed you can get a Download URL, as follows
-      return uploadTaskSnapshot.ref.getDownloadURL();
-    })
     
-    .then(() => addAnnouncement(announcement))
+    .then(() => addAnnouncement(announcement)
+    )
     .catch((err) => {
       console.log(err);
     });
+    alert('Submitted Successfully');
   }
-
+  }
 
     return (
       <View style={styles.container}>
@@ -73,21 +60,29 @@ export default function ModalScreen() {
           uri: 'https://cdn.pixabay.com/photo/2018/06/18/14/20/cat-3482623_960_720.jpg',
         }}
       />
+      
        <Input
           style={styles.nameInput}
-          value={announcementTitle}
+          value={announcement.subject}
           selectionColor="blue"
           placeholder="Enter subject here..."
           placeholderTextColor="black"
-          onChangeText={(text) =>  setAnnouncementTitle(text)}
+          onChangeText={(text) =>  setAnnouncement((currentState: Announcement) => ({
+            ...currentState,
+            subject: text,
+      
+          }))}
         />
        <Input
           style={styles.additionalInput}
           selectionColor="blue"
           placeholder="Enter announcement here..."
           placeholderTextColor="black"
-          value={announcementBody}
-          onChangeText={(text) => setAnnouncementBody(text)
+          value={announcement.content}
+          onChangeText={(text) => setAnnouncement((currentState: Announcement) => ({
+            ...currentState,
+            content: text,
+          }))
           }
         />
       <Button
@@ -98,22 +93,9 @@ export default function ModalScreen() {
             marginBottom: 10,
           }}
           onPress={() => {
-            setAnnouncement((currentState: Announcement) => ({
-              ...currentState,
-              subject: announcementTitle,
-              content: announcementBody,
-            }))
-           submitAnnouncement();
-          
-        /*    firebase.database().ref(`Announcements/${announcement.announcementID}`).set({
-              Announcement: announcement
-            });*/
-            
-            
-            alert('Submitted Successfully');
+            submitAnnouncement();
             return;
-          } 
-          }
+          }}
         />
 
 
