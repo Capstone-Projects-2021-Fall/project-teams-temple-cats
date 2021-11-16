@@ -29,8 +29,10 @@ import Settings from '../screens/Settings';
 import Rewards from '../screens/Rewards';
 import FeedingStationModal from '../screens/FeedingStationModal';
 import CatModal from '../screens/CatModal';
+import CreateAnnouncementModal from '../screens/CreateAnnouncementModal';
 import ReportedPostsModal from '../screens/ReportedPostsModal';
 import DownvotedPostsModal from '../screens/DownvotedPostsModal';
+import Mod from '../components/Mod';
 
 /**
  * Function that renders the navigation bar component.
@@ -63,11 +65,23 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
  * @memberof Navigation
  */
 function RootNavigator() {
+   /**
+   * Color scheme for the navigator
+   * @constant {"light" | "dark"}
+   */
+    const colorScheme = useColorScheme();
   return (
     <Stack.Navigator>
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="Announcements" component={Announcements} />
+
+        <Stack.Screen 
+        name="Announcements" component={Announcements} />
+        </Stack.Group>
+
+      
+      <Stack.Group screenOptions={{ presentation: 'modal' }}>
+        <Stack.Screen name="CreateAnnouncement" component={CreateAnnouncementModal} />
       </Stack.Group>
 
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
@@ -172,12 +186,20 @@ function BottomTabNavigator() {
                 opacity: pressed ? 0.5 : 1,
               })}
             >
-              <FontAwesome name="info-circle" size={25} color={Colors[colorScheme].text} style={{ marginRight: 15 }} />
+              <FontAwesome
+                name="bell"
+                size={25}
+                color={Colors[colorScheme].text}
+                style={{ marginRight: 15 }}
+              />
             </Pressable>
           ),
           tabBarIcon: ({ color }) => <Ionicons name="home" size={24} color={Colors[colorScheme].text} />,
         })}
       />
+
+   
+      
       <BottomTab.Screen
         name="Leaderboard"
         component={LeaderboardScreen}
