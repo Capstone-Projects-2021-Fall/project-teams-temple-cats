@@ -53,12 +53,20 @@ export type Report = {
   reason: string;
 };
 
+export type ReportList = {
+  [key: string]: Report;
+}
+
 export type Comment = {
   commentID: string;
   content: string;
   accountID: string;
-  reports: string;
+  reports: ReportList;
 };
+
+export type CommentList = {
+  [key: string]: Comment;
+}
 
 export type Announcement = {
   announcementID: string;
@@ -78,7 +86,7 @@ export type Account = {
 export type FeedingStation = {
   StationID: string;
   Media: string;
-  Comments: string;
+  Comments: CommentList;
 };
 
 export type Cat = {
@@ -96,7 +104,8 @@ export type Cat = {
   time: Date;
   votes: number;
   accountID: string;
-  commentList: string;
+  commentList: CommentList;
+  reports: ReportList;
 };
 
 export type FeedingStations = {
