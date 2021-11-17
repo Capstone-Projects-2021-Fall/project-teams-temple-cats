@@ -1,14 +1,21 @@
 import * as React from 'react';
-import { render, fireEvent} from '@testing-library/react-native';
 import LeaderboardScreen from '../screens/Leaderboard';
-import { RootTabScreenProps } from '../types';
+import { shallow, configure } from "enzyme";
+import Adapter from "enzyme-adapter-react-16";
 
-
-it("renders default elements", () => {
-    render(<LeaderboardScreen/>);
+configure({ adapter: new Adapter() });
+ it("renders default elements", async () => {
+   shallow(<LeaderboardScreen />)
   });
 
-  it("renders correct display element", () => {
-     const {getAllByText} = render(<LeaderboardScreen/>);
-     expect(getAllByText('Leaderboard').length).toBe(1);
-  });
+  it('calls actions as expected when pressing buttons', () => {
+    const wrapper = shallow(
+        <LeaderboardScreen />
+    );
+    const render = wrapper.dive();
+    render.find('TouchableOpacity').forEach(child => {
+        child.simulate('press');
+    });
+});
+
+

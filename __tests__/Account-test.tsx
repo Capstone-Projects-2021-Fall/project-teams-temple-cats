@@ -1,16 +1,54 @@
+
 import * as React from 'react';
-import { render, fireEvent} from '@testing-library/react-native';
 import Account from '../screens/Account';
-import LoginAuthentication from '../components/LoginAuthentication';
+import { shallow, configure } from "enzyme";
+import Adapter from "enzyme-adapter-react-16";
+import { render, fireEvent } from '@testing-library/react-native';
+import Mod from "../components/Mod"
 
-import { RootTabScreenProps } from '../types';
+
+configure({ adapter: new Adapter() });
+
+describe('Testing Account', () => {
+
+    it("Account component renders default elements", async () => {
+        shallow(<Account />)
+    });
+
+    it('All button actions work as expected', () => {
+        const wrapper = shallow(
+            <Account />
+        );
+        const render = wrapper.dive();
+        render.find('TouchableOpacity').forEach(child => {
+            child.simulate('press');
+        });
+    });
+
+})
+
+describe('Testing Mod', () => {
+
+    it("First mod button renders correct title", () => {
+        const { getAllByText } = render(<Mod />);
+        expect(getAllByText('Report').length).toBe(1);
+    });
+
+    it("Second mod button renders correct title", () => {
+        const { getAllByText } = render(<Mod />);
+        expect(getAllByText('Annoucements').length).toBe(1);
+    });
+
+})
+
+ //Test to check if mod buttons render if moderator
+ //Test that all mod buttons work
+ //Testing account buttons possibly through snapshot
 
 
-it("renders default elements", () => {
-    render(<Account/>);
-  });
 
-  it("renders correct display element", () => {
-     const {getAllByText} = render(<Account/>);
-     expect(getAllByText('Account').length).toBe(1);
-  });
+
+
+
+
+

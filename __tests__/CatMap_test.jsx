@@ -1,9 +1,9 @@
-import React from "react"
-import { render, waitFor } from "@testing-library/react-native"
-import CatMap from "../components/CatMap"
+import * as React from 'react';
+import CatMap from '../components/CatMap'
+import { shallow, configure } from "enzyme";
+import Adapter from "enzyme-adapter-react-16";
 
-describe("<UserScreen />", () => {
-  test("should renders MapView and Marker with user current location", () => {
-    render(<CatMap />)
-  })
-})
+configure({ adapter: new Adapter() });
+ it("renders default elements", async () => {
+   shallow(<CatMap />)
+  });
