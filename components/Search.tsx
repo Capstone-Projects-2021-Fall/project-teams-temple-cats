@@ -18,6 +18,7 @@ export default function Search({ mapViewRef }) {
   const [friendlyCats, setFriendlyCats] = React.useState<Cat[]>([]);
   const [notFriendlyCats, setNotFriendlyCats] = React.useState<Cat[]>([]);
   const [catComments, setCatComments] = React.useState<Cat[]>([]);
+  const [catValues, setValues] = React.useState<Cat[]>([]);
 
   /* Fetches data asynchronously from firebase to store in catData(Cat[]) hook array after it was first pushed to currentData (Cat[]) so that it can be traversed within the search function by
 filtering search bar text input to see if any of the input matches any element within the data array. */
@@ -35,6 +36,13 @@ filtering search bar text input to see if any of the input matches any element w
       snapshot.forEach((child) => {
         newState.push({ ...child.val() });
         setCatComments([...newState]);
+      });
+    });
+    catsRef.orderByValue().on('value', (snapshot) => {
+      const newState: Cat[] = [];
+      snapshot.forEach((child) => {
+        newState.push({ ...child.val() });
+        setCatValues([...newState]);
       });
     });
     catsRef.orderByChild("healthy").equalTo(false).on('value', (snapshot) => {
@@ -213,13 +221,30 @@ filtering search bar text input to see if any of the input matches any element w
       unknownName(text);
     }
     else if(text.length > 0){
-      const newData = catData.filter((item) => {
+    
+      const newData = catValues.filter((item) => {
+        if(item.comments.length > 0){
+          const itemData = `${item.comments}`;
+          const textData = text;
+          return itemData.indexOf(textData) > -1;
+        }
+        else if(item.color.length > 0){
+          const itemData = `${item.color}`;
+          const textData = text;
+          return itemData.indexOf(textData) > -1;
+        }
+        else if(item.eyeColor.length > 0){
+          const itemData = `${item.eyeColor}`;
+          const textData = text;
+          return itemData.indexOf(textData) > -1;
+        }
         const itemData = `${item.name}`;
         const textData = text;
         return itemData.indexOf(textData) > -1;
       });
       setData(newData);
     }
+    
     else if(text.length == 0){
       setData(text)
     }
