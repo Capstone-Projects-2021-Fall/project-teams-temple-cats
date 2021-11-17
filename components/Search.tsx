@@ -4,22 +4,20 @@ import { StyleSheet, Image, View, Text, FlatList, SafeAreaView } from 'react-nat
 import { Searchbar } from 'react-native-paper';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Cat } from '../types';
-import db from '../utils/dbInterface';
 
 export default function Search({ mapViewRef }) {
-  //const currentData: Cat[] = []; // Used to initialize catData
   const catsRef = firebase.database().ref().child('Cats/');
   
   const [search, setSearch] = useState(''); // Stores the user's query
   const [catData, setCatData] = useState<Cat[]>([]); // Stores Cat data that is fetched from Firebase
   const [data, setData] = useState<Cat[]>([]); // Stores the new data array to be rendered once the user types something in the search bar
-  //const queryRef = firebase.firestore().collection('Cats/');
   const [healthyCats, setHealthyCats] = React.useState<Cat[]>([]);
   const [unHealthyCats, setUnhealthyCats] = React.useState<Cat[]>([]);
   const [kittens, setKittens] = React.useState<Cat[]>([]);
   const [notKittens, setNotKittens] = React.useState<Cat[]>([]);
   const [friendlyCats, setFriendlyCats] = React.useState<Cat[]>([]);
   const [notFriendlyCats, setNotFriendlyCats] = React.useState<Cat[]>([]);
+  const [catComments, setCatComments] = React.useState<Cat[]>([]);
 
   /* Fetches data asynchronously from firebase to store in catData(Cat[]) hook array after it was first pushed to currentData (Cat[]) so that it can be traversed within the search function by
 filtering search bar text input to see if any of the input matches any element within the data array. */
@@ -30,6 +28,13 @@ filtering search bar text input to see if any of the input matches any element w
       snapshot.forEach((child) => {
         newState.push({ ...child.val() });
         setCatData([...newState]);
+      });
+    });
+    catsRef.orderByChild("comments").on('value', (snapshot) => {
+      const newState: Cat[] = [];
+      snapshot.forEach((child) => {
+        newState.push({ ...child.val() });
+        setCatComments([...newState]);
       });
     });
     catsRef.orderByChild("healthy").equalTo(false).on('value', (snapshot) => {
@@ -80,6 +85,10 @@ filtering search bar text input to see if any of the input matches any element w
 
   function unhealthy(text){
     const newData = unHealthyCats.filter((item) => {
+      if(item.name.length == 0){
+        const itemData = "Unknown";
+        return itemData
+      }
       const itemData = `${item.name}`;
       return itemData
    
@@ -89,6 +98,10 @@ filtering search bar text input to see if any of the input matches any element w
   }
   function healthy(text){
     const newData = healthyCats.filter((item) => {
+      if(item.name.length == 0){
+        const itemData = "Unknown";
+        return itemData
+      }
       const itemData = `${item.name}`;
       return itemData
     });
@@ -97,6 +110,10 @@ filtering search bar text input to see if any of the input matches any element w
   }
   function kitten(text){
     const newData = kittens.filter((item) => {
+      if(item.name.length == 0){
+        const itemData = "Unknown";
+        return itemData
+      }
       const itemData = `${item.name}`;
       return itemData
     });
@@ -105,6 +122,10 @@ filtering search bar text input to see if any of the input matches any element w
   }
   function cat(text){
     const newData = notKittens.filter((item) => {
+      if(item.name.length == 0){
+        const itemData = "Unknown";
+        return itemData
+      }
       const itemData = `${item.name}`;
       return itemData
     });
@@ -114,68 +135,89 @@ filtering search bar text input to see if any of the input matches any element w
   function friendly(text){
     const newData = friendlyCats.filter((item) => {
       const itemData = `${item.name}`;
-     // const textData = text;
+      if(item.name.length == 0){
+        const itemData = "Unknown";
+        return itemData
+      }
       if (text.length > 0) {
         return itemData
       }
     });
-   // setSearch(text);
     setData(newData);
   }
   function unfriendly(text){
     const newData = notFriendlyCats.filter((item) => {
+      if(item.name.length == 0){
+        const itemData = "Unknown";
+        return itemData
+      }
       const itemData = `${item.name}`;
       return itemData
     });
     setSearch(text);
     setData(newData);
   }
-
+  function comments(text){
+    const newData = catComments.filter((item) => {
+      if(item.comments.length > 0){
+        if(item.name.length == 0){
+          const itemData = "Unknown";
+          return itemData
+        }
+        const itemData = `${item.name}`;
+        return itemData
+      }
+    });
+    setSearch(text);
+    setData(newData);
+  }
+  function unknownName(text){
+    const newData = catData.filter((item) => {
+      if(item.name.length == 0){
+        const itemData = "Unknown";
+        return itemData
+      }
+    });
+    setSearch(text);
+    setData(newData);
+  }
 
   /* This function will iterate through the entire catData hook array containing the Cat data from Firebase. While it traverses through
   each element (Cat[]), itemData (String) will read through each element and check if it contains the user input. The setData() (Cat[]) hook
   will initialize newData (Cat[]) as the new data to be rendered by the flatlist when the user enters text within the search bar. */
 
   function searchFilterFunction(text) {
-   
-
-    
-   
+  
     if(text == "Unhealthy" || text == "unhealthy" || text == "Needs help" || text == "unhealthy cats" || text == "Needs medical help" || text == "Critical condition"){
       unhealthy(text);
-     
     }
     else if(text == "healthy" || text == "Healthy" || text == "good condition"){
       healthy(text);
-     
     }
     else if(text == "kittens" || text == "Kittens" || text == "kitten" || text == "Kitten"){
       kitten(text);
-     
     }
     else if(text == "Adult" || text == "older cats" || text == "adult cats" || text == "Old"){
       cat(text);
-     
     }
     else if(text == "Friendly" || text == "friendly" || text == "Kind" || text == "Nice" || text == "nice"){
       friendly(text);
-    
     }
     else if(text == "Unfriendly" || text == "unfriendly" || text == "mean" || text == "Mean"){
       unfriendly(text);
-      
     }
-    //setSearch(text);
+    else if(text == "additional" || text == "Additional" || text == "Additional info" || text == "additional info"|| text == "Additional information"|| text == "additional information"){
+      comments(text);
+    }
+    else if(text == "unknown" || text == "Unknown"){
+      unknownName(text);
+    }
     else if(text.length > 0){
       const newData = catData.filter((item) => {
         const itemData = `${item.name}`;
         const textData = text;
-        if (text.length > 0) {
-          return itemData.indexOf(textData) > -1;
-        }
-        //return itemData;
+        return itemData.indexOf(textData) > -1;
       });
-     // setSearch(text);
       setData(newData);
     }
     else if(text.length == 0){
@@ -184,20 +226,6 @@ filtering search bar text input to see if any of the input matches any element w
     
     setSearch(text);
   }
-  /*
-  if(text.length > 0){
-    const newData = catData.filter((item) => {
-      const itemData = `${item.name}`;
-      const textData = text;
-    //  if (text.length > 0) {
-        return itemData.indexOf(textData) > -1;
-     // }
-      //return itemData;
-    });
-    setSearch(text);
-    setData(newData);
-  }*/
-  
  
 
   // Renders when the app renders so that the user can type something in
