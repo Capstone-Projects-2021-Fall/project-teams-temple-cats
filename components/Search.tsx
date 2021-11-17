@@ -42,7 +42,7 @@ filtering search bar text input to see if any of the input matches any element w
       const newState: Cat[] = [];
       snapshot.forEach((child) => {
         newState.push({ ...child.val() });
-        setCatValues([...newState]);
+        setValues([...newState]);
       });
     });
     catsRef.orderByChild("healthy").equalTo(false).on('value', (snapshot) => {
