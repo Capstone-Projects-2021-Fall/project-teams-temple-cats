@@ -31,12 +31,12 @@ describe('Testing Mod', () => {
 
     it("First mod button renders correct title", () => {
         const { getAllByText } = render(<Mod />);
-        expect(getAllByText('Report').length).toBe(1);
+        expect(getAllByText('Reported Posts').length).toBe(1);
     });
 
     it("Second mod button renders correct title", () => {
         const { getAllByText } = render(<Mod />);
-        expect(getAllByText('Annoucements').length).toBe(1);
+        expect(getAllByText('Downvoted Posts').length).toBe(1);
     });
 
 })

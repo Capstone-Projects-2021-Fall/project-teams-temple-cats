@@ -8,7 +8,7 @@ it("renders default elements", () => {
 
   it("renders correct display element", () => {
      const {getAllByText} = render(<ModalScreen/>);
-     expect(getAllByText('Notifications are going to be built in here').length).toBe(1);
+     expect(getAllByText('Announcements are going to be built in here').length).toBe(1);
   });
 
 

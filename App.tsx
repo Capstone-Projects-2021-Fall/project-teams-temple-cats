@@ -4,7 +4,7 @@ import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import { AuthProvider } from './context/FirebaseAuthProvider';
 import Navigation from './navigation/index';
-import CatForm from './screens/CatForm.tsx';
+import { LogBox } from 'react-native';
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -12,6 +12,9 @@ export default function App() {
   if (!isLoadingComplete) {
     return null;
   }
+
+  LogBox.ignoreLogs([new RegExp('^Setting a timer')]);
+
   return (
     <SafeAreaProvider>
       <AuthProvider>

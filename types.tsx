@@ -4,10 +4,7 @@
  */
 
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
-import {
-  CompositeScreenProps,
-  NavigatorScreenParams,
-} from '@react-navigation/native';
+import { CompositeScreenProps, NavigatorScreenParams } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { LatLng } from 'react-native-maps';
 
@@ -26,11 +23,15 @@ export type RootStackParamList = {
   Rewards: undefined;
   NotFound: undefined;
   Cat: {cat: Cat};
-  FeedingStation: {title: String, info: any};
+  FeedingStations: {title: String, info: any};
+  ReportedPosts: undefined;
+  DownvotedPosts: undefined;
 };
 
-export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
-  NativeStackScreenProps<RootStackParamList, Screen>;
+export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<
+  RootStackParamList,
+  Screen
+>;
 
 export type RootTabParamList = {
   Home: undefined;
@@ -40,27 +41,32 @@ export type RootTabParamList = {
   Facebook: undefined;
 };
 
-export type RootTabScreenProps<Screen extends keyof RootTabParamList> =
-  CompositeScreenProps<
-    BottomTabScreenProps<RootTabParamList, Screen>,
-    NativeStackScreenProps<RootStackParamList>
-  >;
+export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<
+  BottomTabScreenProps<RootTabParamList, Screen>,
+  NativeStackScreenProps<RootStackParamList>
+>;
 
 export type Report = {
-  ReportID: string;
-  CommentID: string;
-  PinID: string;
-  AccountID: string;
+  reportID: string;
+  catID: string;
+  accountID: string;
+  reason: string;
 };
 
+export type ReportList = {
+  [key: string]: Report;
+}
+
 export type Comment = {
-  CommentID: string;
-  Type: string;
-  Media: string;
-  Content: string;
-  PinID: string;
-  AccountID: string;
+  commentID: string;
+  content: string;
+  accountID: string;
+  reports: ReportList;
 };
+
+export type CommentList = {
+  [key: string]: Comment;
+}
 
 export type Announcement = {
   AnnouncementID: string;
@@ -80,8 +86,7 @@ export type Account = {
 export type FeedingStation = {
   StationID: string;
   Media: string;
-  Comments: string;
-  PinID: string;
+  Comments: CommentList;
 };
 
 export type Cat = {
@@ -95,19 +100,31 @@ export type Cat = {
   friendly: boolean;
   comments: string;
   location: LatLng;
-  date: Date
+  date: Date;
   time: Date;
   votes: number;
   accountID: string;
+  commentList: CommentList;
+  reports: ReportList;
 };
+
+export type FeedingStations = {
+ title: String;
+ info: String;
+ latitude: any,
+ longitude: any,
+ street: String,
+};
+
+
 
 export type User = {
   displayName: string | null | undefined;
   accountID: string | undefined;
   email: string | null | undefined;
   photo: string | null | undefined;
-  points: 0,
-  posts: 0,
-  modStatus: 1 | 2 | 3, //user, feeder, moderator
-  banStatus: true | false,
+  points: 0;
+  posts: 0;
+  modStatus: 1 | 2 | 3; // user, feeder, moderator
+  banStatus: true | false;
 };

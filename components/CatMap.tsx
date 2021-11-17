@@ -1,15 +1,15 @@
-import React, { useEffect, useState, useRef } from "react";
-import { StyleSheet, TouchableOpacity, Image} from "react-native";
-import MapView, { Marker } from "react-native-maps";
-import { View } from "./Themed";
-import firebase from "../utils/firebase";
-import Gps from "../utils/gps";
-import { Cat } from "../types";
-import TUMapBorder from "./TUMapBorder";
-import { MaterialIcons } from "@expo/vector-icons";
-import Colors from "../constants/Colors";
-import { Stations } from "../components/Stations"
-import { RootTabScreenProps } from "../types";
+import React, { useEffect, useState, useRef } from 'react';
+import { StyleSheet, TouchableOpacity, Image } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
+import { MaterialIcons } from '@expo/vector-icons';
+import { View } from './Themed';
+import firebase from '../utils/firebase';
+import Gps from '../utils/gps';
+import { Cat, FeedingStations, RootTabScreenProps } from '../types';
+import TUMapBorder from './TUMapBorder';
+import Colors from '../constants/Colors';
+import { Stations } from '../components/Stations';
+import Search from './Search';
 
 /**
  * Function that renders the Cat Map component, including the map and all it's children (e.g. pins/markers).
@@ -17,40 +17,54 @@ import { RootTabScreenProps } from "../types";
  * @returns {JSX.Element} JSX element of the map
  */
 
-
-
-export default function CatMap({ navigation }: RootTabScreenProps<"Home">) {
+export default function CatMap({ navigation }: RootTabScreenProps<'Home'>) {
   const [cats, setCats] = useState<Cat[]>([]);
-  
-  const feedingStations = Stations
+  const [stations, setStations] = useState<FeedingStations[]>([]);
+
+  const feedingStations = Stations;
   const mapViewRef: React.MutableRefObject<MapView> | React.MutableRefObject<null> = useRef(null);
   const catsRef = firebase.database().ref().child('Cats/');
+  const stationsRef = firebase.database().ref('Stations/');
 
   const myLocation = Gps();
-  const newState: Cat[] = [];
+  const newStations: FeedingStations[] = [];
 
   useEffect(() => {
-    catsRef.on('child_added', (snapshot) => {
-      newState.push(snapshot.val());
-      setCats([...newState]);
+    catsRef.on('value', (snapshot) => {
+      const newState: Cat[] = [];
+      snapshot.forEach((child) => {
+        newState.push({ ...child.val() });
+        setCats([...newState]);
+      });
+    });
+    stationsRef.on('child_added', (snapshot) => {
+      newStations.push(snapshot.val());
+      setStations([...newStations]);
     });
   }, []);
 
+  /**
+   * Helper function that moves map view to current location of the user.
+   * @function
+   */
   function goToMyLocation() {
-    mapViewRef.current?.animateToRegion(
-      myLocation,
-      1000,
-    );
+    mapViewRef.current?.animateToRegion(myLocation, 1000);
   }
 
+  /**
+   * Helper function that moves map view to Temple's Campus
+   * @function
+   */
   function goToTemple() {
-    mapViewRef.current?.animateToRegion({
-      latitude: 39.9806438149835,
-      longitude: -75.15574242934214,
-      latitudeDelta: 0.022,
-      longitudeDelta: 0.022,
-    },
-    1000);
+    mapViewRef.current?.animateToRegion(
+      {
+        latitude: 39.9806438149835,
+        longitude: -75.15574242934214,
+        latitudeDelta: 0.022,
+        longitudeDelta: 0.022,
+      },
+      1000,
+    );
   }
 
   return (
@@ -58,8 +72,8 @@ export default function CatMap({ navigation }: RootTabScreenProps<"Home">) {
       <MapView
         ref={mapViewRef}
         style={styles.map}
-        provider='google'
-        region={myLocation}
+        provider="google"
+        initialRegion={myLocation}
         showsUserLocation
         showsMyLocationButton={false}
       >
@@ -67,51 +81,54 @@ export default function CatMap({ navigation }: RootTabScreenProps<"Home">) {
           <Marker
             key={index}
             onPress={() => {
-              navigation.push('Cat', {cat: cat})
+              navigation.push('Cat', { cat });
             }}
             coordinate={{
               latitude: cat.location.latitude,
-              longitude: cat.location.longitude
-            }}>
+              longitude: cat.location.longitude,
+            }}
+          >
             <Image
-               style={{width: 40, height: 40, borderWidth: 4, borderColor: 'rgba(160, 28, 52, 0.75)', borderRadius: 7 }}
-               source={{ uri: cat.media }}
-             />
-           </Marker>
-         ))} 
+              style={{
+                width: 40,
+                height: 40,
+                borderWidth: 4,
+                borderColor: 'rgba(160, 28, 52, 0.75)',
+                borderRadius: 7,
+              }}
+              source={{ uri: cat.media }}
+            />
+          </Marker>
+        ))}
 
-        {feedingStations?.map((feedingStations, index) => (
-          <Marker 
+        {stations?.map((station, index) => (
+          <Marker
             key={index}
             onPress={() => {
-              navigation.push('FeedingStation',{
-                title: feedingStations.street,
-                info: feedingStations.Info
-              })
+              navigation.push('FeedingStations', {
+                title: station.street,
+                info: station.info,
+              });
             }}
             coordinate={{
-              latitude: feedingStations.latitude,
-              longitude: feedingStations.longitude,
-            }
-            }>
-            <Image 
+              latitude: station.latitude,
+              longitude: station.longitude,
+            }}
+          >
+            <Image
               style={{ width: 35, height: 35 }}
               source={{
-                uri: "https://cdn-icons-png.flaticon.com/512/2809/2809799.png"
+                uri: 'https://cdn-icons-png.flaticon.com/512/2809/2809799.png',
               }}
             />
           </Marker>
         ))}
-        <TUMapBorder />
 
+        <TUMapBorder />
       </MapView>
+      <Search mapViewRef={mapViewRef} />
       <TouchableOpacity style={styles.myLocationButton} onPress={goToMyLocation}>
-        <MaterialIcons
-          name='my-location'
-          size={25}
-          color={Colors.light.text}
-          style={styles.myLocationIcon}
-        />
+        <MaterialIcons name="my-location" size={25} color={Colors.light.text} style={styles.myLocationIcon} />
       </TouchableOpacity>
       <TouchableOpacity style={styles.templeButton} onPress={goToTemple}>
         <Image style={styles.templeLogo} source={require('../assets/images/temple-logo.png')} />
@@ -133,12 +150,12 @@ const styles = StyleSheet.create({
   myLocationButton: {
     position: 'absolute',
     right: 12,
-    top: 10,
+    top: 60,
     width: 38,
     height: 38,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.20,
+    shadowOpacity: 0.2,
     shadowRadius: 1.41,
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
     justifyContent: 'center',
@@ -150,12 +167,12 @@ const styles = StyleSheet.create({
   templeButton: {
     position: 'absolute',
     right: 12,
-    top: 60,
+    top: 110,
     width: 38,
     height: 38,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.20,
+    shadowOpacity: 0.2,
     shadowRadius: 1.41,
   },
   templeLogo: {
@@ -169,4 +186,3 @@ const styles = StyleSheet.create({
     height: 30,
   },
 });
-

@@ -1,42 +1,25 @@
-import React, { useContext, useState } from 'react';
-import {
-  Button, CheckBox, Divider, Text, Icon, Input,
-} from 'react-native-elements';
+import React, { useState } from 'react';
+import { Button, CheckBox, Divider, Text, Icon, Input } from 'react-native-elements';
 import { Picker } from '@react-native-picker/picker';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { LatLng } from 'react-native-maps';
-import {
-  Image,
-  Modal,
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Platform,
-} from 'react-native';
+import { Image, Modal, SafeAreaView, StyleSheet, ScrollView, View, Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { add } from 'react-native-reanimated';
 import { Cat } from '../types';
-import { addCat, addPicture } from '../utils/dbInterface';
+import { addCat } from '../utils/dbInterface';
 import LocationPicker from './LocationPicker';
 import CatImagePicker from '../components/ImagePicker';
-import { AuthContext } from '../context/FirebaseAuthContext';
 import firebase from '../utils/firebase';
 
+/**
+ * Function that generates form for cat submission
+ * @component
+ * @returns {JSX.Element} Form for submitting a cat into the database
+ */
 export default CatForm = () => {
   const colors = ['Cat Fur Color', 'Orange', 'Brown', 'Black', 'White'];
-  const eyeColors = [
-    'Cat Eye Color',
-    'Brown',
-    'Green',
-    'Blue',
-    'Black',
-    'Yellow',
-    'Orange',
-    'Hazel',
-    'Mixed',
-  ];
+  const eyeColors = ['Cat Eye Color', 'Brown', 'Green', 'Blue', 'Black', 'Yellow', 'Orange', 'Hazel', 'Mixed'];
 
   const [color, setColor] = useState();
   const [eyeColor, setEyeColor] = useState();
@@ -67,6 +50,10 @@ export default CatForm = () => {
     accountID: firebase.auth().currentUser?.uid,
   });
 
+  /**
+   * Helper function to assign location to cat
+   * @param coordinate
+   */
   function onLocationPick(coordinate: LatLng) {
     setCat((currentState: Cat) => ({
       ...currentState,
@@ -74,7 +61,10 @@ export default CatForm = () => {
     }));
     setLocationModalVisible(false);
   }
-
+  /**
+   * Places picture into the image place holder
+   * @param data
+   */
   const handleSetImage = (data: string) => {
     cat.media = data;
     setImage(data);
@@ -104,6 +94,10 @@ export default CatForm = () => {
     showMode('time');
   };
 
+  /**
+   * Helper function that checks for required fields before submitting cat into database
+   * @function
+   */
   async function submitCat() {
     if (cat.media === '' || null) return alert('Add picture to report a cat');
     if (cat.location === '' || null) return alert('Add location to report a cat');
@@ -112,12 +106,7 @@ export default CatForm = () => {
 
     const response = await fetch(cat.media);
     const blob = await response.blob();
-
-    const uploadTask = firebase
-      .storage()
-      .ref()
-      .child(`${firebase.auth().currentUser?.uid}/${cat.catID}`)
-      .put(blob);
+    const uploadTask = firebase.storage().ref().child(`${firebase.auth().currentUser?.uid}/${cat.catID}`).put(blob);
     uploadTask
       .then((uploadTaskSnapshot) => {
         // The upload is complete!
@@ -128,10 +117,11 @@ export default CatForm = () => {
       })
       .then((url) => {
         cat.media = url;
-      }).then(() => addCat(cat))
-      .catch((err) => { console.log(err); });
-    // addCat(cat);
-    // return alert('Cat submitted');
+      })
+      .then(() => addCat(cat))
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   return (
@@ -145,15 +135,22 @@ export default CatForm = () => {
             onConfirm={onLocationPick}
           />
         </Modal>
-        <Text h3 h3Style={{ textAlign: 'center' }}> Required Fields </Text>
+        <Text h3 h3Style={{ textAlign: 'center' }}>
+          {' '}
+          Required Fields{' '}
+        </Text>
         <Divider style={{ marginBottom: 12 }} color="#9D2235" />
         {image && (
-        <Image
-          source={{ uri: image }}
-          style={{
-            width: 250, height: 250, alignSelf: 'center', borderColor: '#9D2235', borderWidth: 5,
-          }}
-        />
+          <Image
+            source={{ uri: image }}
+            style={{
+              width: 250,
+              height: 250,
+              alignSelf: 'center',
+              borderColor: '#9D2235',
+              borderWidth: 5,
+            }}
+          />
         )}
         <CatImagePicker
           onSetImage={handleSetImage}
@@ -169,18 +166,20 @@ export default CatForm = () => {
           }}
           onPress={() => setCameraModalVisible(true)}
         />
-        <View style={{
-          flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 8, borderWidth: 1, borderColor: 'black', marginBottom: 12,
-        }}
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginHorizontal: 8,
+            borderWidth: 1,
+            borderColor: 'black',
+            marginBottom: 12,
+          }}
         >
           <Text h3 h3Style={{ fontSize: 18 }}>
             {cat.location ? `${cat.location.latitude},${cat.location.longitude}` : 'Set Location'}
           </Text>
-          <Icon
-            name="crosshairs-gps"
-            type="material-community"
-            size={22}
-          />
+          <Icon name="crosshairs-gps" type="material-community" size={22} />
         </View>
         <Button
           title="Add Location"
@@ -191,9 +190,13 @@ export default CatForm = () => {
           }}
           onPress={() => setLocationModalVisible(true)}
         />
-        <View style={{
-          flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 8, marginBottom: 12,
-        }}
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginHorizontal: 8,
+            marginBottom: 12,
+          }}
         >
           <Text
             h3
@@ -248,11 +251,12 @@ export default CatForm = () => {
           }}
         />
 
-        <Text h3 h3Style={{ textAlign: 'center' }}> Additional Fields </Text>
+        <Text h3 h3Style={{ textAlign: 'center' }}>
+          {' '}
+          Additional Fields{' '}
+        </Text>
         <Divider style={{ marginBottom: 8 }} color="#9D2235" />
-        <View
-          style={styles.checkboxes}
-        >
+        <View style={styles.checkboxes}>
           <CheckBox
             containerStyle={{
               padding: 0,
@@ -312,7 +316,9 @@ export default CatForm = () => {
               cat.color = colors[item];
             }}
           >
-            {colors.map((item, index) => <Picker.Item label={item} value={index} key={index} />)}
+            {colors.map((item, index) => (
+              <Picker.Item label={item} value={index} key={index} />
+            ))}
           </Picker>
           <Picker
             style={styles.twoPickers}
@@ -323,7 +329,9 @@ export default CatForm = () => {
               cat.eyeColor = eyeColors[item];
             }}
           >
-            {eyeColors.map((item, index) => <Picker.Item label={item} value={index} key={index} />)}
+            {eyeColors.map((item, index) => (
+              <Picker.Item label={item} value={index} key={index} />
+            ))}
           </Picker>
         </View>
         <Input
@@ -332,10 +340,12 @@ export default CatForm = () => {
           selectionColor="white"
           placeholder="Enter possible name here"
           placeholderTextColor="black"
-          onChangeText={(text) => setCat((currentState: Cat) => ({
-            ...currentState,
-            name: text,
-          }))}
+          onChangeText={(text) =>
+            setCat((currentState: Cat) => ({
+              ...currentState,
+              name: text,
+            }))
+          }
         />
         <Input
           style={styles.additionalInput}
@@ -343,10 +353,12 @@ export default CatForm = () => {
           placeholder="Enter additional information here"
           placeholderTextColor="black"
           value={cat.comments}
-          onChangeText={(text) => setCat((currentState: Cat) => ({
-            ...currentState,
-            comments: text,
-          }))}
+          onChangeText={(text) =>
+            setCat((currentState: Cat) => ({
+              ...currentState,
+              comments: text,
+            }))
+          }
         />
       </ScrollView>
     </SafeAreaView>
