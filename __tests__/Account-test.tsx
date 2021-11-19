@@ -12,7 +12,8 @@ configure({ adapter: new Adapter() });
 describe('Testing Account', () => {
 
     it("Account component renders default elements", async () => {
-        shallow(<Account />)
+        const wrapper = shallow(<Account />)
+        expect(wrapper.exists()).toBeTruthy
     });
 
     it('All button actions work as expected', () => {
@@ -25,25 +26,32 @@ describe('Testing Account', () => {
         });
     });
 
+    //Gives a firebase error
+    //Come back for snapsjot
+    // it("Sign out button renders correct title", () => {
+    //     const { getAllByText } = render(<Account />);
+    //     expect(getAllByText('Sign Out').length).toBe(1);
+    // });
+
 })
 
 describe('Testing Mod', () => {
 
-    it("First mod button renders correct title", () => {
+    it("Moderator button for reported posts is correctly labeled", () => {
         const { getAllByText } = render(<Mod />);
         expect(getAllByText('Reported Posts').length).toBe(1);
     });
 
-    it("Second mod button renders correct title", () => {
+    it("Moderator button for downvoted posts is correctly labeled", () => {
         const { getAllByText } = render(<Mod />);
         expect(getAllByText('Downvoted Posts').length).toBe(1);
     });
 
+    //Moderator buttons are rendered if user is a moderator. Not sure how to mock due to coupling
+
 })
 
- //Test to check if mod buttons render if moderator
- //Test that all mod buttons work
- //Testing account buttons possibly through snapshot
+ 
 
 
 

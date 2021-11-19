@@ -11,5 +11,6 @@ it("renders default elements", () => {
      expect(getAllByText('Announcements are going to be built in here').length).toBe(1);
   });
 
+  //Annoucements to be merged with Christine's PR
 
   

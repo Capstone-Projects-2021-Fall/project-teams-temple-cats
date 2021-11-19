@@ -3,7 +3,7 @@ import { Cat } from '../types';
 import { User } from '../types'
 
 
-describe('Cat Types User', () => {
+describe('Cat Types', () => {
     it('Correct cat properties are being passed', async () => {
         const cat: Cat = ({
             catID: "test",
@@ -79,6 +79,9 @@ describe('Cat Types User', () => {
           }));
         });
 
+      });
+
+ describe('User Types', () => {
 
     it('Correct user properties are being passed', async () => {
 
@@ -136,5 +139,9 @@ describe('Cat Types User', () => {
           }))
 
     });
-    
+
   });
+
+    
+    
+  

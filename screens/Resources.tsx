@@ -22,7 +22,7 @@ export default function ResourcesScreen({ navigation }: RootTabScreenProps<'Reso
     { key: 'Eartip' },
     { key: 'Pain Medication' },
   ];
-  const forgottenServices = [
+   const forgottenServices = [
     { key: 'Spay/Neuter' },
     { key: 'FVRCP' },
     { key: 'Rabies' },
