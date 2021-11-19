@@ -19,11 +19,31 @@ export default function Search({ mapViewRef }) {
   const [notFriendlyCats, setNotFriendlyCats] = React.useState<Cat[]>([]);
   const [catComments, setCatComments] = React.useState<Cat[]>([]);
   const [catValues, setValues] = React.useState<Cat[]>([]);
-
+  const [catDate, setCatDate] = React.useState<Cat[]>([]);
+  const [currentDate, setCurrentDate] = React.useState('');
   /* Fetches data asynchronously from firebase to store in catData(Cat[]) hook array after it was first pushed to currentData (Cat[]) so that it can be traversed within the search function by
 filtering search bar text input to see if any of the input matches any element within the data array. */
 
   useEffect(() => {
+
+    var date = new Date().getDate(); //Current Date
+    var month = new Date().getMonth() + 1; //Current Month
+    var year = new Date().getFullYear(); //Current Year
+    var hours = new Date().getHours(); //Current Hours
+    var min = new Date().getMinutes(); //Current Minutes
+    var sec = new Date().getSeconds(); //Current Seconds
+    
+    setCurrentDate(
+      month + '/' + date + '/' + year + '/' //+ hours + ':' + min + ':' + sec,
+    )
+    
+    catsRef.orderByChild("date").on('value', (snapshot) => {
+      const newState: Cat[] = [];
+      snapshot.forEach((child) => {
+        newState.push({ ...child.val() });
+        setCatDate([...newState]);
+      });
+    });
     catsRef.on('value', (snapshot) => {
       const newState: Cat[] = [];
       snapshot.forEach((child) => {
@@ -189,6 +209,57 @@ filtering search bar text input to see if any of the input matches any element w
     setSearch(text);
     setData(newData);
   }
+  function recent(text){
+    const newData = catDate.filter((item) => {
+      const split = item.date.toString().split('/')
+     // console.log(split[1])
+      const newDate = split[1];
+      const splitCurrent = currentDate.split('/');
+      const currentDate2 = splitCurrent[1];
+     // console.log(currentDate)
+     const newMonth = split[0];
+     
+     const currentMonth = splitCurrent[0];
+    // console.log(currentDate)
+     const difMonth = Number(currentMonth) - Number(newMonth);
+      const dif = Number(currentDate2) - Number(newDate);
+     // console.log(dif)
+     if(difMonth == 0){
+      if(dif <= 10 ){
+        if(item.name.length == 0){
+          const itemData = "Unknown";
+          return itemData
+        }
+        const itemData = `${item.name}`;
+        return itemData
+      }
+    }
+    });
+    setSearch(text);
+    setData(newData);
+  }
+  function recentMonth(text){
+    const newData = catDate.filter((item) => {
+      const split = item.date.toString().split('/')
+     // console.log(split[1])
+      const newMonth = split[0];
+      const splitCurrent = currentDate.split('/');
+      const currentMonth = splitCurrent[0];
+     // console.log(currentDate)
+      const dif = Number(currentMonth) - Number(newMonth);
+      if(dif == 1){//current date: 12/6/2021, cat date could be: 11/6/2021
+        //console.log(dif)
+        if(item.name.length == 0){
+          const itemData = "Unknown";
+          return itemData
+        }
+        const itemData = `${item.name}`;
+        return itemData 
+      }
+    });
+    setSearch(text);
+    setData(newData);
+  }
 
   /* This function will iterate through the entire catData hook array containing the Cat data from Firebase. While it traverses through
   each element (Cat[]), itemData (String) will read through each element and check if it contains the user input. The setData() (Cat[]) hook
@@ -220,6 +291,12 @@ filtering search bar text input to see if any of the input matches any element w
     else if(text == "unknown" || text == "Unknown"){
       unknownName(text);
     }
+    else if(text == "recent" || text == "Recent"){
+      recent(text);
+    }
+    else if(text == "recent monthly" || text == "Recent monthly" || text == "month" || text == "Month" || text == "monthly" || text == "Monthly"){
+      recentMonth(text);
+    }
     else if(text.length > 0){
     
       const newData = catValues.filter((item) => {
@@ -244,11 +321,9 @@ filtering search bar text input to see if any of the input matches any element w
       });
       setData(newData);
     }
-    
     else if(text.length == 0){
       setData(text)
     }
-    
     setSearch(text);
   }
  
@@ -258,7 +333,7 @@ filtering search bar text input to see if any of the input matches any element w
     return (
       <Searchbar
         style={{ borderColor: 'black', borderWidth: 2 }}
-        placeholder="Search for cats here"
+        placeholder="Search for cats here..."
         onChangeText={(text) => {
           searchFilterFunction(text);
         }}
