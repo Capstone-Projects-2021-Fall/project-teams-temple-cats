@@ -92,7 +92,7 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
   return (
     <SafeAreaView>
       <ScrollView>
-        <Text style={styles.title}>{cat.name ? `Known Name: ${cat.name}\n` : 'Unkown Name'}</Text>
+        <Text style={styles.title}>{cat.name ? `Known Name: ${cat.name}\n` : 'Unknown Name'}</Text>
         <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
         <Image
           style={styles.catImage}
@@ -101,7 +101,7 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
           }}
         />
         <View style={styles.separator} lightColor="rgba(255,255,255,0.1)" darkColor="rgba(255,255,255,0.1)" />
-        <View style={styles.listImageContainer}>
+        <View style={styles.voteContainer}>
           <Icon
             name="chevron-up"
             color="white"
@@ -136,15 +136,67 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
         <Text style={styles.catDate}>
           {`Date Sighted: ${cat.date} ${cat.time}\n`}
         </Text>
-        <Text style={styles.catInfo}>
-          {cat.color ? `Color: ${cat.color}\n` : ''}
-          {cat.eyeColor ? `Eye Color: ${cat.eyeColor}\n` : ''}
-          {cat.kitten != null ? `Kitten: ${cat.kitten}\n` : ''}
-          {cat.healthy != null ? `Healthy: ${cat.healthy}\n` : ''}
-          {cat.friendly != null ? `Friendly: ${cat.friendly}\n` : ''}
-          {cat.comments ? `Additional Comments: ${cat.comments}\n` : ''}
+        <View style={styles.cattributeContainer}>
+          <Text style={styles.catInfo}>
+            {cat.friendly != null ? `Friendly: ${cat.friendly}\n` : ''}
+          </Text>
+        </View>
+        <View style={styles.cattributeContainer}>
+          <Text style={styles.catInfo}>
+            {cat.healthy != null ? `Healthy: ${cat.healthy}\n` : ''}
+          </Text>
+        </View>
+        <View style={styles.cattributeContainer}>
+          <Text style={styles.catInfo}>
+            {cat.kitten != null ? `Kitten: ${cat.kitten}\n` : ''}
+          </Text>
+        </View>
+        <View style={styles.cattributeContainer}>
+          <Text style={styles.catInfo}>
+            {cat.color ? `Color: ${cat.color}\n` : ''}
+          </Text>
+        </View>
+        <View style={styles.cattributeContainer}>
+          <Text style={styles.catInfo}>
+            {cat.eyeColor ? `Eye Color: ${cat.eyeColor}` : ''}
+          </Text>
+        </View>
+        <View style={styles.cattributeContainer}>
+          <Text style={styles.catInfo}>
+            {cat.comments ? `Additional Comments: ${cat.comments}\n` : 'No Additional Info'}
+          </Text>
+        </View>
+        <View style={styles.bottomSeparator} lightColor="rgba(255,255,255,0.1)" darkColor="rgba(255,255,255,0.1)" />
+        <Text style={styles.catDate}>
+          Comment Thread:
         </Text>
-        <View style={styles.separator} lightColor="rgba(255,255,255,0.1)" darkColor="rgba(255,255,255,0.1)" />
+        <ScrollView style={styles.scrollView}>
+          {commentList.map((comment, index) => (
+            <CommentComponent key={index} comment={comment} />
+          ))}
+        </ScrollView>
+        <Input
+          style={styles.commentInput}
+          value={comment.content}
+          placeholder="Enter Comment..."
+          placeholderTextColor="#8B0000"
+          onChangeText={(text) => setComment((currentState: Comment) => ({
+            ...currentState,
+            content: text,
+          }))}
+        />
+        <Button
+          title="Submit Comment"
+          buttonStyle={styles.buttonStyle}
+          onPress={() => {
+            firebase.database().ref().child(`Cats/${cat.catID}/commentList/${comment.commentID}`).set(comment);
+            setComment((currentState: Comment) => ({
+              ...currentState,
+              commentID: `${new Date()} ${uuidv4()}`,
+            }));
+          }}
+        />
+        <View style={styles.bottomSeparator} lightColor="rgba(255,255,255,0.1)" darkColor="rgba(255,255,255,0.1)" />
         <View>
           <Button title="Report" buttonStyle={styles.buttonStyle} onPress={toggleModalVisibility} />
           <Modal
@@ -156,7 +208,7 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
           >
             <View style={styles.viewWrapper}>
               <View style={styles.modalView}>
-                <Text> Report </Text>
+                <Text style={styles.reportHeader}> Report </Text>
                 <Input
                   style={styles.textInput}
                   value={report.reason}
@@ -182,40 +234,6 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
             </View>
           </Modal>
         </View>
-        <Text style={styles.catDate}>
-          Comments:
-        </Text>
-        <ScrollView style={styles.scrollView}>
-          {commentList.map((comment, index) => (
-            <CommentComponent key={index} comment={comment} />
-          ))}
-        </ScrollView>
-        <Input
-          style={styles.commentInput}
-          value={comment.content}
-          selectionColor="white"
-          placeholder="Enter Comment"
-          placeholderTextColor="black"
-          onChangeText={(text) => setComment((currentState: Comment) => ({
-            ...currentState,
-            content: text,
-          }))}
-        />
-        <Button
-          title="Submit Comment"
-          buttonStyle={styles.buttonStyle}
-          containerStyle={{
-            alignItems: 'center',
-            marginBottom: 10,
-          }}
-          onPress={() => {
-            firebase.database().ref().child(`Cats/${cat.catID}/commentList/${comment.commentID}`).set(comment);
-            setComment((currentState: Comment) => ({
-              ...currentState,
-              commentID: `${new Date()} ${uuidv4()}`,
-            }));
-          }}
-        />
         {JSON.stringify(modStatus[0]) === '3'
           ? (
             <Button
@@ -226,6 +244,7 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
           )
           : null}
         <View />
+        <View style={styles.bottomSeparator} lightColor="#8B0000" darkColor="rgba(255,255,255,0.1)" />
       </ScrollView>
     </SafeAreaView>
   );
@@ -245,6 +264,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#8B0000',
     textAlign: 'center',
     height: 35,
+    letterSpacing: 1,
   },
   upvoteStyle: {
     fontSize: 20,
@@ -265,28 +285,27 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   commentInput: {
-    height: 80,
+    height: 'auto',
     margin: 12,
     borderWidth: 1,
     padding: 10,
-    color: 'black',
+    color: '#8B0000',
     backgroundColor: 'white',
   },
   buttonStyle: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 10,
+    paddingVertical: 8,
     paddingHorizontal: 90,
     borderRadius: 40,
-    elevation: 3,
     backgroundColor: '#8B0000',
     marginBottom: 20,
-    marginLeft: 30,
-    marginRight: 30,
+    marginLeft: 'auto',
+    marginRight: 'auto',
   },
   scrollView: {
-    height: 100,
-    backgroundColor: 'white',
+    height: 160,
+    backgroundColor: '#8B0000',
   },
   screen: {
     flex: 1,
@@ -308,13 +327,14 @@ const styles = StyleSheet.create({
     left: '50%',
     elevation: 5,
     transform: [{ translateX: -(width * 0.4) }, { translateY: -90 }],
-    height: 180,
+    height: 300,
     width: width * 0.8,
     backgroundColor: '#fff',
     borderRadius: 7,
   },
   textInput: {
     width: '80%',
+    fontSize: 15,
     borderRadius: 5,
     paddingVertical: 8,
     paddingHorizontal: 16,
@@ -333,7 +353,7 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
     marginRight: 'auto',
   },
-  listImageContainer: {
+  voteContainer: {
     justifyContent: 'center',
     textAlign: 'center',
     display: 'flex',
@@ -343,20 +363,26 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     marginRight: 'auto',
   },
-  catInfoContainer: {
-    justifyContent: 'center',
-    textAlign: 'center',
-    display: 'flex',
-    flexDirection: 'row',
+  cattributeContainer: {
+    height: 20,
+    borderRadius: 40,
+    backgroundColor: '#8B0000',
+    marginBottom: 5,
     marginLeft: 'auto',
     marginRight: 'auto',
-    marginBottom: 'auto',
-    marginTop: 'auto',
+    paddingLeft: 5,
+    paddingRight: 5,
+  },
+  additionalCommentContainer: {
+    width: 'auto',
+    height: 'auto',
+    borderRadius: 40,
+    backgroundColor: '#8B0000',
+    marginBottom: 5,
   },
   catInfo: {
     justifyContent: 'center',
     color: 'white',
-    backgroundColor: '#8B0000',
     flexDirection: 'row',
     marginLeft: 'auto',
     marginRight: 'auto',
@@ -370,5 +396,23 @@ const styles = StyleSheet.create({
     fontSize: 19,
     marginLeft: 'auto',
     marginRight: 'auto',
+  },
+  reportHeader: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    justifyContent: 'center',
+    color: 'white',
+    backgroundColor: '#8B0000',
+    textAlign: 'center',
+    letterSpacing: 1,
+  },
+  bottomSeparator: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 40,
+    height: 5,
+    width: '100%',
   },
 });

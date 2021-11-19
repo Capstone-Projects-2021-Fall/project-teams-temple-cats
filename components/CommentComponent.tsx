@@ -10,7 +10,9 @@ import { Comment } from '../types';
  */
 
 export default function CommentComponent(props: Comment) {
-  const { accountID, content, commentID, reports } = props.comment;
+  const {
+    accountID, content, commentID, reports,
+  } = props.comment;
   console.log(props);
   return (
     <View style={styles.comment}>
@@ -19,10 +21,11 @@ export default function CommentComponent(props: Comment) {
         h3Style={{ fontSize: 18 }}
         containerStyle={{
           width: 150,
-          borderColor: 'black',
-          borderWidth: 1,
+          borderColor: 'white',
+          borderWidth: 10,
+          color: '#8B0000',
         }}
-        selectionColor="black"
+        selectionColor="white"
       >
         {`${content}`}
       </Text>
@@ -32,11 +35,10 @@ export default function CommentComponent(props: Comment) {
 
 const styles = StyleSheet.create({
   comment: {
-    margin: 12,
+    margin: 5,
     borderWidth: 1,
     borderRadius: 30,
-    padding: 10,
-    color: 'black',
-    backgroundColor: 'white',
+    padding: 2,
+    backgroundColor: 'lightgrey',
   },
 });
