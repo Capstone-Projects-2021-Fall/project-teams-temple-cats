@@ -43,8 +43,8 @@ describe('DB Interface', () => {
         modStatus: 1,
         banStatus: false,
     });
- 
-     await expect(set).resolves.toEqual(undefined);    
+
+     await expect(set).resolves.toEqual(undefined);
   });
 });
 
