@@ -16,7 +16,7 @@ jest.mock('../utils/firebase', () => {
   };
 });
  
-describe('Add User', () => {
+describe('DB Interface', () => {
   it('Adds a user', async () => {
     const set = firebase
       .database()
@@ -32,33 +32,14 @@ describe('Add User', () => {
         banStatus: false,
       });
      
- 
     const result = addUser(
       'Jordan Billie',
       'krs8Lf6EXbb9GTBmQlaj4nvx1CA2',
       'bjthaniel3@hotmail.com',
       'https://graph.facebook.com/2544322639045275/picture'
     );
-
  
-   await expect(result).resolves.toEqual("true");
- 
-    //expect(set).toHaveBeenCalledTimes(1);
-
- 
-    // expect(set).toHaveBeenCalledWith({
-    //   courseId: 'THE_ROAD_TO_GRAPHQL',
-    //   packageId: 'STUDENT',
-    //   invoice: {
-    //     createdAt: 'TIMESTAMP',
-    //     amount: 0,
-    //     licensesCount: 1,
-    //     currency: 'USD',
-    //     paymentType: 'FREE',
-    //   },
-    // });
-    
+   await expect(result).resolves.toEqual("true");    
   });
-  
 });
 
