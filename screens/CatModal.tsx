@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Image, ScrollView, Modal, StyleSheet, Dimensions, Alert,
-} from 'react-native';
+import { Image, ScrollView, Modal, StyleSheet, Dimensions, Alert } from 'react-native';
 import { Input, Button, Icon } from 'react-native-elements';
 import { v4 as uuidv4 } from 'uuid';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -9,13 +7,16 @@ import { Text, View } from '../components/Themed';
 import CommentComponent from '../components/CommentComponent';
 import { AuthContext } from '../context/FirebaseAuthContext';
 import firebase from '../utils/firebase';
-import {
-  Cat, Comment, RootTabScreenProps, Report,
-} from '../types';
+import { Cat, Comment, RootTabScreenProps, Report } from '../types';
 
 const { width } = Dimensions.get('window');
 const modStatus: any[] = [];
-
+/**
+ * Function that renders the modal for displaying a reported cat.
+ * @component
+ * @param {RootTabScreenProps} props navigation properties from the root of the account button in navigation
+ * @returns {JSX.Element} JSX element of the account screen
+ */
 export default function ModalScreen({ route }, { navigation }: RootTabScreenProps<'Home'>) {
   const { cat } = route.params;
   const commentsRef = firebase.database().ref().child(`Cats/${cat.catID}/commentList/`);
@@ -56,10 +57,8 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
     imageRef.delete();
   };
 
-  const showValidationAlert = () => Alert.alert(
-    'Delete',
-    'Are your sure you want to delete this post?',
-    [
+  const showValidationAlert = () =>
+    Alert.alert('Delete', 'Are your sure you want to delete this post?', [
       {
         text: 'Yes',
         onPress: () => {
@@ -70,8 +69,7 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
       {
         text: 'No',
       },
-    ],
-  );
+    ]);
 
   useEffect(() => {
     commentsRef.on('child_added', (snapshot) => {
@@ -133,33 +131,21 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
           />
         </View>
         <View style={styles.separator} lightColor="rgba(255,255,255,0.1)" darkColor="rgba(255,255,255,0.1)" />
-        <Text style={styles.catDate}>
-          {`Date Sighted: ${cat.date} ${cat.time}\n`}
-        </Text>
+        <Text style={styles.catDate}>{`Date Sighted: ${cat.date} ${cat.time}\n`}</Text>
         <View style={styles.cattributeContainer}>
-          <Text style={styles.catInfo}>
-            {cat.friendly != null ? `Friendly: ${cat.friendly}\n` : ''}
-          </Text>
+          <Text style={styles.catInfo}>{cat.friendly != null ? `Friendly: ${cat.friendly}\n` : ''}</Text>
         </View>
         <View style={styles.cattributeContainer}>
-          <Text style={styles.catInfo}>
-            {cat.healthy != null ? `Healthy: ${cat.healthy}\n` : ''}
-          </Text>
+          <Text style={styles.catInfo}>{cat.healthy != null ? `Healthy: ${cat.healthy}\n` : ''}</Text>
         </View>
         <View style={styles.cattributeContainer}>
-          <Text style={styles.catInfo}>
-            {cat.kitten != null ? `Kitten: ${cat.kitten}\n` : ''}
-          </Text>
+          <Text style={styles.catInfo}>{cat.kitten != null ? `Kitten: ${cat.kitten}\n` : ''}</Text>
         </View>
         <View style={styles.cattributeContainer}>
-          <Text style={styles.catInfo}>
-            {cat.color ? `Color: ${cat.color}\n` : ''}
-          </Text>
+          <Text style={styles.catInfo}>{cat.color ? `Color: ${cat.color}\n` : ''}</Text>
         </View>
         <View style={styles.cattributeContainer}>
-          <Text style={styles.catInfo}>
-            {cat.eyeColor ? `Eye Color: ${cat.eyeColor}` : ''}
-          </Text>
+          <Text style={styles.catInfo}>{cat.eyeColor ? `Eye Color: ${cat.eyeColor}` : ''}</Text>
         </View>
         <View style={styles.cattributeContainer}>
           <Text style={styles.catInfo}>
@@ -167,9 +153,7 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
           </Text>
         </View>
         <View style={styles.bottomSeparator} lightColor="rgba(255,255,255,0.1)" darkColor="rgba(255,255,255,0.1)" />
-        <Text style={styles.catDate}>
-          Comment Thread:
-        </Text>
+        <Text style={styles.catDate}>Comment Thread:</Text>
         <ScrollView style={styles.scrollView}>
           {commentList.map((comment, index) => (
             <CommentComponent key={index} comment={comment} />
@@ -180,10 +164,12 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
           value={comment.content}
           placeholder="Enter Comment..."
           placeholderTextColor="#8B0000"
-          onChangeText={(text) => setComment((currentState: Comment) => ({
-            ...currentState,
-            content: text,
-          }))}
+          onChangeText={(text) =>
+            setComment((currentState: Comment) => ({
+              ...currentState,
+              content: text,
+            }))
+          }
         />
         <Button
           title="Submit Comment"
@@ -215,10 +201,12 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
                   selectionColor="white"
                   placeholder="Enter why you're reporting this post..."
                   placeholderTextColor="black"
-                  onChangeText={(text) => setReport((currentState: Report) => ({
-                    ...currentState,
-                    reason: text,
-                  }))}
+                  onChangeText={(text) =>
+                    setReport((currentState: Report) => ({
+                      ...currentState,
+                      reason: text,
+                    }))
+                  }
                 />
                 <Button
                   title="Submit"
@@ -234,15 +222,9 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
             </View>
           </Modal>
         </View>
-        {JSON.stringify(modStatus[0]) === '3'
-          ? (
-            <Button
-              title="Delete Cat"
-              buttonStyle={styles.buttonStyle}
-              onPress={() => showValidationAlert()}
-            />
-          )
-          : null}
+        {JSON.stringify(modStatus[0]) === '3' ? (
+          <Button title="Delete Cat" buttonStyle={styles.buttonStyle} onPress={() => showValidationAlert()} />
+        ) : null}
         <View />
         <View style={styles.bottomSeparator} lightColor="#8B0000" darkColor="rgba(255,255,255,0.1)" />
       </ScrollView>

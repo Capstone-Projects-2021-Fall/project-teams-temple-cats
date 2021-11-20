@@ -1,11 +1,13 @@
 import Constants from 'expo-constants';
 import * as React from 'react';
-import {
-  StyleSheet, Text, View, StatusBar, Linking, Button, Alert,
-} from 'react-native';
+import { StyleSheet, StatusBar, Linking, Alert } from 'react-native';
 import { WebView } from 'react-native-webview';
-import LoginAuthentication from '../components/LoginAuthentication';
-
+/**
+ * Function that renders the webview for displaying the Temple Cats Facebook Group.
+ * @component
+ * @param {RootTabScreenProps} props navigation properties from the root of the account button in navigation
+ * @returns {JSX.Element} JSX element of the account screen
+ */
 export default function Facebook() {
   return (
     Alert.alert(
@@ -20,16 +22,11 @@ export default function Facebook() {
         {
           text: 'Yes',
           onPress: () => Linking.openURL('fb://profile/250544657405'),
-
         },
-
       ],
       { cancelable: false },
     ),
-      <WebView
-        styles={styles.container}
-        source={{ uri: 'https://www.facebook.com/groups/templecats' }}
-      />
+    (<WebView styles={styles.container} source={{ uri: 'https://www.facebook.com/groups/templecats' }} />)
   );
 }
 
