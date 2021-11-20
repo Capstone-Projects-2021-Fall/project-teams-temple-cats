@@ -1,0 +1,121 @@
+[debug] [2021-11-20T02:20:39.476Z] ----------------------------------------------------------------------
+[debug] [2021-11-20T02:20:39.479Z] Command:       D:\Program Files\nodejs\node.exe C:\Users\xlink\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js emulators:start
+[debug] [2021-11-20T02:20:39.479Z] CLI Version:   9.23.0
+[debug] [2021-11-20T02:20:39.479Z] Platform:      win32
+[debug] [2021-11-20T02:20:39.480Z] Node Version:  v14.17.6
+[debug] [2021-11-20T02:20:39.481Z] Time:          Fri Nov 19 2021 21:20:39 GMT-0500 (Eastern Standard Time)
+[debug] [2021-11-20T02:20:39.481Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2021-11-20T02:20:39.595Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2021-11-20T02:20:39.595Z] > authorizing via signed-in user (tui98107@temple.edu)
+[info] i  emulators: Starting emulators: auth, database, storage {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: auth, database, storage"}}
+[debug] [2021-11-20T02:20:39.622Z] [hub] writing locator at C:\Users\xlink\AppData\Local\Temp\hub-temple-cats.json
+[debug] [2021-11-20T02:20:39.642Z] > refreshing access token with scopes: []
+[debug] [2021-11-20T02:20:39.643Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2021-11-20T02:20:39.731Z] <<< HTTP RESPONSE 200 {"pragma":"no-cache","expires":"Mon, 01 Jan 1990 00:00:00 GMT","date":"Sat, 20 Nov 2021 02:20:39 GMT","cache-control":"no-cache, no-store, max-age=0, must-revalidate","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2021-11-20T02:20:39.752Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/temple-cats [none]
+[debug] [2021-11-20T02:20:40.022Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/temple-cats 200
+[debug] [2021-11-20T02:20:40.023Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/temple-cats {"projectId":"temple-cats","projectNumber":"645364453008","displayName":"Temple Cats","name":"projects/temple-cats","resources":{"hostingSite":"temple-cats","realtimeDatabaseInstance":"temple-cats-default-rtdb","storageBucket":"temple-cats.appspot.com","locationId":"us-central"},"state":"ACTIVE"}
+[debug] [2021-11-20T02:20:40.023Z] database rules config:  [{"instance":"temple-cats-default-rtdb","rules":"D:\\Users\\xlink\\IdeaProjects\\project-teams-temple-cats\\database.rules.json"}]
+[debug] [2021-11-20T02:20:40.027Z] Ignoring unsupported arg: projectId {"metadata":{"emulator":{"name":"database"},"message":"Ignoring unsupported arg: projectId"}}
+[debug] [2021-11-20T02:20:40.028Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"database"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2021-11-20T02:20:40.028Z] Ignoring unsupported arg: rules {"metadata":{"emulator":{"name":"database"},"message":"Ignoring unsupported arg: rules"}}
+[debug] [2021-11-20T02:20:40.028Z] Starting Database Emulator with command {"binary":"java","args":["-Duser.language=en","-jar","C:\\Users\\xlink\\.cache\\firebase\\emulators\\firebase-database-emulator-v4.7.2.jar","--host","localhost","--port",9000],"optionalArgs":["port","host","functions_emulator_port","functions_emulator_host"],"joinArgs":false} {"metadata":{"emulator":{"name":"database"},"message":"Starting Database Emulator with command {\"binary\":\"java\",\"args\":[\"-Duser.language=en\",\"-jar\",\"C:\\\\Users\\\\xlink\\\\.cache\\\\firebase\\\\emulators\\\\firebase-database-emulator-v4.7.2.jar\",\"--host\",\"localhost\",\"--port\",9000],\"optionalArgs\":[\"port\",\"host\",\"functions_emulator_port\",\"functions_emulator_host\"],\"joinArgs\":false}"}}
+[info] i  database: Database Emulator logging to database-debug.log {"metadata":{"emulator":{"name":"database"},"message":"Database Emulator logging to \u001b[1mdatabase-debug.log\u001b[22m"}}
+[debug] [2021-11-20T02:20:46.298Z] Ignoring unsupported arg: port {"metadata":{"emulator":{"name":"storage"},"message":"Ignoring unsupported arg: port"}}
+[debug] [2021-11-20T02:20:46.582Z] Temp file directory for storage emulator: C:\Users\xlink\AppData\Local\Temp/firebase/storage/blobs {"metadata":{"emulator":{"name":"storage"},"message":"Temp file directory for storage emulator: C:\\Users\\xlink\\AppData\\Local\\Temp/firebase/storage/blobs"}}
+[debug] [2021-11-20T02:20:47.298Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2021-11-20T02:20:47.298Z] Ignoring unsupported arg: port {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: port"}}
+[debug] [2021-11-20T02:20:47.298Z] Starting Emulator UI with command {"binary":"node","args":["C:\\Users\\xlink\\.cache\\firebase\\emulators\\ui-v1.6.4\\server.bundle.js"],"optionalArgs":[],"joinArgs":false} {"metadata":{"emulator":{"name":"ui"},"message":"Starting Emulator UI with command {\"binary\":\"node\",\"args\":[\"C:\\\\Users\\\\xlink\\\\.cache\\\\firebase\\\\emulators\\\\ui-v1.6.4\\\\server.bundle.js\"],\"optionalArgs\":[],\"joinArgs\":false}"}}
+[info] i  ui: Emulator UI logging to ui-debug.log {"metadata":{"emulator":{"name":"ui"},"message":"Emulator UI logging to \u001b[1mui-debug.log\u001b[22m"}}
+[debug] [2021-11-20T02:20:47.545Z] Web / API server started at localhost:4000
+ {"metadata":{"emulator":{"name":"ui"},"message":"Web / API server started at localhost:4000\n"}}
+[debug] [2021-11-20T02:20:47.578Z] >>> HTTP REQUEST PUT http://localhost:9000/.settings/rules.json?ns=temple-cats-default-rtdb  
+ {
+  "rules": {
+    ".read": true, 
+    ".write": true, 
+  }
+}
+[debug] [2021-11-20T02:20:47.982Z] <<< HTTP RESPONSE 200 {"content-length":"15","content-type":"application/json; charset=utf-8","access-control-allow-origin":"*","cache-control":"no-cache","x-firebase-project-id":"temple-cats-default-rtdb","x-firebase-project-number":"123456789","x-firebase-uuid":"98dbb9cf-407a-456e-822c-2bfaae211cab"}
+[info] 
+┌─────────────────────────────────────────────────────────────┐
+│ ✔  All emulators ready! It is now safe to connect your app. │
+│ i  View Emulator UI at http://localhost:4000                │
+└─────────────────────────────────────────────────────────────┘
+
+┌────────────────┬────────────────┬────────────────────────────────┐
+│ Emulator       │ Host:Port      │ View in Emulator UI            │
+├────────────────┼────────────────┼────────────────────────────────┤
+│ Authentication │ localhost:9099 │ http://localhost:4000/auth     │
+├────────────────┼────────────────┼────────────────────────────────┤
+│ Database       │ localhost:9000 │ http://localhost:4000/database │
+├────────────────┼────────────────┼────────────────────────────────┤
+│ Storage        │ localhost:9199 │ http://localhost:4000/storage  │
+└────────────────┴────────────────┴────────────────────────────────┘
+  Emulator Hub running at localhost:4400
+  Other reserved ports: 4500
+
+Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
+ 
+[debug] [2021-11-20T02:31:19.959Z] Received signal SIGHUP 1
+[debug] [2021-11-20T02:33:24.033Z] ----------------------------------------------------------------------
+[debug] [2021-11-20T02:33:24.036Z] Command:       D:\Program Files\nodejs\node.exe C:\Users\xlink\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js emulators:start
+[debug] [2021-11-20T02:33:24.037Z] CLI Version:   9.23.0
+[debug] [2021-11-20T02:33:24.037Z] Platform:      win32
+[debug] [2021-11-20T02:33:24.037Z] Node Version:  v14.17.6
+[debug] [2021-11-20T02:33:24.038Z] Time:          Fri Nov 19 2021 21:33:24 GMT-0500 (Eastern Standard Time)
+[debug] [2021-11-20T02:33:24.038Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2021-11-20T02:33:24.120Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2021-11-20T02:33:24.120Z] > authorizing via signed-in user (tui98107@temple.edu)
+[info] i  emulators: Starting emulators: auth, database, storage {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: auth, database, storage"}}
+[warn] !  emulators: It seems that you are running multiple instances of the emulator suite for project temple-cats. This may result in unexpected behavior. 
+[debug] [2021-11-20T02:33:24.146Z] [hub] writing locator at C:\Users\xlink\AppData\Local\Temp\hub-temple-cats.json
+[debug] [2021-11-20T02:33:24.164Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/temple-cats [none]
+[debug] [2021-11-20T02:33:24.467Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/temple-cats 200
+[debug] [2021-11-20T02:33:24.467Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/temple-cats {"projectId":"temple-cats","projectNumber":"645364453008","displayName":"Temple Cats","name":"projects/temple-cats","resources":{"hostingSite":"temple-cats","realtimeDatabaseInstance":"temple-cats-default-rtdb","storageBucket":"temple-cats.appspot.com","locationId":"us-central"},"state":"ACTIVE"}
+[debug] [2021-11-20T02:33:24.468Z] database rules config:  [{"instance":"temple-cats-default-rtdb","rules":"D:\\Users\\xlink\\IdeaProjects\\project-teams-temple-cats\\database.rules.json"}]
+[debug] [2021-11-20T02:33:24.474Z] Ignoring unsupported arg: projectId {"metadata":{"emulator":{"name":"database"},"message":"Ignoring unsupported arg: projectId"}}
+[debug] [2021-11-20T02:33:24.474Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"database"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2021-11-20T02:33:24.475Z] Ignoring unsupported arg: rules {"metadata":{"emulator":{"name":"database"},"message":"Ignoring unsupported arg: rules"}}
+[debug] [2021-11-20T02:33:24.475Z] Starting Database Emulator with command {"binary":"java","args":["-Duser.language=en","-jar","C:\\Users\\xlink\\.cache\\firebase\\emulators\\firebase-database-emulator-v4.7.2.jar","--host","localhost","--port",9000],"optionalArgs":["port","host","functions_emulator_port","functions_emulator_host"],"joinArgs":false} {"metadata":{"emulator":{"name":"database"},"message":"Starting Database Emulator with command {\"binary\":\"java\",\"args\":[\"-Duser.language=en\",\"-jar\",\"C:\\\\Users\\\\xlink\\\\.cache\\\\firebase\\\\emulators\\\\firebase-database-emulator-v4.7.2.jar\",\"--host\",\"localhost\",\"--port\",9000],\"optionalArgs\":[\"port\",\"host\",\"functions_emulator_port\",\"functions_emulator_host\"],\"joinArgs\":false}"}}
+[info] i  database: Database Emulator logging to database-debug.log {"metadata":{"emulator":{"name":"database"},"message":"Database Emulator logging to \u001b[1mdatabase-debug.log\u001b[22m"}}
+[debug] [2021-11-20T02:33:31.871Z] Ignoring unsupported arg: port {"metadata":{"emulator":{"name":"storage"},"message":"Ignoring unsupported arg: port"}}
+[debug] [2021-11-20T02:33:32.295Z] Temp file directory for storage emulator: C:\Users\xlink\AppData\Local\Temp/firebase/storage/blobs {"metadata":{"emulator":{"name":"storage"},"message":"Temp file directory for storage emulator: C:\\Users\\xlink\\AppData\\Local\\Temp/firebase/storage/blobs"}}
+[warn] !  ui: Emulator UI unable to start on port 4000, starting on 4001 instead. {"metadata":{"emulator":{"name":"ui"},"message":"Emulator UI unable to start on port 4000, starting on 4001 instead."}}
+[debug] [2021-11-20T02:33:33.509Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2021-11-20T02:33:33.510Z] Ignoring unsupported arg: port {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: port"}}
+[debug] [2021-11-20T02:33:33.510Z] Starting Emulator UI with command {"binary":"node","args":["C:\\Users\\xlink\\.cache\\firebase\\emulators\\ui-v1.6.4\\server.bundle.js"],"optionalArgs":[],"joinArgs":false} {"metadata":{"emulator":{"name":"ui"},"message":"Starting Emulator UI with command {\"binary\":\"node\",\"args\":[\"C:\\\\Users\\\\xlink\\\\.cache\\\\firebase\\\\emulators\\\\ui-v1.6.4\\\\server.bundle.js\"],\"optionalArgs\":[],\"joinArgs\":false}"}}
+[info] i  ui: Emulator UI logging to ui-debug.log {"metadata":{"emulator":{"name":"ui"},"message":"Emulator UI logging to \u001b[1mui-debug.log\u001b[22m"}}
+[debug] [2021-11-20T02:33:33.756Z] Web / API server started at localhost:4001
+ {"metadata":{"emulator":{"name":"ui"},"message":"Web / API server started at localhost:4001\n"}}
+[debug] [2021-11-20T02:33:33.792Z] >>> HTTP REQUEST PUT http://localhost:9000/.settings/rules.json?ns=temple-cats-default-rtdb  
+ {
+  "rules": {
+    ".read": true, 
+    ".write": true, 
+  }
+}
+[debug] [2021-11-20T02:33:34.417Z] <<< HTTP RESPONSE 200 {"content-length":"15","content-type":"application/json; charset=utf-8","access-control-allow-origin":"*","cache-control":"no-cache","x-firebase-project-id":"temple-cats-default-rtdb","x-firebase-project-number":"123456789","x-firebase-uuid":"feceb116-bd58-47cb-a84a-2978d70ec1bc"}
+[info] 
+┌─────────────────────────────────────────────────────────────┐
+│ ✔  All emulators ready! It is now safe to connect your app. │
+│ i  View Emulator UI at http://localhost:4001                │
+└─────────────────────────────────────────────────────────────┘
+
+┌────────────────┬────────────────┬────────────────────────────────┐
+│ Emulator       │ Host:Port      │ View in Emulator UI            │
+├────────────────┼────────────────┼────────────────────────────────┤
+│ Authentication │ localhost:9099 │ http://localhost:4001/auth     │
+├────────────────┼────────────────┼────────────────────────────────┤
+│ Database       │ localhost:9000 │ http://localhost:4001/database │
+├────────────────┼────────────────┼────────────────────────────────┤
+│ Storage        │ localhost:9199 │ http://localhost:4001/storage  │
+└────────────────┴────────────────┴────────────────────────────────┘
+  Emulator Hub running at localhost:4400
+  Other reserved ports: 4500
+
+Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
+ 
