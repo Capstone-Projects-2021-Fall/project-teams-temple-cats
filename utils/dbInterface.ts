@@ -50,12 +50,6 @@ export function addUser(name: User['displayName'], id: User['accountID'], email:
       banStatus: false,
     });
 
-  firebase
-    .database()
-    .ref()
-    .child(`Accounts/${id}`).child('/points')
-    .set({
-      userName: name,
-      highScore: 1,
-    });
+    return "true"
+
 }

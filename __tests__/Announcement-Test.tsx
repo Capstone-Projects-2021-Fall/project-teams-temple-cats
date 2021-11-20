@@ -1,15 +1,17 @@
 import * as React from 'react';
-import { render, fireEvent} from '@testing-library/react-native';
-import ModalScreen from '../screens/AnnouncementsModal';
+import { shallow, configure } from "enzyme";
+import Adapter from "enzyme-adapter-react-16";
+import Announcements from '../screens/AnnouncementsModal';
+configure({ adapter: new Adapter() });
 
-it("renders default elements", () => {
-    render(<ModalScreen/>);
-  });
+describe('Testing Annoucements', () => {
 
-  it("renders correct display element", () => {
-     const {getAllByText} = render(<ModalScreen/>);
-     expect(getAllByText('Notifications are going to be built in here').length).toBe(1);
-  });
+    it("Announcements component renders default elements", async () => {
+        const wrapper = shallow(<Announcements />)
+        expect(wrapper.exists()).toBeTruthy
+    });
+    //Snapshot for placeholder
+    //Snapshot for seperator
 
-
+})
   

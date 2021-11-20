@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Correct map border cnhoordinates are rendered 1`] = `
+<AIRMapPolygon
+  coordinates={
+    Array [
+      Object {
+        "latitude": 39.975237221562914,
+        "longitude": -75.16531142948794,
+      },
+      Object {
+        "latitude": 39.99028527887604,
+        "longitude": -75.16201582672468,
+      },
+      Object {
+        "latitude": 39.98821021677819,
+        "longitude": -75.14598521349043,
+      },
+      Object {
+        "latitude": 39.9731936067945,
+        "longitude": -75.14928693177747,
+      },
+    ]
+  }
+  strokeColor="#000"
+  strokeWidth={2}
+/>
+`;
