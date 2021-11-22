@@ -33,6 +33,7 @@ import CreateAnnouncementModal from '../screens/CreateAnnouncementModal';
 import ReportedPostsModal from '../screens/ReportedPostsModal';
 import DownvotedPostsModal from '../screens/DownvotedPostsModal';
 import Mod from '../components/Mod';
+import LeaderboardInfoModal from '../screens/LeaderboardInfo';
 
 /**
  * Function that renders the navigation bar component.
@@ -115,6 +116,10 @@ function RootNavigator() {
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="DownvotedPosts" component={DownvotedPostsModal} />
       </Stack.Group>
+
+      <Stack.Group screenOptions={{ presentation: 'modal' }}>
+        <Stack.Screen name="LeaderboardInfo" component={LeaderboardInfoModal} />
+      </Stack.Group>
     </Stack.Navigator>
   );
 }
@@ -168,7 +173,6 @@ function BottomTabNavigator() {
         component={Home}
         options={({ navigation }: RootTabScreenProps<'Home'>) => ({
           title: 'Home',
-
           headerLeft: () => (
             <Pressable
               onPress={() => navigation.navigate('CatForm')}
@@ -197,16 +201,28 @@ function BottomTabNavigator() {
           tabBarIcon: ({ color }) => <Ionicons name="home" size={24} color={Colors[colorScheme].text} />,
         })}
       />
-
-   
-      
       <BottomTab.Screen
         name="Leaderboard"
         component={LeaderboardScreen}
-        options={{
+        options={({ navigation }: RootTabScreenProps<'Leaderboard'>) => ({
           title: 'Leaderboard',
+          headerRight: () => (
+            <Pressable
+              onPress={() => navigation.navigate('LeaderboardInfo')}
+              style={({ pressed }) => ({
+                opacity: pressed ? 0.5 : 1,
+              })}
+            >
+              <FontAwesome
+                name="info-circle"
+                size={25}
+                color={Colors[colorScheme].text}
+                style={{ marginRight: 15 }}
+              />
+            </Pressable>
+          ),
           tabBarIcon: ({ color }) => <MaterialIcons name="leaderboard" size={24} color={Colors[colorScheme].text} />,
-        }}
+        })}
       />
       <BottomTab.Screen
         name="Account"
