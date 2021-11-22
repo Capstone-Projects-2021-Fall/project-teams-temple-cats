@@ -26,6 +26,7 @@ export type RootStackParamList = {
   FeedingStations: {title: String, info: any};
   ReportedPosts: undefined;
   DownvotedPosts: undefined;
+  ModeratorRequests: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<
@@ -51,6 +52,12 @@ export type Report = {
   catID: string;
   accountID: string;
   reason: string;
+};
+export type Application = {
+  applicationID: string;
+  accountID: string;
+  reason: string;
+  votes: Number;
 };
 
 export type ReportList = {

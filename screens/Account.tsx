@@ -10,6 +10,8 @@ import Mod from '../components/Mod';
 import { AuthProvider } from '../context/FirebaseAuthProvider';
 import Navigation from '../navigation';
 import { baseProps } from 'react-native-gesture-handler/lib/typescript/handlers/gestureHandlers';
+import ApplyforMods from '../components/ApplyForMods';
+
 
 const modStatus: any[] = [];
 
@@ -47,10 +49,16 @@ export default function AccountScreen({ navigation }: RootTabScreenProps<'Accoun
           signOut();
         }}
       />
+
       {JSON.stringify(modStatus[0]) === '3' ?
         <Mod onReportedPostsPress={() => navigation.push("ReportedPosts")} onDownvotedPostsPress={() => navigation.push("DownvotedPosts")}/>
         : null
       }
+      {JSON.stringify(modStatus[0]) === '1' ?
+        <ApplyforMods/>
+        : null
+      }
+    
     </View>
   );
 }

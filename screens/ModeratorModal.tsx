@@ -45,7 +45,7 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Report
   return (
     <View style={[styles.container, styles.flexColumnContainer]}>
 
-      <Text style={styles.title}>Moderator Requests</Text>
+      <Text style={styles.title}>Reported Cats</Text>
       {/* <View style={styles.separator}/> */}
       <View style={styles.flexColumnContainer}>
         {reportedCats.map((cat, index) => (
