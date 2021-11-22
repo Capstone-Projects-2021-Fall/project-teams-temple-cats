@@ -43,56 +43,71 @@ describe('DB Interface', () => {
      await expect(set).resolves.toEqual(undefined);
   });
 
-  it('Gets cats', async() => {
-    await expect(1).toEqual(1);
+  it('Gets cats', async () => {
+    const get = await dbRef
+      .child('Cats')
+      .get()
+    expect(get.exists()).toBeTruthy();
+    expect(get.hasChildren()).toBeTruthy();
+    expect(get.numChildren() == 1).toBeTruthy();
+    expect(get.child('cat1').val().color).toEqual('White');
   });
 
-  it('Changes upvotes of cat', async() => {
-    await expect(1).toEqual(1);
+  it('Changes votes of a cat', async () => {
+    const votes = await dbRef
+      .child('Cats/cat1/votes')
+      .get();
+    const set = dbRef
+      .child('Cats/cat1/votes')
+      .set(votes.val() + 1);
+    expect(set).resolves.toEqual(undefined);
   });
 
-  it('Adds report to a cat', async() => {
-    await expect(1).toEqual(1);
+  it('Adds report to a cat', async () => {
+    expect(1).toEqual(1);
   });
 
-  it('Gets reports of a cat', async() => {
-    await expect(1).toEqual(1);
+  it('Gets reports of a cat', async () => {
+    expect(1).toEqual(1);
   });
 
-  it('Removes reports of a cat', async() => {
-    await expect(1).toEqual(1);
+  it('Removes reports of a cat', async () => {
+    expect(1).toEqual(1);
   });
 
-  it('Adds a comment to a cat', async() => {
-    await expect(1).toEqual(1);
+  it('Adds a comment to a cat', async () => {
+    expect(1).toEqual(1);
   });
 
-  it('Gets a cat\'s comments', async() => {
-    await expect(1).toEqual(1);
+  it('Gets a cat\'s comments', async () => {
+    expect(1).toEqual(1);
   });
 
-  it('Adds report to a cat\'s comment', async() => {
-    await expect(1).toEqual(1);
+  it('Adds report to a cat\'s comment', async () => {
+    expect(1).toEqual(1);
   });
 
-  it('Gets reports of a cat\'s comment', async() => {
-    await expect(1).toEqual(1);
+  it('Gets reports of a cat\'s comment', async () => {
+    expect(1).toEqual(1);
   });
 
-  it('Removes report on a cat\'s comment', async() => {
-    await expect(1).toEqual(1);
+  it('Removes report on a cat\'s comment', async () => {
+    expect(1).toEqual(1);
   });
 
-  it('Removes a cat\'s comment', async() => {
-    await expect(1).toEqual(1);
+  it('Removes a cat\'s comment', async () => {
+    expect(1).toEqual(1);
   });
 
-  it('Removes a cat', async() => {
-    await expect(1).toEqual(1);
+  it('Removes a cat', async () => {
+    const remove = dbRef
+      .child('Cats/cat1')
+      .remove();
+    expect(remove).resolves.toEqual(undefined);
   });
 
-  it('Gets feeding stations', async() => {
-    await expect(1).toEqual(1);
+  it('Gets feeding stations', async () => {
+    expect(1).toEqual(1);
   });
 
   it('Adds a user', async () => {
@@ -110,40 +125,40 @@ describe('DB Interface', () => {
      await expect(set).resolves.toEqual(undefined);
   });
 
-  it('Gets users', async() => {
-    await expect(1).toEqual(1);
+  it('Gets users', async () => {
+    expect(1).toEqual(1);
   });
 
-  it('Changes a user\'s score', async() => {
-    await expect(1).toEqual(1);
+  it('Changes a user\'s score', async () => {
+    expect(1).toEqual(1);
   });
 
-  it('Removes a user', async() => {
-    await expect(1).toEqual(1);
+  it('Removes a user', async () => {
+    expect(1).toEqual(1);
   });
 
-  it('Adds an announcement', async() => {
-    await expect(1).toEqual(1);
+  it('Adds an announcement', async () => {
+    expect(1).toEqual(1);
   });
 
-  it('Gets announcements', async() => {
-    await expect(1).toEqual(1);
+  it('Gets announcements', async () => {
+    expect(1).toEqual(1);
   });
 
-  it('Removes an announcement', async() => {
-    await expect(1).toEqual(1);
+  it('Removes an announcement', async () => {
+    expect(1).toEqual(1);
   });
 
-  it('Uploads a cat\'s picture', async() => {
-    await expect(1).toEqual(1);
+  it('Uploads a cat\'s picture', async () => {
+    expect(1).toEqual(1);
   });
 
-  it('Gets a cat\'s picture', async() => {
-    await expect(1).toEqual(1);
+  it('Gets a cat\'s picture', async () => {
+    expect(1).toEqual(1);
   });
 
-  it('Deletes a cat\'s picture', async() => {
-    await expect(1).toEqual(1);
+  it('Deletes a cat\'s picture', async () => {
+    expect(1).toEqual(1);
   });
 });
 
