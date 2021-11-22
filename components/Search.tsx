@@ -4,10 +4,14 @@ import { StyleSheet, Image, View, Text, FlatList, SafeAreaView } from 'react-nat
 import { Searchbar } from 'react-native-paper';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Cat } from '../types';
-
+/**
+ * Function that queries the database for matching terms.
+ * @component
+ * @returns {JSX.Element} JSX element of the account screen
+ */
 export default function Search({ mapViewRef }) {
   const catsRef = firebase.database().ref().child('Cats/');
-  
+
   const [search, setSearch] = useState(''); // Stores the user's query
   const [catData, setCatData] = useState<Cat[]>([]); // Stores Cat data that is fetched from Firebase
   const [data, setData] = useState<Cat[]>([]); // Stores the new data array to be rendered once the user types something in the search bar
@@ -25,19 +29,18 @@ export default function Search({ mapViewRef }) {
 filtering search bar text input to see if any of the input matches any element within the data array. */
 
   useEffect(() => {
+    const date = new Date().getDate(); // Current Date
+    const month = new Date().getMonth() + 1; // Current Month
+    const year = new Date().getFullYear(); // Current Year
+    const hours = new Date().getHours(); // Current Hours
+    const min = new Date().getMinutes(); // Current Minutes
+    const sec = new Date().getSeconds(); // Current Seconds
 
-    var date = new Date().getDate(); //Current Date
-    var month = new Date().getMonth() + 1; //Current Month
-    var year = new Date().getFullYear(); //Current Year
-    var hours = new Date().getHours(); //Current Hours
-    var min = new Date().getMinutes(); //Current Minutes
-    var sec = new Date().getSeconds(); //Current Seconds
-    
     setCurrentDate(
-      month + '/' + date + '/' + year + '/' //+ hours + ':' + min + ':' + sec,
-    )
-    
-    catsRef.orderByChild("date").on('value', (snapshot) => {
+      `${month}/${date}/${year}/`, // + hours + ':' + min + ':' + sec,
+    );
+
+    catsRef.orderByChild('date').on('value', (snapshot) => {
       const newState: Cat[] = [];
       snapshot.forEach((child) => {
         newState.push({ ...child.val() });
@@ -51,7 +54,7 @@ filtering search bar text input to see if any of the input matches any element w
         setCatData([...newState]);
       });
     });
-    catsRef.orderByChild("comments").on('value', (snapshot) => {
+    catsRef.orderByChild('comments').on('value', (snapshot) => {
       const newState: Cat[] = [];
       snapshot.forEach((child) => {
         newState.push({ ...child.val() });
@@ -65,196 +68,212 @@ filtering search bar text input to see if any of the input matches any element w
         setValues([...newState]);
       });
     });
-    catsRef.orderByChild("healthy").equalTo(false).on('value', (snapshot) => {
-      const newState: Cat[] = [];
-      snapshot.forEach((child) => {
-        newState.push({ ...child.val() });
-        setUnhealthyCats([...newState]);
+    catsRef
+      .orderByChild('healthy')
+      .equalTo(false)
+      .on('value', (snapshot) => {
+        const newState: Cat[] = [];
+        snapshot.forEach((child) => {
+          newState.push({ ...child.val() });
+          setUnhealthyCats([...newState]);
+        });
       });
-    });
-    catsRef.orderByChild("healthy").equalTo(true).on('value', (snapshot) => {
-      const newState: Cat[] = [];
-      snapshot.forEach((child) => {
-        newState.push({ ...child.val() });
-        setHealthyCats([...newState]);
+    catsRef
+      .orderByChild('healthy')
+      .equalTo(true)
+      .on('value', (snapshot) => {
+        const newState: Cat[] = [];
+        snapshot.forEach((child) => {
+          newState.push({ ...child.val() });
+          setHealthyCats([...newState]);
+        });
       });
-    });
-    catsRef.orderByChild("kitten").equalTo(false).on('value', (snapshot) => {
-      const newState: Cat[] = [];
-      snapshot.forEach((child) => {
-        newState.push({ ...child.val() });
-        setNotKittens([...newState]);
+    catsRef
+      .orderByChild('kitten')
+      .equalTo(false)
+      .on('value', (snapshot) => {
+        const newState: Cat[] = [];
+        snapshot.forEach((child) => {
+          newState.push({ ...child.val() });
+          setNotKittens([...newState]);
+        });
       });
-    });
-    catsRef.orderByChild("kitten").equalTo(true).on('value', (snapshot) => {
-      const newState: Cat[] = [];
-      snapshot.forEach((child) => {
-        newState.push({ ...child.val() });
-        setKittens([...newState]);
+    catsRef
+      .orderByChild('kitten')
+      .equalTo(true)
+      .on('value', (snapshot) => {
+        const newState: Cat[] = [];
+        snapshot.forEach((child) => {
+          newState.push({ ...child.val() });
+          setKittens([...newState]);
+        });
       });
-    });
-    catsRef.orderByChild("friendly").equalTo(true).on('value', (snapshot) => {
-      const newState: Cat[] = [];
-      snapshot.forEach((child) => {
-        newState.push({ ...child.val() });
-        setFriendlyCats([...newState]);
+    catsRef
+      .orderByChild('friendly')
+      .equalTo(true)
+      .on('value', (snapshot) => {
+        const newState: Cat[] = [];
+        snapshot.forEach((child) => {
+          newState.push({ ...child.val() });
+          setFriendlyCats([...newState]);
+        });
       });
-    });
-    catsRef.orderByChild("friendly").equalTo(false).on('value', (snapshot) => {
-      const newState: Cat[] = [];
-      snapshot.forEach((child) => {
-        newState.push({ ...child.val() });
-        setNotFriendlyCats([...newState]);
+    catsRef
+      .orderByChild('friendly')
+      .equalTo(false)
+      .on('value', (snapshot) => {
+        const newState: Cat[] = [];
+        snapshot.forEach((child) => {
+          newState.push({ ...child.val() });
+          setNotFriendlyCats([...newState]);
+        });
       });
-    });
-
   }, []);
-  
 
-  function unhealthy(text){
+  function unhealthy(text) {
     const newData = unHealthyCats.filter((item) => {
-      if(item.name.length == 0){
-        const itemData = "Unknown";
-        return itemData
+      if (item.name.length == 0) {
+        const itemData = 'Unknown';
+        return itemData;
       }
       const itemData = `${item.name}`;
-      return itemData
-   
+      return itemData;
     });
     setSearch(text);
     setData(newData);
   }
-  function healthy(text){
+  function healthy(text) {
     const newData = healthyCats.filter((item) => {
-      if(item.name.length == 0){
-        const itemData = "Unknown";
-        return itemData
+      if (item.name.length == 0) {
+        const itemData = 'Unknown';
+        return itemData;
       }
       const itemData = `${item.name}`;
-      return itemData
+      return itemData;
     });
     setSearch(text);
     setData(newData);
   }
-  function kitten(text){
+  function kitten(text) {
     const newData = kittens.filter((item) => {
-      if(item.name.length == 0){
-        const itemData = "Unknown";
-        return itemData
+      if (item.name.length == 0) {
+        const itemData = 'Unknown';
+        return itemData;
       }
       const itemData = `${item.name}`;
-      return itemData
+      return itemData;
     });
     setSearch(text);
     setData(newData);
   }
-  function cat(text){
+  function cat(text) {
     const newData = notKittens.filter((item) => {
-      if(item.name.length == 0){
-        const itemData = "Unknown";
-        return itemData
+      if (item.name.length == 0) {
+        const itemData = 'Unknown';
+        return itemData;
       }
       const itemData = `${item.name}`;
-      return itemData
+      return itemData;
     });
     setSearch(text);
     setData(newData);
   }
-  function friendly(text){
+  function friendly(text) {
     const newData = friendlyCats.filter((item) => {
       const itemData = `${item.name}`;
-      if(item.name.length == 0){
-        const itemData = "Unknown";
-        return itemData
+      if (item.name.length == 0) {
+        const itemData = 'Unknown';
+        return itemData;
       }
       if (text.length > 0) {
-        return itemData
+        return itemData;
       }
     });
     setData(newData);
   }
-  function unfriendly(text){
+  function unfriendly(text) {
     const newData = notFriendlyCats.filter((item) => {
-      if(item.name.length == 0){
-        const itemData = "Unknown";
-        return itemData
+      if (item.name.length == 0) {
+        const itemData = 'Unknown';
+        return itemData;
       }
       const itemData = `${item.name}`;
-      return itemData
+      return itemData;
     });
     setSearch(text);
     setData(newData);
   }
-  function comments(text){
+  function comments(text) {
     const newData = catComments.filter((item) => {
-      if(item.comments.length > 0){
-        if(item.name.length == 0){
-          const itemData = "Unknown";
-          return itemData
+      if (item.comments.length > 0) {
+        if (item.name.length == 0) {
+          const itemData = 'Unknown';
+          return itemData;
         }
         const itemData = `${item.name}`;
-        return itemData
+        return itemData;
       }
     });
     setSearch(text);
     setData(newData);
   }
-  function unknownName(text){
+  function unknownName(text) {
     const newData = catData.filter((item) => {
-      if(item.name.length == 0){
-        const itemData = "Unknown";
-        return itemData
+      if (item.name.length == 0) {
+        const itemData = 'Unknown';
+        return itemData;
       }
     });
     setSearch(text);
     setData(newData);
   }
-  function recent(text){
+  function recent(text) {
     const newData = catDate.filter((item) => {
-      const split = item.date.toString().split('/')
-     // console.log(split[1])
+      const split = item.date.toString().split('/');
+      // console.log(split[1])
       const newDate = split[1];
       const splitCurrent = currentDate.split('/');
       const currentDate2 = splitCurrent[1];
-     // console.log(currentDate)
-     const newMonth = split[0];
-     
-     const currentMonth = splitCurrent[0];
-    // console.log(currentDate)
-     const difMonth = Number(currentMonth) - Number(newMonth);
+      // console.log(currentDate)
+      const newMonth = split[0];
+
+      const currentMonth = splitCurrent[0];
+      // console.log(currentDate)
+      const difMonth = Number(currentMonth) - Number(newMonth);
       const dif = Number(currentDate2) - Number(newDate);
-     // console.log(dif)
-     if(difMonth == 0){
-      if(dif <= 10 ){
-        if(item.name.length == 0){
-          const itemData = "Unknown";
-          return itemData
+      // console.log(dif)
+      if (difMonth == 0) {
+        if (dif <= 10) {
+          if (item.name.length == 0) {
+            const itemData = 'Unknown';
+            return itemData;
+          }
+          const itemData = `${item.name}`;
+          return itemData;
         }
-        const itemData = `${item.name}`;
-        return itemData
       }
-    }
     });
     setSearch(text);
     setData(newData);
   }
-  function recentMonth(text){
+  function recentMonth(text) {
     const newData = catDate.filter((item) => {
-      const split = item.date.toString().split('/')
-     // console.log(split[1])
+      const split = item.date.toString().split('/');
+      // console.log(split[1])
       const newMonth = split[0];
       const splitCurrent = currentDate.split('/');
       const currentMonth = splitCurrent[0];
-     // console.log(currentDate)
+      // console.log(currentDate)
       const dif = Number(currentMonth) - Number(newMonth);
-      if(dif == 1){//current date: 12/6/2021, cat date could be: 11/6/2021
-        //console.log(dif)
-        if(item.name.length == 0){
-          const itemData = "Unknown";
-          return itemData
+      if (dif == 1) {
+        // current date: 12/6/2021, cat date could be: 11/6/2021
+        // console.log(dif)
+        if (item.name.length == 0) {
+          const itemData = 'Unknown';
+          return itemData;
         }
         const itemData = `${item.name}`;
-        return itemData 
+        return itemData;
       }
     });
     setSearch(text);
@@ -266,51 +285,60 @@ filtering search bar text input to see if any of the input matches any element w
   will initialize newData (Cat[]) as the new data to be rendered by the flatlist when the user enters text within the search bar. */
 
   function searchFilterFunction(text) {
-  
-    if(text == "Unhealthy" || text == "unhealthy" || text == "Needs help" || text == "unhealthy cats" || text == "Needs medical help" || text == "Critical condition"){
+    if (
+      text == 'Unhealthy' ||
+      text == 'unhealthy' ||
+      text == 'Needs help' ||
+      text == 'unhealthy cats' ||
+      text == 'Needs medical help' ||
+      text == 'Critical condition'
+    ) {
       unhealthy(text);
-    }
-    else if(text == "healthy" || text == "Healthy" || text == "good condition"){
+    } else if (text == 'healthy' || text == 'Healthy' || text == 'good condition') {
       healthy(text);
-    }
-    else if(text == "kittens" || text == "Kittens" || text == "kitten" || text == "Kitten"){
+    } else if (text == 'kittens' || text == 'Kittens' || text == 'kitten' || text == 'Kitten') {
       kitten(text);
-    }
-    else if(text == "Adult" || text == "older cats" || text == "adult cats" || text == "Old"){
+    } else if (text == 'Adult' || text == 'older cats' || text == 'adult cats' || text == 'Old') {
       cat(text);
-    }
-    else if(text == "Friendly" || text == "friendly" || text == "Kind" || text == "Nice" || text == "nice"){
+    } else if (text == 'Friendly' || text == 'friendly' || text == 'Kind' || text == 'Nice' || text == 'nice') {
       friendly(text);
-    }
-    else if(text == "Unfriendly" || text == "unfriendly" || text == "mean" || text == "Mean"){
+    } else if (text == 'Unfriendly' || text == 'unfriendly' || text == 'mean' || text == 'Mean') {
       unfriendly(text);
-    }
-    else if(text == "additional" || text == "Additional" || text == "Additional info" || text == "additional info"|| text == "Additional information"|| text == "additional information"){
+    } else if (
+      text == 'additional' ||
+      text == 'Additional' ||
+      text == 'Additional info' ||
+      text == 'additional info' ||
+      text == 'Additional information' ||
+      text == 'additional information'
+    ) {
       comments(text);
-    }
-    else if(text == "unknown" || text == "Unknown"){
+    } else if (text == 'unknown' || text == 'Unknown') {
       unknownName(text);
-    }
-    else if(text == "recent" || text == "Recent"){
+    } else if (text == 'recent' || text == 'Recent') {
       recent(text);
-    }
-    else if(text == "recent monthly" || text == "Recent monthly" || text == "month" || text == "Month" || text == "monthly" || text == "Monthly"){
+    } else if (
+      text == 'recent monthly' ||
+      text == 'Recent monthly' ||
+      text == 'month' ||
+      text == 'Month' ||
+      text == 'monthly' ||
+      text == 'Monthly'
+    ) {
       recentMonth(text);
-    }
-    else if(text.length > 0){
-    
+    } else if (text.length > 0) {
       const newData = catValues.filter((item) => {
-        if(item.comments.length > 0){
+        if (item.comments.length > 0) {
           const itemData = `${item.comments}`;
           const textData = text;
           return itemData.indexOf(textData) > -1;
         }
-        else if(item.color.length > 0){
+        if (item.color.length > 0) {
           const itemData = `${item.color}`;
           const textData = text;
           return itemData.indexOf(textData) > -1;
         }
-        else if(item.eyeColor.length > 0){
+        if (item.eyeColor.length > 0) {
           const itemData = `${item.eyeColor}`;
           const textData = text;
           return itemData.indexOf(textData) > -1;
@@ -320,13 +348,11 @@ filtering search bar text input to see if any of the input matches any element w
         return itemData.indexOf(textData) > -1;
       });
       setData(newData);
-    }
-    else if(text.length == 0){
-      setData(text)
+    } else if (text.length == 0) {
+      setData(text);
     }
     setSearch(text);
   }
- 
 
   // Renders when the app renders so that the user can type something in
   function renderHeader() {

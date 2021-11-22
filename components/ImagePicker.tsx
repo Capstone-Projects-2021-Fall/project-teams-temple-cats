@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  View, Platform, Alert, Modal, StyleSheet, Pressable, Text, SafeAreaView,
-} from 'react-native';
+import { View, Platform, Alert, Modal, StyleSheet, Pressable, Text, SafeAreaView } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { Camera } from 'expo-camera';
 import CatCamera from './Camera';
@@ -13,7 +11,11 @@ type Props = {
   onCloseModal: () => void;
   onSetImage: (image: string) => void;
 };
-
+/**
+ * Function that add a picture to the cat post.
+ * @component
+ * @returns {JSX.Element} JSX element of the account screen
+ */
 export default function CatImagePicker(props: Props) {
   const { modalVisible, onCloseModal, onSetImage } = props;
   const [camModalVisible, setCamModalVisible] = useState(false);
