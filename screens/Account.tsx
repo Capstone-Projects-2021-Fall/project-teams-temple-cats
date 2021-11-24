@@ -51,13 +51,14 @@ export default function AccountScreen({ navigation }: RootTabScreenProps<'Accoun
       />
 
       {JSON.stringify(modStatus[0]) === '3' ?
-        <Mod onReportedPostsPress={() => navigation.push("ReportedPosts")} onDownvotedPostsPress={() => navigation.push("DownvotedPosts")}/>
+        <Mod onReportedPostsPress={() => navigation.push("ReportedPosts")} onDownvotedPostsPress={() => navigation.push("DownvotedPosts")} onModAppsPress={() => navigation.push("ModeratorRequests")}/>
         : null
       }
       {JSON.stringify(modStatus[0]) === '1' ?
         <ApplyforMods/>
         : null
       }
+      
     
     </View>
   );

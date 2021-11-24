@@ -88,6 +88,7 @@ export type Account = {
   modStatus: boolean;
   banned: boolean;
   points: number;
+  Application: {applicationID: {accountID: string, applicationID: string, name: String, reason: String, votes: Number} }
 };
 
 export type FeedingStation = {
@@ -135,3 +136,5 @@ export type User = {
   modStatus: 1 | 2 | 3; // user, feeder, moderator
   banStatus: true | false;
 };
+
+

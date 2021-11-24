@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Dimensions, StyleSheet, Modal, Text } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import { Application, Report } from '../types';
@@ -29,6 +29,12 @@ export default function ApplyforMods() {
       applicationID: `${uuidv4()}`,
     }));
   };
+
+  useEffect(() => {
+    firebase.database().ref().child(`Accounts/${firebase.auth().currentUser?.uid}/Application/${application.applicationID}`).on('value', function (snapshot) {
+      setData(snapshot.val());
+    });
+  }, []);
 
   return (
     <View>
@@ -65,16 +71,14 @@ export default function ApplyforMods() {
               buttonStyle={styles.buttonStyle}
               onPress={() => {
                 toggleModalVisibility();
-                
-                firebase.database().ref().child(`Application/${application.applicationID}`).on('value', function (snapshot) {
-                  setData(snapshot.val());
-                });
 
-              if(data === null){
-                firebase.database().ref().child(`Application/${application.applicationID}`).set(application)
+
+              
+              if(data === ''){
+                firebase.database().ref().child(`Accounts/${firebase.auth().currentUser?.uid}/Application/${application.applicationID}`).set(application)
                 }
                 else{
-                  alert("Application has already been submitted")
+                  alert("Application is being reviewed")
                 }
               }}
             />
