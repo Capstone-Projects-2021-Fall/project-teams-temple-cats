@@ -74,13 +74,14 @@ export default function ApplyforMods() {
 
 
               
-              if(data === ''){
+              if(data === null){
                 firebase.database().ref().child(`Accounts/${firebase.auth().currentUser?.uid}/Application/${application.applicationID}`).set(application)
                 }
                 else{
                   alert("Application is being reviewed")
                 }
-              }}
+               }
+            }
             />
             <Button title="Close"
               buttonStyle={styles.buttonStyle}
