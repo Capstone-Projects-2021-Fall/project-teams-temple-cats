@@ -55,7 +55,7 @@ export default function LeaderboardScreen({ navigation }: RootTabScreenProps<'Le
     });
   }, []);
 
-  function userScoreData(index) {
+  function userScoreData(index, item) {
     navigation.push("UserRank")
   }
   const [isEnabled, setIsEnabled] = useState(false);
@@ -63,17 +63,17 @@ export default function LeaderboardScreen({ navigation }: RootTabScreenProps<'Le
   function toggleSwitch() {
     setIsEnabled(previousState => !previousState);
     if(isEnabled){
-      setValue(pointsWeek);
-    }
+      setValue(points);
+    } 
     else{
-      setValue(points)
+      setValue(pointsWeek)
     }
   }
 
   return (
     <View style={styles.container}>
       <View style={{flexDirection: 'row',}}> 
-      <Text style={styles.title}>Weekly  </Text>
+      <Text style={styles.title}>All Time  </Text>
       <Switch
         trackColor={{ false: "#696969", true: "#8b0000" }}
         thumbColor={isEnabled ? "white" : "white"}
@@ -83,7 +83,7 @@ export default function LeaderboardScreen({ navigation }: RootTabScreenProps<'Le
         }}
         value={isEnabled}
       />
-       <Text style={styles.title}>  All Time</Text>
+       <Text style={styles.title}>  Weekly</Text>
       </View>
     
       <Leaderboard
@@ -93,8 +93,8 @@ export default function LeaderboardScreen({ navigation }: RootTabScreenProps<'Le
         sortBy="highScore"
         oddRowColor="#b22222"
         evenRowColor="white"
-        onRowPress={(index) => {
-          userScoreData(index);
+        onRowPress={(index, item) => {
+          userScoreData(index, item);
         }}
       />
     </View>
