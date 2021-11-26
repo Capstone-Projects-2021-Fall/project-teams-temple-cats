@@ -58,6 +58,8 @@ export type Application = {
   accountID: string;
   reason: string;
   votes: Number;
+  date: Date, 
+  time: Date,
 };
 
 export type ReportList = {
@@ -88,7 +90,7 @@ export type Account = {
   modStatus: boolean;
   banned: boolean;
   points: number;
-  Application: {applicationID: {accountID: string, applicationID: string, name: String, reason: String, votes: Number} }
+  Application: {applicationID: {accountID: string, applicationID: string, name: String, reason: String, votes: Number, date: Date, time: Date} }
 };
 
 export type FeedingStation = {

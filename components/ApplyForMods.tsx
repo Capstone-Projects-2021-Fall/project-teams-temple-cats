@@ -14,12 +14,22 @@ export default function ApplyforMods() {
   const [data, setData] = useState('');
 
 
+  var date = new Date().getDate();
+  var month = new Date().getMonth() + 1;
+  var year = new Date().getFullYear();
+  var today = new Date();
+  var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
+
+
   const [application, setApplication]: Application = useState({
     name: firebase.auth().currentUser?.displayName,
     applicationID: '',
     accountID: firebase.auth().currentUser?.uid,
     reason: '',
-    votes: 0
+    votes: 0,
+    date: date + '-' + month + '-' + year,
+    time: time
   });
 
   const toggleModalVisibility = () => {
@@ -55,7 +65,7 @@ export default function ApplyforMods() {
       >
         <View style={styles.viewWrapper}>
           <View style={styles.modalView}>
-            <Text style={styles.titleText}>{'\n'}Moderator Application{'\n'}</Text>
+            <Text style={styles.titleText}>{'\n'}Why Do You Want To Be a Moderator?{'\n'}</Text>
             <Input
               style={styles.textInput}
               selectionColor="white"
@@ -65,14 +75,13 @@ export default function ApplyforMods() {
               onChangeText={(text) => setApplication((currentState: Application) => ({
                 ...currentState,
                 reason: text,
+                time: time,
               }))}
             />
             <Button title="Submit Application"
               buttonStyle={styles.buttonStyle}
               onPress={() => {
                 toggleModalVisibility();
-
-
               
               if(data === null){
                 firebase.database().ref().child(`Accounts/${firebase.auth().currentUser?.uid}/Application/${application.applicationID}`).set(application)
