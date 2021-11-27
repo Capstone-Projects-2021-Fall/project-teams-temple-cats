@@ -15,7 +15,7 @@ const users: any[] = [];
 export default function UserRankModal({ route }) {
 
   const  userSelected  = route.params;
-  const [badge, setBadge] = React.useState<Badge[]>([]);
+  const [badge, setBadge] = React.useState<any[]>([]);
   const [user, setUser] = React.useState<User[]>([]);
  
   
@@ -37,11 +37,12 @@ React.useEffect(() => {
     .on('value', (snapshot) => {
       snapshot.forEach((child) =>{
         badges.push(child.val())
+        setBadge(badges)
       });
      // setBadge(badges);
     });
   //  user.badges
-    setBadge(badges)
+    
    // console.log(user.badges)
    console.log(badges)
 }, []);
@@ -55,28 +56,28 @@ React.useEffect(() => {
             }}
           />
           <View style={{flexDirection: 'row'}}> 
-            {JSON.stringify(badges[4]) === '1' ?
+            {badge[4] === '1' ?
               <Image
                 style={{ width: 50, height: 50, top: -110, left: -10 }}
                 source={require('../Badges/mods.png')}
               />
               : null
             }
-            {JSON.stringify(badges[2]) === '1' ?
+            {JSON.stringify(badge[2]) === '1' ?
               <Image
                 style={{ width: 50, height: 50, top: -110, left: -10 }}
                 source={require('../Badges/FirstCatPosted.png')}
               />
               : null
             }
-            {JSON.stringify(badges[3]) === '1' ?
+            {JSON.stringify(badge[3]) === '1' ?
               <Image
                 style={{ width: 50, height: 50, top: -110, left: -10 }}
                 source={require('../Badges/FirstComment.png')}
               />
               : null
             }
-            {JSON.stringify(badges[1]) === '1' ?
+            {JSON.stringify(badge[1]) === '1' ?
               <Image
                 style={{ width: 50, height: 50, top: -110, left: -10 }}
                 source={require('../Badges/FirstCatRescued.png')}
