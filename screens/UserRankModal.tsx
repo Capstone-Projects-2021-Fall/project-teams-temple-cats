@@ -1,65 +1,101 @@
 import { StatusBar } from 'expo-status-bar';
 import firebase from 'firebase';
 import * as React from 'react';
-import {  Platform, StyleSheet, Image } from 'react-native';
+import {  Platform, StyleSheet, Image, Text } from 'react-native';
 import { Input } from 'react-native-elements';
 import { Button } from 'react-native-elements';
 import { View } from '../components/Themed';
+import { AuthContext } from '../context/FirebaseAuthContext';
+import { Badge, User } from '../types';
+import AccountScreen from './Account';
 
+const badges: any[] = [];
+const users: any[] = [];
 
-export default function UserRankModal() {
+export default function UserRankModal({ route }) {
+
+  const  userSelected  = route.params;
+  const [badge, setBadge] = React.useState<Badge[]>([]);
+  const [user, setUser] = React.useState<User[]>([]);
+ 
   
-
+React.useEffect(() => {
+  firebase
+    .database()
+    .ref(`Accounts/`)
+    .on('value', (snapshot) => {
+      snapshot.forEach((child) => {
+        users.push({...child.val()});
+      });
+    });
+    setUser(users[userSelected.index])
+    //console.log(user)
+    
+    firebase
+    .database()
+    .ref(`Accounts/${user?.accountID}/badges`)
+    .on('value', (snapshot) => {
+      snapshot.forEach((child) =>{
+        badges.push(child.val())
+      });
+     // setBadge(badges);
+    });
+  //  user.badges
+    setBadge(badges)
+   // console.log(user.badges)
+   console.log(badges)
+}, []);
 
     return (
       <View style={styles.container}>
           <Image
-        style={{ width: 200, height: 200, top: 5 }}
-        source={{
-          uri: 'https://cdn.pixabay.com/photo/2018/06/18/14/20/cat-3482623_960_720.jpg',
-        }}
-      />
-      
-       <Input
-          style={styles.nameInput}
-          value={announcement.subject}
-          selectionColor="blue"
-          placeholder="Enter subject here..."
-          placeholderTextColor="black"
-          onChangeText={(text) =>  setAnnouncement((currentState: Announcement) => ({
-            ...currentState,
-            subject: text,
-      
-          }))}
-        />
-       <Input
-          style={styles.additionalInput}
-          selectionColor="blue"
-          placeholder="Enter announcement here..."
-          placeholderTextColor="black"
-          value={announcement.content}
-          onChangeText={(text) => setAnnouncement((currentState: Announcement) => ({
-            ...currentState,
-            content: text,
-          }))
-          }
-        />
-      <Button
-          title="Submit"
-          buttonStyle={styles.buttonStyle}
-          containerStyle={{
-            alignItems: 'center',
-            marginBottom: 10,
-          }}
-          onPress={() => {
-            submitAnnouncement();
-            return;
-          }}
-        />
-
+            style={{ width: 200, height: 200, top: -120 }}
+            source={{
+              uri: `${user.photo}`
+            }}
+          />
+          <View style={{flexDirection: 'row'}}> 
+            {JSON.stringify(badges[4]) === '1' ?
+              <Image
+                style={{ width: 50, height: 50, top: -110, left: -10 }}
+                source={require('../Badges/mods.png')}
+              />
+              : null
+            }
+            {JSON.stringify(badges[2]) === '1' ?
+              <Image
+                style={{ width: 50, height: 50, top: -110, left: -10 }}
+                source={require('../Badges/FirstCatPosted.png')}
+              />
+              : null
+            }
+            {JSON.stringify(badges[3]) === '1' ?
+              <Image
+                style={{ width: 50, height: 50, top: -110, left: -10 }}
+                source={require('../Badges/FirstComment.png')}
+              />
+              : null
+            }
+            {JSON.stringify(badges[1]) === '1' ?
+              <Image
+                style={{ width: 50, height: 50, top: -110, left: -10 }}
+                source={require('../Badges/FirstCatRescued.png')}
+              />
+              : null
+            }
+            {JSON.stringify(badge[0]) === '1' ?
+              <Image
+                style={{ width: 50, height: 50, top: -110, left: -10 }}
+                source={require('../Badges/FeedingStation.png')}
+              />
+              : null
+            }
+          </View>
 
         <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
         {/* Use a light status bar on iOS to account for the black space above the modal */}
+        <Text style={styles.title}>{user.display}</Text>
+        
         <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
       </View>
     );
@@ -76,7 +112,7 @@ export default function UserRankModal() {
       fontWeight: 'bold',
     },
     separator: {
-      marginVertical: 30,
+      marginVertical: -40,
       height: 1,
       width: '80%',
     },

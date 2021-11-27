@@ -55,8 +55,12 @@ export default function LeaderboardScreen({ navigation }: RootTabScreenProps<'Le
     });
   }, []);
 
-  function userScoreData(index, item) {
-    navigation.push("UserRank")
+  function userScoreData(item,index) {
+    //console.log(index)
+    item["index"] = [];
+    item.index = index
+    //console.log(item)
+    navigation.push("UserRank", item)
   }
   const [isEnabled, setIsEnabled] = useState(false);
 
@@ -72,7 +76,7 @@ export default function LeaderboardScreen({ navigation }: RootTabScreenProps<'Le
 
   return (
     <View style={styles.container}>
-      <View style={{flexDirection: 'row',}}> 
+      <View style={{flexDirection: 'row'}}> 
       <Text style={styles.title}>All Time  </Text>
       <Switch
         trackColor={{ false: "#696969", true: "#8b0000" }}
@@ -93,8 +97,9 @@ export default function LeaderboardScreen({ navigation }: RootTabScreenProps<'Le
         sortBy="highScore"
         oddRowColor="#b22222"
         evenRowColor="white"
-        onRowPress={(index, item) => {
-          userScoreData(index, item);
+        onRowPress={(item, index) => {
+          //console.log(index)
+          userScoreData(item,index);
         }}
       />
     </View>
