@@ -1,33 +1,78 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
-import { Text, View } from '../components/Themed';
+import {
+  StyleSheet, ImageBackground, SafeAreaView, View, Image, Text,
+} from 'react-native';
+
 /**
  * Function that renders the screen for cashing in points for rewards.
  * @component
  * @returns {JSX.Element} JSX element of the account screen
  */
 export default function Rewards() {
+  /**
+   * The uri of an image to be used in the background of the login screen.
+   * @constant {{uri: string}}
+   */
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Rewards</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-    </View>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
+        <ImageBackground source={require('../assets/images/rewards_ombre.jpeg')} resizeMode="cover" style={styles.backgroundImage}>
+          <View style={styles.logoContainer}>
+            <Image
+              style={styles.logo}
+              source={require('../assets/images/rewards.jpg')}
+            />
+            <View style={styles.pointContainer}>
+              <Text style={styles.text}> 2,092 Points</Text>
+            </View>
+          </View>
+        </ImageBackground>
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
+  backgroundImage: {
+    flex: 1,
+    justifyContent: 'center',
   },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
+  logo: {
+    width: 350,
+    height: 250,
+    borderRadius: 40,
+    marginBottom: 'auto',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  },
+  text: {
+    color: 'white',
+    fontSize: 22,
+    lineHeight: 90,
+    fontWeight: 'bold',
+    backgroundColor: '#8b0000',
+    margin: 15,
+  },
+  logoContainer: {
+    height: 280,
+    width: 355,
+    backgroundColor: 'white',
+    borderRadius: 40,
+    marginBottom: 470,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    display: 'flex',
+    alignItems: 'center',
+    paddingTop: 30,
+  },
+  pointContainer: {
+    alignItems: 'center',
+    backgroundColor: '#8B0000',
+    borderRadius: 40,
+    marginBottom: 80,
   },
 });
