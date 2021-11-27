@@ -15,7 +15,7 @@ const users: any[] = [];
 export default function UserRankModal({ route }) {
 
   const  userSelected  = route.params;
-  const [badge, setBadge] = React.useState<any[]>([]);
+  const [badge, setBadge] = React.useState<Badge[]>([]);
   const [user, setUser] = React.useState<User[]>([]);
  
   
@@ -27,24 +27,28 @@ React.useEffect(() => {
       snapshot.forEach((child) => {
         users.push({...child.val()});
       });
+     // setUser(users[userSelected.index])
     });
     setUser(users[userSelected.index])
-    //console.log(user)
-    
+    console.log(users[userSelected.index])
+    const badges: any[] = [];
     firebase
     .database()
-    .ref(`Accounts/${user?.accountID}/badges`)
+    .ref(`Accounts/${users[userSelected.index].accountID}/badges`)
     .on('value', (snapshot) => {
       snapshot.forEach((child) =>{
         badges.push(child.val())
-        setBadge(badges)
+       
       });
-     // setBadge(badges);
     });
+    setBadge([...badges]);
   //  user.badges
-    
-   // console.log(user.badges)
+ // console.log(user)
+    //console.log(badge.badges.modBadge)
+    //console.log(badge.length)
+   // console.log({user.accountID})
    console.log(badges)
+  // console.log(badge)
 }, []);
 
     return (
@@ -56,7 +60,7 @@ React.useEffect(() => {
             }}
           />
           <View style={{flexDirection: 'row'}}> 
-            {badge[4] === '1' ?
+          {JSON.stringify(badge[4])  === '1' ?
               <Image
                 style={{ width: 50, height: 50, top: -110, left: -10 }}
                 source={require('../Badges/mods.png')}
