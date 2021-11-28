@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet, ImageBackground, SafeAreaView, View, ScrollView, Text,
 } from 'react-native';
@@ -18,7 +18,6 @@ export default function Rewards() {
    * The uri of an image to be used in the background of the login screen.
    * @constant {{uri: string}}
    */
-
   const handleLaunchConfetti = () => {
     setLaunchConfetti(false);
     setTimeout(() => {
@@ -32,7 +31,7 @@ export default function Rewards() {
           <Card>
             <Card.Image style={styles.pointContainer} source={require('../assets/images/rewards.jpg')}>
               <View style={styles.pointInfo}>
-                <Text style={styles.text}> 2,092 Points</Text>
+                <Text style={styles.text}> 230 Points</Text>
               </View>
             </Card.Image>
           </Card>
@@ -40,7 +39,7 @@ export default function Rewards() {
             <Card.Title>Temple Cats Tee-Shirt</Card.Title>
             <Card.Divider />
             <Text style={{ textAlign: 'center', marginBottom: 20 }}>
-              3000 Points
+              1000 Points
             </Text>
             <Card.Image style={{ height: 310, marginBottom: 20 }} source={require('../assets/images/shirt.jpeg')} />
             <Button
@@ -57,7 +56,7 @@ export default function Rewards() {
             <Card.Title>Temple Cats Magnet</Card.Title>
             <Card.Divider />
             <Text style={{ textAlign: 'center', marginBottom: 20 }}>
-              1500 Points
+              500 Points
             </Text>
             <Card.Image style={{ height: 200, marginBottom: 20 }} source={require('../assets/images/carMag.jpeg')} />
             <Button
