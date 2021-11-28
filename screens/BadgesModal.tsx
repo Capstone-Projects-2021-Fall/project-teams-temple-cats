@@ -57,6 +57,21 @@ export default function BadgesScreen() {
         <Text style={styles.title}>            Moderator  </Text>
         <Text style={styles.listItem}>    Become a moderator to obtain this badge.   </Text>
         <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+        <Image
+            style={{ width: 200, height: 200, top: 5 }}
+            source={require('../Badges/100points.png')}
+        />
+        <Text style={styles.title}>            100 Points  </Text>
+        <Text style={styles.listItem}>    Purchase this badge for 100 points.   </Text>
+        <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+       
+        <Image
+            style={{ width: 200, height: 200, top: 5 }}
+            source={require('../Badges/1000points.png')}
+        />
+        <Text style={styles.title}>            1000 Points  </Text>
+        <Text style={styles.listItem}>    Purchase this badge for 1000 points.   </Text>
+        <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
     </ScrollView>
     </View>
   );
