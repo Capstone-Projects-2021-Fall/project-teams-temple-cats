@@ -13,19 +13,14 @@ import { white } from 'react-native-paper/lib/typescript/styles/colors';
  * @returns {JSX.Element} JSX element of the leaderboard screen
  */
 
-const users: any[] = [];
 let pointValuesArr: any[] = [];
 let pointValuesWeekArr: any[] = [];
-const final: any[] = [];
 
 export default function LeaderboardScreen({ navigation }: RootTabScreenProps<'Leaderboard'>) {
 
   const [points, setPoints] = useState<any>([]);
   const [pointsWeek, setPointsWeek] = useState<any>([]);
   const [value, setValue] = useState<any>([]);
-  const [title, setTitle] = useState<any>('Click for Weekly Board');
-  const [button, setbutton] = useState<any>(false);
-  const [user, setUser] = React.useState<User[]>([]);
 
   var curr = new Date(); 
   var first = curr.getDate() - curr.getDay(); 
@@ -55,30 +50,14 @@ export default function LeaderboardScreen({ navigation }: RootTabScreenProps<'Le
       pointValuesArr = [];
       pointValuesWeekArr = [];
 
-      firebase
-      .database()
-      .ref(`Accounts/`)
-      .on('value', (snapshot) => {
-        snapshot.forEach((child) => {
-          users.push({...child.val()});
-        });
-      });
-      setUser(users)
-
     });
-    console.log(user)
   }, []);
 
   function userScoreData(item,index) {
-    //console.log(index)
     item["index"] = [];
     item.index = index
-    item["photo"] = [];
-    item.photo = user.photo
-    item["email"] = [];
-    item.email = user.email
     console.log(item)
-    navigation.push("UserRank", {item, value})
+    navigation.push("UserRank", {item})
   }
   const [isEnabled, setIsEnabled] = useState(false);
 
@@ -116,8 +95,8 @@ export default function LeaderboardScreen({ navigation }: RootTabScreenProps<'Le
         oddRowColor="#b22222"
         evenRowColor="white"
         onRowPress={(item, index) => {
-          console.log(index)
-          userScoreData(item,index, value);
+         // console.log(index)
+          userScoreData(item,index);
         }}
       />
     </View>

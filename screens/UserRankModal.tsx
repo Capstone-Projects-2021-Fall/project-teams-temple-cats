@@ -1,69 +1,10 @@
-import { StatusBar } from 'expo-status-bar';
-import firebase from 'firebase';
 import * as React from 'react';
-import {  Platform, StyleSheet, Image, Text, SafeAreaView } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { StyleSheet, Image, Text } from 'react-native';
 import { View } from '../components/Themed';
-import { Badge, User } from '../types';
 
-const badges: any[] = [];
-const users: any[] = [];
 export default function UserRankModal({ route }) {
 
   const  userSelected  = route.params.item;
-  const sortedUsers = route.params.value;
-  const [badge, setBadge] = React.useState<Badge[]>([]);
-  const [user, setUser] = React.useState<User[]>([]);//sorted users in descending order for highScore
-  const [user2, setUsers] = React.useState<User[]>([]);//has photo, email, display
-
-React.useEffect(() => {
-  firebase
-    .database()
-    .ref(`Accounts/`)
-    .orderByChild("points")
-        .on('value', (snapshot) => {
-          const newState: User[] = [];
-          snapshot.forEach((child) => {
-            newState.push({ ...child.val() });
-            setUser([...newState]);
-          });
-
-  
-     
-    });
-    firebase
-      .database()
-      .ref(`Accounts/`)
-      .on('value', (snapshot) => {
-        const newState: User[] = [];
-        snapshot.forEach((child) => {
-          newState.push({ ...child.val() });
-          setUsers([...newState]);
-        });
-      });
-
-    setUser(user2[userSelected.index])
-    //console.log(user2)
-   // setUsers(users[userSelected.index])
-  // setUsers(users[userSelected.index])
-    //sortedUsers.push({...userSelected})
-    //setUser(sortedUsers)
-    console.log(user2)
-    //console.log(sortedUsers)
-   // console.log(user)
-    //setUser(users.sort((a, b) => a.index - b.index));
-
-    const badges: any[] = [];
-    firebase
-    .database()
-    .ref(`Accounts/${sortedUsers[userSelected.index].accountID}/badges`)
-    .on('value', (snapshot) => {
-      snapshot.forEach((child) =>{
-        badges.push(child.val())
-      });
-    });
-    setBadge([...badges]);
-}, []);
 
     return (
     
@@ -77,7 +18,7 @@ React.useEffect(() => {
           />
            <Text style={styles.title}>{userSelected.userName ? `${userSelected.userName}\n` : `${userSelected.userName}\n`} </Text>
            <View style={styles.attributeContainer}>
-          <Text style={styles.personInfo}>{user2.email ?`Email: ${user2.email}\n` : 'Email: Unspecified'}</Text>
+          <Text style={styles.personInfo}>{userSelected.email ?`Email: ${userSelected.email}\n` : 'Email: Unspecified'}</Text>
         </View>
         <View style={styles.attributeContainer}>
           <Text style={styles.personInfo}>{userSelected.highScore ?`High Score: ${userSelected.highScore}\n` : 'High Score: 0 points'}</Text>
@@ -85,35 +26,49 @@ React.useEffect(() => {
           <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       
           <View style={{flexDirection: 'row'}}> 
-          {JSON.stringify(badge[4])  === '1' ?
+          {JSON.stringify(userSelected.badges.thousandPoints)  === '1' ?
+              <Image
+                style={{ width: 70, height: 70, top: -90, left: -10 }}
+                source={require('../Badges/1000points.png')}
+              />
+              : null
+            }
+            {JSON.stringify(userSelected.badges.hundredPoints)  === '1' ?
+              <Image
+                style={{ width: 70, height: 70, top: -90, left: -10 }}
+                source={require('../Badges/100points.png')}
+              />
+              : null
+            }
+          {JSON.stringify(userSelected.badges.modBadge)  === '1' ?
               <Image
                 style={{ width: 70, height: 70, top: -90, left: -10 }}
                 source={require('../Badges/mods.png')}
               />
               : null
             }
-            {JSON.stringify(badge[2]) === '1' ?
+            {JSON.stringify(userSelected.badges.firstCatPostedBadge) === '1' ?
               <Image
                 style={{ width: 70, height: 70, top: -90, left: -10 }}
                 source={require('../Badges/FirstCatPosted.png')}
               />
               : null
             }
-            {JSON.stringify(badge[3]) === '1' ?
+            {JSON.stringify(userSelected.badges.firstCommentBadge) === '1' ?
               <Image
                 style={{ width: 70, height: 70, top: -90, left: -10 }}
                 source={require('../Badges/FirstComment.png')}
               />
               : null
             }
-            {JSON.stringify(badge[1]) === '1' ?
+            {JSON.stringify(userSelected.badges.feedingStationAttendeeBadge) === '1' ?
               <Image
                 style={{ width: 70, height: 70, top: -90, left: -10 }}
                 source={require('../Badges/FeedingStation.png')}
               />
               : null
             }
-            {JSON.stringify(badge[0]) === '1' ?
+            {JSON.stringify(userSelected.badges.firstCatRescuedBadge) === '1' ?
               <Image
                 style={{ width: 70, height: 70, top: -90, left: -10 }}
                 source={require('../Badges/FirstCatRescued.png')}
