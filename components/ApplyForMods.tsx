@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, Dimensions, StyleSheet, Modal, Text } from 'react-native';
-import { Input, Button } from 'react-native-elements';
+import { View, Dimensions, StyleSheet, Modal, Text} from 'react-native';
+import { Input, Button} from 'react-native-elements';
 import { Application, Report } from '../types';
 import firebase from 'firebase';
 import { v4 as uuidv4 } from 'uuid';
@@ -26,11 +26,14 @@ export default function ApplyforMods() {
     name: firebase.auth().currentUser?.displayName,
     applicationID: '',
     accountID: firebase.auth().currentUser?.uid,
-    reason: '',
+    reason1: '', 
+    reason2: '',
+    reason3: '',
     votes: 0,
     date: date + '-' + month + '-' + year,
-    time: time
+    time: time,
   });
+
 
   const toggleModalVisibility = () => {
     setModalVisible(!modalVisible);
@@ -44,11 +47,15 @@ export default function ApplyforMods() {
     firebase.database().ref().child(`Accounts/${firebase.auth().currentUser?.uid}/Application/${application.applicationID}`).on('value', function (snapshot) {
       setData(snapshot.val());
     });
+
+
+
+
   }, []);
 
   return (
     <View>
-      <Button
+      <Button 
         buttonStyle={styles.applyForModStyle}
         title="Apply for Moderator"
         titleStyle={{
@@ -70,11 +77,35 @@ export default function ApplyforMods() {
               style={styles.textInput}
               selectionColor="white"
               placeholder="Enter why you want to be a moderator..."
-              value={application.reason}
+              value={application.reason1}
               placeholderTextColor="black"
               onChangeText={(text) => setApplication((currentState: Application) => ({
                 ...currentState,
-                reason: text,
+                reason1: text,
+                time: time,
+              }))}
+            />
+            <Input
+              style={styles.textInput}
+              selectionColor="white"
+              placeholder="Enter availability per week..."
+              value={application.reason2}
+              placeholderTextColor="black"
+              onChangeText={(text) => setApplication((currentState: Application) => ({
+                ...currentState,
+                reason2: text,
+                time: time,
+              }))}
+            />
+              <Input
+              style={styles.textInput}
+              selectionColor="white"
+              placeholder="Enter other experience as a moderator..."
+              value={application.reason3}
+              placeholderTextColor="black"
+              onChangeText={(text) => setApplication((currentState: Application) => ({
+                ...currentState,
+                reason3: text,
                 time: time,
               }))}
             />
@@ -82,15 +113,15 @@ export default function ApplyforMods() {
               buttonStyle={styles.buttonStyle}
               onPress={() => {
                 toggleModalVisibility();
-              
-              if(data === null){
-                firebase.database().ref().child(`Accounts/${firebase.auth().currentUser?.uid}/Application/${application.applicationID}`).set(application)
+
+                if (data === null) {
+                  firebase.database().ref().child(`Accounts/${firebase.auth().currentUser?.uid}/Application/${application.applicationID}`).set(application)
                 }
-                else{
+                else {
                   alert("Application is being reviewed")
                 }
-               }
-            }
+              }
+              }
             />
             <Button title="Close"
               buttonStyle={styles.buttonStyle}
@@ -104,7 +135,7 @@ export default function ApplyforMods() {
 }
 
 const styles = StyleSheet.create({
-  
+
   buttonStyle: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -122,7 +153,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 90,
     borderRadius: 40,
-    backgroundColor: 'white',
+    backgroundColor: 'transparent',
     marginBottom: 20,
     marginLeft: 'auto',
     marginRight: 'auto',
@@ -132,7 +163,7 @@ const styles = StyleSheet.create({
     height: 160,
     backgroundColor: '#8B0000',
   },
-  
+
   viewWrapper: {
     flex: 1,
     alignItems: 'center',
@@ -143,12 +174,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
-    top: '50%',
-    left: '50%',
+    top: '40%',
+    left: '45%',
     elevation: 5,
     transform: [{ translateX: -(width * 0.4) }, { translateY: -90 }],
-    height: 300,
-    width: width * 0.8,
+    height: 420,
+    width: width * 0.9,
     backgroundColor: '#fff',
     borderRadius: 7,
   },
@@ -161,7 +192,8 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0, 0, 0, 0.2)',
     borderWidth: 1,
     marginBottom: 8,
-  }, 
+    
+  },
 
   titleText: {
     fontSize: 20,

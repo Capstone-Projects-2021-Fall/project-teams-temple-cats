@@ -15,6 +15,7 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Report
   const [iDs, setiDs] = React.useState<any[]>([]);
   let CatsCounter = 0;
 
+
   function changeStatus(accountID: string) {
     alert("Moderator application has been approved");
     firebase
@@ -40,8 +41,8 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Report
       }
     }
     return CatsCounter;
-
   }
+
 
 
   function removeApp(accountID: string) {
@@ -109,14 +110,16 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Report
                   <View key={index}>
 
                     <Text>{'Name: ' + report.name}</Text>
-                    <Text>{'Reason: ' + report.reason}</Text>
+                    <Text>{'Why: ' + report.reason1}</Text>
+                    <Text>{'Availability: ' + report.reason2}</Text>
+                    <Text>{'Prior Experience: ' + report.reason3}</Text>
                     <Text>{'Date: ' + report.date}</Text>
                     <Text>{'Time: ' + report.time}</Text>
                     <Text>{'Cats Reported: ' + number}</Text>
 
 
 
-                    {(report.votes) < 5 ? // Do not approve if report has less than 5 votes
+                    {(report.votes) < 3 ? // Do not approve if report has less than 3 votes
                       <Button title='Approve' buttonStyle={styles.buttonStyle} onPress={() => alert("We don't have enough votes yet")} />
                       : <Button title='Approve' buttonStyle={styles.buttonStyle} onPress={() =>
                         changeStatus(report.accountID)
@@ -124,7 +127,7 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Report
                       />
                     }
 
-                    {(report.votes) <= -5 ? // Do not delete if report does not have -5 votes
+                    {(report.votes) <= -3 ? // Do not delete if report does not have -3 votes
                       <Button title='Disapprove' buttonStyle={styles.buttonStyle} onPress={() => removeApp(report.accountID)} />
                       : <Button title='Disapprove' buttonStyle={styles.buttonStyle} onPress={() =>
                         alert("More negative votes are needed to remove applcation")
@@ -167,6 +170,8 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Report
 
                     </View>
 
+                    <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+
                   </View>
                 );
 
@@ -196,7 +201,6 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     backgroundColor: 'maroon',
     marginBottom: 20,
-    marginLeft: 'auto',
     marginRight: 'auto',
     fontSize: 2,
   },
@@ -205,10 +209,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   separator: {
-    marginVertical: 30,
+    marginVertical: 10,
+    marginHorizontal: -45,
     height: 1,
-    width: '80%',
-    color: 'rgba(160, 28, 52, 0.75)',
+    width: '150%',
+    marginTop: 2,
   },
   flexColumnContainer: {
     flex: 1,
@@ -224,9 +229,9 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     backgroundColor: '#8B0000',
-    marginLeft: 'auto',
     borderRadius: 40,
     marginRight: 'auto',
+    marginBottom: 10,
   },
   upvoteStyle: {
     fontSize: 20,
