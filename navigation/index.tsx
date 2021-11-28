@@ -33,7 +33,7 @@ import CreateAnnouncementModal from '../screens/CreateAnnouncementModal';
 import ReportedPostsModal from '../screens/ReportedPostsModal';
 import DownvotedPostsModal from '../screens/DownvotedPostsModal';
 import Mod from '../components/Mod';
-import LeaderboardInfoModal from '../screens/LeaderboardInfo';
+import ScoringInfoModal from '../screens/ScoringInfo';
 
 /**
  * Function that renders the navigation bar component.
@@ -118,7 +118,7 @@ function RootNavigator() {
       </Stack.Group>
 
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="LeaderboardInfo" component={LeaderboardInfoModal} />
+        <Stack.Screen name="ScoringInfo" component={ScoringInfoModal} />
       </Stack.Group>
     </Stack.Navigator>
   );
@@ -208,7 +208,7 @@ function BottomTabNavigator() {
           title: 'Leaderboard',
           headerRight: () => (
             <Pressable
-              onPress={() => navigation.navigate('LeaderboardInfo')}
+              onPress={() => navigation.navigate('ScoringInfo')}
               style={({ pressed }) => ({
                 opacity: pressed ? 0.5 : 1,
               })}
