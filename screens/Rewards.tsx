@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
-  StyleSheet, ImageBackground, SafeAreaView, View, ScrollView, Text, TouchableOpacity,
+  StyleSheet, ImageBackground, SafeAreaView, View, ScrollView, Text,
 } from 'react-native';
 import {
   Card, Button, Icon,
@@ -13,7 +13,7 @@ import ConfettiCannon from 'react-native-confetti-cannon';
  * @returns {JSX.Element} JSX element of the account screen
  */
 export default function Rewards() {
-  const [launchConfetti, setLaunchConfetti] = React.useState(false);
+  const [launchConfetti, setLaunchConfetti] = useState(false);
   /**
    * The uri of an image to be used in the background of the login screen.
    * @constant {{uri: string}}
