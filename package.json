@@ -6,6 +6,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
+    "emulators": "firebase emulators:start",
     "test": "jest --watchAll",
     "docs": "./node_modules/.bin/jsdoc -c jsdoc.json",
     "prettier": "prettier 'src/**/*.ts'",
