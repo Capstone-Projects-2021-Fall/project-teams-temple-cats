@@ -1,10 +1,11 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  StyleSheet, ImageBackground, SafeAreaView, View, ScrollView, Text,
+  StyleSheet, ImageBackground, SafeAreaView, View, ScrollView, Text, TouchableOpacity,
 } from 'react-native';
 import {
-  Card, ListItem, Button, Icon,
+  Card, Button, Icon,
 } from 'react-native-elements';
+import ConfettiCannon from 'react-native-confetti-cannon';
 
 /**
  * Function that renders the screen for cashing in points for rewards.
@@ -12,10 +13,18 @@ import {
  * @returns {JSX.Element} JSX element of the account screen
  */
 export default function Rewards() {
+  const [launchConfetti, setLaunchConfetti] = React.useState(false);
   /**
    * The uri of an image to be used in the background of the login screen.
    * @constant {{uri: string}}
    */
+
+  const handleLaunchConfetti = () => {
+    setLaunchConfetti(false);
+    setTimeout(() => {
+      setLaunchConfetti(true);
+    });
+  };
   return (
     <SafeAreaView>
       <ScrollView>
@@ -37,10 +46,12 @@ export default function Rewards() {
             <Button
               icon={<Icon name="redeem" color="#ffffff" />}
               buttonStyle={{
-                borderRadius: 40, backgroundColor: '#8B0000',
+                marginLeft: 0, marginRight: 0, marginBottom: 0, borderRadius: 40, backgroundColor: '#8B0000',
               }}
               title="Redeem"
+              onPress={handleLaunchConfetti}
             />
+
           </Card>
           <Card>
             <Card.Title>Temple Cats Magnet</Card.Title>
@@ -55,8 +66,15 @@ export default function Rewards() {
                 marginLeft: 0, marginRight: 0, marginBottom: 0, borderRadius: 40, backgroundColor: '#8B0000',
               }}
               title="Redeem"
+              onPress={handleLaunchConfetti}
             />
           </Card>
+          {launchConfetti && (
+            <ConfettiCannon
+              count={200}
+              origin={{ x: -100, y: 0 }}
+            />
+          )}
         </ImageBackground>
       </ScrollView>
     </SafeAreaView>
@@ -67,7 +85,7 @@ const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
     justifyContent: 'center',
-    paddingBottom: 20,
+    paddingBottom: 50,
   },
   text: {
     color: 'white',
