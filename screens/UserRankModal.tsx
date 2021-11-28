@@ -8,40 +8,61 @@ import { Badge, User } from '../types';
 
 const badges: any[] = [];
 const users: any[] = [];
-
 export default function UserRankModal({ route }) {
 
-  const  userSelected  = route.params;
+  const  userSelected  = route.params.item;
+  const sortedUsers = route.params.value;
   const [badge, setBadge] = React.useState<Badge[]>([]);
-  const [user, setUser] = React.useState<User[]>([]);
-  const [image, setImage] = React.useState<string>('./assets/images/cat-placeholder-tall.svg');
-  
+  const [user, setUser] = React.useState<User[]>([]);//sorted users in descending order for highScore
+  const [user2, setUsers] = React.useState<User[]>([]);//has photo, email, display
+
 React.useEffect(() => {
   firebase
     .database()
     .ref(`Accounts/`)
-    .on('value', (snapshot) => {
-      snapshot.forEach((child) => {
-        users.push({...child.val()});
-      });
-     // setUser(users[userSelected.index])
+    .orderByChild("points")
+        .on('value', (snapshot) => {
+          const newState: User[] = [];
+          snapshot.forEach((child) => {
+            newState.push({ ...child.val() });
+            setUser([...newState]);
+          });
+
+  
+     
     });
-    setUser(users[userSelected.index])
-    setImage(user.photo)
-    //console.log(users[userSelected.index])
+    firebase
+      .database()
+      .ref(`Accounts/`)
+      .on('value', (snapshot) => {
+        const newState: User[] = [];
+        snapshot.forEach((child) => {
+          newState.push({ ...child.val() });
+          setUsers([...newState]);
+        });
+      });
+
+    setUser(user2[userSelected.index])
+    //console.log(user2)
+   // setUsers(users[userSelected.index])
+  // setUsers(users[userSelected.index])
+    //sortedUsers.push({...userSelected})
+    //setUser(sortedUsers)
+    console.log(user2)
+    //console.log(sortedUsers)
+   // console.log(user)
+    //setUser(users.sort((a, b) => a.index - b.index));
 
     const badges: any[] = [];
     firebase
     .database()
-    .ref(`Accounts/${users[userSelected.index].accountID}/badges`)
+    .ref(`Accounts/${sortedUsers[userSelected.index].accountID}/badges`)
     .on('value', (snapshot) => {
       snapshot.forEach((child) =>{
         badges.push(child.val())
       });
     });
     setBadge([...badges]);
- 
-   //console.log(badges)
 }, []);
 
     return (
@@ -51,12 +72,12 @@ React.useEffect(() => {
           <Image
             style={styles.profilePic}
             source={{
-              uri: user.photo 
+              uri: userSelected.photo 
             }}
           />
-           <Text style={styles.title}>{user.display ? `${user.display}\n` : `${userSelected.userName}\n`} </Text>
+           <Text style={styles.title}>{userSelected.userName ? `${userSelected.userName}\n` : `${userSelected.userName}\n`} </Text>
            <View style={styles.attributeContainer}>
-          <Text style={styles.personInfo}>{user.email ?`Email: ${user.email}\n` : 'Email: Unspecified'}</Text>
+          <Text style={styles.personInfo}>{user2.email ?`Email: ${user2.email}\n` : 'Email: Unspecified'}</Text>
         </View>
         <View style={styles.attributeContainer}>
           <Text style={styles.personInfo}>{userSelected.highScore ?`High Score: ${userSelected.highScore}\n` : 'High Score: 0 points'}</Text>

@@ -35,6 +35,7 @@ import DownvotedPostsModal from '../screens/DownvotedPostsModal';
 import Mod from '../components/Mod';
 import UserRankModal from '../screens/UserRankModal';
 import BadgesModal from '../screens/BadgesModal';
+import ScoringInfoModal from '../screens/ScoringInfo';
 
 /**
  * Function that renders the navigation bar component.
@@ -125,6 +126,10 @@ function RootNavigator() {
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="DownvotedPosts" component={DownvotedPostsModal} />
       </Stack.Group>
+
+      <Stack.Group screenOptions={{ presentation: 'modal' }}>
+        <Stack.Screen name="ScoringInfo" component={ScoringInfoModal} />
+      </Stack.Group>
     </Stack.Navigator>
   );
 }
@@ -178,7 +183,6 @@ function BottomTabNavigator() {
         component={Home}
         options={({ navigation }: RootTabScreenProps<'Home'>) => ({
           title: 'Home',
-
           headerLeft: () => (
             <Pressable
               onPress={() => navigation.navigate('CatForm')}
@@ -207,9 +211,6 @@ function BottomTabNavigator() {
           tabBarIcon: ({ color }) => <Ionicons name="home" size={24} color={Colors[colorScheme].text} />,
         })}
       />
-
-   
-      
       <BottomTab.Screen
         name="Leaderboard"
         component={LeaderboardScreen}
@@ -228,9 +229,26 @@ function BottomTabNavigator() {
               </Pressable>
               </View>
                ),
-          tabBarIcon: ({ color }) => (<MaterialIcons name="leaderboard" size={25} 
+        headerLeft: () => (
+            <Pressable
+              onPress={() => navigation.navigate('ScoringInfo')}
+              style={({ pressed }) => ({
+              opacity: pressed ? 0.5 : 1,
+              })}
+            >
+            <FontAwesome
+              name="info-circle"
+              size={25}
+              color={Colors[colorScheme].text}
+              style={{ marginLeft: 20 }}
+            />
+          </Pressable>
+        ),
+        tabBarIcon: ({ color }) => (<MaterialIcons name="leaderboard" size={25} 
           color={Colors[colorScheme].text} />
-          ),
+        ),
+       
+        
         })}
       />
    
