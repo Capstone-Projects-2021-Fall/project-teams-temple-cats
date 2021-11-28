@@ -5,7 +5,7 @@ import { Camera } from 'expo-camera';
 
 let camera: Camera;
 /**
- *  @props called in ImagePicker
+ *  @typedef Props props called in ImagePicker
  */
 type Props = {
   onCaptureImage: (imageSource: string) => void;

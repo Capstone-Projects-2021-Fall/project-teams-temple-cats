@@ -4,7 +4,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { Camera } from 'expo-camera';
 import CatCamera from './Camera';
 /**
- *  @props called in camera and catform
+ *  @typedef Props props called in camera and catform
  */
 type Props = {
   modalVisible: boolean;
@@ -74,7 +74,7 @@ export default function CatImagePicker(props: Props) {
   };
   /**
    * This function handles openning camera
-   * @params data of photo uri
+   * @param data data of photo uri
    * @type string
    * @description this sets the photo from photo uri
    */

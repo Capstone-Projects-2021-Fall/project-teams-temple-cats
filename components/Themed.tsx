@@ -13,7 +13,7 @@ import useColorScheme from '../hooks/useColorScheme';
  * to entire app when passed to top level component.
  * Style props on individual components override these themes.
  * @param props: String
- * @param colorName Color object for {text, background, tint, tabIconDefault, tabIconSelected}
+ * @param colorName Color object for text, background, tint, tabIconDefault, tabIconSelected
  * @returns Theme for Light or Dark mode
  */
 export function useThemeColor(
