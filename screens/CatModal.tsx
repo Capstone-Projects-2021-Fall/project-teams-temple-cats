@@ -27,6 +27,8 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
   const [word, setWord] = useState<any>([]);
   const user = React.useContext(AuthContext);
   const [showValidation, setShowValidation] = useState(true);
+  const [expoNotif, setexpoNotif] = React.useState<any[]>([]);
+
 
   const [report, setReport]: Report = useState({
     reportID: '',
@@ -86,7 +88,76 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
         modStatus.push(snapshot.val());
         setWord(modStatus);
       });
+
+      firebase.database().ref().child('Accounts/').on('value', function (snapshot) {
+        const Accounts: any[] = Object.values(snapshot.val());
+        const tokens: any[] = [];
+  
+    
+  
+        Accounts.forEach((account) => {
+          if ((account.expoNotif && Object.keys(account.expoNotif).length > 0) && (account.modStatus === 3)){
+            tokens.push(account.expoNotif)
+          }
+        }
+        );
+        setexpoNotif(tokens)
+        //console.log(tokens)
+      });
+
   }, []);
+
+  async function sendPushNotification(array: string[], name: String) {
+
+    for (let i = 0; i < array.length; i++) {
+
+      const message = {
+        to: array[i],
+        sound: 'default',
+        title: 'Temple Cats',
+        body: 'Comment has been submitted on Cat: ' + name,
+        data: { someData: 'goes here' },
+      };
+
+      await fetch('https://exp.host/--/api/v2/push/send', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Accept-encoding': 'gzip, deflate',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(message),
+      });
+    }
+  }
+
+  async function sendPushNotificationReport(array: string[], name: String) {
+
+    for (let i = 0; i < array.length; i++) {
+
+      const message = {
+        to: array[i],
+        sound: 'default',
+        title: 'Temple Cats',
+        body: 'A report has been made on Cat: ' + name,
+        data: { someData: 'goes here' },
+      };
+
+      await fetch('https://exp.host/--/api/v2/push/send', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Accept-encoding': 'gzip, deflate',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(message),
+      });
+    }
+  }
+
+
+
+
   return (
     <SafeAreaView>
       <ScrollView>
@@ -180,6 +251,7 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
               ...currentState,
               commentID: `${new Date()} ${uuidv4()}`,
             }));
+            sendPushNotification(expoNotif, cat.name)
           }}
         />
         <View style={styles.bottomSeparator} lightColor="rgba(255,255,255,0.1)" darkColor="rgba(255,255,255,0.1)" />
@@ -215,6 +287,7 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
                     toggleModalVisibility();
                     console.log(report);
                     firebase.database().ref().child(`Cats/${cat.catID}/reports/${report.reportID}`).set(report);
+                    sendPushNotificationReport(expoNotif, cat.name)
                   }}
                 />
                 <Button title="Close" buttonStyle={styles.buttonStyle} onPress={toggleModalVisibility} />

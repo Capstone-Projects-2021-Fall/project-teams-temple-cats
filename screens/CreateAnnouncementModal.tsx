@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { addAnnouncement } from '../utils/dbInterface';
 
 export default function ModalScreen() {
-  
+  const [expoNotif, setexpoNotif] = React.useState<any[]>([]);
   const [announcement, setAnnouncement]: Announcement = useState({
     announcementID: uuidv4(),
     subject: '',
@@ -31,6 +31,25 @@ export default function ModalScreen() {
       ...currentState,
       time: month + '/' + date + '/' + year + '/' + hours + ':' + min + ':' + sec,
     }))
+
+    //Retrieves all expo tokens for moderators 
+
+
+    firebase.database().ref().child('Accounts/').on('value', function (snapshot) {
+      const Accounts: any[] = Object.values(snapshot.val());
+      const tokens: any[] = [];
+
+  
+
+      Accounts.forEach((account) => {
+        if ((account.expoNotif && Object.keys(account.expoNotif).length > 0)){
+          tokens.push(account.expoNotif)
+        }
+      }
+      );
+      setexpoNotif(tokens)
+      //console.log(tokens)
+    });
     
   }, []);
 
@@ -50,6 +69,30 @@ export default function ModalScreen() {
     });
     alert('Submitted Successfully');
   }
+  }
+
+  async function sendPushNotification(array: string[]) {
+
+    for (let i = 0; i < array.length; i++) {
+
+      const message = {
+        to: array[i],
+        sound: 'default',
+        title: 'Temple Cats',
+        body: 'A new annoucenment has been posted',
+        data: { someData: 'goes here' },
+      };
+
+      await fetch('https://exp.host/--/api/v2/push/send', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Accept-encoding': 'gzip, deflate',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(message),
+      });
+    }
   }
 
     return (
@@ -94,6 +137,7 @@ export default function ModalScreen() {
           }}
           onPress={() => {
             submitAnnouncement();
+            sendPushNotification(expoNotif)
             return;
           }}
         />
