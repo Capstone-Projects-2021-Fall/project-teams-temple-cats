@@ -23,6 +23,7 @@ export type RootStackParamList = {
   Rewards: undefined;
   NotFound: undefined;
   Cat: { cat: Cat };
+  User: { user: User };
   FeedingStations: { title: String; info: any };
   ReportedPosts: undefined;
   DownvotedPosts: undefined;
@@ -46,6 +47,14 @@ export type RootTabScreenProps<Screen extends keyof RootTabParamList> = Composit
   BottomTabScreenProps<RootTabParamList, Screen>,
   NativeStackScreenProps<RootStackParamList>
 >;
+
+export type Badge = {
+  modBadge: boolean;
+  firstCommentBadge: boolean;
+  catRescuerBadge: boolean;
+  feedingStationAttendeeBadge: boolean;
+  firstCatPostedBadge: boolean;
+};
 
 export type Report = {
   reportID: string;
@@ -123,6 +132,7 @@ export type User = {
   accountID: string | undefined;
   email: string | null | undefined;
   photo: string | null | undefined;
+  badges: true | false;
   points: 0;
   posts: 0;
   modStatus: 1 | 2 | 3; // user, feeder, moderator

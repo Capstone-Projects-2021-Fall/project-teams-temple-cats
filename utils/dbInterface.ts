@@ -2,7 +2,7 @@ import React from 'react';
 import { LatLng } from 'react-native-maps';
 import firebase from './firebase';
 import {
-  Account, Announcement, Cat, Pin, User,
+  Account, Announcement, Cat, Badge, User,
 } from '../types';
 
 const root = firebase.database().ref();
@@ -14,6 +14,15 @@ export function addAnnouncement(announcement: Announcement) {
     .ref()
     .child(`Announcements/${announcement.announcementID}`)
     .set(announcement);
+}
+
+export function addBadge(badge: Badge, id: User['accountID'], badgeType: String ) {
+  firebase
+    .database()
+    .ref()
+    .child(`Accounts/${id}`)
+    .child(`Badges/${badgeType}`)
+    .set(badge);
 }
 
 export function addCat(cat: Cat) {
@@ -35,7 +44,7 @@ export async function addPicture(cat: Cat) {
     .put(blob);
 }
 
-export function addUser(name: User['displayName'], id: User['accountID'], email: User['email'], photo: User['photo']) {
+export function addUser(name: User['displayName'], id: User['accountID'], email: User['email'], badges: User['badges'], photo: User['photo']) {
   firebase
     .database()
     .ref()
@@ -44,6 +53,7 @@ export function addUser(name: User['displayName'], id: User['accountID'], email:
       display: name,
       accountID: id,
       email,
+      badges,
       photo,
       posts: 0,
       modStatus: 1,

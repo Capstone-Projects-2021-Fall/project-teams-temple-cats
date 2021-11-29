@@ -33,6 +33,8 @@ import CreateAnnouncementModal from '../screens/CreateAnnouncementModal';
 import ReportedPostsModal from '../screens/ReportedPostsModal';
 import DownvotedPostsModal from '../screens/DownvotedPostsModal';
 import Mod from '../components/Mod';
+import UserRankModal from '../screens/UserRankModal';
+import BadgesModal from '../screens/BadgesModal';
 import ScoringInfoModal from '../screens/ScoringInfo';
 
 /**
@@ -86,6 +88,10 @@ function RootNavigator() {
       </Stack.Group>
 
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
+        <Stack.Screen name="UserRank" component={UserRankModal} />
+      </Stack.Group>
+
+      <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="CatForm" component={CatForm} />
       </Stack.Group>
 
@@ -107,6 +113,10 @@ function RootNavigator() {
 
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Rewards" component={Rewards} />
+      </Stack.Group>
+
+      <Stack.Group screenOptions={{ presentation: 'modal' }}>
+        <Stack.Screen name="Badges" component={BadgesModal} />
       </Stack.Group>
 
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
@@ -204,26 +214,46 @@ function BottomTabNavigator() {
       <BottomTab.Screen
         name="Leaderboard"
         component={LeaderboardScreen}
-        options={({ navigation }: RootTabScreenProps<'Leaderboard'>) => ({
-          title: 'Leaderboard',
-          headerRight: () => (
+        options={({navigation }: RootTabScreenProps<'Leaderboard'>) => ({
+        title: 'Leaderboard', 
+        headerRight: ()  => (
+            <View style={{ flexDirection: 'row' }}>
+              <Pressable
+                onPress={() => navigation.navigate('Badges')}
+                style={({ pressed }) => ({
+                  right: 11,
+                  opacity: pressed ? 0.5 : 1,
+                })}
+              >
+                <Ionicons name="ribbon" size={24} color={Colors[colorScheme].text} />
+              </Pressable>
+              </View>
+               ),
+        headerLeft: () => (
             <Pressable
               onPress={() => navigation.navigate('ScoringInfo')}
               style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
+              opacity: pressed ? 0.5 : 1,
               })}
             >
-              <FontAwesome
-                name="info-circle"
-                size={25}
-                color={Colors[colorScheme].text}
-                style={{ marginRight: 15 }}
-              />
-            </Pressable>
-          ),
-          tabBarIcon: ({ color }) => <MaterialIcons name="leaderboard" size={24} color={Colors[colorScheme].text} />,
+            <FontAwesome
+              name="info-circle"
+              size={25}
+              color={Colors[colorScheme].text}
+              style={{ marginLeft: 20 }}
+            />
+          </Pressable>
+        ),
+        tabBarIcon: ({ color }) => (<MaterialIcons name="leaderboard" size={25} 
+          color={Colors[colorScheme].text} />
+        ),
+       
+        
         })}
       />
+   
+
+
       <BottomTab.Screen
         name="Account"
         component={Account}

@@ -230,18 +230,15 @@ filtering search bar text input to see if any of the input matches any element w
   function recent(text) {
     const newData = catDate.filter((item) => {
       const split = item.date.toString().split('/');
-      // console.log(split[1])
+   
       const newDate = split[1];
       const splitCurrent = currentDate.split('/');
       const currentDate2 = splitCurrent[1];
-      // console.log(currentDate)
       const newMonth = split[0];
-
       const currentMonth = splitCurrent[0];
-      // console.log(currentDate)
       const difMonth = Number(currentMonth) - Number(newMonth);
       const dif = Number(currentDate2) - Number(newDate);
-      // console.log(dif)
+    
       if (difMonth == 0) {
         if (dif <= 10) {
           if (item.name.length == 0) {
@@ -259,15 +256,12 @@ filtering search bar text input to see if any of the input matches any element w
   function recentMonth(text) {
     const newData = catDate.filter((item) => {
       const split = item.date.toString().split('/');
-      // console.log(split[1])
       const newMonth = split[0];
       const splitCurrent = currentDate.split('/');
       const currentMonth = splitCurrent[0];
-      // console.log(currentDate)
       const dif = Number(currentMonth) - Number(newMonth);
       if (dif == 1) {
         // current date: 12/6/2021, cat date could be: 11/6/2021
-        // console.log(dif)
         if (item.name.length == 0) {
           const itemData = 'Unknown';
           return itemData;
