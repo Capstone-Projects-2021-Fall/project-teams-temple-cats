@@ -3,16 +3,20 @@ import { StyleSheet, Image } from 'react-native';
 
 import { Text, View } from '../components/Themed';
 import { RootStackParamList, RootTabScreenProps } from '../types';
+/**
+ * Function that renders the modal for viewing information on a feeding station.
+ * @component
+ * @param {RootTabScreenProps} props navigation properties from the root of the home button in navigation
+ * @returns {JSX.Element} JSX element of the feeding station modal screen
+ */
+export default function ModalScreen({ route }, { navigation }: RootTabScreenProps<'Home'>) {
+  // console.log(route.params.info)
+  const statusReports: any[] = [];
 
-export default function ModalScreen({ route }, { navigation }: RootTabScreenProps<"Home">) {
-
-  //console.log(route.params.info)
-  var statusReports: any[] = [];
-
-  for(const i in route.params.info){
-    statusReports.push(route.params.info[i])
+  for (const i in route.params.info) {
+    statusReports.push(route.params.info[i]);
   }
- 
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{route.params.title}</Text>
@@ -25,20 +29,18 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
 
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
 
-      {statusReports.map((item) => {
-        return (
-            <View style={styles.content}>
-              <Text style={styles.contentList}>
-                {"Status: " + item.status}
-                {'\n'}
-                {"Ingredients Needed: " + item.ingredients}
-                {'\n'}
-                {"Time: " + item.time}
-                {'\n\n'}
-              </Text>
-            </View> 
-        )
-      })}
+      {statusReports.map((item) => (
+        <View style={styles.content}>
+          <Text style={styles.contentList}>
+            {`Status: ${item.status}`}
+            {'\n'}
+            {`Ingredients Needed: ${item.ingredients}`}
+            {'\n'}
+            {`Time: ${item.time}`}
+            {'\n\n'}
+          </Text>
+        </View>
+      ))}
     </View>
   );
 }

@@ -19,14 +19,16 @@ export type RootStackParamList = {
   Announcements: undefined;
   CatForm: undefined;
   Facebook: undefined;
-  Settings: undefined;
+  BugReporting: undefined;
   Rewards: undefined;
   NotFound: undefined;
-  Cat: {cat: Cat};
-  FeedingStations: {title: String, info: any};
+  Cat: { cat: Cat };
+  User: { user: User };
+  FeedingStations: { title: String; info: any };
   ReportedPosts: undefined;
   DownvotedPosts: undefined;
   ModeratorRequests: undefined;
+  ScoringInfo: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<
@@ -47,6 +49,14 @@ export type RootTabScreenProps<Screen extends keyof RootTabParamList> = Composit
   NativeStackScreenProps<RootStackParamList>
 >;
 
+export type Badge = {
+  modBadge: boolean;
+  firstCommentBadge: boolean;
+  catRescuerBadge: boolean;
+  feedingStationAttendeeBadge: boolean;
+  firstCatPostedBadge: boolean;
+};
+
 export type Report = {
   reportID: string;
   catID: string;
@@ -66,18 +76,19 @@ export type Application = {
 
 export type ReportList = {
   [key: string]: Report;
-}
+};
 
 export type Comment = {
   commentID: string;
   content: string;
   accountID: string;
   reports: ReportList;
+  votes: number;
 };
 
 export type CommentList = {
   [key: string]: Comment;
-}
+};
 
 export type Announcement = {
   announcementID: string;
@@ -121,20 +132,19 @@ export type Cat = {
 };
 
 export type FeedingStations = {
- title: String;
- info: String;
- latitude: any,
- longitude: any,
- street: String,
+  title: String;
+  info: String;
+  latitude: any;
+  longitude: any;
+  street: String;
 };
-
-
 
 export type User = {
   displayName: string | null | undefined;
   accountID: string | undefined;
   email: string | null | undefined;
   photo: string | null | undefined;
+  badges: true | false;
   points: 0;
   posts: 0;
   modStatus: 1 | 2 | 3; // user, feeder, moderator

@@ -5,7 +5,8 @@ import { Comment } from '../types';
 
 /**
  * Function for rendering comments.
- * @param props: Comment
+ * @component
+ * @param {Comment} props comment object to be rendered
  * @returns {JSX.Element} JSX render of a Comment
  */
 
