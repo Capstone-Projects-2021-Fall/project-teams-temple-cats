@@ -6,8 +6,8 @@ import { RootStackParamList, RootTabScreenProps } from '../types';
 /**
  * Function that renders the modal for viewing information on a feeding station.
  * @component
- * @param {RootTabScreenProps} props navigation properties from the root of the account button in navigation
- * @returns {JSX.Element} JSX element of the account screen
+ * @param {RootTabScreenProps} props navigation properties from the root of the home button in navigation
+ * @returns {JSX.Element} JSX element of the feeding station modal screen
  */
 export default function ModalScreen({ route }, { navigation }: RootTabScreenProps<'Home'>) {
   // console.log(route.params.info)

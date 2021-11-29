@@ -6,16 +6,16 @@ import { Text, View } from '../components/Themed';
 import { RootTabScreenProps, User } from '../types';
 import { white } from 'react-native-paper/lib/typescript/styles/colors';
 
+let pointValuesArr: any[] = [];
+let pointValuesWeekArr: any[] = [];
+const final: any[] = [];
+
 /**
  * Function that renders the leaderboard screen.
  * @component
  * @param {RootTabScreenProps} props navigation properties from the root of the leaderboard button in navigation
  * @returns {JSX.Element} JSX element of the leaderboard screen
  */
-
-let pointValuesArr: any[] = [];
-let pointValuesWeekArr: any[] = [];
-
 export default function LeaderboardScreen({ navigation }: RootTabScreenProps<'Leaderboard'>) {
 
   const [points, setPoints] = useState<any>([]);

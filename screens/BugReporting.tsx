@@ -3,11 +3,11 @@ import { StyleSheet, StatusBar } from 'react-native';
 import { WebView } from 'react-native-webview';
 
 /**
- * Function that renders the screen for changing settings.
+ * Function that renders the screen for bug reporting.
  * @component
- * @returns {JSX.Element} JSX element of the account screen
+ * @returns {JSX.Element} JSX element of the bug reporting screen
  */
-export default function Settings() {
+export default function BugReporting() {
   return (
     <WebView
       style={styles.feedbackWebView}

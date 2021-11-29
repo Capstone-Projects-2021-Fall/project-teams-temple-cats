@@ -3,20 +3,21 @@ import { View, Platform, Alert, Modal, StyleSheet, Pressable, Text, SafeAreaView
 import * as ImagePicker from 'expo-image-picker';
 import { Camera } from 'expo-camera';
 import CatCamera from './Camera';
+
 /**
- *  @props called in camera and catform
+ * Function that adds a picture to the cat post.
+ * @component
+ * @param {Object} props props called in camera and catform
+ * @param {boolean} props.modalVisible boolean to show or hide the image picker modal
+ * @param {function} props.onCloseModal callback function when modal is closed
+ * @param {function} props.onSetImage callback function when an image is set
+ * @returns {JSX.Element} JSX element of the image picker component
  */
-type Props = {
+export default function CatImagePicker(props: {
   modalVisible: boolean;
   onCloseModal: () => void;
   onSetImage: (image: string) => void;
-};
-/**
- * Function that add a picture to the cat post.
- * @component
- * @returns {JSX.Element} JSX element of the account screen
- */
-export default function CatImagePicker(props: Props) {
+}) {
   const { modalVisible, onCloseModal, onSetImage } = props;
   const [camModalVisible, setCamModalVisible] = useState(false);
   /**
@@ -74,8 +75,7 @@ export default function CatImagePicker(props: Props) {
   };
   /**
    * This function handles openning camera
-   * @params data of photo uri
-   * @type string
+   * @param {string} data data of photo uri
    * @description this sets the photo from photo uri
    */
   const handleCameraCapture = (data: string) => {

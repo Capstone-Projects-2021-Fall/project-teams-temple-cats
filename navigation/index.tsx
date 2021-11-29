@@ -25,7 +25,7 @@ import CatForm from '../screens/CatForm';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import { AuthContext } from '../context/FirebaseAuthContext';
 import Facebook from '../screens/Facebook';
-import Settings from '../screens/Settings';
+import BugReporting from '../screens/BugReporting';
 import Rewards from '../screens/Rewards';
 import FeedingStationModal from '../screens/FeedingStationModal';
 import CatModal from '../screens/CatModal';
@@ -100,7 +100,7 @@ function RootNavigator() {
       </Stack.Group>
 
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="Settings" component={Settings} />
+        <Stack.Screen name="BugReporting" component={BugReporting} />
       </Stack.Group>
 
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
@@ -270,12 +270,12 @@ function BottomTabNavigator() {
                 <FontAwesome name="gift" size={25} color={Colors[colorScheme].text} style={{ marginRight: 15 }} />
               </Pressable>
               <Pressable
-                onPress={() => navigation.navigate('Settings')}
+                onPress={() => navigation.navigate('BugReporting')}
                 style={({ pressed }) => ({
                   opacity: pressed ? 0.5 : 1,
                 })}
               >
-                <FontAwesome name="cog" size={25} color={Colors[colorScheme].text} style={{ marginRight: 15 }} />
+                <FontAwesome name="bug" size={25} color={Colors[colorScheme].text} style={{ marginRight: 15 }} />
               </Pressable>
             </View>
           ),
