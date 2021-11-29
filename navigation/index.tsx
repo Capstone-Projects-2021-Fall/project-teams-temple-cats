@@ -32,6 +32,7 @@ import CatModal from '../screens/CatModal';
 import CreateAnnouncementModal from '../screens/CreateAnnouncementModal';
 import ReportedPostsModal from '../screens/ReportedPostsModal';
 import DownvotedPostsModal from '../screens/DownvotedPostsModal';
+import ModeratorModal from '../screens/ModeratorModal';
 import Mod from '../components/Mod';
 import UserRankModal from '../screens/UserRankModal';
 import BadgesModal from '../screens/BadgesModal';
@@ -128,9 +129,14 @@ function RootNavigator() {
       </Stack.Group>
 
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
+        <Stack.Screen name="ModeratorRequests" component={ModeratorModal} />
+      </Stack.Group>
+
+      <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="ScoringInfo" component={ScoringInfoModal} />
       </Stack.Group>
     </Stack.Navigator>
+    
   );
 }
 

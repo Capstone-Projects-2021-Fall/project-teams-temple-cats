@@ -63,6 +63,15 @@ export function addUser(name: User['displayName'], id: User['accountID'], email:
     firebase
     .database()
     .ref()
+    .child(`Accounts/${id}`).child('/points')
+    .set({
+      userName: name,
+      highScore: 1,
+    });
+
+    firebase
+    .database()
+    .ref()
     .child(`Accounts/${id}`)
     .child(`Points/`)
     .child(`Badges/${badgeType}`)
@@ -84,6 +93,10 @@ export function addUser(name: User['displayName'], id: User['accountID'], email:
     .child(`photo/${photo}`)
     .set(photo);
 
+    
     return "true"
 
+
 }
+
+
