@@ -71,7 +71,8 @@
     "react-navigation": "^4.4.4",
     "react-router": "^5.2.1",
     "react-router-dom": "^5.3.0",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "expo-notifications": "~0.12.3"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
