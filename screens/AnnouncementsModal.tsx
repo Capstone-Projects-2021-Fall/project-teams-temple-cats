@@ -1,15 +1,12 @@
-import { FontAwesome, Ionicons } from '@expo/vector-icons';
-import { StatusBar } from 'expo-status-bar';
 import firebase from 'firebase';
 import * as React from 'react';
-import { Image, FlatList, Platform, StyleSheet, TouchableOpacity, Button, SafeAreaView, ScrollView } from 'react-native';
-import { Colors, Icon } from 'react-native-elements';
-import Mod from '../components/Mod';
+import {
+  StyleSheet, Button, SafeAreaView, ScrollView,
+} from 'react-native';
+import { useState } from 'react';
 import { Announcement, RootTabScreenProps } from '../types';
 import { Text, View } from '../components/Themed';
 import { AuthContext } from '../context/FirebaseAuthContext';
-import { useState } from 'react';
-import { black } from 'react-native-paper/lib/typescript/styles/colors';
 
 const modStatus: any[] = [];
 
@@ -20,23 +17,23 @@ const modStatus: any[] = [];
  * @returns { JSX.Element } JSX element for modal screen displaying announcements
  */
 export default function ModalScreen({ navigation }: RootTabScreenProps<'Home'>) {
-  const announcementRef = firebase.database().ref("Announcements/");
-  const [announcementData, setAnnouncementData] = React.useState<Announcement[]>([]); 
+  const announcementRef = firebase.database().ref('Announcements/');
+  const [announcementData, setAnnouncementData] = React.useState<Announcement[]>([]);
 
-  
   const [word, setWord] = useState<any>([]);
 
   const user = React.useContext(AuthContext);
-    
-  React.useEffect(() => {
 
+  const isModerator = JSON.stringify(modStatus[0]) === '3';
+
+  React.useEffect(() => {
     firebase
-    .database()
-    .ref(`Accounts/${user?.uid}/modStatus`)
-    .on('value', (snapshot) => {
-      modStatus.push(snapshot.val());
-      setWord(modStatus);
-    });
+      .database()
+      .ref(`Accounts/${user?.uid}/modStatus`)
+      .on('value', (snapshot) => {
+        modStatus.push(snapshot.val());
+        setWord(modStatus);
+      });
     announcementRef.get().then((snapshot) => {
       const announcements: Announcement[] = Object.values(snapshot.val());
       const announcementDataTmp: Announcement[] = [];
@@ -45,48 +42,45 @@ export default function ModalScreen({ navigation }: RootTabScreenProps<'Home'>) 
         if (announcement.content && Object.keys(announcement.content).length > 0) {
           announcementDataTmp.push(announcement);
         }
+      });
+      setAnnouncementData(announcementDataTmp);
     });
-    setAnnouncementData(announcementDataTmp);
- 
-
-});
-}, []);
-
- 
+  }, []);
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-    <View style={styles.container}>
-      <Image
-        style={{ width: 200, height: 200, top: 5 }}
-        source={{
-          uri: 'https://i1.wp.com/consciouscat.net/wp-content/uploads/2017/12/cat-newspaper-e1513176589145.jpg?resize=550%2C367&ssl=1',
-        }}
-      />
-      {JSON.stringify(modStatus[0]) === '3' ?
-        
-        <Button
-        color="#8b0000"
-        title="Create announcement"
-        onPress={() => {
-          navigation.push("CreateAnnouncement")
-        }}
-      />
-      
-        : null
-      }
-      <ScrollView>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-        <View style={styles.flexColumnContainer}>
-        {announcementData.map((announcement, index) => (
-          <TouchableOpacity onPress={() => alert(announcement.time)}>
-            <Text style={styles.listItem}>{announcement.subject}: {announcement.content}</Text>
-          </TouchableOpacity>
-        ))}
+    <SafeAreaView style={styles.container}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.announcementWrapper}>
+          <Text style={styles.title}>
+            {announcementData.length}
+            {' '}
+            {(announcementData.length > 1 || announcementData.length === 0) ? 'Announcements' : 'Announcement'}
+          </Text>
+          {announcementData.map((announcement, index) => (
+            <View style={styles.listItem} key={index}>
+              <Text style={styles.listItemSubject}>
+                {announcement.subject}
+              </Text>
+              <Text style={styles.listItemContent}>
+                {announcement.content}
+              </Text>
+              <Text style={styles.listItemDateTime}>
+                {announcement.time}
+              </Text>
+            </View>
+          ))}
         </View>
       </ScrollView>
-    </View>
-  </SafeAreaView>
+      {isModerator && (
+        <Button
+          color="#fff"
+          title="Create announcement"
+          onPress={() => {
+            navigation.push('CreateAnnouncement');
+          }}
+        />
+      )}
+    </SafeAreaView>
   );
 }
 
@@ -94,37 +88,43 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
-  },
-  flexColumnContainer: {
-    flex: 1,
-  },
-  flexRowContainer: {
-    flex: 1,
-    flexDirection: "row",
+    backgroundColor: 'rgba(160, 28, 52, 0.65)',
   },
   title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    top: 100,
+    fontSize: 32,
+    color: '#fff',
+    marginBottom: 20,
   },
- 
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    top:-20,
-    width: '80%',
-    
+  announcementWrapper: {
+    backgroundColor: 'transparent',
+    paddingTop: 30,
   },
-  
   listItem: {
-    color: 'black',
     fontSize: 16,
-    alignItems: 'center',
-    fontWeight: "bold", 
-   
-    backgroundColor: "white",
-    borderColor: "black",
-    borderWidth: 1
+    fontWeight: 'bold',
+    backgroundColor: '#8b0000',
+    marginTop: 10,
+    marginBottom: 10,
+    padding: 20,
+    width: 350,
+    borderRadius: 20,
+    display: 'flex',
+  },
+  listItemSubject: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'white',
+    marginBottom: 10,
+  },
+  listItemContent: {
+    fontSize: 14,
+    color: 'white',
+    marginBottom: 10,
+  },
+  listItemDateTime: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: 'white',
+    alignSelf: 'flex-end',
   },
 });
