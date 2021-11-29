@@ -16,7 +16,8 @@ const modStatus: any[] = [];
 /**
  * Function that returns a view for displaying announcements
  * @component
- * @returns { View } for displaying announcements
+ * @param {RootTabScreenProps} props navigation properties from the root of the home button in navigation
+ * @returns { JSX.Element } JSX element for modal screen displaying announcements
  */
 export default function ModalScreen({ navigation }: RootTabScreenProps<'Home'>) {
   const announcementRef = firebase.database().ref("Announcements/");
