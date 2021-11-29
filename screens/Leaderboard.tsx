@@ -5,17 +5,16 @@ import Leaderboard from 'react-native-leaderboard';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 
+let pointValuesArr: any[] = [];
+let pointValuesWeekArr: any[] = [];
+const final: any[] = [];
+
 /**
  * Function that renders the leaderboard screen.
  * @component
  * @param {RootTabScreenProps} props navigation properties from the root of the leaderboard button in navigation
  * @returns {JSX.Element} JSX element of the leaderboard screen
  */
-
-let pointValuesArr: any[] = [];
-let pointValuesWeekArr: any[] = [];
-const final: any[] = [];
-
 export default function LeaderboardScreen({ navigation }: RootTabScreenProps<'Leaderboard'>) {
   // console.log(data1)
 

@@ -12,8 +12,10 @@ import useColorScheme from '../hooks/useColorScheme';
  * Default property provided by Expo. Declares a light and Text them to apply
  * to entire app when passed to top level component.
  * Style props on individual components override these themes.
- * @param props: String
- * @param colorName Color object for text, background, tint, tabIconDefault, tabIconSelected
+ * @param {Object} props ColorSchemeName to decide the color scheme of the component
+ * @param {string} props.light Color for light theme
+ * @param {string} props.dark Color for dark dark
+ * @param {string} colorName Color object for either text, background, tint, tabIconDefault, or tabIconSelected
  * @returns Theme for Light or Dark mode
  */
 export function useThemeColor(

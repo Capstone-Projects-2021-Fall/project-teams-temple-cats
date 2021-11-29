@@ -6,7 +6,7 @@ import { WebView } from 'react-native-webview';
  * Function that renders the webview for displaying the Temple Cats Facebook Group.
  * @component
  * @param {RootTabScreenProps} props navigation properties from the root of the account button in navigation
- * @returns {JSX.Element} JSX element of the account screen
+ * @returns {JSX.Element} JSX element of the facebook webview screen
  */
 export default function Facebook() {
   return (

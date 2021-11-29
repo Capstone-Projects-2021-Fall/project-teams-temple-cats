@@ -5,7 +5,7 @@ import { Text, View } from '../components/Themed';
 /**
  * Function that renders the screen for displaying info about the points/scoring system.
  * @component
- * @returns {JSX.Element} JSX element of the leaderboard info screen
+ * @returns {JSX.Element} JSX element of the scoring info screen
  */
 export default function ScoringInfoModal() {
   const pointsInfo = [

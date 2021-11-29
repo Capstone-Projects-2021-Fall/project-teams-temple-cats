@@ -17,7 +17,7 @@ import firebase from '../utils/firebase';
  * @component
  * @returns {JSX.Element} Form for submitting a cat into the database
  */
-export default CatForm = () => {
+export default function CatForm() {
   const colors = ['Cat Fur Color', 'Orange', 'Brown', 'Black', 'White'];
   const eyeColors = ['Cat Eye Color', 'Brown', 'Green', 'Blue', 'Black', 'Yellow', 'Orange', 'Hazel', 'Mixed'];
 
@@ -52,7 +52,7 @@ export default CatForm = () => {
 
   /**
    * Helper function to assign location to cat
-   * @param coordinate
+   * @param {LatLng} coordinate latitude and longitude object for coordinates
    */
   function onLocationPick(coordinate: LatLng) {
     setCat((currentState: Cat) => ({
@@ -63,7 +63,7 @@ export default CatForm = () => {
   }
   /**
    * Places picture into the image place holder
-   * @param data
+   * @param {string} data uri for image
    */
   const handleSetImage = (data: string) => {
     cat.media = data;

@@ -8,7 +8,7 @@ import { Cat, Comment, RootStackScreenProps } from '../types';
  * Function that renders the screen for resolving downvoted posts.
  * @component
  * @param {RootTabScreenProps} props navigation properties from the root of the account button in navigation
- * @returns {JSX.Element} JSX element of the account screen
+ * @returns {JSX.Element} JSX element of the reported posts modal screen
  */
 export default function ModalScreen({ navigation }: RootStackScreenProps<'ReportedPosts'>) {
   const [reportedCats, setReportedCats] = React.useState<Cat[]>([]);

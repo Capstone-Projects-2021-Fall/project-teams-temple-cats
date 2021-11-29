@@ -7,7 +7,7 @@ import { Cat } from '../types';
 /**
  * Function that queries the database for matching terms.
  * @component
- * @returns {JSX.Element} JSX element of the account screen
+ * @returns {JSX.Element} JSX element of the search component
  */
 export default function Search({ mapViewRef }) {
   const catsRef = firebase.database().ref().child('Cats/');

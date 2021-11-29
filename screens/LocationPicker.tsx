@@ -17,7 +17,7 @@ import Gps from '../utils/gps';
  * Function that renders the view for picking a location a cat was seen.
  * @component
  * @param {RootTabScreenProps} props navigation properties from the root of the account button in navigation
- * @returns {JSX.Element} JSX element of the account screen
+ * @returns {JSX.Element} JSX element of the location picker modal screen
  */
 const LocationPicker = (props: {
   onCancel: () => void;
