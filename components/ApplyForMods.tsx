@@ -10,6 +10,8 @@ const { width } = Dimensions.get('window');
 
 export default function ApplyforMods() {
 
+  const [expoNotif, setexpoNotif] = React.useState<any[]>([]);
+
   const [modalVisible, setModalVisible] = useState(false);
   const [data, setData] = useState('');
 
@@ -48,10 +50,50 @@ export default function ApplyforMods() {
       setData(snapshot.val());
     });
 
+    //Retrieves all expo tokens for moderators 
 
+    firebase.database().ref().child('Accounts/').on('value', function (snapshot) {
+      const Accounts: any[] = Object.values(snapshot.val());
+      const tokens: any[] = [];
 
+      Accounts.forEach((account) => {
+        if (account.expoNotif && Object.keys(account.expoNotif).length > 0 && (account.modStatus === 3)) {
+          tokens.push(account.expoNotif)
+        }
+      }
+      );
+
+      setexpoNotif(tokens)
+      //console.log(tokens)
+    });
 
   }, []);
+
+  //Notification message
+
+  async function sendPushNotification(array: string[]) {
+
+    for (let i = 0; i < array.length; i++) {
+
+      const message = {
+        to: array[i],
+        sound: 'default',
+        title: 'Temple Cats',
+        body: 'You have recieved a new moderator application',
+        data: { someData: 'goes here' },
+      };
+
+      await fetch('https://exp.host/--/api/v2/push/send', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Accept-encoding': 'gzip, deflate',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(message),
+      });
+    }
+  }
 
   return (
     <View>
@@ -115,7 +157,9 @@ export default function ApplyforMods() {
                 toggleModalVisibility();
 
                 if (data === null) {
+                  alert("Application submitted")
                   firebase.database().ref().child(`Accounts/${firebase.auth().currentUser?.uid}/Application/${application.applicationID}`).set(application)
+                  sendPushNotification(expoNotif)
                 }
                 else {
                   alert("Application is being reviewed")

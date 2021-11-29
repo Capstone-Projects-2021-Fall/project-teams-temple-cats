@@ -13,10 +13,13 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Report
 
   const [submissons, setSubmissions] = React.useState<Account[]>([]);
   const [iDs, setiDs] = React.useState<any[]>([]);
+  const [expoNotif, setexpoNotif] = React.useState<any[]>([]);
+
+
   let CatsCounter = 0;
 
 
-  function changeStatus(accountID: string) {
+  function changeStatus(accountID: string, notif: any) {
     alert("Moderator application has been approved");
     firebase
       .database()
@@ -27,6 +30,9 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Report
       .database()
       .ref()
       .child(`Accounts/${accountID}/Application`).remove(); //Remove application
+
+      var notifyArray = [notif]
+      sendPushNotification(notifyArray)
 
   }
 
@@ -45,13 +51,16 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Report
 
 
 
-  function removeApp(accountID: string) {
+  function removeApp(accountID: string, notif: any) {
     alert("Moderator application has been removed and denied")
 
     firebase
       .database()
       .ref()
       .child(`Accounts/${accountID}/Application`).remove(); //Remove application
+
+      var notifArray = [notif]
+      sendPushNotificationBad(notifArray)
 
   }
 
@@ -90,7 +99,70 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Report
       //console.log(foundIDs)
     });
 
+    firebase.database().ref().child('Accounts/').on('value', function (snapshot) {
+      const Accounts: any[] = Object.values(snapshot.val());
+      const tokens: any[] = [];
+
+      Accounts.forEach((account) => {
+        if (account.expoNotif && Object.keys(account.expoNotif).length > 0 && (account.modStatus === 3)) {
+          tokens.push(account.expoNotif)
+        }
+      }
+      );
+
+      setexpoNotif(tokens)
+      //console.log(tokens)
+    });
+
   }, []);
+
+  async function sendPushNotification(array: string[]) {
+
+    for (let i = 0; i < array.length; i++) {
+
+      const message = {
+        to: array[i],
+        sound: 'default',
+        title: 'Temple Cats',
+        body: 'Your application has been approved! Please reload the app',
+        data: { someData: 'goes here' },
+      };
+
+      await fetch('https://exp.host/--/api/v2/push/send', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Accept-encoding': 'gzip, deflate',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(message),
+      });
+    }
+  }
+
+  async function sendPushNotificationBad(array: string[]) {
+
+    for (let i = 0; i < array.length; i++) {
+
+      const message = {
+        to: array[i],
+        sound: 'default',
+        title: 'Temple Cats',
+        body: 'Your application has been denied!',
+        data: { someData: 'goes here' },
+      };
+
+      await fetch('https://exp.host/--/api/v2/push/send', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Accept-encoding': 'gzip, deflate',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(message),
+      });
+    }
+  }
 
   //console.log(submissons)
 
@@ -122,13 +194,13 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Report
                     {(report.votes) < 3 ? // Do not approve if report has less than 3 votes
                       <Button title='Approve' buttonStyle={styles.buttonStyle} onPress={() => alert("We don't have enough votes yet")} />
                       : <Button title='Approve' buttonStyle={styles.buttonStyle} onPress={() =>
-                        changeStatus(report.accountID)
+                        changeStatus(report.accountID, item.expoNotif)
                       }
                       />
                     }
 
                     {(report.votes) <= -3 ? // Do not delete if report does not have -3 votes
-                      <Button title='Disapprove' buttonStyle={styles.buttonStyle} onPress={() => removeApp(report.accountID)} />
+                      <Button title='Disapprove' buttonStyle={styles.buttonStyle} onPress={() => removeApp(report.accountID, item.expoNotif)} />
                       : <Button title='Disapprove' buttonStyle={styles.buttonStyle} onPress={() =>
                         alert("More negative votes are needed to remove applcation")
                       }
