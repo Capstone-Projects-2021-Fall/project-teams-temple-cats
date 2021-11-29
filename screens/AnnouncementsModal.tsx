@@ -16,7 +16,7 @@ const modStatus: any[] = [];
  * @param {RootTabScreenProps} props navigation properties from the root of the home button in navigation
  * @returns { JSX.Element } JSX element for modal screen displaying announcements
  */
-export default function ModalScreen({ navigation }: RootTabScreenProps<'Home'>) {
+export default function Announcements({ navigation }: RootTabScreenProps<'Home'>) {
   const announcementRef = firebase.database().ref('Announcements/');
   const [announcementData, setAnnouncementData] = React.useState<Announcement[]>([]);
 

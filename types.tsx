@@ -17,9 +17,12 @@ declare global {
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Announcements: undefined;
+  Badges: undefined;
   CatForm: undefined;
   Facebook: undefined;
   BugReporting: undefined;
+  CreateAnnouncement: { announcement: Announcement};
+  UserRank: undefined;
   Rewards: undefined;
   NotFound: undefined;
   Cat: { cat: Cat };
@@ -91,6 +94,14 @@ export type CommentList = {
 };
 
 export type Announcement = {
+  announcementID: string;
+  time: Date;
+  content: string;
+  subject: string;
+  accountID: string;
+};
+
+export type AnnouncementFeeder = {
   announcementID: string;
   time: Date;
   content: string;
