@@ -21,6 +21,14 @@ export default function Notifications1() {
     if (status != 'granted') {
       const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
     }
+    if (Platform.OS === 'android') {
+      Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+      });
+    }
 
     const token = (await Notifications.getExpoPushTokenAsync()).data;
     //console.log(token)
