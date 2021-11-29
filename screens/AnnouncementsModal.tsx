@@ -1,14 +1,9 @@
-// import { FontAwesome, Ionicons } from '@expo/vector-icons';
-// import { StatusBar } from 'expo-status-bar';
 import firebase from 'firebase';
 import * as React from 'react';
 import {
-  Image, FlatList, Platform, StyleSheet, Button, SafeAreaView, ScrollView,
+  StyleSheet, Button, SafeAreaView, ScrollView,
 } from 'react-native';
-import { Colors, Icon } from 'react-native-elements';
 import { useState } from 'react';
-// import { black } from 'react-native-paper/lib/typescript/styles/colors';
-// import Mod from '../components/Mod';
 import { Announcement, RootTabScreenProps } from '../types';
 import { Text, View } from '../components/Themed';
 import { AuthContext } from '../context/FirebaseAuthContext';
@@ -53,40 +48,37 @@ export default function ModalScreen({ navigation }: RootTabScreenProps<'Home'>) 
 
   return (
     <SafeAreaView style={styles.container}>
-
-      {/* <Image
-          style={{ width: 200, height: 200, top: 5 }}
-          source={{
-            uri: 'https://i1.wp.com/consciouscat.net/wp-content/uploads/2017/12/cat-newspaper-e1513176589145.jpg?resize=550%2C367&ssl=1',
-          }}
-        /> */}
-
-      <ScrollView>
-        {announcementData.map((announcement, index) => (
-          <View style={styles.listItem} key={index}>
-            <Text style={styles.listItemInfo}>
-              {announcement.subject}
-              :
-              {' '}
-              {announcement.content}
-            </Text>
-            <Text>
-              {announcement.time}
-            </Text>
-          </View>
-        ))}
-
-        {isModerator && (
-          <Button
-            // color="#000"
-            title="Create announcement"
-            onPress={() => {
-              navigation.push('CreateAnnouncement');
-            }}
-          />
-        )}
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.announcementWrapper}>
+          <Text style={styles.title}>
+            {announcementData.length}
+            {' '}
+            {(announcementData.length > 1 || announcementData.length === 0) ? 'Announcements' : 'Announcement'}
+          </Text>
+          {announcementData.map((announcement, index) => (
+            <View style={styles.listItem} key={index}>
+              <Text style={styles.listItemSubject}>
+                {announcement.subject}
+              </Text>
+              <Text style={styles.listItemContent}>
+                {announcement.content}
+              </Text>
+              <Text style={styles.listItemDateTime}>
+                {announcement.time}
+              </Text>
+            </View>
+          ))}
+        </View>
       </ScrollView>
-
+      {isModerator && (
+        <Button
+          color="#fff"
+          title="Create announcement"
+          onPress={() => {
+            navigation.push('CreateAnnouncement');
+          }}
+        />
+      )}
     </SafeAreaView>
   );
 }
@@ -94,19 +86,44 @@ export default function ModalScreen({ navigation }: RootTabScreenProps<'Home'>) 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#8b0000',
+    backgroundColor: 'rgba(160, 28, 52, 0.65)',
+  },
+  title: {
+    fontSize: 32,
+    color: '#fff',
+    marginBottom: 20,
+  },
+  announcementWrapper: {
+    backgroundColor: 'transparent',
+    paddingTop: 30,
   },
   listItem: {
     fontSize: 16,
     fontWeight: 'bold',
-    backgroundColor: 'rgba(160, 28, 52, 1)',
+    backgroundColor: '#8b0000',
     marginTop: 10,
     marginBottom: 10,
+    padding: 20,
+    width: 350,
+    borderRadius: 20,
+    display: 'flex',
   },
-  listItemInfo: {
+  listItemSubject: {
     fontSize: 16,
     fontWeight: 'bold',
+    color: 'white',
+    marginBottom: 10,
+  },
+  listItemContent: {
+    fontSize: 14,
+    color: 'white',
+    marginBottom: 10,
+  },
+  listItemDateTime: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: 'white',
+    alignSelf: 'flex-end',
   },
 });
