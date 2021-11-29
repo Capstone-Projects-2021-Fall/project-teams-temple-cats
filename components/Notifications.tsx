@@ -38,5 +38,12 @@ export default function Notifications1() {
     });
     return token
   }
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: false,
+    }),
+  });
 
 }
