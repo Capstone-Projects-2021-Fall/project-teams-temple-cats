@@ -51,5 +51,21 @@ export function addUser(name: User['displayName'], id: User['accountID'], email:
     });
 
     return "true"
+}
 
+export async function addPoints(points: number) {
+  const accountID = firebase.auth().currentUser?.uid;
+  const currentPoints = await firebase
+    .database()
+    .ref()
+    .child(`Accounts/${accountID}/points/highScore`)
+    .get();
+  
+    const set = firebase
+    .database()
+    .ref()
+    .child(`Accounts/${accountID}/points/highScore`)
+    .set(currentPoints.val() + points);
+
+    return set;
 }
