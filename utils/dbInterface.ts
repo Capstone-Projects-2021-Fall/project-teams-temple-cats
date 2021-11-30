@@ -20,10 +20,8 @@ export function addBadge(badge: Badge, id: User['accountID'], badgeType: String 
   firebase
     .database()
     .ref()
-    .child(`Accounts/${id}`)
-    .child(`Points/`)
-    .child(`Badges/${badgeType}`)
-    .set(badge);
+    .child(`Accounts/${id}/points/badges/${badgeType}`)
+    .set(true);
 }
 
 export function addCat(cat: Cat) {
