@@ -45,7 +45,7 @@ export async function addPicture(cat: Cat) {
     .put(blob);
 }
 
-export function addUser(name: User['displayName'], id: User['accountID'], email: User['email'], badges: User['badges'], photo: User['photo'], badge: Badge, badgeType: String) {
+export function addUser(name: User['displayName'], id: User['accountID'], email: User['email'], photo: User['photo']) {
   firebase
     .database()
     .ref()
@@ -60,39 +60,25 @@ export function addUser(name: User['displayName'], id: User['accountID'], email:
       banStatus: false,
     });
 
-    firebase
+  firebase
     .database()
     .ref()
-    .child(`Accounts/${id}`).child('/points')
+    .child(`Accounts/${id}/points`)
     .set({
       userName: name,
-      highScore: 1,
+      highScore: 0,
+      email: email,
+      photo: photo,
+      badges: {
+        modBadge: false,
+        firstCommentBadge: false,
+        catRescuerBadge: false,
+        feedingStationAttendeeBadge: false,
+        firstCatPostedBadge: false,
+        hundredPointsBadge: false,
+        thousandPointsBadge: false,
+      }
     });
-
-    firebase
-    .database()
-    .ref()
-    .child(`Accounts/${id}`)
-    .child(`Points/`)
-    .child(`Badges/${badgeType}`)
-    .set(badge);
-
-    firebase
-    .database()
-    .ref()
-    .child(`Accounts/${id}`)
-    .child(`Points/`)
-    .child(`email/${email}`)
-    .set(email);
-
-    firebase
-    .database()
-    .ref()
-    .child(`Accounts/${id}`)
-    .child(`Points/`)
-    .child(`photo/${photo}`)
-    .set(photo);
-
     
     return "true"
 
