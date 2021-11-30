@@ -55,6 +55,8 @@ export type Badge = {
   catRescuerBadge: boolean;
   feedingStationAttendeeBadge: boolean;
   firstCatPostedBadge: boolean;
+  hundredPointsBadge: boolean;
+  thousandPointsBadge: boolean;
 };
 
 export type Report = {
