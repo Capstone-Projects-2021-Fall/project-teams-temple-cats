@@ -6,6 +6,7 @@ import { AuthContext } from '../context/FirebaseAuthContext';
 import { Text, View } from '../components/Themed';
 import { v4 as uuidv4 } from 'uuid';
 import { Announcement, AnnouncementFeeder, FeedingStation, Report, RootStackParamList, RootTabScreenProps } from '../types';
+import { addAnnouncementFeeder } from '../utils/dbInterface';
 
 /**
  * Function that renders the modal for viewing information on a feeding station.
@@ -170,7 +171,7 @@ export default function ModalScreen({ route }) {
                     sendPushNotification(expoNotif)
                     
                     console.log(announcementFeeder);
-                    firebase.database().ref().child(`Announcements/feeder/${announcementFeeder.announcementID}`).set(announcementFeeder);
+                    addAnnouncementFeeder(announcementFeeder);
                   }}
                 />
                 <Button title="Close" buttonStyle={styles.buttonStyle} onPress={toggleModalVisibility} />

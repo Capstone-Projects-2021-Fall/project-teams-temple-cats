@@ -40,7 +40,7 @@ export default function CreateAnnouncement() {
     if (announcement.subject === '' || null) return alert('Add subject to send an announcement');
     else{
       
-    const uploadTask = firebase.storage().ref().child(`Announcements/${announcement.announcementID}`).put(announcement);
+    const uploadTask = firebase.storage().ref().child(`Announcements/general/${announcement.announcementID}`).put(announcement);
     uploadTask
     
     .then(() => addAnnouncement(announcement)
