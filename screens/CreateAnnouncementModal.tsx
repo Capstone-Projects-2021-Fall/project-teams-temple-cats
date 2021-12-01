@@ -6,9 +6,10 @@ import { Input } from 'react-native-elements';
 import { Button } from 'react-native-elements';
 import { View } from '../components/Themed';
 import { v4 as uuidv4 } from 'uuid';
-import { Announcement} from '../types';
+import { Announcement, RootStackScreenProps, RootTabScreenProps} from '../types';
 import { useState } from 'react';
 import { addAnnouncement } from '../utils/dbInterface';
+import { sendPushNotification } from '../utils/dbInterface';
 
 export default function ModalScreen() {
   const [expoNotif, setexpoNotif] = React.useState<any[]>([]);
@@ -59,7 +60,7 @@ export default function ModalScreen() {
     if (announcement.subject === '' || null) return alert('Add subject to send an announcement');
     else{
       
-    const uploadTask = firebase.storage().ref().child(`Announcements/${announcement.announcementID}`).put(announcement);
+    const uploadTask = firebase.storage().ref().child(`Announcements/general/${announcement.announcementID}`).put(announcement);
     uploadTask
     
     .then(() => addAnnouncement(announcement)
@@ -71,29 +72,6 @@ export default function ModalScreen() {
   }
   }
 
-  async function sendPushNotification(array: string[]) {
-
-    for (let i = 0; i < array.length; i++) {
-
-      const message = {
-        to: array[i],
-        sound: 'default',
-        title: 'Temple Cats',
-        body: 'A new annoucenment has been posted',
-        data: { someData: 'goes here' },
-      };
-
-      await fetch('https://exp.host/--/api/v2/push/send', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Accept-encoding': 'gzip, deflate',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(message),
-      });
-    }
-  }
 
     return (
       <View style={styles.container}>
@@ -137,7 +115,7 @@ export default function ModalScreen() {
           }}
           onPress={() => {
             submitAnnouncement();
-            sendPushNotification(expoNotif)
+            sendPushNotification(expoNotif, 'A new annoucenment has been posted')
             return;
           }}
         />
