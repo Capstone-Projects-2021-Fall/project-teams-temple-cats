@@ -7,7 +7,8 @@ import { Text, View } from '../components/Themed';
 import CommentComponent from '../components/CommentComponent';
 import { AuthContext } from '../context/FirebaseAuthContext';
 import firebase from '../utils/firebase';
-import { Cat, Comment, RootTabScreenProps, Report } from '../types';
+import { Cat, Comment, RootTabScreenProps, Report, CommentType } from '../types';
+import { Picker } from '@react-native-picker/picker';
 
 const { width } = Dimensions.get('window');
 const modStatus: any[] = [];
@@ -28,18 +29,19 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
   const user = React.useContext(AuthContext);
   const [showValidation, setShowValidation] = useState(true);
 
-  const [report, setReport]: Report = useState({
+  const [report, setReport] = useState<Report>({
     reportID: '',
     catID: cat.catID,
     accountID: firebase.auth().currentUser?.uid,
     reason: '',
   });
 
-  const [comment, setComment]: Cat = useState({
+  const [comment, setComment] = useState<Comment>({
     commentID: `${new Date()} ${uuidv4()}`,
     content: '',
     accountID: firebase.auth().currentUser?.uid,
     reports: '',
+    type: CommentType.Comment,
   });
 
   const toggleModalVisibility = () => {
@@ -171,6 +173,23 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
             }))
           }
         />
+        <View style={styles.pickers}>
+          <Picker
+            style={styles.commentTypePicker}
+            itemStyle={styles.commentTypePickerItems}
+            selectedValue={comment.type}
+            onValueChange={(item) => {
+              setComment((currentState: Comment) => ({
+                ...currentState,
+                type: item,
+              }))
+            }}
+          >
+            {Object.values(CommentType).map((item, index) => (
+              <Picker.Item label={item} value={index} key={index} />
+            ))}
+          </Picker>
+        </View>
         <Button
           title="Submit Comment"
           buttonStyle={styles.buttonStyle}
@@ -396,5 +415,19 @@ const styles = StyleSheet.create({
     marginVertical: 40,
     height: 5,
     width: '100%',
+  },
+  pickers: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    // backgroundColor: 'transparent',
+    marginBottom: 10,
+  },
+  commentTypePicker: {
+    width: 175,
+    height: 88,
+    // backgroundColor: 'transparent',
+  },
+  commentTypePickerItems: {
+    height: 88,
   },
 });
