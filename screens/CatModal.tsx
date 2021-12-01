@@ -8,6 +8,9 @@ import CommentComponent from '../components/CommentComponent';
 import { AuthContext } from '../context/FirebaseAuthContext';
 import firebase from '../utils/firebase';
 import { Cat, Comment, RootTabScreenProps, Report } from '../types';
+import { sendPushNotificationWithWord } from '../utils/dbInterface';
+import { sendPushNotificationWithWordReport } from '../utils/dbInterface';
+
 
 const { width } = Dimensions.get('window');
 const modStatus: any[] = [];
@@ -107,53 +110,53 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
 
   }, []);
 
-  async function sendPushNotification(array: string[], name: String) {
+  // async function sendPushNotification(array: string[], name: String) {
 
-    for (let i = 0; i < array.length; i++) {
+  //   for (let i = 0; i < array.length; i++) {
 
-      const message = {
-        to: array[i],
-        sound: 'default',
-        title: 'Temple Cats',
-        body: 'Comment has been submitted on Cat: ' + name,
-        data: { someData: 'goes here' },
-      };
+  //     const message = {
+  //       to: array[i],
+  //       sound: 'default',
+  //       title: 'Temple Cats',
+  //       body: 'Comment has been submitted on Cat: ' + name,
+  //       data: { someData: 'goes here' },
+  //     };
 
-      await fetch('https://exp.host/--/api/v2/push/send', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Accept-encoding': 'gzip, deflate',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(message),
-      });
-    }
-  }
+  //     await fetch('https://exp.host/--/api/v2/push/send', {
+  //       method: 'POST',
+  //       headers: {
+  //         Accept: 'application/json',
+  //         'Accept-encoding': 'gzip, deflate',
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(message),
+  //     });
+  //   }
+  // }
 
-  async function sendPushNotificationReport(array: string[], name: String) {
+  // async function sendPushNotificationReport(array: string[], name: String) {
 
-    for (let i = 0; i < array.length; i++) {
+  //   for (let i = 0; i < array.length; i++) {
 
-      const message = {
-        to: array[i],
-        sound: 'default',
-        title: 'Temple Cats',
-        body: 'A report has been made on Cat: ' + name,
-        data: { someData: 'goes here' },
-      };
+  //     const message = {
+  //       to: array[i],
+  //       sound: 'default',
+  //       title: 'Temple Cats',
+  //       body: 'A report has been made on Cat: ' + name,
+  //       data: { someData: 'goes here' },
+  //     };
 
-      await fetch('https://exp.host/--/api/v2/push/send', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Accept-encoding': 'gzip, deflate',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(message),
-      });
-    }
-  }
+  //     await fetch('https://exp.host/--/api/v2/push/send', {
+  //       method: 'POST',
+  //       headers: {
+  //         Accept: 'application/json',
+  //         'Accept-encoding': 'gzip, deflate',
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(message),
+  //     });
+  //   }
+  // }
 
 
 
@@ -251,7 +254,7 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
               ...currentState,
               commentID: `${new Date()} ${uuidv4()}`,
             }));
-            sendPushNotification(expoNotif, cat.name)
+            sendPushNotificationWithWord(expoNotif, cat.name)
           }}
         />
         <View style={styles.bottomSeparator} lightColor="rgba(255,255,255,0.1)" darkColor="rgba(255,255,255,0.1)" />
@@ -287,7 +290,8 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
                     toggleModalVisibility();
                     console.log(report);
                     firebase.database().ref().child(`Cats/${cat.catID}/reports/${report.reportID}`).set(report);
-                    sendPushNotificationReport(expoNotif, cat.name)
+                      sendPushNotificationWithWordReport(expoNotif, cat.name)
+                   
                   }}
                 />
                 <Button title="Close" buttonStyle={styles.buttonStyle} onPress={toggleModalVisibility} />

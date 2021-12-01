@@ -4,6 +4,7 @@ import { Input, Button} from 'react-native-elements';
 import { Application, Report } from '../types';
 import firebase from 'firebase';
 import { v4 as uuidv4 } from 'uuid';
+import { sendPushNotification } from '../utils/dbInterface';
 
 
 const { width } = Dimensions.get('window');
@@ -69,31 +70,6 @@ export default function ApplyforMods() {
 
   }, []);
 
-  //Notification message
-
-  async function sendPushNotification(array: string[]) {
-
-    for (let i = 0; i < array.length; i++) {
-
-      const message = {
-        to: array[i],
-        sound: 'default',
-        title: 'Temple Cats',
-        body: 'You have recieved a new moderator application',
-        data: { someData: 'goes here' },
-      };
-
-      await fetch('https://exp.host/--/api/v2/push/send', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Accept-encoding': 'gzip, deflate',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(message),
-      });
-    }
-  }
 
   return (
     <View>
@@ -159,7 +135,7 @@ export default function ApplyforMods() {
                 if (data === null) {
                   alert("Application submitted")
                   firebase.database().ref().child(`Accounts/${firebase.auth().currentUser?.uid}/Application/${application.applicationID}`).set(application)
-                  sendPushNotification(expoNotif)
+                  sendPushNotification(expoNotif, 'You have recieved a new moderator application')
                 }
                 else {
                   alert("Application is being reviewed")
