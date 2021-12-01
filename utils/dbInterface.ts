@@ -2,7 +2,7 @@ import React from 'react';
 import { LatLng } from 'react-native-maps';
 import firebase from './firebase';
 import {
-  Account, Announcement, Cat, Badge, User,
+  Account, Announcement, Cat, Badge, User, AnnouncementFeeder,
 } from '../types';
 
 const root = firebase.database().ref();
@@ -12,7 +12,15 @@ export function addAnnouncement(announcement: Announcement) {
   firebase
     .database()
     .ref()
-    .child(`Announcements/${announcement.announcementID}`)
+    .child(`Announcements/general/${announcement.announcementID}`)
+    .set(announcement);
+}
+
+export function addAnnouncementFeeder(announcement: AnnouncementFeeder) {
+  firebase
+    .database()
+    .ref()
+    .child(`Announcements/feeder/${announcement.announcementID}`)
     .set(announcement);
 }
 

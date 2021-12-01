@@ -29,7 +29,7 @@ import BugReporting from '../screens/BugReporting';
 import Rewards from '../screens/Rewards';
 import FeedingStationModal from '../screens/FeedingStationModal';
 import CatModal from '../screens/CatModal';
-import CreateAnnouncementModal from '../screens/CreateAnnouncementModal';
+import CreateAnnouncement from '../screens/CreateAnnouncementModal';
 import ReportedPostsModal from '../screens/ReportedPostsModal';
 import DownvotedPostsModal from '../screens/DownvotedPostsModal';
 import ModeratorModal from '../screens/ModeratorModal';
@@ -77,15 +77,13 @@ function RootNavigator() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
-      <Stack.Group screenOptions={{ presentation: 'modal' }}>
-
-        <Stack.Screen 
-        name="Announcements" component={Announcements} />
-        </Stack.Group>
-
       
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="CreateAnnouncement" component={CreateAnnouncementModal} />
+        <Stack.Screen name="Announcements" component={Announcements} />
+      </Stack.Group>
+      
+      <Stack.Group screenOptions={{ presentation: 'modal' }}>
+        <Stack.Screen name="CreateAnnouncement" component={CreateAnnouncement} />
       </Stack.Group>
 
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
