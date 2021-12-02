@@ -6,11 +6,11 @@ import { Input } from 'react-native-elements';
 import { Button } from 'react-native-elements';
 import { View } from '../components/Themed';
 import { v4 as uuidv4 } from 'uuid';
-import { Announcement} from '../types';
+import { Announcement, RootStackScreenProps, RootTabScreenProps} from '../types';
 import { useState } from 'react';
 import { addAnnouncement } from '../utils/dbInterface';
 
-export default function ModalScreen() {
+export default function CreateAnnouncement() {
   
   const [announcement, setAnnouncement]: Announcement = useState({
     announcementID: uuidv4(),
@@ -40,7 +40,7 @@ export default function ModalScreen() {
     if (announcement.subject === '' || null) return alert('Add subject to send an announcement');
     else{
       
-    const uploadTask = firebase.storage().ref().child(`Announcements/${announcement.announcementID}`).put(announcement);
+    const uploadTask = firebase.storage().ref().child(`Announcements/general/${announcement.announcementID}`).put(announcement);
     uploadTask
     
     .then(() => addAnnouncement(announcement)

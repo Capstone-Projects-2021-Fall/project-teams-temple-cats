@@ -6,6 +6,8 @@ configure({ adapter: new Adapter() });
 
 describe('Testing Annoucements', () => {
 
+    configure({ adapter: new Adapter() });
+
     it("Announcements component renders default elements", async () => {
         const wrapper = shallow(<Announcements />)
         expect(wrapper.exists()).toBeTruthy

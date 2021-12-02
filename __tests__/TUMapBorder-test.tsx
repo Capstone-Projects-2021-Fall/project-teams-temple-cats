@@ -7,10 +7,10 @@ import TUMapBorder from '../components/TUMapBorder';
 
 // act(() => {
 
-// it('Correct map border cnhoordinates are rendered', () => {
+// it('Correct map border coordinates are rendered', () => {
 //   const tree = renderer.create(<TUMapBorder />).toJSON();
 //   expect(tree).toMatchSnapshot();
 // });
 // });
 
-//Unsure how to test map border color 
+// Unsure how to test map border color 
