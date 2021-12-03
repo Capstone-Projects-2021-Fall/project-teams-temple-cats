@@ -2,7 +2,7 @@ import React from 'react';
 import { LatLng } from 'react-native-maps';
 import firebase from './firebase';
 import {
-  Account, Announcement, Cat, Badge, User, AnnouncementFeeder,
+  Account, Announcement, Cat, Badge, User, AnnouncementFeeder, CommentType,
 } from '../types';
 
 const root = firebase.database().ref();
@@ -50,11 +50,50 @@ export function addCat(cat: Cat) {
     .set(cat);
 }
 
+
+export async function removeCat(cat: Cat) { 
+  firebase
+    .database()
+    .ref()
+    .child(`Cats/${cat.catID}`)
+    .remove();
+
+  firebase
+    .storage()
+    .refFromURL(cat.media)
+    .delete();
+
+  await addPoints(-5, cat.accountID);
+  Object.values(cat.commentList ?? {}).forEach(async (comment) => {
+    switch (comment.type) {
+      case CommentType.FoodWater:
+        await addPoints(-20, comment.accountID);
+        break;
+      case CommentType.Microchip:
+        await addPoints(-50, comment.accountID);
+        break;
+      case CommentType.Neuter:
+        await addPoints(-200, comment.accountID);
+        break;
+      case CommentType.Shelter:
+        await addPoints(-200, comment.accountID);
+        break;
+      case CommentType.Foster:
+        await addPoints(-200, comment.accountID);
+        break;
+      case CommentType.Return:
+        await addPoints(-300, comment.accountID);
+        break;
+    }
+  });
+}
+
 /**
  * Uploads a cat picture to storage. To be used when posted a new cat.
  * @param {Cat} cat Cat with picture to be uploaded to storage
  * @throws Throws an exception if there was a problem in communicating with firebase. Catches exception with a message saying 'There was a problem reaching the database while uploading a cat's media. Please check your internet connection or try again later.'
  */
+
 export async function addPicture(cat: Cat) {
   const response = await fetch(cat.media);
   const blob = await response.blob();
@@ -110,8 +149,20 @@ export function addUser(name: User['displayName'], id: User['accountID'], email:
     });
     
     return "true"
+}
 
-
+export async function addPoints(points: number, accountID: string | undefined) {
+  const currentPoints = await firebase
+    .database()
+    .ref()
+    .child(`Accounts/${accountID}/points/highScore`)
+    .get();
+  const set = firebase
+    .database()
+    .ref()
+    .child(`Accounts/${accountID}/points/highScore`)
+    .set(currentPoints.val() + points);
+  return set;
 }
 
 
