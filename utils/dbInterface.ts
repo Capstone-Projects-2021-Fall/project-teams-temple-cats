@@ -96,13 +96,11 @@ export async function addPoints(points: number) {
     .ref()
     .child(`Accounts/${accountID}/points/highScore`)
     .get();
-  
   const set = firebase
     .database()
     .ref()
     .child(`Accounts/${accountID}/points/highScore`)
     .set(currentPoints.val() + points);
-
   return set;
 }
 

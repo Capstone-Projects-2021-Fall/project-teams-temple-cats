@@ -9,6 +9,7 @@ import { AuthContext } from '../context/FirebaseAuthContext';
 import firebase from '../utils/firebase';
 import { Cat, Comment, RootTabScreenProps, Report, CommentType } from '../types';
 import { Picker } from '@react-native-picker/picker';
+import { addPoints } from '../utils/dbInterface';
 
 const { width } = Dimensions.get('window');
 const modStatus: any[] = [];
@@ -176,30 +177,23 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
         <View style={styles.pickers}>
           <Picker
             style={styles.commentTypePicker}
-            itemStyle={styles.commentTypePickerItems}
             selectedValue={comment.type}
-            onValueChange={(item) => {
+            onValueChange={(itemValue, itemIndex) => {
               setComment((currentState: Comment) => ({
                 ...currentState,
-                type: item,
+                type: itemValue,
               }))
             }}
           >
             {Object.values(CommentType).map((item, index) => (
-              <Picker.Item label={item} value={index} key={index} />
+              <Picker.Item label={item} value={item} key={index} />
             ))}
           </Picker>
         </View>
         <Button
           title="Submit Comment"
           buttonStyle={styles.buttonStyle}
-          onPress={() => {
-            firebase.database().ref().child(`Cats/${cat.catID}/commentList/${comment.commentID}`).set(comment);
-            setComment((currentState: Comment) => ({
-              ...currentState,
-              commentID: `${new Date()} ${uuidv4()}`,
-            }));
-          }}
+          onPress={submitComment}
         />
         <View style={styles.bottomSeparator} lightColor="rgba(255,255,255,0.1)" darkColor="rgba(255,255,255,0.1)" />
         <View>
@@ -249,6 +243,34 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
       </ScrollView>
     </SafeAreaView>
   );
+
+  function submitComment() {
+    firebase.database().ref().child(`Cats/${cat.catID}/commentList/${comment.commentID}`).set(comment);
+    setComment((currentState: Comment) => ({
+      ...currentState,
+      commentID: `${new Date()} ${uuidv4()}`,
+    }));
+    switch (comment.type) {
+      case CommentType.FoodWater:
+        addPoints(20);
+        break;
+      case CommentType.Microchip:
+        addPoints(50);
+        break;
+      case CommentType.Neuter:
+        addPoints(200);
+        break;
+      case CommentType.Shelter:
+        addPoints(200);
+        break;
+      case CommentType.Foster:
+        addPoints(200);
+        break;
+      case CommentType.Return:
+        addPoints(300);
+        break;
+    }
+  }
 }
 
 const styles = StyleSheet.create({
@@ -417,17 +439,15 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   pickers: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    // backgroundColor: 'transparent',
+    width: 350,
+    backgroundColor: 'white',
+    borderWidth: 1,
     marginBottom: 10,
+    marginLeft: 'auto',
+    marginRight: 'auto',
   },
   commentTypePicker: {
-    width: 175,
-    height: 88,
-    // backgroundColor: 'transparent',
-  },
-  commentTypePickerItems: {
-    height: 88,
+    width: 350,
+    height: 40,
   },
 });
