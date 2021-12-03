@@ -29,6 +29,7 @@ export default function LoginAuthentication() {
    * Facebook authorization request's prompt method.
    * @method promptAsync
    * @memberof LoginAuthentication
+   * @throws Throws an exception if there was a problem in communicating with firebase or facebook authentication services. Catches exception with a message saying 'There was a problem reaching the authentication service. Please check your internet connection or try again later.' 
    */
   const [request, response, promptAsync] = Facebook.useAuthRequest({
     responseType: ResponseType.Token,
