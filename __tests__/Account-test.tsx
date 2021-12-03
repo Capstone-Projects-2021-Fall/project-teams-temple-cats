@@ -26,12 +26,11 @@ describe('Testing Account', () => {
         });
     });
 
-    //Gives a firebase error
-    //Come back for snapsjot
-    // it("Sign out button renders correct title", () => {
-    //     const { getAllByText } = render(<Account />);
-    //     expect(getAllByText('Sign Out').length).toBe(1);
-    // });
+ 
+    it("Sign out button renders correct title", () => {
+        const { getAllByText } = render(<Account />);
+        expect(getAllByText('Sign Out').length).toBe(1);
+    });
 
 })
 

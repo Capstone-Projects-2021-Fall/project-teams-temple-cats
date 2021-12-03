@@ -4,6 +4,7 @@ import { Button } from 'react-native';
 export default function Mod(props: {
   onReportedPostsPress: () => void;
   onDownvotedPostsPress: () => void;
+  onModAppsPress: () => void;
 }) {
   return (
     <>
@@ -16,6 +17,11 @@ export default function Mod(props: {
         color="#8b0000"
         title="Downvoted Posts"
         onPress={props.onDownvotedPostsPress}
+      />
+      <Button
+        color="#8b0000"
+        title="Moderator Applications"
+        onPress={props.onModAppsPress}
       />
     </>
 

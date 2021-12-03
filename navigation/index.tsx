@@ -25,14 +25,17 @@ import CatForm from '../screens/CatForm';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import { AuthContext } from '../context/FirebaseAuthContext';
 import Facebook from '../screens/Facebook';
-import Settings from '../screens/Settings';
+import BugReporting from '../screens/BugReporting';
 import Rewards from '../screens/Rewards';
 import FeedingStationModal from '../screens/FeedingStationModal';
 import CatModal from '../screens/CatModal';
-import CreateAnnouncementModal from '../screens/CreateAnnouncementModal';
+import CreateAnnouncement from '../screens/CreateAnnouncementModal';
 import ReportedPostsModal from '../screens/ReportedPostsModal';
 import DownvotedPostsModal from '../screens/DownvotedPostsModal';
+import ModeratorModal from '../screens/ModeratorModal';
 import Mod from '../components/Mod';
+import UserRankModal from '../screens/UserRankModal';
+import BadgesModal from '../screens/BadgesModal';
 import ScoringInfoModal from '../screens/ScoringInfo';
 
 /**
@@ -74,15 +77,17 @@ function RootNavigator() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
-      <Stack.Group screenOptions={{ presentation: 'modal' }}>
-
-        <Stack.Screen 
-        name="Announcements" component={Announcements} />
-        </Stack.Group>
-
       
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="CreateAnnouncement" component={CreateAnnouncementModal} />
+        <Stack.Screen name="Announcements" component={Announcements} />
+      </Stack.Group>
+      
+      <Stack.Group screenOptions={{ presentation: 'modal' }}>
+        <Stack.Screen name="CreateAnnouncement" component={CreateAnnouncement} />
+      </Stack.Group>
+
+      <Stack.Group screenOptions={{ presentation: 'modal' }}>
+        <Stack.Screen name="UserRank" component={UserRankModal} />
       </Stack.Group>
 
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
@@ -94,7 +99,7 @@ function RootNavigator() {
       </Stack.Group>
 
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="Settings" component={Settings} />
+        <Stack.Screen name="BugReporting" component={BugReporting} />
       </Stack.Group>
 
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
@@ -110,6 +115,10 @@ function RootNavigator() {
       </Stack.Group>
 
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
+        <Stack.Screen name="Badges" component={BadgesModal} />
+      </Stack.Group>
+
+      <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="ReportedPosts" component={ReportedPostsModal} />
       </Stack.Group>
 
@@ -118,9 +127,14 @@ function RootNavigator() {
       </Stack.Group>
 
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
+        <Stack.Screen name="ModeratorRequests" component={ModeratorModal} />
+      </Stack.Group>
+
+      <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="ScoringInfo" component={ScoringInfoModal} />
       </Stack.Group>
     </Stack.Navigator>
+    
   );
 }
 
@@ -204,26 +218,46 @@ function BottomTabNavigator() {
       <BottomTab.Screen
         name="Leaderboard"
         component={LeaderboardScreen}
-        options={({ navigation }: RootTabScreenProps<'Leaderboard'>) => ({
-          title: 'Leaderboard',
-          headerRight: () => (
+        options={({navigation }: RootTabScreenProps<'Leaderboard'>) => ({
+        title: 'Leaderboard', 
+        headerRight: ()  => (
+            <View style={{ flexDirection: 'row' }}>
+              <Pressable
+                onPress={() => navigation.navigate('Badges')}
+                style={({ pressed }) => ({
+                  right: 11,
+                  opacity: pressed ? 0.5 : 1,
+                })}
+              >
+                <Ionicons name="ribbon" size={24} color={Colors[colorScheme].text} />
+              </Pressable>
+              </View>
+               ),
+        headerLeft: () => (
             <Pressable
               onPress={() => navigation.navigate('ScoringInfo')}
               style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
+              opacity: pressed ? 0.5 : 1,
               })}
             >
-              <FontAwesome
-                name="info-circle"
-                size={25}
-                color={Colors[colorScheme].text}
-                style={{ marginRight: 15 }}
-              />
-            </Pressable>
-          ),
-          tabBarIcon: ({ color }) => <MaterialIcons name="leaderboard" size={24} color={Colors[colorScheme].text} />,
+            <FontAwesome
+              name="info-circle"
+              size={25}
+              color={Colors[colorScheme].text}
+              style={{ marginLeft: 20 }}
+            />
+          </Pressable>
+        ),
+        tabBarIcon: ({ color }) => (<MaterialIcons name="leaderboard" size={25} 
+          color={Colors[colorScheme].text} />
+        ),
+       
+        
         })}
       />
+   
+
+
       <BottomTab.Screen
         name="Account"
         component={Account}
@@ -240,12 +274,12 @@ function BottomTabNavigator() {
                 <FontAwesome name="gift" size={25} color={Colors[colorScheme].text} style={{ marginRight: 15 }} />
               </Pressable>
               <Pressable
-                onPress={() => navigation.navigate('Settings')}
+                onPress={() => navigation.navigate('BugReporting')}
                 style={({ pressed }) => ({
                   opacity: pressed ? 0.5 : 1,
                 })}
               >
-                <FontAwesome name="cog" size={25} color={Colors[colorScheme].text} style={{ marginRight: 15 }} />
+                <FontAwesome name="bug" size={25} color={Colors[colorScheme].text} style={{ marginRight: 15 }} />
               </Pressable>
             </View>
           ),

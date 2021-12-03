@@ -17,15 +17,20 @@ declare global {
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Announcements: undefined;
+  Badges: undefined;
   CatForm: undefined;
   Facebook: undefined;
-  Settings: undefined;
+  BugReporting: undefined;
+  CreateAnnouncement: { announcement: Announcement};
+  UserRank: undefined;
   Rewards: undefined;
   NotFound: undefined;
   Cat: { cat: Cat };
+  User: { user: User };
   FeedingStations: { title: String; info: any };
   ReportedPosts: undefined;
   DownvotedPosts: undefined;
+  ModeratorRequests: undefined;
   ScoringInfo: undefined;
 };
 
@@ -47,11 +52,31 @@ export type RootTabScreenProps<Screen extends keyof RootTabParamList> = Composit
   NativeStackScreenProps<RootStackParamList>
 >;
 
+export type Badge = {
+  modBadge: boolean;
+  firstCommentBadge: boolean;
+  catRescuerBadge: boolean;
+  feedingStationAttendeeBadge: boolean;
+  firstCatPostedBadge: boolean;
+  hundredPointsBadge: boolean;
+  thousandPointsBadge: boolean;
+};
+
 export type Report = {
   reportID: string;
   catID: string;
   accountID: string;
   reason: string;
+};
+export type Application = {
+  applicationID: string;
+  accountID: string;
+  reason1: string;
+  reason2: string;
+  reason3: string;
+  votes: Number;
+  date: Date, 
+  time: Date,
 };
 
 export type ReportList = {
@@ -89,11 +114,20 @@ export type Announcement = {
   accountID: string;
 };
 
+export type AnnouncementFeeder = {
+  announcementID: string;
+  time: Date;
+  content: string;
+  subject: string;
+  accountID: string;
+};
+
 export type Account = {
   accountID: string;
   modStatus: boolean;
   banned: boolean;
   points: number;
+  Application: {applicationID: {accountID: string, applicationID: string, name: String, reason1: String, reason2: String, reason3: String, votes: Number, date: Date, time: Date} }
 };
 
 export type FeedingStation = {
@@ -134,8 +168,11 @@ export type User = {
   accountID: string | undefined;
   email: string | null | undefined;
   photo: string | null | undefined;
+  badges: true | false;
   points: 0;
   posts: 0;
   modStatus: 1 | 2 | 3; // user, feeder, moderator
   banStatus: true | false;
 };
+
+

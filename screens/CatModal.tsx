@@ -15,8 +15,8 @@ const modStatus: any[] = [];
 /**
  * Function that renders the modal for displaying a reported cat.
  * @component
- * @param {RootTabScreenProps} props navigation properties from the root of the account button in navigation
- * @returns {JSX.Element} JSX element of the account screen
+ * @param {RootTabScreenProps} props navigation properties from the root of the home button in navigation
+ * @returns {JSX.Element} JSX element of the cat modal screen
  */
 export default function ModalScreen({ route }, { navigation }: RootTabScreenProps<'Home'>) {
   const { cat } = route.params;

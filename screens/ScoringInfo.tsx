@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet, ImageBackground } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text, View } from '../components/Themed';
 /**
  * Function that renders the screen for displaying info about the points/scoring system.
  * @component
- * @returns {JSX.Element} JSX element of the leaderboard info screen
+ * @returns {JSX.Element} JSX element of the scoring info screen
  */
 export default function ScoringInfoModal() {
   const pointsInfo = [
@@ -17,17 +17,24 @@ export default function ScoringInfoModal() {
     { points: 200, description: 'Took this cat to a no-kill shelter' },
     { points: 200, description: 'Fostering this cat' },
     { points: 300, description: 'Returned this cat to it\'s owner' },
-  ]
+  ];
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={{ justifyContent: 'center', alignItems: 'center', }}>
+      <ScrollView contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
+        <View style={styles.separator} />
         <Text style={styles.title}>Scoring System</Text>
-        <View style={styles.separator}/>
+        <View style={styles.separator} />
         <Text style={styles.subtitle}>You can earn points by completing various actions to helps cats! Once you have earned enough points, you can redeem them for various rewards found in the rewards tab in the account page.</Text>
         <View style={styles.listContainer}>
           {pointsInfo.map((item, index) => (
             <View style={styles.infoContainer} key={index}>
-              <Text style={styles.points}>♥ {item.points} points</Text>
+              <Text style={styles.points}>
+                ♥
+                {' '}
+                {item.points}
+                {' '}
+                points
+              </Text>
               <Text style={styles.description}>{item.description}</Text>
             </View>
           ))}
@@ -43,16 +50,21 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#000',
   },
   title: {
-    fontSize: 20,
+    fontSize: 30,
     fontWeight: 'bold',
     textAlign: 'center',
+    color: '#000',
+    backgroundColor: '#fff',
+    width: '100%',
+    paddingTop: 10,
+    paddingBottom: 10,
   },
   separator: {
-    marginVertical: 20,
-    height: 3,
-    width: '80%',
+    height: 5,
+    width: '100%',
     backgroundColor: 'rgba(160, 28, 52, 0.75)',
   },
   subtitle: {
@@ -62,11 +74,14 @@ const styles = StyleSheet.create({
     letterSpacing: 0.25,
     color: 'white',
     textAlign: 'center',
+    paddingTop: 10,
+    paddingBottom: 10,
   },
   listContainer: {
     paddingTop: 10,
-    paddingBottom: 20,
+    paddingBottom: 10,
     width: 350,
+    backgroundColor: 'rgba(160, 28, 52, 0.75)',
   },
   infoContainer: {
     flexDirection: 'row',

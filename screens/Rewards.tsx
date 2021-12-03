@@ -10,12 +10,12 @@ import ConfettiCannon from 'react-native-confetti-cannon';
 /**
  * Function that renders the screen for cashing in points for rewards.
  * @component
- * @returns {JSX.Element} JSX element of the account screen
+ * @returns {JSX.Element} JSX element of the rewards modal screen
  */
 export default function Rewards() {
   const [launchConfetti, setLaunchConfetti] = useState(false);
   /**
-   * The uri of an image to be used in the background of the login screen.
+   * Plays an animation to launch confetti
    * @constant {{uri: string}}
    */
   const handleLaunchConfetti = () => {

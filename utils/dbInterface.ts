@@ -2,7 +2,7 @@ import React from 'react';
 import { LatLng } from 'react-native-maps';
 import firebase from './firebase';
 import {
-  Account, Announcement, Cat, Pin, User,
+  Account, Announcement, Cat, Badge, User, AnnouncementFeeder,
 } from '../types';
 
 const root = firebase.database().ref();
@@ -12,8 +12,24 @@ export function addAnnouncement(announcement: Announcement) {
   firebase
     .database()
     .ref()
-    .child(`Announcements/${announcement.announcementID}`)
+    .child(`Announcements/general/${announcement.announcementID}`)
     .set(announcement);
+}
+
+export function addAnnouncementFeeder(announcement: AnnouncementFeeder) {
+  firebase
+    .database()
+    .ref()
+    .child(`Announcements/feeder/${announcement.announcementID}`)
+    .set(announcement);
+}
+
+export function addBadge(badge: Badge, id: User['accountID'], badgeType: String ) {
+  firebase
+    .database()
+    .ref()
+    .child(`Accounts/${id}/points/badges/${badgeType}`)
+    .set(true);
 }
 
 export function addCat(cat: Cat) {
@@ -50,6 +66,26 @@ export function addUser(name: User['displayName'], id: User['accountID'], email:
       banStatus: false,
     });
 
+  firebase
+    .database()
+    .ref()
+    .child(`Accounts/${id}/points`)
+    .set({
+      userName: name,
+      highScore: 0,
+      email: email,
+      photo: photo,
+      badges: {
+        modBadge: false,
+        firstCommentBadge: false,
+        catRescuerBadge: false,
+        feedingStationAttendeeBadge: false,
+        firstCatPostedBadge: false,
+        hundredPointsBadge: false,
+        thousandPointsBadge: false,
+      }
+    });
+    
     return "true"
 }
 
@@ -69,3 +105,5 @@ export async function addPoints(points: number) {
 
   return set;
 }
+
+

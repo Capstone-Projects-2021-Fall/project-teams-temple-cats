@@ -1,91 +1,131 @@
-import { FontAwesome, Ionicons } from '@expo/vector-icons';
-import { StatusBar } from 'expo-status-bar';
 import firebase from 'firebase';
 import * as React from 'react';
-import { Image, FlatList, Platform, StyleSheet, TouchableOpacity, Button, SafeAreaView, ScrollView } from 'react-native';
-import { Colors, Icon } from 'react-native-elements';
-import Mod from '../components/Mod';
-import { Announcement, RootTabScreenProps } from '../types';
+import {
+  StyleSheet, Button, SafeAreaView, ScrollView, Switch,
+} from 'react-native';
+import { useState } from 'react';
+import { Announcement, AnnouncementFeeder, RootTabScreenProps } from '../types';
 import { Text, View } from '../components/Themed';
 import { AuthContext } from '../context/FirebaseAuthContext';
-import { useState } from 'react';
-import { black } from 'react-native-paper/lib/typescript/styles/colors';
 
 const modStatus: any[] = [];
 
 /**
  * Function that returns a view for displaying announcements
  * @component
- * @returns { View } for displaying announcements
+ * @param {RootTabScreenProps} props navigation properties from the root of the home button in navigation
+ * @returns { JSX.Element } JSX element for modal screen displaying announcements
  */
-export default function ModalScreen({ navigation }: RootTabScreenProps<'Home'>) {
-  const announcementRef = firebase.database().ref("Announcements/");
-  const [announcementData, setAnnouncementData] = React.useState<Announcement[]>([]); 
-
-  
+export default function Announcements({ navigation }: RootTabScreenProps<'Home'>) {
+  const announcementRef = firebase.database().ref('Announcements/general');
+  const announcementFeederRef = firebase.database().ref('Announcements/feeder/');
+  const [announcementData, setAnnouncementData] = React.useState<Announcement[]>([]);
+  const [announcementFeederData, setAnnouncementFeederData] = React.useState<AnnouncementFeeder[]>([]);
   const [word, setWord] = useState<any>([]);
+  const [value, setValue] = useState<any>([]);
 
   const user = React.useContext(AuthContext);
-    
-  React.useEffect(() => {
+  const [isEnabled, setIsEnabled] = useState(false);
 
+  
+  
+  const isModerator = JSON.stringify(modStatus[0]) === '3';
+
+  React.useEffect(() => {
     firebase
-    .database()
-    .ref(`Accounts/${user?.uid}/modStatus`)
-    .on('value', (snapshot) => {
-      modStatus.push(snapshot.val());
-      setWord(modStatus);
-    });
+      .database()
+      .ref(`Accounts/${user?.uid}/modStatus`)
+      .on('value', (snapshot) => {
+        modStatus.push(snapshot.val());
+        setWord(modStatus);
+      });
     announcementRef.get().then((snapshot) => {
       const announcements: Announcement[] = Object.values(snapshot.val());
       const announcementDataTmp: Announcement[] = [];
+      announcements.forEach((announcement) => {
+        if (announcement.content && Object.keys(announcement.content).length > 0) {
+          announcementDataTmp.push(announcement);
+        }
+      });
+      setAnnouncementData(announcementDataTmp);
+      setValue(announcements)
+    });
+    
+    announcementFeederRef.get().then((snapshot) => {
+      const announcements: AnnouncementFeeder[] = Object.values(snapshot.val());
+      const announcementDataTmp: AnnouncementFeeder[] = [];
       announcements.forEach((announcement) => {
         // find cats that have reports
         if (announcement.content && Object.keys(announcement.content).length > 0) {
           announcementDataTmp.push(announcement);
         }
+      });
+      setAnnouncementFeederData(announcementDataTmp);
     });
-    setAnnouncementData(announcementDataTmp);
- 
+  }, []);
 
-});
-}, []);
 
- 
+  function toggleSwitch() {
+    setIsEnabled(previousState => !previousState);
+    if(isEnabled){
+      setValue(announcementData);
+    } 
+    else{
+      setValue(announcementFeederData);
+    }
+  }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-    <View style={styles.container}>
-      <Image
-        style={{ width: 200, height: 200, top: 5 }}
-        source={{
-          uri: 'https://i1.wp.com/consciouscat.net/wp-content/uploads/2017/12/cat-newspaper-e1513176589145.jpg?resize=550%2C367&ssl=1',
-        }}
-      />
-      {JSON.stringify(modStatus[0]) === '3' ?
-        
-        <Button
-        color="#8b0000"
-        title="Create announcement"
-        onPress={() => {
-          navigation.push("CreateAnnouncement")
-        }}
-      />
+    <SafeAreaView style={styles.container}>
+       <View style={{flexDirection: 'row',  backgroundColor: 'transparent', top: 15}}> 
+            <Text style={styles.toggleText}>General  </Text>
+              <Switch
+                trackColor={{ false: "#696969", true: "#8b0000" }}
+                thumbColor={isEnabled ? "white" : "white"}
+                ios_backgroundColor="#3e3e3e"
+                onValueChange={() => {
+                toggleSwitch();
+                }}
+                value={isEnabled}
+              />
+            <Text style={styles.toggleText}>  Feeder</Text>
+          </View>
+      <ScrollView showsVerticalScrollIndicator={false}>
+     
+        <View style={styles.announcementWrapper}>
+          
       
-        : null
-      }
-      <ScrollView>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-        <View style={styles.flexColumnContainer}>
-        {announcementData.map((announcement, index) => (
-          <TouchableOpacity onPress={() => alert(announcement.time)}>
-            <Text style={styles.listItem}>{announcement.subject}: {announcement.content}</Text>
-          </TouchableOpacity>
-        ))}
+          <Text style={styles.title}>
+            {value.length}
+            {' '}
+            {(value.length > 1 || value.length === 0) ? 'Announcements' : 'Announcement'}
+          </Text>
+          {value.map((announcement, index) => (
+            <View style={styles.listItem} key={index}>
+              <Text style={styles.listItemSubject}>
+                {announcement.subject}
+              </Text>
+              <Text style={styles.listItemContent}>
+                {announcement.content}
+              </Text>
+              <Text style={styles.listItemDateTime}>
+                {announcement.time}
+              </Text>
+            </View>
+          ))}
+
         </View>
       </ScrollView>
-    </View>
-  </SafeAreaView>
+      {isModerator && (
+        <Button
+          color="#fff"
+          title="Create announcement"
+          onPress={() => {
+            navigation.push('CreateAnnouncement');
+          }}
+        />
+      )}
+    </SafeAreaView>
   );
 }
 
@@ -93,37 +133,50 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: 'rgba(160, 28, 52, 0.65)',
   },
-  flexColumnContainer: {
-    flex: 1,
-  },
-  flexRowContainer: {
-    flex: 1,
-    flexDirection: "row",
-  },
-  title: {
+  toggleText: {
+    top: 1,
+    right: 1,
     fontSize: 20,
     fontWeight: 'bold',
-    top: 100,
+    color: "#fff"
   },
- 
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    top:-20,
-    width: '80%',
-    
+  title: {
+    fontSize: 32,
+    color: '#fff',
+    marginBottom: 20,
   },
-  
+  announcementWrapper: {
+    backgroundColor: 'transparent',
+    paddingTop: 30,
+  },
   listItem: {
-    color: 'black',
     fontSize: 16,
-    alignItems: 'center',
-    fontWeight: "bold", 
-   
-    backgroundColor: "white",
-    borderColor: "black",
-    borderWidth: 1
+    fontWeight: 'bold',
+    backgroundColor: '#8b0000',
+    marginTop: 10,
+    marginBottom: 10,
+    padding: 20,
+    width: 350,
+    borderRadius: 20,
+    display: 'flex',
+  },
+  listItemSubject: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'white',
+    marginBottom: 10,
+  },
+  listItemContent: {
+    fontSize: 14,
+    color: 'white',
+    marginBottom: 10,
+  },
+  listItemDateTime: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: 'white',
+    alignSelf: 'flex-end',
   },
 });
