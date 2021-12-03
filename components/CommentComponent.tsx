@@ -14,7 +14,6 @@ export default function CommentComponent(props: Comment) {
   const {
     accountID, content, commentID, reports,
   } = props.comment;
-  console.log(props);
   return (
     <View style={styles.comment}>
       <Text

@@ -9,7 +9,7 @@ import { AuthContext } from '../context/FirebaseAuthContext';
 import firebase from '../utils/firebase';
 import { Cat, Comment, RootTabScreenProps, Report, CommentType } from '../types';
 import { Picker } from '@react-native-picker/picker';
-import { addPoints } from '../utils/dbInterface';
+import { addPoints, removeCat } from '../utils/dbInterface';
 
 const { width } = Dimensions.get('window');
 const modStatus: any[] = [];
@@ -53,20 +53,13 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
     }));
   };
 
-  const deleteCat = () => {
-    const catRef = firebase.database().ref('Cats').child(cat.catID);
-    catRef.remove();
-    const imageRef = firebase.storage().refFromURL(cat.media);
-    imageRef.delete();
-  };
-
   const showValidationAlert = () =>
     Alert.alert('Delete', 'Are your sure you want to delete this post?', [
       {
         text: 'Yes',
         onPress: () => {
           setShowValidation(false);
-          deleteCat();
+          removeCat(cat)
         },
       },
       {
@@ -252,22 +245,22 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
     }));
     switch (comment.type) {
       case CommentType.FoodWater:
-        addPoints(20);
+        addPoints(20, firebase.auth().currentUser?.uid);
         break;
       case CommentType.Microchip:
-        addPoints(50);
+        addPoints(50, firebase.auth().currentUser?.uid);
         break;
       case CommentType.Neuter:
-        addPoints(200);
+        addPoints(200, firebase.auth().currentUser?.uid);
         break;
       case CommentType.Shelter:
-        addPoints(200);
+        addPoints(200, firebase.auth().currentUser?.uid);
         break;
       case CommentType.Foster:
-        addPoints(200);
+        addPoints(200, firebase.auth().currentUser?.uid);
         break;
       case CommentType.Return:
-        addPoints(300);
+        addPoints(300, firebase.auth().currentUser?.uid);
         break;
     }
   }

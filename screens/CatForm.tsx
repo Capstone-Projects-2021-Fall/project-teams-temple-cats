@@ -124,7 +124,7 @@ export default function CatForm() {
       })
       .then(() => {
         addCat(cat);
-        addPoints(5);
+        addPoints(5, firebase.auth().currentUser?.uid);
       })
       .catch((err) => {
         console.log(err);

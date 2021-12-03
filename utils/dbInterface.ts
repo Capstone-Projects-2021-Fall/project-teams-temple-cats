@@ -2,7 +2,7 @@ import React from 'react';
 import { LatLng } from 'react-native-maps';
 import firebase from './firebase';
 import {
-  Account, Announcement, Cat, Badge, User, AnnouncementFeeder,
+  Account, Announcement, Cat, Badge, User, AnnouncementFeeder, CommentType,
 } from '../types';
 
 const root = firebase.database().ref();
@@ -38,6 +38,43 @@ export function addCat(cat: Cat) {
     .ref()
     .child(`Cats/${cat.catID}`)
     .set(cat);
+}
+
+export async function removeCat(cat: Cat) { 
+  firebase
+    .database()
+    .ref()
+    .child(`Cats/${cat.catID}`)
+    .remove();
+
+  firebase
+    .storage()
+    .refFromURL(cat.media)
+    .delete();
+
+  await addPoints(-5, cat.accountID);
+  Object.values(cat.commentList ?? {}).forEach(async (comment) => {
+    switch (comment.type) {
+      case CommentType.FoodWater:
+        await addPoints(-20, comment.accountID);
+        break;
+      case CommentType.Microchip:
+        await addPoints(-50, comment.accountID);
+        break;
+      case CommentType.Neuter:
+        await addPoints(-200, comment.accountID);
+        break;
+      case CommentType.Shelter:
+        await addPoints(-200, comment.accountID);
+        break;
+      case CommentType.Foster:
+        await addPoints(-200, comment.accountID);
+        break;
+      case CommentType.Return:
+        await addPoints(-300, comment.accountID);
+        break;
+    }
+  });
 }
 
 export async function addPicture(cat: Cat) {
@@ -89,8 +126,7 @@ export function addUser(name: User['displayName'], id: User['accountID'], email:
     return "true"
 }
 
-export async function addPoints(points: number) {
-  const accountID = firebase.auth().currentUser?.uid;
+export async function addPoints(points: number, accountID: string | undefined) {
   const currentPoints = await firebase
     .database()
     .ref()
