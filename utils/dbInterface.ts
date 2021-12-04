@@ -173,7 +173,31 @@ export async function sendPushNotificationWithWord(array: string[], name: String
       to: array[i],
       sound: 'default',
       title: 'Temple Cats',
-      body: 'Comment has been submitted on Cat: ' + name,
+      body: 'Comment has been submitted on Cat ' + name,
+      data: { someData: 'goes here' },
+    };
+
+    await fetch('https://exp.host/--/api/v2/push/send', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Accept-encoding': 'gzip, deflate',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(message),
+    });
+  }
+}
+
+export async function sendPushNotificationWithWordFeeding(array: string[], name: String) {
+
+  for (let i = 0; i < array.length; i++) {
+
+    const message = {
+      to: array[i],
+      sound: 'default',
+      title: 'Temple Cats',
+      body: 'Comment has been submitted on Feeding Station: ' + name,
       data: { someData: 'goes here' },
     };
 
@@ -212,6 +236,8 @@ export async function sendPushNotificationWithWordReport(array: string[], name: 
     });
   }
 }
+
+
 
 export async function sendPushNotification(array: string[], bodyText: string) {
 

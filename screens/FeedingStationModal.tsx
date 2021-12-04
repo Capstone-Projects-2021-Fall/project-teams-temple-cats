@@ -9,6 +9,7 @@ import { Announcement, AnnouncementFeeder, FeedingStations, Comment, Report, Roo
 import { addAnnouncementFeeder, addPoints } from '../utils/dbInterface';
 import CommentComponent from '../components/CommentComponent';
 import { Picker } from '@react-native-picker/picker';
+import { sendPushNotificationWithWordFeeding } from '../utils/dbInterface';
 
 /**
  * Function that renders the modal for viewing information on a feeding station.
@@ -243,7 +244,10 @@ export default function ModalScreen({ route }) {
           <Button
             title="Submit Comment"
             buttonStyle={styles.buttonStyle}
-            onPress={submitComment}
+            onPress={() => {
+              submitComment()
+              sendPushNotificationWithWordFeeding(expoNotif, station.street)
+            }}
           />
       </ScrollView>
     </SafeAreaView>
@@ -258,6 +262,7 @@ export default function ModalScreen({ route }) {
     if (comment.type == CommentType.Station) {
       addPoints(30, firebase.auth().currentUser?.uid);
     }
+    
   }
 }
 
