@@ -106,8 +106,7 @@ export default function CatMap({ navigation }: RootTabScreenProps<'Home'>) {
             key={index}
             onPress={() => {
               navigation.push('FeedingStations', {
-                title: station.street,
-                info: station.info,
+                feedingStation: station,
               });
             }}
             coordinate={{

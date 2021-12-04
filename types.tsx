@@ -27,7 +27,7 @@ export type RootStackParamList = {
   NotFound: undefined;
   Cat: { cat: Cat };
   User: { user: User };
-  FeedingStations: { title: String; info: any };
+  FeedingStations: { feedingStation: FeedingStations };
   ReportedPosts: undefined;
   DownvotedPosts: undefined;
   ModeratorRequests: undefined;
@@ -100,6 +100,7 @@ export enum CommentType {
   Shelter = 'Took this cat to a no-kill shelter',
   Foster = 'Fostering this cat',
   Return = 'Returned this cat to it\'s owner',
+  Station = 'Completed feeding station request',
 }
 
 export type CommentList = {
@@ -161,6 +162,7 @@ export type FeedingStations = {
   latitude: any;
   longitude: any;
   street: String;
+  commentList: CommentList;
 };
 
 export type User = {
