@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Cat } from '../types';
-import { addCat } from '../utils/dbInterface';
+import { addCat, addPoints } from '../utils/dbInterface';
 import LocationPicker from './LocationPicker';
 import CatImagePicker from '../components/ImagePicker';
 import firebase from '../utils/firebase';
@@ -122,7 +122,10 @@ export default function CatForm() {
       .then((url) => {
         cat.media = url;
       })
-      .then(() => addCat(cat))
+      .then(() => {
+        addCat(cat);
+        addPoints(5, firebase.auth().currentUser?.uid);
+      })
       .catch((err) => {
         console.log(err);
       });

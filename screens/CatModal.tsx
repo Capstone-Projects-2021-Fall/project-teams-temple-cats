@@ -7,10 +7,12 @@ import { Text, View } from '../components/Themed';
 import CommentComponent from '../components/CommentComponent';
 import { AuthContext } from '../context/FirebaseAuthContext';
 import firebase from '../utils/firebase';
-import { Cat, Comment, RootTabScreenProps, Report } from '../types';
+import { Cat, Comment, RootTabScreenProps, Report, CommentType } from '../types';
 import { sendPushNotificationWithWord } from '../utils/dbInterface';
 import { sendPushNotificationWithWordReport } from '../utils/dbInterface';
-
+import { Picker } from '@react-native-picker/picker';
+import { addPoints, removeCat } from '../utils/dbInterface';
+import { sin } from 'react-native-reanimated';
 
 const { width } = Dimensions.get('window');
 const modStatus: any[] = [];
@@ -33,18 +35,19 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
   const [expoNotif, setexpoNotif] = React.useState<any[]>([]);
 
 
-  const [report, setReport]: Report = useState({
+  const [report, setReport] = useState<Report>({
     reportID: '',
     catID: cat.catID,
     accountID: firebase.auth().currentUser?.uid,
     reason: '',
   });
 
-  const [comment, setComment]: Cat = useState({
+  const [comment, setComment] = useState<Comment>({
     commentID: `${new Date()} ${uuidv4()}`,
     content: '',
     accountID: firebase.auth().currentUser?.uid,
     reports: '',
+    type: CommentType.Comment,
   });
 
   const toggleModalVisibility = () => {
@@ -55,20 +58,13 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
     }));
   };
 
-  const deleteCat = () => {
-    const catRef = firebase.database().ref('Cats').child(cat.catID);
-    catRef.remove();
-    const imageRef = firebase.storage().refFromURL(cat.media);
-    imageRef.delete();
-  };
-
   const showValidationAlert = () =>
     Alert.alert('Delete', 'Are your sure you want to delete this post?', [
       {
         text: 'Yes',
         onPress: () => {
           setShowValidation(false);
-          deleteCat();
+          removeCat(cat)
         },
       },
       {
@@ -109,55 +105,6 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
       });
 
   }, []);
-
-  // async function sendPushNotification(array: string[], name: String) {
-
-  //   for (let i = 0; i < array.length; i++) {
-
-  //     const message = {
-  //       to: array[i],
-  //       sound: 'default',
-  //       title: 'Temple Cats',
-  //       body: 'Comment has been submitted on Cat: ' + name,
-  //       data: { someData: 'goes here' },
-  //     };
-
-  //     await fetch('https://exp.host/--/api/v2/push/send', {
-  //       method: 'POST',
-  //       headers: {
-  //         Accept: 'application/json',
-  //         'Accept-encoding': 'gzip, deflate',
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(message),
-  //     });
-  //   }
-  // }
-
-  // async function sendPushNotificationReport(array: string[], name: String) {
-
-  //   for (let i = 0; i < array.length; i++) {
-
-  //     const message = {
-  //       to: array[i],
-  //       sound: 'default',
-  //       title: 'Temple Cats',
-  //       body: 'A report has been made on Cat: ' + name,
-  //       data: { someData: 'goes here' },
-  //     };
-
-  //     await fetch('https://exp.host/--/api/v2/push/send', {
-  //       method: 'POST',
-  //       headers: {
-  //         Accept: 'application/json',
-  //         'Accept-encoding': 'gzip, deflate',
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(message),
-  //     });
-  //   }
-  // }
-
 
 
 
@@ -245,15 +192,27 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
             }))
           }
         />
+        <View style={styles.pickers}>
+          <Picker
+            style={styles.commentTypePicker}
+            selectedValue={comment.type}
+            onValueChange={(itemValue, itemIndex) => {
+              setComment((currentState: Comment) => ({
+                ...currentState,
+                type: itemValue,
+              }))
+            }}
+          >
+            {Object.values(CommentType).map((item, index) => (
+              <Picker.Item label={item} value={item} key={index} />
+            ))}
+          </Picker>
+        </View>
         <Button
           title="Submit Comment"
           buttonStyle={styles.buttonStyle}
           onPress={() => {
-            firebase.database().ref().child(`Cats/${cat.catID}/commentList/${comment.commentID}`).set(comment);
-            setComment((currentState: Comment) => ({
-              ...currentState,
-              commentID: `${new Date()} ${uuidv4()}`,
-            }));
+            submitComment()
             sendPushNotificationWithWord(expoNotif, cat.name)
           }}
         />
@@ -307,6 +266,35 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
       </ScrollView>
     </SafeAreaView>
   );
+
+  function submitComment() {
+    firebase.database().ref().child(`Cats/${cat.catID}/commentList/${comment.commentID}`).set(comment);
+    setComment((currentState: Comment) => ({
+      ...currentState,
+      commentID: `${new Date()} ${uuidv4()}`,
+    }));
+    switch (comment.type) {
+      case CommentType.FoodWater:
+        addPoints(20, firebase.auth().currentUser?.uid);
+        break;
+      case CommentType.Microchip:
+        addPoints(50, firebase.auth().currentUser?.uid);
+        break;
+      case CommentType.Neuter:
+        addPoints(200, firebase.auth().currentUser?.uid);
+        break;
+      case CommentType.Shelter:
+        addPoints(200, firebase.auth().currentUser?.uid);
+        break;
+      case CommentType.Foster:
+        addPoints(200, firebase.auth().currentUser?.uid);
+        break;
+      case CommentType.Return:
+        addPoints(300, firebase.auth().currentUser?.uid);
+        break;
+    }
+
+  }
 }
 
 const styles = StyleSheet.create({
@@ -473,5 +461,17 @@ const styles = StyleSheet.create({
     marginVertical: 40,
     height: 5,
     width: '100%',
+  },
+  pickers: {
+    width: 350,
+    backgroundColor: 'white',
+    borderWidth: 1,
+    marginBottom: 10,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  },
+  commentTypePicker: {
+    width: 350,
+    height: 40,
   },
 });

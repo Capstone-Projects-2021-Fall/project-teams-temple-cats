@@ -89,7 +89,18 @@ export type Comment = {
   accountID: string;
   reports: ReportList;
   votes: number;
+  type: CommentType;
 };
+
+export enum CommentType {
+  Comment = 'Just a comment!',
+  FoodWater = 'Gave this cat food/water',
+  Microchip = 'Took cat to get scanned for a microchip',
+  Neuter = 'Trap/neuter/returned this cat',
+  Shelter = 'Took this cat to a no-kill shelter',
+  Foster = 'Fostering this cat',
+  Return = 'Returned this cat to it\'s owner',
+}
 
 export type CommentList = {
   [key: string]: Comment;

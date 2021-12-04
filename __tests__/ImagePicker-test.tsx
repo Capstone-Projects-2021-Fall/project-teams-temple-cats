@@ -29,12 +29,12 @@ it("Camera button is correctly labeled", () => {
     expect(getAllByText('From Camera').length).toBe(1);
 });
 
-it("Camera button is correctly labeled", () => {
+it("Camera roll is correctly labeled", () => {
     const { getAllByText } = render(<ImagePicker/>)
     expect(getAllByText('From Camera Roll').length).toBe(1);
 });
 
-it("Camera button is correctly labeled", () => {
+it("Close is correctly labeled", () => {
     const { getAllByText } = render(<ImagePicker/>)
     expect(getAllByText('Close').length).toBe(1);
 });

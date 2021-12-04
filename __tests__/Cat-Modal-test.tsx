@@ -34,12 +34,12 @@ import CatModal from "../screens/CatModal"
 // it("Date sighted is labeled correctly", () => {
 //     const { getAllByText } = render(<CatModal/>)
 //     expect(getAllByText('Report').length).toBe(1);
-//});
+// });
 
 // it("Delete is labeled correctly", () => {
 //     const { getAllByText } = render(<CatModal/>)
 //     expect(getAllByText('Report').length).toBe(1);
-//});
+// });
 
 
 //Unsure how to mock moderator functionalities
