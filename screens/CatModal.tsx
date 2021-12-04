@@ -178,7 +178,7 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
               }))
             }}
           >
-            {Object.values(CommentType).map((item, index) => (
+            {Object.values(CommentType).filter((type) => type != CommentType.Station).map((item, index) => (
               <Picker.Item label={item} value={item} key={index} />
             ))}
           </Picker>
