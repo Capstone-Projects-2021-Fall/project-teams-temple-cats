@@ -5,8 +5,10 @@ import { Input, Button } from 'react-native-elements';
 import { AuthContext } from '../context/FirebaseAuthContext';
 import { Text, View } from '../components/Themed';
 import { v4 as uuidv4 } from 'uuid';
-import { Announcement, AnnouncementFeeder, FeedingStation, Report, RootStackParamList, RootTabScreenProps } from '../types';
-import { addAnnouncementFeeder } from '../utils/dbInterface';
+import { Announcement, AnnouncementFeeder, FeedingStations, Comment, Report, RootStackParamList, RootTabScreenProps, CommentType } from '../types';
+import { addAnnouncementFeeder, addPoints } from '../utils/dbInterface';
+import CommentComponent from '../components/CommentComponent';
+import { Picker } from '@react-native-picker/picker';
 
 /**
  * Function that renders the modal for viewing information on a feeding station.
@@ -18,6 +20,7 @@ import { addAnnouncementFeeder } from '../utils/dbInterface';
  const modStatus: any[] = [];
 
 export default function ModalScreen({ route }) {
+  const  station: FeedingStations = route.params.feedingStation;
   // console.log(route.params.info)
   const [word, setWord] = useState<any>([]);
   const user = React.useContext(AuthContext);
@@ -30,7 +33,15 @@ export default function ModalScreen({ route }) {
     content: '',
     time: '',
   });
-
+  const [commentList, setCommentList] = useState<Comment[]>([]);
+  const newState: Comment[] = [];
+  const [comment, setComment] = useState<Comment>({
+    commentID: `${new Date()} ${uuidv4()}`,
+    content: '',
+    accountID: firebase.auth().currentUser?.uid,
+    reports: '',
+    type: CommentType.Comment,
+  });
 
   React.useEffect(() => {
     firebase
@@ -40,42 +51,47 @@ export default function ModalScreen({ route }) {
         modStatus.push(snapshot.val());
         setWord(modStatus);
       });
-      var date = new Date().getDate(); //Current Date
-      var month = new Date().getMonth() + 1; //Current Month
-      var year = new Date().getFullYear(); //Current Year
-      var hours = new Date().getHours(); //Current Hours
-      var min = new Date().getMinutes(); //Current Minutes
-      var sec = new Date().getSeconds(); //Current Seconds
-     
-      setAnnouncementFeeder((currentState: Announcement) => ({
-        ...currentState,
-        time: month + '/' + date + '/' + year + '/' + hours + ':' + min + ':' + sec,
-      }))
 
-
-      firebase.database().ref().child('Accounts/').on('value', function (snapshot) {
-        const Accounts: any[] = Object.values(snapshot.val());
-        const tokens: any[] = [];
-  
-    
-  
-        Accounts.forEach((account) => {
-          if ((account.expoNotif && Object.keys(account.expoNotif).length > 0)){
-            tokens.push(account.expoNotif)
-          }
-        }
-        );
-        setexpoNotif(tokens)
-        //console.log(tokens)
+    firebase
+      .database()
+      .ref(`Stations/${station.street}/commentList`)
+      .on('child_added', (snapshot) => {
+        newState.push(snapshot.val());
+        setCommentList([...newState]);
       });
+    
+    var date = new Date().getDate(); //Current Date
+    var month = new Date().getMonth() + 1; //Current Month
+    var year = new Date().getFullYear(); //Current Year
+    var hours = new Date().getHours(); //Current Hours
+    var min = new Date().getMinutes(); //Current Minutes
+    var sec = new Date().getSeconds(); //Current Seconds
+    
+    setAnnouncementFeeder((currentState: Announcement) => ({
+      ...currentState,
+      time: month + '/' + date + '/' + year + '/' + hours + ':' + min + ':' + sec,
+    }))
 
-    }, []);
+    firebase.database().ref().child('Accounts/').on('value', function (snapshot) {
+      const Accounts: any[] = Object.values(snapshot.val());
+      const tokens: any[] = [];
+
+      Accounts.forEach((account) => {
+        if ((account.expoNotif && Object.keys(account.expoNotif).length > 0)){
+          tokens.push(account.expoNotif)
+        }
+      }
+      );
+      setexpoNotif(tokens)
+      //console.log(tokens)
+    });
+  }, []);
 
 
   const statusReports: any[] = [];
   
-  for (const i in route.params.info) {
-    statusReports.push(route.params.info[i]);
+  for (const i in station.info) {
+    statusReports.push(station.info[i]);
   }
 
   const toggleModalVisibility = () => {
@@ -83,7 +99,7 @@ export default function ModalScreen({ route }) {
     setAnnouncementFeeder((currentState: AnnouncementFeeder) => ({
       ...currentState,
       announcementID: `${uuidv4()}`,
-      location: route.params.title,
+      location: station.title,
     }));
   };
 
@@ -113,19 +129,16 @@ export default function ModalScreen({ route }) {
 
 
   return (
-    
-    <View style={styles.container}>
-      <Text style={styles.title}>{route.params.title}</Text>
-      
-      <Image
-        style={{ width: 200, height: 200, top: -25 }}
-        source={{
-          uri: 'https://media.istockphoto.com/vectors/pet-food-food-for-cats-bowl-packaging-advertising-vector-simple-flat-vector-id1176308523?k=20&m=1176308523&s=612x612&w=0&h=dtUknn9C3iCgRDNkwbnuKUO9rwgf_5rNjLkPEX5_xiM=',
-        }}
-      />
-       
-      
-      <View>
+    <SafeAreaView>
+      <ScrollView>
+        <Text style={styles.title}>{station.title}</Text>
+        <Image
+          style={styles.image}
+          source={{
+            uri: 'https://media.istockphoto.com/vectors/pet-food-food-for-cats-bowl-packaging-advertising-vector-simple-flat-vector-id1176308523?k=20&m=1176308523&s=612x612&w=0&h=dtUknn9C3iCgRDNkwbnuKUO9rwgf_5rNjLkPEX5_xiM=',
+          }}
+        />
+        <View>
           <Button title="Create Announcement" buttonStyle={styles.buttonStyle} onPress={toggleModalVisibility} />
           <Modal
             animationType="slide"
@@ -179,37 +192,92 @@ export default function ModalScreen({ route }) {
             </View>
           </Modal>
         </View>
-        <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      {statusReports.map((item) => (
-        <View style={styles.content}>
-          <Text style={styles.contentList}>
-            {`Status: ${item.status}`}
-            {'\n'}
-            {`Ingredients Needed: ${item.ingredients}`}
-            {'\n'}
-            {`Time: ${item.time}`}
-            {'\n\n'}
-          </Text>
-        </View>
-      ))}
-      
-     
-    </View>
+        <View style={styles.separator} lightColor="#8B0000" darkColor="rgba(255,255,255,0.1)" />
+        {statusReports.map((item, index) => (
+          <View key={index} style={styles.content}>
+            <Text style={styles.contentList}>
+              {`Status: ${item.status}`}
+              {'\n'}
+              {`Ingredients Needed: ${item.ingredients}`}
+              {'\n'}
+              {`Time: ${item.time}`}
+              {'\n'}
+            </Text>
+          </View>
+        ))}
+        <View style={styles.separator} lightColor="#8B0000" darkColor="rgba(255,255,255,0.1)" />
+        <Text style={styles.sectionHeader}>Comment Thread:</Text>
+          <ScrollView style={styles.scrollView}>
+            {commentList.map((comment, index) => (
+              <CommentComponent key={index} comment={comment} />
+            ))}
+          </ScrollView>
+          <Input
+            style={styles.commentInput}
+            value={comment.content}
+            placeholder="Enter Comment..."
+            placeholderTextColor="#8B0000"
+            onChangeText={(text) =>
+              setComment((currentState: Comment) => ({
+                ...currentState,
+                content: text,
+              }))
+            }
+          />
+          <View style={styles.pickers}>
+            <Picker
+              style={styles.commentTypePicker}
+              selectedValue={comment.type}
+              onValueChange={(itemValue, itemIndex) => {
+                setComment((currentState: Comment) => ({
+                  ...currentState,
+                  type: itemValue,
+                }))
+              }}
+            >
+              {[CommentType.Comment, CommentType.Station].map((item, index) => (
+                <Picker.Item label={item} value={item} key={index} />
+              ))}
+            </Picker>
+          </View>
+          <Button
+            title="Submit Comment"
+            buttonStyle={styles.buttonStyle}
+            onPress={submitComment}
+          />
+      </ScrollView>
+    </SafeAreaView>
   );
+
+  function submitComment() {
+    firebase.database().ref().child(`Stations/${station.street}/commentList/${comment.commentID}`).set(comment);
+    setComment((currentState: Comment) => ({
+      ...currentState,
+      commentID: `${new Date()} ${uuidv4()}`,
+    }));
+    if (comment.type == CommentType.Station) {
+      addPoints(30, firebase.auth().currentUser?.uid);
+    }
+  }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  image: {
+    width: 200,
+    height: 200,
     alignItems: 'center',
     justifyContent: 'center',
+    borderRadius: 40,
+    marginBottom: 5,
+    backgroundColor: '#8B0000',
+    marginLeft: 'auto',
+    marginRight: 'auto',
   },
   buttonStyle: {
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 8,
     paddingHorizontal: 90,
-   // top: -90,
     borderRadius: 40,
     backgroundColor: '#8B0000',
     marginBottom: 20,
@@ -268,18 +336,61 @@ const styles = StyleSheet.create({
     top: 195,
   },
   separator: {
-    marginVertical: 85,
-    height: 1,
-    width: '80%',
-    top: -90,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 15,
+    height: 3,
+    width: '100%',
   },
   content: {
-    fontSize: 20,
-    top: -190,
-    left: -150,
+    justifyContent: 'center',
   },
   contentList: {
-    left: 100,
-    top: 25,
+    textAlign: 'center',
+    fontSize: 16,
+  },
+  commentInput: {
+    height: 'auto',
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+    color: '#8B0000',
+    backgroundColor: 'white',
+  },
+  pickers: {
+    width: 350,
+    backgroundColor: 'white',
+    borderWidth: 1,
+    marginBottom: 10,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  },
+  commentTypePicker: {
+    width: 350,
+    height: 40,
+  },
+  bottomSeparator: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 25,
+    height: 5,
+    width: '100%',
+  },
+  sectionHeader: {
+    justifyContent: 'center',
+    textAlign: 'center',
+    flexDirection: 'row',
+    fontSize: 19,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginBottom: 15,
+  },
+  scrollView: {
+    height: 160,
+    backgroundColor: '#8B0000',
   },
 });
