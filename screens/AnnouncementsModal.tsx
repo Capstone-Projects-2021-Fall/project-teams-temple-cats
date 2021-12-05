@@ -1,8 +1,9 @@
 import firebase from 'firebase';
 import * as React from 'react';
 import {
-  StyleSheet, Button, SafeAreaView, ScrollView, Switch,
+  StyleSheet, SafeAreaView, ScrollView, Switch,
 } from 'react-native';
+import { Button } from 'react-native-elements';
 import { useState } from 'react';
 import { Announcement, AnnouncementFeeder, RootTabScreenProps } from '../types';
 import { Text, View } from '../components/Themed';
@@ -27,8 +28,6 @@ export default function Announcements({ navigation }: RootTabScreenProps<'Home'>
   const user = React.useContext(AuthContext);
   const [isEnabled, setIsEnabled] = useState(false);
 
-  
-  
   const isModerator = JSON.stringify(modStatus[0]) === '3';
 
   React.useEffect(() => {
@@ -48,9 +47,9 @@ export default function Announcements({ navigation }: RootTabScreenProps<'Home'>
         }
       });
       setAnnouncementData(announcementDataTmp);
-      setValue(announcements)
+      setValue(announcements);
     });
-    
+
     announcementFeederRef.get().then((snapshot) => {
       const announcements: AnnouncementFeeder[] = Object.values(snapshot.val());
       const announcementDataTmp: AnnouncementFeeder[] = [];
@@ -64,37 +63,34 @@ export default function Announcements({ navigation }: RootTabScreenProps<'Home'>
     });
   }, []);
 
-
   function toggleSwitch() {
-    setIsEnabled(previousState => !previousState);
-    if(isEnabled){
+    setIsEnabled((previousState) => !previousState);
+    if (isEnabled) {
       setValue(announcementData);
-    } 
-    else{
+    } else {
       setValue(announcementFeederData);
     }
   }
 
   return (
     <SafeAreaView style={styles.container}>
-       <View style={{flexDirection: 'row',  backgroundColor: 'transparent', top: 15}}> 
-            <Text style={styles.toggleText}>General  </Text>
-              <Switch
-                trackColor={{ false: "#696969", true: "#8b0000" }}
-                thumbColor={isEnabled ? "white" : "white"}
-                ios_backgroundColor="#3e3e3e"
-                onValueChange={() => {
-                toggleSwitch();
-                }}
-                value={isEnabled}
-              />
-            <Text style={styles.toggleText}>  Feeder</Text>
-          </View>
+      <View style={{ flexDirection: 'row', backgroundColor: 'transparent', top: 15 }}>
+        <Text style={styles.toggleText}>General  </Text>
+        <Switch
+          trackColor={{ false: '#696969', true: '#8b0000' }}
+          thumbColor={isEnabled ? 'white' : 'white'}
+          ios_backgroundColor="#3e3e3e"
+          onValueChange={() => {
+            toggleSwitch();
+          }}
+          value={isEnabled}
+        />
+        <Text style={styles.toggleText}>  Feeder</Text>
+      </View>
       <ScrollView showsVerticalScrollIndicator={false}>
-     
+
         <View style={styles.announcementWrapper}>
-          
-      
+
           <Text style={styles.title}>
             {value.length}
             {' '}
@@ -118,7 +114,7 @@ export default function Announcements({ navigation }: RootTabScreenProps<'Home'>
       </ScrollView>
       {isModerator && !isEnabled && (
         <Button
-          color="#fff"
+          buttonStyle={styles.buttonStyle}
           title="Create announcement"
           onPress={() => {
             navigation.push('CreateAnnouncement');
@@ -140,7 +136,7 @@ const styles = StyleSheet.create({
     right: 1,
     fontSize: 20,
     fontWeight: 'bold',
-    color: "#fff"
+    color: '#fff',
   },
   title: {
     fontSize: 32,
@@ -178,5 +174,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
     alignSelf: 'flex-end',
+  },
+  buttonStyle: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 8,
+    paddingHorizontal: 90,
+    borderRadius: 40,
+    backgroundColor: '#8B0000',
+    marginBottom: 20,
+    marginLeft: 'auto',
+    marginRight: 'auto',
   },
 });
