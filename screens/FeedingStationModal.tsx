@@ -70,6 +70,7 @@ export default function ModalScreen({ route }) {
     
     setAnnouncementFeeder((currentState: Announcement) => ({
       ...currentState,
+      location: "test",
       time: month + '/' + date + '/' + year + '/' + hours + ':' + min + ':' + sec,
     }))
 
@@ -100,7 +101,7 @@ export default function ModalScreen({ route }) {
     setAnnouncementFeeder((currentState: AnnouncementFeeder) => ({
       ...currentState,
       announcementID: `${uuidv4()}`,
-      location: station.title,
+      location: "test",
     }));
   };
 
@@ -174,6 +175,7 @@ export default function ModalScreen({ route }) {
                     setAnnouncementFeeder((currentState: AnnouncementFeeder) => ({
                       ...currentState,
                       content: text,
+                      location: station.street
                     }))
                   }
                 />
