@@ -181,7 +181,6 @@ export default function ModalScreen({ route }) {
                   onPress={() => {
                     toggleModalVisibility();
                     sendPushNotification(expoNotif);
-
                     console.log(announcementFeeder);
                     addAnnouncementFeeder(announcementFeeder);
                   }}
@@ -197,8 +196,12 @@ export default function ModalScreen({ route }) {
             <Text style={styles.contentList}>
               {`Status: ${item.status}`}
               {'\n'}
+            </Text>
+            <Text style={styles.contentList}>
               {`Ingredients Needed: ${item.ingredients}`}
               {'\n'}
+            </Text>
+            <Text style={styles.contentList}>
               {`Time: ${item.time}`}
               {'\n'}
             </Text>
@@ -237,6 +240,12 @@ export default function ModalScreen({ route }) {
               <Picker.Item label={item} value={item} key={index} />
             ))}
             <View style={styles.titleSeparator} />
+            <Text style={{
+              width: '100%', height: 60, position: 'absolute', bottom: 0, left: 0,
+            }}
+            >
+              {' '}
+            </Text>
           </Picker>
         </View>
         <Button
@@ -274,6 +283,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#8B0000',
     marginLeft: 'auto',
     marginRight: 'auto',
+    paddingBottom: 10,
   },
   buttonStyle: {
     alignItems: 'center',
@@ -368,10 +378,20 @@ const styles = StyleSheet.create({
   },
   content: {
     justifyContent: 'center',
+    height: 100,
+    borderRadius: 10,
+    backgroundColor: '#8B0000',
+    marginBottom: 0,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    paddingLeft: 5,
+    paddingRight: 5,
   },
   contentList: {
     textAlign: 'center',
     fontSize: 16,
+    color: 'white',
+    fontWeight: 'bold',
   },
   commentInput: {
     height: 'auto',
