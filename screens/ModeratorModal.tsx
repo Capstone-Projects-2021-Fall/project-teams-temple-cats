@@ -8,6 +8,8 @@ import { Text, View } from '../components/Themed';
 import { useEffect, useState } from 'react';
 import { Cat, Comment, Report, RootStackScreenProps, Application, Account } from '../types';
 import { Divider } from 'react-native-elements';
+import { sendPushNotification } from '../utils/dbInterface';
+
 
 export default function ModalScreen({ navigation }: RootStackScreenProps<'ReportedPosts'>) {
 
@@ -32,7 +34,7 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Report
       .child(`Accounts/${accountID}/Application`).remove(); //Remove application
 
       var notifyArray = [notif]
-      sendPushNotification(notifyArray)
+      sendPushNotification(notifyArray, 'Your application has been approved! Please reload the app')
 
   }
 
@@ -60,7 +62,7 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Report
       .child(`Accounts/${accountID}/Application`).remove(); //Remove application
 
       var notifArray = [notif]
-      sendPushNotificationBad(notifArray)
+      sendPushNotification(notifArray, 'Your application has been denied!')
 
   }
 
@@ -115,54 +117,6 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Report
     });
 
   }, []);
-
-  async function sendPushNotification(array: string[]) {
-
-    for (let i = 0; i < array.length; i++) {
-
-      const message = {
-        to: array[i],
-        sound: 'default',
-        title: 'Temple Cats',
-        body: 'Your application has been approved! Please reload the app',
-        data: { someData: 'goes here' },
-      };
-
-      await fetch('https://exp.host/--/api/v2/push/send', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Accept-encoding': 'gzip, deflate',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(message),
-      });
-    }
-  }
-
-  async function sendPushNotificationBad(array: string[]) {
-
-    for (let i = 0; i < array.length; i++) {
-
-      const message = {
-        to: array[i],
-        sound: 'default',
-        title: 'Temple Cats',
-        body: 'Your application has been denied!',
-        data: { someData: 'goes here' },
-      };
-
-      await fetch('https://exp.host/--/api/v2/push/send', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Accept-encoding': 'gzip, deflate',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(message),
-      });
-    }
-  }
 
   //console.log(submissons)
 

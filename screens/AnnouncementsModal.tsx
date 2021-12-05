@@ -116,7 +116,7 @@ export default function Announcements({ navigation }: RootTabScreenProps<'Home'>
 
         </View>
       </ScrollView>
-      {isModerator && (
+      {isModerator && !isEnabled && (
         <Button
           color="#fff"
           title="Create announcement"

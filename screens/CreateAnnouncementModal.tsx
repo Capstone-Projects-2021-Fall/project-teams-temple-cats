@@ -9,9 +9,10 @@ import { v4 as uuidv4 } from 'uuid';
 import { Announcement, RootStackScreenProps, RootTabScreenProps} from '../types';
 import { useState } from 'react';
 import { addAnnouncement } from '../utils/dbInterface';
+import { sendPushNotification } from '../utils/dbInterface';
 
-export default function CreateAnnouncement() {
-  
+export default function ModalScreen() {
+  const [expoNotif, setexpoNotif] = React.useState<any[]>([]);
   const [announcement, setAnnouncement]: Announcement = useState({
     announcementID: uuidv4(),
     subject: '',
@@ -31,6 +32,25 @@ export default function CreateAnnouncement() {
       ...currentState,
       time: month + '/' + date + '/' + year + '/' + hours + ':' + min + ':' + sec,
     }))
+
+    //Retrieves all expo tokens for moderators 
+
+
+    firebase.database().ref().child('Accounts/').on('value', function (snapshot) {
+      const Accounts: any[] = Object.values(snapshot.val());
+      const tokens: any[] = [];
+
+  
+
+      Accounts.forEach((account) => {
+        if ((account.expoNotif && Object.keys(account.expoNotif).length > 0)){
+          tokens.push(account.expoNotif)
+        }
+      }
+      );
+      setexpoNotif(tokens)
+      //console.log(tokens)
+    });
     
   }, []);
 
@@ -51,6 +71,7 @@ export default function CreateAnnouncement() {
     alert('Submitted Successfully');
   }
   }
+
 
     return (
       <View style={styles.container}>
@@ -94,6 +115,7 @@ export default function CreateAnnouncement() {
           }}
           onPress={() => {
             submitAnnouncement();
+            sendPushNotification(expoNotif, 'A new annoucenment has been posted')
             return;
           }}
         />
