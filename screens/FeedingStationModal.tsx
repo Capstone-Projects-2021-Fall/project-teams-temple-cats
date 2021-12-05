@@ -1,15 +1,18 @@
 import firebase from 'firebase';
 import React, { useState } from 'react';
-import { StyleSheet, Image,  SafeAreaView, ScrollView, Modal, Dimensions } from 'react-native';
+import {
+  StyleSheet, Image, SafeAreaView, ScrollView, Modal, Dimensions,
+} from 'react-native';
 import { Input, Button } from 'react-native-elements';
+import { v4 as uuidv4 } from 'uuid';
+import { Picker } from '@react-native-picker/picker';
 import { AuthContext } from '../context/FirebaseAuthContext';
 import { Text, View } from '../components/Themed';
-import { v4 as uuidv4 } from 'uuid';
-import { Announcement, AnnouncementFeeder, FeedingStations, Comment, Report, RootStackParamList, RootTabScreenProps, CommentType } from '../types';
-import { addAnnouncementFeeder, addPoints } from '../utils/dbInterface';
+import {
+  Announcement, AnnouncementFeeder, FeedingStations, Comment, Report, RootStackParamList, RootTabScreenProps, CommentType,
+} from '../types';
+import { addAnnouncementFeeder, addPoints, sendPushNotificationWithWordFeeding } from '../utils/dbInterface';
 import CommentComponent from '../components/CommentComponent';
-import { Picker } from '@react-native-picker/picker';
-import { sendPushNotificationWithWordFeeding } from '../utils/dbInterface';
 
 /**
  * Function that renders the modal for viewing information on a feeding station.
@@ -17,11 +20,11 @@ import { sendPushNotificationWithWordFeeding } from '../utils/dbInterface';
  * @param {RootTabScreenProps} props navigation properties from the root of the home button in navigation
  * @returns {JSX.Element} JSX element of the feeding station modal screen
  */
- const { width } = Dimensions.get('window');
- const modStatus: any[] = [];
+const { width } = Dimensions.get('window');
+const modStatus: any[] = [];
 
 export default function ModalScreen({ route }) {
-  const  station: FeedingStations = route.params.feedingStation;
+  const station: FeedingStations = route.params.feedingStation;
   // console.log(route.params.info)
   const [word, setWord] = useState<any>([]);
   const user = React.useContext(AuthContext);
@@ -60,38 +63,36 @@ export default function ModalScreen({ route }) {
         newState.push(snapshot.val());
         setCommentList([...newState]);
       });
-    
-    var date = new Date().getDate(); //Current Date
-    var month = new Date().getMonth() + 1; //Current Month
-    var year = new Date().getFullYear(); //Current Year
-    var hours = new Date().getHours(); //Current Hours
-    var min = new Date().getMinutes(); //Current Minutes
-    var sec = new Date().getSeconds(); //Current Seconds
-    
+
+    const date = new Date().getDate(); // Current Date
+    const month = new Date().getMonth() + 1; // Current Month
+    const year = new Date().getFullYear(); // Current Year
+    const hours = new Date().getHours(); // Current Hours
+    const min = new Date().getMinutes(); // Current Minutes
+    const sec = new Date().getSeconds(); // Current Seconds
+
     setAnnouncementFeeder((currentState: Announcement) => ({
       ...currentState,
-      location: "test",
-      time: month + '/' + date + '/' + year + '/' + hours + ':' + min + ':' + sec,
-    }))
+      location: 'test',
+      time: `${month}/${date}/${year}/${hours}:${min}:${sec}`,
+    }));
 
-    firebase.database().ref().child('Accounts/').on('value', function (snapshot) {
+    firebase.database().ref().child('Accounts/').on('value', (snapshot) => {
       const Accounts: any[] = Object.values(snapshot.val());
       const tokens: any[] = [];
 
       Accounts.forEach((account) => {
-        if ((account.expoNotif && Object.keys(account.expoNotif).length > 0)){
-          tokens.push(account.expoNotif)
+        if ((account.expoNotif && Object.keys(account.expoNotif).length > 0)) {
+          tokens.push(account.expoNotif);
         }
-      }
-      );
-      setexpoNotif(tokens)
-      //console.log(tokens)
+      });
+      setexpoNotif(tokens);
+      // console.log(tokens)
     });
   }, []);
 
-
   const statusReports: any[] = [];
-  
+
   for (const i in station.info) {
     statusReports.push(station.info[i]);
   }
@@ -101,14 +102,12 @@ export default function ModalScreen({ route }) {
     setAnnouncementFeeder((currentState: AnnouncementFeeder) => ({
       ...currentState,
       announcementID: `${uuidv4()}`,
-      location: "test",
+      location: 'test',
     }));
   };
 
   async function sendPushNotification(array: string[]) {
-
     for (let i = 0; i < array.length; i++) {
-
       const message = {
         to: array[i],
         sound: 'default',
@@ -129,15 +128,16 @@ export default function ModalScreen({ route }) {
     }
   }
 
-
   return (
     <SafeAreaView>
       <ScrollView>
-        <Text style={styles.title}>{station.title}</Text>
+        <View style={styles.titleSeparator} />
+        <Text style={styles.title}>{station.street}</Text>
+        <View style={styles.titleSeparator} />
         <Image
           style={styles.image}
           source={{
-            uri: 'https://media.istockphoto.com/vectors/pet-food-food-for-cats-bowl-packaging-advertising-vector-simple-flat-vector-id1176308523?k=20&m=1176308523&s=612x612&w=0&h=dtUknn9C3iCgRDNkwbnuKUO9rwgf_5rNjLkPEX5_xiM=',
+            uri: 'https://www.alleycat.org/wp-content/uploads/2017/01/feeding-2-300x225.gif',
           }}
         />
         <View>
@@ -158,12 +158,10 @@ export default function ModalScreen({ route }) {
                   selectionColor="black"
                   placeholder="Enter subject of announcement..."
                   placeholderTextColor="black"
-                  onChangeText={(text) =>
-                    setAnnouncementFeeder((currentState: AnnouncementFeeder) => ({
-                      ...currentState,
-                      subject: text,
-                    }))
-                  }
+                  onChangeText={(text) => setAnnouncementFeeder((currentState: AnnouncementFeeder) => ({
+                    ...currentState,
+                    subject: text,
+                  }))}
                 />
                 <Input
                   style={styles.additionalInput}
@@ -171,21 +169,19 @@ export default function ModalScreen({ route }) {
                   selectionColor="black"
                   placeholder="Enter content of announcement..."
                   placeholderTextColor="black"
-                  onChangeText={(text) =>
-                    setAnnouncementFeeder((currentState: AnnouncementFeeder) => ({
-                      ...currentState,
-                      content: text,
-                      location: station.street
-                    }))
-                  }
+                  onChangeText={(text) => setAnnouncementFeeder((currentState: AnnouncementFeeder) => ({
+                    ...currentState,
+                    content: text,
+                    location: station.street,
+                  }))}
                 />
                 <Button
                   title="Submit"
                   buttonStyle={styles.buttonStyle}
                   onPress={() => {
                     toggleModalVisibility();
-                    sendPushNotification(expoNotif)
-                    
+                    sendPushNotification(expoNotif);
+
                     console.log(announcementFeeder);
                     addAnnouncementFeeder(announcementFeeder);
                   }}
@@ -210,47 +206,45 @@ export default function ModalScreen({ route }) {
         ))}
         <View style={styles.separator} lightColor="#8B0000" darkColor="rgba(255,255,255,0.1)" />
         <Text style={styles.sectionHeader}>Comment Thread:</Text>
-          <ScrollView style={styles.scrollView}>
-            {commentList.map((comment, index) => (
-              <CommentComponent key={index} comment={comment} />
-            ))}
-          </ScrollView>
-          <Input
-            style={styles.commentInput}
-            value={comment.content}
-            placeholder="Enter Comment..."
-            placeholderTextColor="#8B0000"
-            onChangeText={(text) =>
+        <ScrollView style={styles.scrollView}>
+          {commentList.map((comment, index) => (
+            <CommentComponent key={index} comment={comment} />
+          ))}
+        </ScrollView>
+        <Input
+          style={styles.commentInput}
+          value={comment.content}
+          placeholder="Enter Comment..."
+          placeholderTextColor="#8B0000"
+          onChangeText={(text) => setComment((currentState: Comment) => ({
+            ...currentState,
+            content: text,
+          }))}
+        />
+        <View style={styles.pickers}>
+          <Picker
+            style={styles.commentTypePicker}
+            selectedValue={comment.type}
+            onValueChange={(itemValue, itemIndex) => {
               setComment((currentState: Comment) => ({
                 ...currentState,
-                content: text,
-              }))
-            }
-          />
-          <View style={styles.pickers}>
-            <Picker
-              style={styles.commentTypePicker}
-              selectedValue={comment.type}
-              onValueChange={(itemValue, itemIndex) => {
-                setComment((currentState: Comment) => ({
-                  ...currentState,
-                  type: itemValue,
-                }))
-              }}
-            >
-              {[CommentType.Comment, CommentType.Station].map((item, index) => (
-                <Picker.Item label={item} value={item} key={index} />
-              ))}
-            </Picker>
-          </View>
-          <Button
-            title="Submit Comment"
-            buttonStyle={styles.buttonStyle}
-            onPress={() => {
-              submitComment()
-              sendPushNotificationWithWordFeeding(expoNotif, station.street)
+                type: itemValue,
+              }));
             }}
-          />
+          >
+            {[CommentType.Comment, CommentType.Station].map((item, index) => (
+              <Picker.Item label={item} value={item} key={index} />
+            ))}
+          </Picker>
+        </View>
+        <Button
+          title="Submit Comment"
+          buttonStyle={styles.buttonStyle}
+          onPress={() => {
+            submitComment();
+            sendPushNotificationWithWordFeeding(expoNotif, station.street);
+          }}
+        />
       </ScrollView>
     </SafeAreaView>
   );
@@ -264,7 +258,6 @@ export default function ModalScreen({ route }) {
     if (comment.type == CommentType.Station) {
       addPoints(30, firebase.auth().currentUser?.uid);
     }
-    
   }
 }
 
@@ -338,16 +331,24 @@ const styles = StyleSheet.create({
     borderRadius: 7,
   },
   title: {
-    fontSize: 17,
+    fontSize: 25,
     fontWeight: 'bold',
-    top: 195,
+    justifyContent: 'center',
+    color: 'white',
+    backgroundColor: '#8B0000',
+    textAlign: 'center',
+  },
+  titleSeparator: {
+    height: 5,
+    width: '100%',
+    backgroundColor: 'rgba(160, 28, 52, 0.75)',
   },
   separator: {
     marginLeft: 'auto',
     marginRight: 'auto',
     alignItems: 'center',
     justifyContent: 'center',
-    marginVertical: 15,
+    padding: 5,
     height: 3,
     width: '100%',
   },
@@ -373,6 +374,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginLeft: 'auto',
     marginRight: 'auto',
+    padding: 10,
   },
   commentTypePicker: {
     width: 350,
