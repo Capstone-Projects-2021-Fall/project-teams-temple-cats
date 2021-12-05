@@ -462,7 +462,7 @@ const styles = StyleSheet.create({
   pickers: {
     width: 350,
     height: 200,
-    backgroundColor: 'transparent',
+    backgroundColor: 'white',
     borderWidth: 1,
     marginBottom: 10,
     marginLeft: 'auto',
