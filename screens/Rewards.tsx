@@ -38,7 +38,7 @@ export default function Rewards() {
           <Card>
             <Card.Image style={styles.pointContainer} source={require('../assets/images/rewards.jpg')}>
               <View style={styles.pointInfo}>
-                <Text style={styles.text}> 230 Points</Text>
+                <Text style={styles.text}> 1,000 Points</Text>
               </View>
             </Card.Image>
           </Card>

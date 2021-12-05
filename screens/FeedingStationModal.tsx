@@ -221,6 +221,7 @@ export default function ModalScreen({ route }) {
             content: text,
           }))}
         />
+        <Text style={styles.title}>Select comment type:</Text>
         <View style={styles.pickers}>
           <Picker
             style={styles.commentTypePicker}
@@ -235,11 +236,12 @@ export default function ModalScreen({ route }) {
             {[CommentType.Comment, CommentType.Station].map((item, index) => (
               <Picker.Item label={item} value={item} key={index} />
             ))}
+            <View style={styles.titleSeparator} />
           </Picker>
         </View>
         <Button
           title="Submit Comment"
-          buttonStyle={styles.buttonStyle}
+          buttonStyle={styles.commentButtonStyle}
           onPress={() => {
             submitComment();
             sendPushNotificationWithWordFeeding(expoNotif, station.street);
@@ -277,6 +279,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 8,
+    paddingHorizontal: 90,
+    borderRadius: 40,
+    backgroundColor: '#8B0000',
+    marginBottom: 20,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  },
+  commentButtonStyle: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 20,
+    marginTop: 90,
     paddingHorizontal: 90,
     borderRadius: 40,
     backgroundColor: '#8B0000',
@@ -369,16 +383,19 @@ const styles = StyleSheet.create({
   },
   pickers: {
     width: 350,
-    backgroundColor: 'white',
+    backgroundColor: 'transparent',
     borderWidth: 1,
     marginBottom: 10,
     marginLeft: 'auto',
     marginRight: 'auto',
     padding: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   commentTypePicker: {
     width: 350,
     height: 40,
+    marginBottom: 40,
   },
   bottomSeparator: {
     marginLeft: 'auto',
