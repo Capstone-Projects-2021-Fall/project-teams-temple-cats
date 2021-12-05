@@ -4,21 +4,21 @@ import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react
 import { Camera } from 'expo-camera';
 
 let camera: Camera;
-/**
- *  @props called in ImagePicker
- */
-type Props = {
-  onCaptureImage: (imageSource: string) => void;
-  onClose: () => void;
-  startCamera: boolean;
-};
+
 /**
  * This function is the camera
  * @component
- * @param props
+ * @param {Object} props props called in ImagePicker
+ * @param {function} props.onCaptureImage callback function whne capturing an image
+ * @param {function} props.onClose callback function when closing the camera
+ * @param {boolean} props.startCamera boolean flag to start the camera
  * @returns camera display with flash, selfie mode, and calls CameraPreview
  */
-export default function CatCamera(props: Props) {
+export default function CatCamera(props: {
+  onCaptureImage: (imageSource: string) => void;
+  onClose: () => void;
+  startCamera: boolean;
+}) {
   const { onCaptureImage, onClose, startCamera } = props;
   const [previewVisible, setPreviewVisible] = React.useState(false);
   const [capturedImage, setCapturedImage] = React.useState<any>(null);
@@ -215,9 +215,10 @@ const styles = StyleSheet.create({
 });
 /**
  * This is a function that displays the photo taken.
- * @param photo
- * @param retakePicture
- * @param savePhoto
+ * @component
+ * @param {string} photo uri of photo to display
+ * @param {function} retakePicture callback function to retake picture
+ * @param {function} savePhoto callback function to save photo
  * @returns displays photo taken with camera with retake and save buttons
  */
 const CameraPreview = ({ photo, retakePicture, savePhoto }: any) => {

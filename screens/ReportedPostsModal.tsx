@@ -1,10 +1,15 @@
 import * as React from 'react';
 import { StyleSheet, Image, Button, Alert, TouchableOpacity } from 'react-native';
-import firebase from "../utils/firebase";
-import { Text, View } from '../components/Themed';
 import { useEffect } from 'react';
+import firebase from '../utils/firebase';
+import { Text, View } from '../components/Themed';
 import { Cat, Comment, Report, RootStackScreenProps } from '../types';
-
+/**
+ * Function that renders the screen for resolving reported posts.
+ * @component
+ * @param {RootTabScreenProps} props navigation properties from the root of the account button in navigation
+ * @returns {JSX.Element} JSX element of the reported posts modal screen
+ */
 export default function ModalScreen({ navigation }: RootStackScreenProps<'ReportedPosts'>) {
   const [reportedCats, setReportedCats] = React.useState<Cat[]>([]);
   const [reportedComments, setReportedComments] = React.useState<Comment[]>([]);
@@ -21,12 +26,15 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Report
       cats.forEach((cat) => {
         // find cats that have reports
         if (cat.reports && Object.keys(cat.reports).length > 0) {
-          picsRef.child(cat.accountID + '/' + cat.catID).getDownloadURL().then((picUrl) => {
-            cat.media = picUrl
-          });
+          picsRef
+            .child(`${cat.accountID}/${cat.catID}`)
+            .getDownloadURL()
+            .then((picUrl) => {
+              cat.media = picUrl;
+            });
           reportedCats.push(cat);
         }
-        
+
         // find comments that have reports
         if (cat.commentList) {
           Object.values(cat.commentList).forEach((comment) => {
@@ -44,28 +52,25 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Report
 
   return (
     <View style={[styles.container, styles.flexColumnContainer]}>
-
       <Text style={styles.title}>Reported Cats</Text>
       {/* <View style={styles.separator}/> */}
       <View style={styles.flexColumnContainer}>
         {reportedCats.map((cat, index) => (
           <View key={index} style={styles.flexRowContainer}>
             <TouchableOpacity onPress={() => navigation.push('Cat', { cat })}>
-              <Image style={styles.catImage} source={{ uri: cat.media }}/>
+              <Image style={styles.catImage} source={{ uri: cat.media }} />
             </TouchableOpacity>
-            {Object.values(cat.reports).map((report, index) => {
-              return (
-                <View key={index}>
-                  <Text>{'Reason: ' + report.reason}</Text>
-                  <Button title='Resolve' color='#9D2235' onPress={() => resolveReport(report)}/>
-                </View>
-              );
-            })}
+            {Object.values(cat.reports).map((report, index) => (
+              <View key={index}>
+                <Text>{`Reason: ${report.reason}`}</Text>
+                <Button title="Resolve" color="#9D2235" onPress={() => resolveReport(report)} />
+              </View>
+            ))}
           </View>
         ))}
       </View>
 
-      <View style={styles.separator}/>
+      <View style={styles.separator} />
 
       <Text style={styles.title}>Reported Comments</Text>
       {/* <View style={styles.separator}/> */}
@@ -73,14 +78,12 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Report
         {reportedComments.map((comment, index) => (
           <View key={index} style={styles.flexRowContainer}>
             <Text>{comment.content}</Text>
-            {Object.values(comment.reports).map((report, index) => {
-              return (
-                <View key={index}>
-                  <Text>{'Reason: ' + report.reason}</Text>
-                  <Button title='Resolve' color='#9D2235' onPress={() => resolveReport(report)}/>
-                </View>
-              );
-            })}
+            {Object.values(comment.reports).map((report, index) => (
+              <View key={index}>
+                <Text>{`Reason: ${report.reason}`}</Text>
+                <Button title="Resolve" color="#9D2235" onPress={() => resolveReport(report)} />
+              </View>
+            ))}
           </View>
         ))}
       </View>
@@ -99,7 +102,7 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Report
         {
           text: 'Yes',
           onPress: () => {
-            catsRef.child(report.catID + '/reports/' + report.reportID).remove();
+            catsRef.child(`${report.catID}/reports/${report.reportID}`).remove();
             setReportedCats(reportedCats.filter((cat) => cat.catID !== report.catID));
           },
         },
@@ -130,7 +133,7 @@ const styles = StyleSheet.create({
   },
   flexRowContainer: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   catImage: {
     width: 70,

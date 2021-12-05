@@ -9,7 +9,7 @@
       
   ],
   "source": {
-      "include": ["./components", "./navigation", "./screens", "./hooks"],
+      "include": ["./components", "./navigation", "./screens", "./hooks", "./utils", "App.tsx", "types.tsx"],
       "includePattern": "\\.(jsx|js|ts|tsx)$"
   },
   "opts": {

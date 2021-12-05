@@ -5,17 +5,27 @@ import {
 import { Input, Button, Icon } from 'react-native-elements';
 import { v4 as uuidv4 } from 'uuid';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Picker } from '@react-native-picker/picker';
+import { sin } from 'react-native-reanimated';
 import { Text, View } from '../components/Themed';
 import CommentComponent from '../components/CommentComponent';
 import { AuthContext } from '../context/FirebaseAuthContext';
 import firebase from '../utils/firebase';
 import {
-  Cat, Comment, RootTabScreenProps, Report,
+  Cat, Comment, RootTabScreenProps, Report, CommentType,
 } from '../types';
+import {
+  sendPushNotificationWithWord, sendPushNotificationWithWordReport, addPoints, removeCat,
+} from '../utils/dbInterface';
 
 const { width } = Dimensions.get('window');
 const modStatus: any[] = [];
-
+/**
+ * Function that renders the modal for displaying a reported cat.
+ * @component
+ * @param {RootTabScreenProps} props navigation properties from the root of the home button in navigation
+ * @returns {JSX.Element} JSX element of the cat modal screen
+ */
 export default function ModalScreen({ route }, { navigation }: RootTabScreenProps<'Home'>) {
   const { cat } = route.params;
   const commentsRef = firebase.database().ref().child(`Cats/${cat.catID}/commentList/`);
@@ -26,19 +36,21 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
   const [word, setWord] = useState<any>([]);
   const user = React.useContext(AuthContext);
   const [showValidation, setShowValidation] = useState(true);
+  const [expoNotif, setexpoNotif] = React.useState<any[]>([]);
 
-  const [report, setReport]: Report = useState({
+  const [report, setReport] = useState<Report>({
     reportID: '',
     catID: cat.catID,
     accountID: firebase.auth().currentUser?.uid,
     reason: '',
   });
 
-  const [comment, setComment]: Cat = useState({
+  const [comment, setComment] = useState<Comment>({
     commentID: `${new Date()} ${uuidv4()}`,
     content: '',
     accountID: firebase.auth().currentUser?.uid,
     reports: '',
+    type: CommentType.Comment,
   });
 
   const toggleModalVisibility = () => {
@@ -49,29 +61,18 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
     }));
   };
 
-  const deleteCat = () => {
-    const catRef = firebase.database().ref('Cats').child(cat.catID);
-    catRef.remove();
-    const imageRef = firebase.storage().refFromURL(cat.media);
-    imageRef.delete();
-  };
-
-  const showValidationAlert = () => Alert.alert(
-    'Delete',
-    'Are your sure you want to delete this post?',
-    [
-      {
-        text: 'Yes',
-        onPress: () => {
-          setShowValidation(false);
-          deleteCat();
-        },
+  const showValidationAlert = () => Alert.alert('Delete', 'Are your sure you want to delete this post?', [
+    {
+      text: 'Yes',
+      onPress: () => {
+        setShowValidation(false);
+        removeCat(cat);
       },
-      {
-        text: 'No',
-      },
-    ],
-  );
+    },
+    {
+      text: 'No',
+    },
+  ]);
 
   useEffect(() => {
     commentsRef.on('child_added', (snapshot) => {
@@ -88,7 +89,21 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
         modStatus.push(snapshot.val());
         setWord(modStatus);
       });
+
+    firebase.database().ref().child('Accounts/').on('value', (snapshot) => {
+      const Accounts: any[] = Object.values(snapshot.val());
+      const tokens: any[] = [];
+
+      Accounts.forEach((account) => {
+        if ((account.expoNotif && Object.keys(account.expoNotif).length > 0) && (account.modStatus === 3)) {
+          tokens.push(account.expoNotif);
+        }
+      });
+      setexpoNotif(tokens);
+      // console.log(tokens)
+    });
   }, []);
+
   return (
     <SafeAreaView>
       <ScrollView>
@@ -133,33 +148,21 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
           />
         </View>
         <View style={styles.separator} lightColor="rgba(255,255,255,0.1)" darkColor="rgba(255,255,255,0.1)" />
-        <Text style={styles.catDate}>
-          {`Date Sighted: ${cat.date} ${cat.time}\n`}
-        </Text>
+        <Text style={styles.catDate}>{`Date Sighted: ${cat.date} ${cat.time}\n`}</Text>
         <View style={styles.cattributeContainer}>
-          <Text style={styles.catInfo}>
-            {cat.friendly != null ? `Friendly: ${cat.friendly}\n` : ''}
-          </Text>
+          <Text style={styles.catInfo}>{cat.friendly != null ? `Friendly: ${cat.friendly}\n` : ''}</Text>
         </View>
         <View style={styles.cattributeContainer}>
-          <Text style={styles.catInfo}>
-            {cat.healthy != null ? `Healthy: ${cat.healthy}\n` : ''}
-          </Text>
+          <Text style={styles.catInfo}>{cat.healthy != null ? `Healthy: ${cat.healthy}\n` : ''}</Text>
         </View>
         <View style={styles.cattributeContainer}>
-          <Text style={styles.catInfo}>
-            {cat.kitten != null ? `Kitten: ${cat.kitten}\n` : ''}
-          </Text>
+          <Text style={styles.catInfo}>{cat.kitten != null ? `Kitten: ${cat.kitten}\n` : ''}</Text>
         </View>
         <View style={styles.cattributeContainer}>
-          <Text style={styles.catInfo}>
-            {cat.color ? `Color: ${cat.color}\n` : ''}
-          </Text>
+          <Text style={styles.catInfo}>{cat.color ? `Color: ${cat.color}\n` : ''}</Text>
         </View>
         <View style={styles.cattributeContainer}>
-          <Text style={styles.catInfo}>
-            {cat.eyeColor ? `Eye Color: ${cat.eyeColor}` : ''}
-          </Text>
+          <Text style={styles.catInfo}>{cat.eyeColor ? `Eye Color: ${cat.eyeColor}` : ''}</Text>
         </View>
         <View style={styles.cattributeContainer}>
           <Text style={styles.catInfo}>
@@ -167,9 +170,7 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
           </Text>
         </View>
         <View style={styles.bottomSeparator} lightColor="rgba(255,255,255,0.1)" darkColor="rgba(255,255,255,0.1)" />
-        <Text style={styles.catDate}>
-          Comment Thread:
-        </Text>
+        <Text style={styles.catDate}>Comment Thread:</Text>
         <ScrollView style={styles.scrollView}>
           {commentList.map((comment, index) => (
             <CommentComponent key={index} comment={comment} />
@@ -185,15 +186,35 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
             content: text,
           }))}
         />
+        <Text style={styles.title}>Select comment type:</Text>
+        <View style={styles.pickers}>
+          <Picker
+            style={styles.commentTypePicker}
+            selectedValue={comment.type}
+            onValueChange={(itemValue, itemIndex) => {
+              setComment((currentState: Comment) => ({
+                ...currentState,
+                type: itemValue,
+              }));
+            }}
+          >
+            {Object.values(CommentType).filter((type) => type != CommentType.Station).map((item, index) => (
+              <Picker.Item label={item} value={item} key={index} />
+            ))}
+          </Picker>
+          <Text style={{
+            width: '100%', height: 60, position: 'absolute', bottom: 0, left: 0,
+          }}
+          >
+            {' '}
+          </Text>
+        </View>
         <Button
           title="Submit Comment"
           buttonStyle={styles.buttonStyle}
           onPress={() => {
-            firebase.database().ref().child(`Cats/${cat.catID}/commentList/${comment.commentID}`).set(comment);
-            setComment((currentState: Comment) => ({
-              ...currentState,
-              commentID: `${new Date()} ${uuidv4()}`,
-            }));
+            submitComment();
+            sendPushNotificationWithWord(expoNotif, cat.name);
           }}
         />
         <View style={styles.bottomSeparator} lightColor="rgba(255,255,255,0.1)" darkColor="rgba(255,255,255,0.1)" />
@@ -227,6 +248,7 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
                     toggleModalVisibility();
                     console.log(report);
                     firebase.database().ref().child(`Cats/${cat.catID}/reports/${report.reportID}`).set(report);
+                    sendPushNotificationWithWordReport(expoNotif, cat.name);
                   }}
                 />
                 <Button title="Close" buttonStyle={styles.buttonStyle} onPress={toggleModalVisibility} />
@@ -234,20 +256,42 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
             </View>
           </Modal>
         </View>
-        {JSON.stringify(modStatus[0]) === '3'
-          ? (
-            <Button
-              title="Delete Cat"
-              buttonStyle={styles.buttonStyle}
-              onPress={() => showValidationAlert()}
-            />
-          )
-          : null}
+        {JSON.stringify(modStatus[0]) === '3' ? (
+          <Button title="Delete Cat" buttonStyle={styles.buttonStyle} onPress={() => showValidationAlert()} />
+        ) : null}
         <View />
         <View style={styles.bottomSeparator} lightColor="#8B0000" darkColor="rgba(255,255,255,0.1)" />
       </ScrollView>
     </SafeAreaView>
   );
+
+  function submitComment() {
+    firebase.database().ref().child(`Cats/${cat.catID}/commentList/${comment.commentID}`).set(comment);
+    setComment((currentState: Comment) => ({
+      ...currentState,
+      commentID: `${new Date()} ${uuidv4()}`,
+    }));
+    switch (comment.type) {
+      case CommentType.FoodWater:
+        addPoints(20, firebase.auth().currentUser?.uid);
+        break;
+      case CommentType.Microchip:
+        addPoints(50, firebase.auth().currentUser?.uid);
+        break;
+      case CommentType.Neuter:
+        addPoints(200, firebase.auth().currentUser?.uid);
+        break;
+      case CommentType.Shelter:
+        addPoints(200, firebase.auth().currentUser?.uid);
+        break;
+      case CommentType.Foster:
+        addPoints(200, firebase.auth().currentUser?.uid);
+        break;
+      case CommentType.Return:
+        addPoints(300, firebase.auth().currentUser?.uid);
+        break;
+    }
+  }
 }
 
 const styles = StyleSheet.create({
@@ -414,5 +458,22 @@ const styles = StyleSheet.create({
     marginVertical: 40,
     height: 5,
     width: '100%',
+  },
+  pickers: {
+    width: 350,
+    height: 200,
+    backgroundColor: 'white',
+    borderWidth: 1,
+    marginBottom: 10,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 30,
+  },
+  commentTypePicker: {
+    width: 350,
+    height: 150,
+    marginBottom: 40,
   },
 });

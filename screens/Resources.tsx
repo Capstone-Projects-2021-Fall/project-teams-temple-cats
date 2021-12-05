@@ -51,8 +51,8 @@ export default function ResourcesScreen({ navigation }: RootTabScreenProps<'Reso
           </Pressable>
           <View style={styles.listImageContainer}>
             <View style={styles.pawsServicesList}>
-              {pawsServices.map((item) => (
-                <Text style={styles.listItem}>
+              {pawsServices.map((item, index) => (
+                <Text key={index} style={styles.listItem}>
                   ♥
                   {' '}
                   {item.key}
@@ -75,8 +75,8 @@ export default function ResourcesScreen({ navigation }: RootTabScreenProps<'Reso
           </Pressable>
           <View style={styles.listImageContainer}>
             <View style={styles.forgottenServicesList}>
-              {forgottenServices.map((item) => (
-                <Text style={styles.listItem}>
+              {forgottenServices.map((item, index) => (
+                <Text key={index} style={styles.listItem}>
                   ♥
                   {' '}
                   {item.key}

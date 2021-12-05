@@ -5,7 +5,8 @@ import { Comment } from '../types';
 
 /**
  * Function for rendering comments.
- * @param props: Comment
+ * @component
+ * @param {Comment} props comment object to be rendered
  * @returns {JSX.Element} JSX render of a Comment
  */
 
@@ -13,7 +14,6 @@ export default function CommentComponent(props: Comment) {
   const {
     accountID, content, commentID, reports,
   } = props.comment;
-  console.log(props);
   return (
     <View style={styles.comment}>
       <Text

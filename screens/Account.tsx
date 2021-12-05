@@ -10,6 +10,12 @@ import Mod from '../components/Mod';
 import { AuthProvider } from '../context/FirebaseAuthProvider';
 import Navigation from '../navigation';
 import { baseProps } from 'react-native-gesture-handler/lib/typescript/handlers/gestureHandlers';
+import ApplyforMods from '../components/ApplyForMods';
+import registerForPushNotification from '../components/Notifications'
+import * as Notifications from 'expo-notifications';
+
+
+
 
 const modStatus: any[] = [];
 
@@ -20,9 +26,13 @@ const modStatus: any[] = [];
  * @returns {JSX.Element} JSX element of the account screen
  */
 export default function AccountScreen({ navigation }: RootTabScreenProps<'Account'>) {
-  // Needs to be refactored
+
+  const [expoNotif, setexpoNotif] = React.useState<any[]>([]);
 
   const [word, setWord] = useState<any>([]);
+  registerForPushNotification();
+
+
 
   const user = React.useContext(AuthContext);
 
@@ -34,7 +44,13 @@ export default function AccountScreen({ navigation }: RootTabScreenProps<'Accoun
         modStatus.push(snapshot.val());
         setWord(modStatus);
       });
+
+
   }, []);
+
+
+
+
 
   return (
     <View style={styles.container}>
@@ -47,8 +63,15 @@ export default function AccountScreen({ navigation }: RootTabScreenProps<'Accoun
           signOut();
         }}
       />
+
+   
+
       {JSON.stringify(modStatus[0]) === '3' ?
-        <Mod onReportedPostsPress={() => navigation.push("ReportedPosts")} onDownvotedPostsPress={() => navigation.push("DownvotedPosts")}/>
+        <Mod onReportedPostsPress={() => navigation.push("ReportedPosts")} onDownvotedPostsPress={() => navigation.push("DownvotedPosts")} onModAppsPress={() => navigation.push("ModeratorRequests")} />
+        : null
+      }
+      {JSON.stringify(modStatus[0]) === '1' ?
+        <ApplyforMods />
         : null
       }
     </View>
