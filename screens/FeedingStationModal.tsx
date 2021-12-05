@@ -239,14 +239,13 @@ export default function ModalScreen({ route }) {
             {[CommentType.Comment, CommentType.Station].map((item, index) => (
               <Picker.Item label={item} value={item} key={index} />
             ))}
-            <View style={styles.titleSeparator} />
-            <Text style={{
-              width: '100%', height: 60, position: 'absolute', bottom: 0, left: 0,
-            }}
-            >
-              {' '}
-            </Text>
           </Picker>
+          <Text style={{
+            width: '100%', height: 60, position: 'absolute', bottom: 0, left: 0,
+          }}
+          >
+            {' '}
+          </Text>
         </View>
         <Button
           title="Submit Comment"
@@ -372,20 +371,21 @@ const styles = StyleSheet.create({
     marginRight: 'auto',
     alignItems: 'center',
     justifyContent: 'center',
+
     padding: 5,
     height: 3,
     width: '100%',
   },
   content: {
+    width: '100%',
     justifyContent: 'center',
     height: 100,
-    borderRadius: 10,
     backgroundColor: '#8B0000',
-    marginBottom: 0,
     marginLeft: 'auto',
     marginRight: 'auto',
     paddingLeft: 5,
     paddingRight: 5,
+    paddingTop: 10,
   },
   contentList: {
     textAlign: 'center',
@@ -418,7 +418,7 @@ const styles = StyleSheet.create({
   commentTypePicker: {
     width: 350,
     height: 150,
-    marginBottom: 40,
+    marginBottom: 70,
   },
   bottomSeparator: {
     marginLeft: 'auto',

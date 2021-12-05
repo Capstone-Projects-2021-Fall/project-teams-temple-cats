@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Image, ScrollView, Modal, StyleSheet, Dimensions, Alert } from 'react-native';
+import {
+  Image, ScrollView, Modal, StyleSheet, Dimensions, Alert,
+} from 'react-native';
 import { Input, Button, Icon } from 'react-native-elements';
 import { v4 as uuidv4 } from 'uuid';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Picker } from '@react-native-picker/picker';
+import { sin } from 'react-native-reanimated';
 import { Text, View } from '../components/Themed';
 import CommentComponent from '../components/CommentComponent';
 import { AuthContext } from '../context/FirebaseAuthContext';
 import firebase from '../utils/firebase';
-import { Cat, Comment, RootTabScreenProps, Report, CommentType } from '../types';
-import { sendPushNotificationWithWord } from '../utils/dbInterface';
-import { sendPushNotificationWithWordReport } from '../utils/dbInterface';
-import { Picker } from '@react-native-picker/picker';
-import { addPoints, removeCat } from '../utils/dbInterface';
-import { sin } from 'react-native-reanimated';
+import {
+  Cat, Comment, RootTabScreenProps, Report, CommentType,
+} from '../types';
+import {
+  sendPushNotificationWithWord, sendPushNotificationWithWordReport, addPoints, removeCat,
+} from '../utils/dbInterface';
 
 const { width } = Dimensions.get('window');
 const modStatus: any[] = [];
@@ -33,7 +37,6 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
   const user = React.useContext(AuthContext);
   const [showValidation, setShowValidation] = useState(true);
   const [expoNotif, setexpoNotif] = React.useState<any[]>([]);
-
 
   const [report, setReport] = useState<Report>({
     reportID: '',
@@ -58,19 +61,18 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
     }));
   };
 
-  const showValidationAlert = () =>
-    Alert.alert('Delete', 'Are your sure you want to delete this post?', [
-      {
-        text: 'Yes',
-        onPress: () => {
-          setShowValidation(false);
-          removeCat(cat)
-        },
+  const showValidationAlert = () => Alert.alert('Delete', 'Are your sure you want to delete this post?', [
+    {
+      text: 'Yes',
+      onPress: () => {
+        setShowValidation(false);
+        removeCat(cat);
       },
-      {
-        text: 'No',
-      },
-    ]);
+    },
+    {
+      text: 'No',
+    },
+  ]);
 
   useEffect(() => {
     commentsRef.on('child_added', (snapshot) => {
@@ -88,25 +90,19 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
         setWord(modStatus);
       });
 
-      firebase.database().ref().child('Accounts/').on('value', function (snapshot) {
-        const Accounts: any[] = Object.values(snapshot.val());
-        const tokens: any[] = [];
-  
-    
-  
-        Accounts.forEach((account) => {
-          if ((account.expoNotif && Object.keys(account.expoNotif).length > 0) && (account.modStatus === 3)){
-            tokens.push(account.expoNotif)
-          }
+    firebase.database().ref().child('Accounts/').on('value', (snapshot) => {
+      const Accounts: any[] = Object.values(snapshot.val());
+      const tokens: any[] = [];
+
+      Accounts.forEach((account) => {
+        if ((account.expoNotif && Object.keys(account.expoNotif).length > 0) && (account.modStatus === 3)) {
+          tokens.push(account.expoNotif);
         }
-        );
-        setexpoNotif(tokens)
-        //console.log(tokens)
       });
-
+      setexpoNotif(tokens);
+      // console.log(tokens)
+    });
   }, []);
-
-
 
   return (
     <SafeAreaView>
@@ -185,13 +181,12 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
           value={comment.content}
           placeholder="Enter Comment..."
           placeholderTextColor="#8B0000"
-          onChangeText={(text) =>
-            setComment((currentState: Comment) => ({
-              ...currentState,
-              content: text,
-            }))
-          }
+          onChangeText={(text) => setComment((currentState: Comment) => ({
+            ...currentState,
+            content: text,
+          }))}
         />
+        <Text style={styles.title}>Select comment type:</Text>
         <View style={styles.pickers}>
           <Picker
             style={styles.commentTypePicker}
@@ -200,20 +195,26 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
               setComment((currentState: Comment) => ({
                 ...currentState,
                 type: itemValue,
-              }))
+              }));
             }}
           >
             {Object.values(CommentType).filter((type) => type != CommentType.Station).map((item, index) => (
               <Picker.Item label={item} value={item} key={index} />
             ))}
           </Picker>
+          <Text style={{
+            width: '100%', height: 60, position: 'absolute', bottom: 0, left: 0,
+          }}
+          >
+            {' '}
+          </Text>
         </View>
         <Button
           title="Submit Comment"
           buttonStyle={styles.buttonStyle}
           onPress={() => {
-            submitComment()
-            sendPushNotificationWithWord(expoNotif, cat.name)
+            submitComment();
+            sendPushNotificationWithWord(expoNotif, cat.name);
           }}
         />
         <View style={styles.bottomSeparator} lightColor="rgba(255,255,255,0.1)" darkColor="rgba(255,255,255,0.1)" />
@@ -235,12 +236,10 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
                   selectionColor="white"
                   placeholder="Enter why you're reporting this post..."
                   placeholderTextColor="black"
-                  onChangeText={(text) =>
-                    setReport((currentState: Report) => ({
-                      ...currentState,
-                      reason: text,
-                    }))
-                  }
+                  onChangeText={(text) => setReport((currentState: Report) => ({
+                    ...currentState,
+                    reason: text,
+                  }))}
                 />
                 <Button
                   title="Submit"
@@ -249,8 +248,7 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
                     toggleModalVisibility();
                     console.log(report);
                     firebase.database().ref().child(`Cats/${cat.catID}/reports/${report.reportID}`).set(report);
-                      sendPushNotificationWithWordReport(expoNotif, cat.name)
-                   
+                    sendPushNotificationWithWordReport(expoNotif, cat.name);
                   }}
                 />
                 <Button title="Close" buttonStyle={styles.buttonStyle} onPress={toggleModalVisibility} />
@@ -293,7 +291,6 @@ export default function ModalScreen({ route }, { navigation }: RootTabScreenProp
         addPoints(300, firebase.auth().currentUser?.uid);
         break;
     }
-
   }
 }
 
@@ -464,14 +461,19 @@ const styles = StyleSheet.create({
   },
   pickers: {
     width: 350,
-    backgroundColor: 'white',
+    height: 200,
+    backgroundColor: 'transparent',
     borderWidth: 1,
     marginBottom: 10,
     marginLeft: 'auto',
     marginRight: 'auto',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 30,
   },
   commentTypePicker: {
     width: 350,
-    height: 40,
+    height: 150,
+    marginBottom: 40,
   },
 });
