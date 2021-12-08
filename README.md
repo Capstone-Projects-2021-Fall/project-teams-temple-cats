@@ -6,6 +6,48 @@ Karl Schaller, Rebecca Robb, Jordan Billie, Christine Gregotski, Christian Davis
 The Temple Cats mobile app is for people in the Temple University area who want to help local stray cats. The Temple Cats organization tracks its own feral cat colony, but the Temple University area also has an extremely high population of stray cats who were abandoned by their owners and are in need of care or a home. The mobile app aims mainly to address this problem by providing a lost & found service for reporting cats, as well as by connecting users with extensive resources and information specific to the Temple University area for all different types of cat related situations users might encounter.
 
 ## Release Notes
+
+### v4.0
+* User Features(UPDATED)
+  * Users can apply to become moderators  
+* Leaderboard (UPDATED)
+    * User profile will appear with name, email, points, and badges when entry is clicked
+    * Added button to view all possible leaderboard badges
+* Moderator Features (UPDATED)
+    * Moderators can receive applications from users and upvote, downvote, approve, or disapprove users from becoming moderators   
+    * Downvoted Posts are shown when clicked on Account page
+* Info Page  
+    * Added information button to view scoring information 
+* Query Feature (UPDATED)
+    * Search bar queries by additional information of Cat post
+* Point System 
+    * Users can now earn points by completing certain tasks and commenting on Cat post by
+      * Reporting a cat 
+      * Giving cat food and water 
+      * Scanning cat for microchip  
+      * Taking cat to a no kill shelter  
+      * Fostering cat  
+      * Returning cat to its owner  
+ * Feeding Station (UPDATED)
+    * Comments can now be added to feeding stations where points can be earned by 
+      * Completing feeding station requests 
+* Notifications 
+    * Users and moderators can receive push notifications for 
+      * Completing feeding station tasks  
+      * Moderator applications  
+      * Reporting cats  
+      * Announcements    
+ * Announcements
+    * Moderators can make general and feeder announcements for users to view  
+ * Rewards
+    * Users can redeem points and confetti will appear on display 
+ * Known Bugs 
+    * Some users might not be able to render other modals after clicking leaderboard  
+    * Memory leaks are found 
+    * Images with higher resolution take longer to render    
+
+
+
 ### v3.0
 * User Features Added
   * Query Feature
