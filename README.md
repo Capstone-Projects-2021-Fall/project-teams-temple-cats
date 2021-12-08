@@ -216,6 +216,7 @@ For testing the latest version of our app, follow these testing procedures:
 
 
 ## Source Code
+* [v4.0](https://github.com/Capstone-Projects-2021-Fall/project-teams-temple-cats/releases/tag/v4.0.0)
 * [v3.0](https://github.com/Capstone-Projects-2021-Fall/project-teams-temple-cats/releases/tag/v3.0.0)
 * [v2.0](https://github.com/Capstone-Projects-2021-Fall/project-teams-temple-cats/releases/tag/v2.0.0)
 * [v1.0](https://github.com/Capstone-Projects-2021-Fall/project-teams-temple-cats/releases/tag/v1.0.0)
